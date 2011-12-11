@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - unnamed - lib/isnan.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib</a> - isnan.c<span style="font-size: 80%;"> (source / <a href="isnan.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">unnamed</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2011-12-11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* Test for NaN that does not need libm.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2007-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       6 </span>                :            :    the Free Software Foundation; either version 3 of the License, or
+<span class="lineNum">       7 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       8 </span>                :            : 
+<span class="lineNum">       9 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      10 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      11 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      12 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      13 </span>                :            : 
+<span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      15 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :            : /* Written by Bruno Haible &lt;bruno@clisp.org&gt;, 2007.  */
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      20 </span>                :            : 
+<span class="lineNum">      21 </span>                :            : /* Specification.  */
+<span class="lineNum">      22 </span>                :            : #ifdef USE_LONG_DOUBLE
+<span class="lineNum">      23 </span>                :            : /* Specification found in math.h or isnanl-nolibm.h.  */
+<span class="lineNum">      24 </span>                :            : extern int rpl_isnanl (long double x) _GL_ATTRIBUTE_CONST;
+<span class="lineNum">      25 </span>                :            : #elif ! defined USE_FLOAT
+<span class="lineNum">      26 </span>                :            : /* Specification found in math.h or isnand-nolibm.h.  */
+<span class="lineNum">      27 </span>                :            : extern int rpl_isnand (double x);
+<span class="lineNum">      28 </span>                :            : #else /* defined USE_FLOAT */
+<span class="lineNum">      29 </span>                :            : /* Specification found in math.h or isnanf-nolibm.h.  */
+<span class="lineNum">      30 </span>                :            : extern int rpl_isnanf (float x);
+<span class="lineNum">      31 </span>                :            : #endif
+<span class="lineNum">      32 </span>                :            : 
+<span class="lineNum">      33 </span>                :            : #include &lt;float.h&gt;
+<span class="lineNum">      34 </span>                :            : #include &lt;string.h&gt;
+<span class="lineNum">      35 </span>                :            : 
+<span class="lineNum">      36 </span>                :            : #include &quot;float+.h&quot;
+<span class="lineNum">      37 </span>                :            : 
+<span class="lineNum">      38 </span>                :            : #ifdef USE_LONG_DOUBLE
+<span class="lineNum">      39 </span>                :            : # define FUNC rpl_isnanl
+<span class="lineNum">      40 </span>                :            : # define DOUBLE long double
+<span class="lineNum">      41 </span>                :            : # define MAX_EXP LDBL_MAX_EXP
+<span class="lineNum">      42 </span>                :            : # define MIN_EXP LDBL_MIN_EXP
+<span class="lineNum">      43 </span>                :            : # if defined LDBL_EXPBIT0_WORD &amp;&amp; defined LDBL_EXPBIT0_BIT
+<span class="lineNum">      44 </span>                :            : #  define KNOWN_EXPBIT0_LOCATION
+<span class="lineNum">      45 </span>                :            : #  define EXPBIT0_WORD LDBL_EXPBIT0_WORD
+<span class="lineNum">      46 </span>                :            : #  define EXPBIT0_BIT LDBL_EXPBIT0_BIT
+<span class="lineNum">      47 </span>                :            : # endif
+<span class="lineNum">      48 </span>                :            : # define SIZE SIZEOF_LDBL
+<span class="lineNum">      49 </span>                :            : # define L_(literal) literal##L
+<span class="lineNum">      50 </span>                :            : #elif ! defined USE_FLOAT
+<span class="lineNum">      51 </span>                :            : # define FUNC rpl_isnand
+<span class="lineNum">      52 </span>                :            : # define DOUBLE double
+<span class="lineNum">      53 </span>                :            : # define MAX_EXP DBL_MAX_EXP
+<span class="lineNum">      54 </span>                :            : # define MIN_EXP DBL_MIN_EXP
+<span class="lineNum">      55 </span>                :            : # if defined DBL_EXPBIT0_WORD &amp;&amp; defined DBL_EXPBIT0_BIT
+<span class="lineNum">      56 </span>                :            : #  define KNOWN_EXPBIT0_LOCATION
+<span class="lineNum">      57 </span>                :            : #  define EXPBIT0_WORD DBL_EXPBIT0_WORD
+<span class="lineNum">      58 </span>                :            : #  define EXPBIT0_BIT DBL_EXPBIT0_BIT
+<span class="lineNum">      59 </span>                :            : # endif
+<span class="lineNum">      60 </span>                :            : # define SIZE SIZEOF_DBL
+<span class="lineNum">      61 </span>                :            : # define L_(literal) literal
+<span class="lineNum">      62 </span>                :            : #else /* defined USE_FLOAT */
+<span class="lineNum">      63 </span>                :            : # define FUNC rpl_isnanf
+<span class="lineNum">      64 </span>                :            : # define DOUBLE float
+<span class="lineNum">      65 </span>                :            : # define MAX_EXP FLT_MAX_EXP
+<span class="lineNum">      66 </span>                :            : # define MIN_EXP FLT_MIN_EXP
+<span class="lineNum">      67 </span>                :            : # if defined FLT_EXPBIT0_WORD &amp;&amp; defined FLT_EXPBIT0_BIT
+<span class="lineNum">      68 </span>                :            : #  define KNOWN_EXPBIT0_LOCATION
+<span class="lineNum">      69 </span>                :            : #  define EXPBIT0_WORD FLT_EXPBIT0_WORD
+<span class="lineNum">      70 </span>                :            : #  define EXPBIT0_BIT FLT_EXPBIT0_BIT
+<span class="lineNum">      71 </span>                :            : # endif
+<span class="lineNum">      72 </span>                :            : # define SIZE SIZEOF_FLT
+<span class="lineNum">      73 </span>                :            : # define L_(literal) literal##f
+<span class="lineNum">      74 </span>                :            : #endif
+<span class="lineNum">      75 </span>                :            : 
+<span class="lineNum">      76 </span>                :            : #define EXP_MASK ((MAX_EXP - MIN_EXP) | 7)
+<span class="lineNum">      77 </span>                :            : 
+<span class="lineNum">      78 </span>                :            : #define NWORDS \
+<span class="lineNum">      79 </span>                :            :   ((sizeof (DOUBLE) + sizeof (unsigned int) - 1) / sizeof (unsigned int))
+<span class="lineNum">      80 </span>                :            : typedef union { DOUBLE value; unsigned int word[NWORDS]; } memory_double;
+<a name="81"><span class="lineNum">      81 </span>                :            : </a>
+<span class="lineNum">      82 </span>                :            : int
+<span class="lineNum">      83 </span>                :<span class="lineCov">       5421 : FUNC (DOUBLE x)</span>
+<span class="lineNum">      84 </span>                :            : {
+<span class="lineNum">      85 </span>                :            : #ifdef KNOWN_EXPBIT0_LOCATION
+<span class="lineNum">      86 </span>                :            : # if defined USE_LONG_DOUBLE &amp;&amp; ((defined __ia64 &amp;&amp; LDBL_MANT_DIG == 64) || (defined __x86_64__ || defined __amd64__) || (defined __i386 || defined __i386__ || defined _I386 || defined _M_IX86 || defined _X86_)) &amp;&amp; !HAVE_SAME_LONG_DOUBLE_AS_DOUBLE
+<span class="lineNum">      87 </span>                :            :   /* Special CPU dependent code is needed to treat bit patterns outside the
+<span class="lineNum">      88 </span>                :            :      IEEE 754 specification (such as Pseudo-NaNs, Pseudo-Infinities,
+<span class="lineNum">      89 </span>                :            :      Pseudo-Zeroes, Unnormalized Numbers, and Pseudo-Denormals) as NaNs.
+<span class="lineNum">      90 </span>                :            :      These bit patterns are:
+<span class="lineNum">      91 </span>                :            :        - exponent = 0x0001..0x7FFF, mantissa bit 63 = 0,
+<span class="lineNum">      92 </span>                :            :        - exponent = 0x0000, mantissa bit 63 = 1.
+<span class="lineNum">      93 </span>                :            :      The NaN bit pattern is:
+<span class="lineNum">      94 </span>                :            :        - exponent = 0x7FFF, mantissa &gt;= 0x8000000000000001.  */
+<span class="lineNum">      95 </span>                :            :   memory_double m;
+<span class="lineNum">      96 </span>                :            :   unsigned int exponent;
+<span class="lineNum">      97 </span>                :            : 
+<span class="lineNum">      98 </span>                :<span class="lineCov">       5421 :   m.value = x;</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">       5421 :   exponent = (m.word[EXPBIT0_WORD] &gt;&gt; EXPBIT0_BIT) &amp; EXP_MASK;</span>
+<span class="lineNum">     100 </span>                :            : #  ifdef WORDS_BIGENDIAN
+<span class="lineNum">     101 </span>                :            :   /* Big endian: EXPBIT0_WORD = 0, EXPBIT0_BIT = 16.  */
+<span class="lineNum">     102 </span>                :            :   if (exponent == 0)
+<span class="lineNum">     103 </span>                :            :     return 1 &amp; (m.word[0] &gt;&gt; 15);
+<span class="lineNum">     104 </span>                :            :   else if (exponent == EXP_MASK)
+<span class="lineNum">     105 </span>                :            :     return (((m.word[0] ^ 0x8000U) &lt;&lt; 16) | m.word[1] | (m.word[2] &gt;&gt; 16)) != 0;
+<span class="lineNum">     106 </span>                :            :   else
+<span class="lineNum">     107 </span>                :            :     return 1 &amp; ~(m.word[0] &gt;&gt; 15);
+<span class="lineNum">     108 </span>                :            : #  else
+<span class="lineNum">     109 </span>                :            :   /* Little endian: EXPBIT0_WORD = 2, EXPBIT0_BIT = 0.  */
+<span class="lineNum">     110 </span>        [<span class="branchCov" title="Branch 0 was taken 375 times"> + </span><span class="branchCov" title="Branch 1 was taken 5046 times"> + </span>]:<span class="lineCov">       5421 :   if (exponent == 0)</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">        375 :     return (m.word[1] &gt;&gt; 31);</span>
+<span class="lineNum">     112 </span>        [<span class="branchCov" title="Branch 0 was taken 845 times"> + </span><span class="branchCov" title="Branch 1 was taken 4201 times"> + </span>]:<span class="lineCov">       5046 :   else if (exponent == EXP_MASK)</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">        845 :     return ((m.word[1] ^ 0x80000000U) | m.word[0]) != 0;</span>
+<span class="lineNum">     114 </span>                :            :   else
+<span class="lineNum">     115 </span>                :<span class="lineCov">       5421 :     return (m.word[1] &gt;&gt; 31) ^ 1;</span>
+<span class="lineNum">     116 </span>                :            : #  endif
+<span class="lineNum">     117 </span>                :            : # else
+<span class="lineNum">     118 </span>                :            :   /* Be careful to not do any floating-point operation on x, such as x == x,
+<span class="lineNum">     119 </span>                :            :      because x may be a signaling NaN.  */
+<span class="lineNum">     120 </span>                :            : #  if defined __SUNPRO_C || defined __ICC || defined _MSC_VER \
+<span class="lineNum">     121 </span>                :            :       || defined __DECC || defined __TINYC__ \
+<span class="lineNum">     122 </span>                :            :       || (defined __sgi &amp;&amp; !defined __GNUC__)
+<span class="lineNum">     123 </span>                :            :   /* The Sun C 5.0, Intel ICC 10.0, Microsoft Visual C/C++ 9.0, Compaq (ex-DEC)
+<span class="lineNum">     124 </span>                :            :      6.4, and TinyCC compilers don't recognize the initializers as constant
+<span class="lineNum">     125 </span>                :            :      expressions.  The Compaq compiler also fails when constant-folding
+<span class="lineNum">     126 </span>                :            :      0.0 / 0.0 even when constant-folding is not required.  The Microsoft
+<span class="lineNum">     127 </span>                :            :      Visual C/C++ compiler also fails when constant-folding 1.0 / 0.0 even
+<span class="lineNum">     128 </span>                :            :      when constant-folding is not required. The SGI MIPSpro C compiler
+<span class="lineNum">     129 </span>                :            :      complains about &quot;floating-point operation result is out of range&quot;.  */
+<span class="lineNum">     130 </span>                :            :   static DOUBLE zero = L_(0.0);
+<span class="lineNum">     131 </span>                :            :   memory_double nan;
+<span class="lineNum">     132 </span>                :            :   DOUBLE plus_inf = L_(1.0) / zero;
+<span class="lineNum">     133 </span>                :            :   DOUBLE minus_inf = -L_(1.0) / zero;
+<span class="lineNum">     134 </span>                :            :   nan.value = zero / zero;
+<span class="lineNum">     135 </span>                :            : #  else
+<span class="lineNum">     136 </span>                :            :   static memory_double nan = { L_(0.0) / L_(0.0) };
+<span class="lineNum">     137 </span>                :            :   static DOUBLE plus_inf = L_(1.0) / L_(0.0);
+<span class="lineNum">     138 </span>                :            :   static DOUBLE minus_inf = -L_(1.0) / L_(0.0);
+<span class="lineNum">     139 </span>                :            : #  endif
+<span class="lineNum">     140 </span>                :            :   {
+<span class="lineNum">     141 </span>                :            :     memory_double m;
+<span class="lineNum">     142 </span>                :            : 
+<span class="lineNum">     143 </span>                :            :     /* A NaN can be recognized through its exponent.  But exclude +Infinity and
+<span class="lineNum">     144 </span>                :            :        -Infinity, which have the same exponent.  */
+<span class="lineNum">     145 </span>                :            :     m.value = x;
+<span class="lineNum">     146 </span>                :            :     if (((m.word[EXPBIT0_WORD] ^ nan.word[EXPBIT0_WORD])
+<span class="lineNum">     147 </span>                :            :          &amp; (EXP_MASK &lt;&lt; EXPBIT0_BIT))
+<span class="lineNum">     148 </span>                :            :         == 0)
+<span class="lineNum">     149 </span>                :            :       return (memcmp (&amp;m.value, &amp;plus_inf, SIZE) != 0
+<span class="lineNum">     150 </span>                :            :               &amp;&amp; memcmp (&amp;m.value, &amp;minus_inf, SIZE) != 0);
+<span class="lineNum">     151 </span>                :            :     else
+<span class="lineNum">     152 </span>                :            :       return 0;
+<span class="lineNum">     153 </span>                :            :   }
+<span class="lineNum">     154 </span>                :            : # endif
+<span class="lineNum">     155 </span>                :            : #else
+<span class="lineNum">     156 </span>                :            :   /* The configuration did not find sufficient information.  Give up about
+<span class="lineNum">     157 </span>                :            :      the signaling NaNs, handle only the quiet NaNs.  */
+<span class="lineNum">     158 </span>                :            :   if (x == x)
+<span class="lineNum">     159 </span>                :            :     {
+<span class="lineNum">     160 </span>                :            : # if defined USE_LONG_DOUBLE &amp;&amp; ((defined __ia64 &amp;&amp; LDBL_MANT_DIG == 64) || (defined __x86_64__ || defined __amd64__) || (defined __i386 || defined __i386__ || defined _I386 || defined _M_IX86 || defined _X86_)) &amp;&amp; !HAVE_SAME_LONG_DOUBLE_AS_DOUBLE
+<span class="lineNum">     161 </span>                :            :       /* Detect any special bit patterns that pass ==; see comment above.  */
+<span class="lineNum">     162 </span>                :            :       memory_double m1;
+<span class="lineNum">     163 </span>                :            :       memory_double m2;
+<span class="lineNum">     164 </span>                :            : 
+<span class="lineNum">     165 </span>                :            :       memset (&amp;m1.value, 0, SIZE);
+<span class="lineNum">     166 </span>                :            :       memset (&amp;m2.value, 0, SIZE);
+<span class="lineNum">     167 </span>                :            :       m1.value = x;
+<span class="lineNum">     168 </span>                :            :       m2.value = x + (x ? 0.0L : -0.0L);
+<span class="lineNum">     169 </span>                :            :       if (memcmp (&amp;m1.value, &amp;m2.value, SIZE) != 0)
+<span class="lineNum">     170 </span>                :            :         return 1;
+<span class="lineNum">     171 </span>                :            : # endif
+<span class="lineNum">     172 </span>                :            :       return 0;
+<span class="lineNum">     173 </span>                :            :     }
+<span class="lineNum">     174 </span>                :            :   else
+<span class="lineNum">     175 </span>                :            :     return 1;
+<span class="lineNum">     176 </span>                :            : #endif
+<span class="lineNum">     177 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

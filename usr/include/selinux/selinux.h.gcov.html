@@ -1,0 +1,670 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - unnamed - /usr/include/selinux/selinux.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">usr/include/selinux</a> - selinux.h<span style="font-size: 80%;"> (source / <a href="selinux.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">unnamed</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">66.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2011-12-11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">66.7 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : #ifndef _SELINUX_H_</a>
+<span class="lineNum">       2 </span>                :            : #define _SELINUX_H_
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">       5 </span>                :            : #include &lt;stdarg.h&gt;
+<span class="lineNum">       6 </span>                :            : 
+<span class="lineNum">       7 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">       8 </span>                :            : extern &quot;C&quot; {
+<span class="lineNum">       9 </span>                :            : #endif
+<span class="lineNum">      10 </span>                :            : 
+<span class="lineNum">      11 </span>                :            : /* Return 1 if we are running on a SELinux kernel, or 0 if not or -1 if we get an error. */
+<span class="lineNum">      12 </span>                :            : extern int is_selinux_enabled(void);
+<span class="lineNum">      13 </span>                :            : /* Return 1 if we are running on a SELinux MLS kernel, or 0 otherwise. */
+<span class="lineNum">      14 </span>                :            : extern int is_selinux_mls_enabled(void);
+<span class="lineNum">      15 </span>                :            : 
+<span class="lineNum">      16 </span>                :            : typedef char *security_context_t;
+<span class="lineNum">      17 </span>                :            : 
+<span class="lineNum">      18 </span>                :            : /* Free the memory allocated for a context by any of the below get* calls. */
+<span class="lineNum">      19 </span>                :            : extern void freecon(security_context_t con);
+<span class="lineNum">      20 </span>                :            : 
+<span class="lineNum">      21 </span>                :            : /* Free the memory allocated for a context array by security_compute_user. */
+<span class="lineNum">      22 </span>                :            : extern void freeconary(security_context_t * con);
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :            : /* Wrappers for the /proc/pid/attr API. */
+<span class="lineNum">      25 </span>                :            : 
+<span class="lineNum">      26 </span>                :            : /* Get current context, and set *con to refer to it.
+<span class="lineNum">      27 </span>                :            :    Caller must free via freecon. */
+<span class="lineNum">      28 </span>                :            : extern int getcon(security_context_t * con);
+<span class="lineNum">      29 </span>                :            : extern int getcon_raw(security_context_t * con);
+<span class="lineNum">      30 </span>                :            : 
+<span class="lineNum">      31 </span>                :            : /* Set the current security context to con.  
+<span class="lineNum">      32 </span>                :            :    Note that use of this function requires that the entire application
+<span class="lineNum">      33 </span>                :            :    be trusted to maintain any desired separation between the old and new 
+<span class="lineNum">      34 </span>                :            :    security contexts, unlike exec-based transitions performed via setexeccon.  
+<span class="lineNum">      35 </span>                :            :    When possible, decompose your application and use setexeccon()+execve() 
+<span class="lineNum">      36 </span>                :            :    instead. Note that the application may lose access to its open descriptors
+<span class="lineNum">      37 </span>                :            :    as a result of a setcon() unless policy allows it to use descriptors opened
+<span class="lineNum">      38 </span>                :            :    by the old context. */
+<span class="lineNum">      39 </span>                :            : extern int setcon(const security_context_t con);
+<span class="lineNum">      40 </span>                :            : extern int setcon_raw(const security_context_t con);
+<span class="lineNum">      41 </span>                :            : 
+<span class="lineNum">      42 </span>                :            : /* Get context of process identified by pid, and 
+<span class="lineNum">      43 </span>                :            :    set *con to refer to it.  Caller must free via freecon. */
+<span class="lineNum">      44 </span>                :            : extern int getpidcon(pid_t pid, security_context_t * con);
+<span class="lineNum">      45 </span>                :            : extern int getpidcon_raw(pid_t pid, security_context_t * con);
+<span class="lineNum">      46 </span>                :            : 
+<span class="lineNum">      47 </span>                :            : /* Get previous context (prior to last exec), and set *con to refer to it.
+<span class="lineNum">      48 </span>                :            :    Caller must free via freecon. */
+<span class="lineNum">      49 </span>                :            : extern int getprevcon(security_context_t * con);
+<span class="lineNum">      50 </span>                :            : extern int getprevcon_raw(security_context_t * con);
+<span class="lineNum">      51 </span>                :            : 
+<span class="lineNum">      52 </span>                :            : /* Get exec context, and set *con to refer to it.
+<span class="lineNum">      53 </span>                :            :    Sets *con to NULL if no exec context has been set, i.e. using default.
+<span class="lineNum">      54 </span>                :            :    If non-NULL, caller must free via freecon. */
+<span class="lineNum">      55 </span>                :            : extern int getexeccon(security_context_t * con);
+<span class="lineNum">      56 </span>                :            : extern int getexeccon_raw(security_context_t * con);
+<span class="lineNum">      57 </span>                :            : 
+<span class="lineNum">      58 </span>                :            : /* Set exec security context for the next execve. 
+<span class="lineNum">      59 </span>                :            :    Call with NULL if you want to reset to the default. */
+<span class="lineNum">      60 </span>                :            : extern int setexeccon(const security_context_t con);
+<span class="lineNum">      61 </span>                :            : extern int setexeccon_raw(const security_context_t con);
+<span class="lineNum">      62 </span>                :            : 
+<span class="lineNum">      63 </span>                :            : /* Get fscreate context, and set *con to refer to it.
+<span class="lineNum">      64 </span>                :            :    Sets *con to NULL if no fs create context has been set, i.e. using default.
+<span class="lineNum">      65 </span>                :            :    If non-NULL, caller must free via freecon. */
+<span class="lineNum">      66 </span>                :            : extern int getfscreatecon(security_context_t * con);
+<span class="lineNum">      67 </span>                :            : extern int getfscreatecon_raw(security_context_t * con);
+<span class="lineNum">      68 </span>                :            : 
+<span class="lineNum">      69 </span>                :            : /* Set the fscreate security context for subsequent file creations.
+<span class="lineNum">      70 </span>                :            :    Call with NULL if you want to reset to the default. */
+<span class="lineNum">      71 </span>                :            : extern int setfscreatecon(const security_context_t context);
+<span class="lineNum">      72 </span>                :            : extern int setfscreatecon_raw(const security_context_t context);
+<span class="lineNum">      73 </span>                :            : 
+<span class="lineNum">      74 </span>                :            : /* Get keycreate context, and set *con to refer to it.
+<span class="lineNum">      75 </span>                :            :    Sets *con to NULL if no key create context has been set, i.e. using default.
+<span class="lineNum">      76 </span>                :            :    If non-NULL, caller must free via freecon. */
+<span class="lineNum">      77 </span>                :            : extern int getkeycreatecon(security_context_t * con);
+<span class="lineNum">      78 </span>                :            : extern int getkeycreatecon_raw(security_context_t * con);
+<span class="lineNum">      79 </span>                :            : 
+<span class="lineNum">      80 </span>                :            : /* Set the keycreate security context for subsequent key creations.
+<span class="lineNum">      81 </span>                :            :    Call with NULL if you want to reset to the default. */
+<span class="lineNum">      82 </span>                :            : extern int setkeycreatecon(const security_context_t context);
+<span class="lineNum">      83 </span>                :            : extern int setkeycreatecon_raw(const security_context_t context);
+<span class="lineNum">      84 </span>                :            : 
+<span class="lineNum">      85 </span>                :            : /* Get sockcreate context, and set *con to refer to it.
+<span class="lineNum">      86 </span>                :            :    Sets *con to NULL if no socket create context has been set, i.e. using default.
+<span class="lineNum">      87 </span>                :            :    If non-NULL, caller must free via freecon. */
+<span class="lineNum">      88 </span>                :            : extern int getsockcreatecon(security_context_t * con);
+<span class="lineNum">      89 </span>                :            : extern int getsockcreatecon_raw(security_context_t * con);
+<span class="lineNum">      90 </span>                :            : 
+<span class="lineNum">      91 </span>                :            : /* Set the sockcreate security context for subsequent socket creations.
+<span class="lineNum">      92 </span>                :            :    Call with NULL if you want to reset to the default. */
+<span class="lineNum">      93 </span>                :            : extern int setsockcreatecon(const security_context_t context);
+<span class="lineNum">      94 </span>                :            : extern int setsockcreatecon_raw(const security_context_t context);
+<span class="lineNum">      95 </span>                :            : 
+<span class="lineNum">      96 </span>                :            : /* Wrappers for the xattr API. */
+<span class="lineNum">      97 </span>                :            : 
+<span class="lineNum">      98 </span>                :            : /* Get file context, and set *con to refer to it.
+<span class="lineNum">      99 </span>                :            :    Caller must free via freecon. */
+<span class="lineNum">     100 </span>                :<span class="lineCov">         58 : extern int getfilecon(const char *path, security_context_t * con);</span>
+<span class="lineNum">     101 </span>                :            : extern int getfilecon_raw(const char *path, security_context_t * con);
+<span class="lineNum">     102 </span>                :<span class="lineCov">     142865 : extern int lgetfilecon(const char *path, security_context_t * con);</span>
+<span class="lineNum">     103 </span>                :            : extern int lgetfilecon_raw(const char *path, security_context_t * con);
+<span class="lineNum">     104 </span>                :<span class="lineNoCov">          0 : extern int fgetfilecon(int fd, security_context_t * con);</span>
+<span class="lineNum">     105 </span>                :            : extern int fgetfilecon_raw(int fd, security_context_t * con);
+<span class="lineNum">     106 </span>                :            : 
+<span class="lineNum">     107 </span>                :            : /* Set file context */
+<span class="lineNum">     108 </span>                :            : extern int setfilecon(const char *path, security_context_t con);
+<span class="lineNum">     109 </span>                :            : extern int setfilecon_raw(const char *path, security_context_t con);
+<span class="lineNum">     110 </span>                :            : extern int lsetfilecon(const char *path, security_context_t con);
+<span class="lineNum">     111 </span>                :            : extern int lsetfilecon_raw(const char *path, security_context_t con);
+<span class="lineNum">     112 </span>                :            : extern int fsetfilecon(int fd, security_context_t con);
+<span class="lineNum">     113 </span>                :            : extern int fsetfilecon_raw(int fd, security_context_t con);
+<span class="lineNum">     114 </span>                :            : 
+<span class="lineNum">     115 </span>                :            : /* Wrappers for the socket API */
+<span class="lineNum">     116 </span>                :            : 
+<span class="lineNum">     117 </span>                :            : /* Get context of peer socket, and set *con to refer to it.
+<span class="lineNum">     118 </span>                :            :    Caller must free via freecon. */
+<span class="lineNum">     119 </span>                :            : extern int getpeercon(int fd, security_context_t * con);
+<span class="lineNum">     120 </span>                :            : extern int getpeercon_raw(int fd, security_context_t * con);
+<span class="lineNum">     121 </span>                :            : 
+<span class="lineNum">     122 </span>                :            : /* Wrappers for the selinuxfs (policy) API. */
+<span class="lineNum">     123 </span>                :            : 
+<span class="lineNum">     124 </span>                :            : typedef unsigned int access_vector_t;
+<span class="lineNum">     125 </span>                :            : typedef unsigned short security_class_t;
+<span class="lineNum">     126 </span>                :            : 
+<span class="lineNum">     127 </span>                :            : struct av_decision {
+<span class="lineNum">     128 </span>                :            :         access_vector_t allowed;
+<span class="lineNum">     129 </span>                :            :         access_vector_t decided;
+<span class="lineNum">     130 </span>                :            :         access_vector_t auditallow;
+<span class="lineNum">     131 </span>                :            :         access_vector_t auditdeny;
+<span class="lineNum">     132 </span>                :            :         unsigned int seqno;
+<span class="lineNum">     133 </span>                :            :         unsigned int flags;
+<span class="lineNum">     134 </span>                :            : };
+<span class="lineNum">     135 </span>                :            : 
+<span class="lineNum">     136 </span>                :            : /* Definitions of av_decision.flags */
+<span class="lineNum">     137 </span>                :            : #define SELINUX_AVD_FLAGS_PERMISSIVE    0x0001
+<span class="lineNum">     138 </span>                :            : 
+<span class="lineNum">     139 </span>                :            : /* Structure for passing options, used by AVC and label subsystems */
+<span class="lineNum">     140 </span>                :            : struct selinux_opt {
+<span class="lineNum">     141 </span>                :            :         int type;
+<span class="lineNum">     142 </span>                :            :         const char *value;
+<span class="lineNum">     143 </span>                :            : };
+<span class="lineNum">     144 </span>                :            : 
+<span class="lineNum">     145 </span>                :            : /* Callback facilities */
+<span class="lineNum">     146 </span>                :            : union selinux_callback {
+<span class="lineNum">     147 </span>                :            :         /* log the printf-style format and arguments,
+<span class="lineNum">     148 </span>                :            :            with the type code indicating the type of message */
+<span class="lineNum">     149 </span>                :            :         int 
+<span class="lineNum">     150 </span>                :            : #ifdef __GNUC__
+<span class="lineNum">     151 </span>                :            : __attribute__ ((format(printf, 2, 3)))
+<span class="lineNum">     152 </span>                :            : #endif
+<span class="lineNum">     153 </span>                :            :         (*func_log) (int type, const char *fmt, ...);
+<span class="lineNum">     154 </span>                :            :         /* store a string representation of auditdata (corresponding
+<span class="lineNum">     155 </span>                :            :            to the given security class) into msgbuf. */
+<span class="lineNum">     156 </span>                :            :         int (*func_audit) (void *auditdata, security_class_t cls,
+<span class="lineNum">     157 </span>                :            :                            char *msgbuf, size_t msgbufsize);
+<span class="lineNum">     158 </span>                :            :         /* validate the supplied context, modifying if necessary */
+<span class="lineNum">     159 </span>                :            :         int (*func_validate) (security_context_t *ctx);
+<span class="lineNum">     160 </span>                :            :         /* netlink callback for setenforce message */
+<span class="lineNum">     161 </span>                :            :         int (*func_setenforce) (int enforcing);
+<span class="lineNum">     162 </span>                :            :         /* netlink callback for policyload message */
+<span class="lineNum">     163 </span>                :            :         int (*func_policyload) (int seqno);
+<span class="lineNum">     164 </span>                :            : };
+<span class="lineNum">     165 </span>                :            : 
+<span class="lineNum">     166 </span>                :            : #define SELINUX_CB_LOG          0
+<span class="lineNum">     167 </span>                :            : #define SELINUX_CB_AUDIT        1
+<span class="lineNum">     168 </span>                :            : #define SELINUX_CB_VALIDATE     2
+<span class="lineNum">     169 </span>                :            : #define SELINUX_CB_SETENFORCE   3
+<span class="lineNum">     170 </span>                :            : #define SELINUX_CB_POLICYLOAD   4
+<span class="lineNum">     171 </span>                :            : 
+<span class="lineNum">     172 </span>                :            : extern union selinux_callback selinux_get_callback(int type);
+<span class="lineNum">     173 </span>                :            : extern void selinux_set_callback(int type, union selinux_callback cb);
+<span class="lineNum">     174 </span>                :            : 
+<span class="lineNum">     175 </span>                :            :         /* Logging type codes, passed to the logging callback */
+<span class="lineNum">     176 </span>                :            : #define SELINUX_ERROR           0
+<span class="lineNum">     177 </span>                :            : #define SELINUX_WARNING         1
+<span class="lineNum">     178 </span>                :            : #define SELINUX_INFO            2
+<span class="lineNum">     179 </span>                :            : #define SELINUX_AVC             3
+<span class="lineNum">     180 </span>                :            : 
+<span class="lineNum">     181 </span>                :            : /* Compute an access decision. */
+<span class="lineNum">     182 </span>                :            : extern int security_compute_av(const security_context_t scon,
+<span class="lineNum">     183 </span>                :            :                                const security_context_t tcon,
+<span class="lineNum">     184 </span>                :            :                                security_class_t tclass,
+<span class="lineNum">     185 </span>                :            :                                access_vector_t requested,
+<span class="lineNum">     186 </span>                :            :                                struct av_decision *avd);
+<span class="lineNum">     187 </span>                :            : extern int security_compute_av_raw(const security_context_t scon,
+<span class="lineNum">     188 </span>                :            :                                    const security_context_t tcon,
+<span class="lineNum">     189 </span>                :            :                                    security_class_t tclass,
+<span class="lineNum">     190 </span>                :            :                                    access_vector_t requested,
+<span class="lineNum">     191 </span>                :            :                                    struct av_decision *avd);
+<span class="lineNum">     192 </span>                :            : 
+<span class="lineNum">     193 </span>                :            : extern int security_compute_av_flags(const security_context_t scon,
+<span class="lineNum">     194 </span>                :            :                                      const security_context_t tcon,
+<span class="lineNum">     195 </span>                :            :                                      security_class_t tclass,
+<span class="lineNum">     196 </span>                :            :                                      access_vector_t requested,
+<span class="lineNum">     197 </span>                :            :                                      struct av_decision *avd);
+<span class="lineNum">     198 </span>                :            : extern int security_compute_av_flags_raw(const security_context_t scon,
+<span class="lineNum">     199 </span>                :            :                                          const security_context_t tcon,
+<span class="lineNum">     200 </span>                :            :                                          security_class_t tclass,
+<span class="lineNum">     201 </span>                :            :                                          access_vector_t requested,
+<span class="lineNum">     202 </span>                :            :                                          struct av_decision *avd);
+<span class="lineNum">     203 </span>                :            : 
+<span class="lineNum">     204 </span>                :            : /* Compute a labeling decision and set *newcon to refer to it.
+<span class="lineNum">     205 </span>                :            :    Caller must free via freecon. */
+<span class="lineNum">     206 </span>                :            : extern int security_compute_create(const security_context_t scon,
+<span class="lineNum">     207 </span>                :            :                                    const security_context_t tcon,
+<span class="lineNum">     208 </span>                :            :                                    security_class_t tclass,
+<span class="lineNum">     209 </span>                :            :                                    security_context_t * newcon);
+<span class="lineNum">     210 </span>                :            : extern int security_compute_create_raw(const security_context_t scon,
+<span class="lineNum">     211 </span>                :            :                                        const security_context_t tcon,
+<span class="lineNum">     212 </span>                :            :                                        security_class_t tclass,
+<span class="lineNum">     213 </span>                :            :                                        security_context_t * newcon);
+<span class="lineNum">     214 </span>                :            : 
+<span class="lineNum">     215 </span>                :            : /* Compute a relabeling decision and set *newcon to refer to it.
+<span class="lineNum">     216 </span>                :            :    Caller must free via freecon. */
+<span class="lineNum">     217 </span>                :            : extern int security_compute_relabel(const security_context_t scon,
+<span class="lineNum">     218 </span>                :            :                                     const security_context_t tcon,
+<span class="lineNum">     219 </span>                :            :                                     security_class_t tclass,
+<span class="lineNum">     220 </span>                :            :                                     security_context_t * newcon);
+<span class="lineNum">     221 </span>                :            : extern int security_compute_relabel_raw(const security_context_t scon,
+<span class="lineNum">     222 </span>                :            :                                         const security_context_t tcon,
+<span class="lineNum">     223 </span>                :            :                                         security_class_t tclass,
+<span class="lineNum">     224 </span>                :            :                                         security_context_t * newcon);
+<span class="lineNum">     225 </span>                :            : 
+<span class="lineNum">     226 </span>                :            : /* Compute a polyinstantiation member decision and set *newcon to refer to it.
+<span class="lineNum">     227 </span>                :            :    Caller must free via freecon. */
+<span class="lineNum">     228 </span>                :            : extern int security_compute_member(const security_context_t scon,
+<span class="lineNum">     229 </span>                :            :                                    const security_context_t tcon,
+<span class="lineNum">     230 </span>                :            :                                    security_class_t tclass,
+<span class="lineNum">     231 </span>                :            :                                    security_context_t * newcon);
+<span class="lineNum">     232 </span>                :            : extern int security_compute_member_raw(const security_context_t scon,
+<span class="lineNum">     233 </span>                :            :                                        const security_context_t tcon,
+<span class="lineNum">     234 </span>                :            :                                        security_class_t tclass,
+<span class="lineNum">     235 </span>                :            :                                        security_context_t * newcon);
+<span class="lineNum">     236 </span>                :            : 
+<span class="lineNum">     237 </span>                :            : /* Compute the set of reachable user contexts and set *con to refer to 
+<span class="lineNum">     238 </span>                :            :    the NULL-terminated array of contexts.  Caller must free via freeconary. */
+<span class="lineNum">     239 </span>                :            : extern int security_compute_user(const security_context_t scon,
+<span class="lineNum">     240 </span>                :            :                                  const char *username,
+<span class="lineNum">     241 </span>                :            :                                  security_context_t ** con);
+<span class="lineNum">     242 </span>                :            : extern int security_compute_user_raw(const security_context_t scon,
+<span class="lineNum">     243 </span>                :            :                                      const char *username,
+<span class="lineNum">     244 </span>                :            :                                      security_context_t ** con);
+<span class="lineNum">     245 </span>                :            : 
+<span class="lineNum">     246 </span>                :            : /* Load a policy configuration. */
+<span class="lineNum">     247 </span>                :            : extern int security_load_policy(void *data, size_t len);
+<span class="lineNum">     248 </span>                :            : 
+<span class="lineNum">     249 </span>                :            : /* Get the context of an initial kernel security identifier by name.  
+<span class="lineNum">     250 </span>                :            :    Caller must free via freecon */
+<span class="lineNum">     251 </span>                :            : extern int security_get_initial_context(const char *name,
+<span class="lineNum">     252 </span>                :            :                                         security_context_t * con);
+<span class="lineNum">     253 </span>                :            : extern int security_get_initial_context_raw(const char *name,
+<span class="lineNum">     254 </span>                :            :                                             security_context_t * con);
+<span class="lineNum">     255 </span>                :            : 
+<span class="lineNum">     256 </span>                :            : /*
+<span class="lineNum">     257 </span>                :            :  * Make a policy image and load it.
+<span class="lineNum">     258 </span>                :            :  * This function provides a higher level interface for loading policy
+<span class="lineNum">     259 </span>                :            :  * than security_load_policy, internally determining the right policy
+<span class="lineNum">     260 </span>                :            :  * version, locating and opening the policy file, mapping it into memory,
+<span class="lineNum">     261 </span>                :            :  * manipulating it as needed for current boolean settings and/or local 
+<span class="lineNum">     262 </span>                :            :  * definitions, and then calling security_load_policy to load it.
+<span class="lineNum">     263 </span>                :            :  *
+<span class="lineNum">     264 </span>                :            :  * 'preservebools' is a boolean flag indicating whether current 
+<span class="lineNum">     265 </span>                :            :  * policy boolean values should be preserved into the new policy (if 1) 
+<span class="lineNum">     266 </span>                :            :  * or reset to the saved policy settings (if 0).  The former case is the
+<span class="lineNum">     267 </span>                :            :  * default for policy reloads, while the latter case is an option for policy
+<span class="lineNum">     268 </span>                :            :  * reloads but is primarily for the initial policy load.
+<span class="lineNum">     269 </span>                :            :  */
+<span class="lineNum">     270 </span>                :            : extern int selinux_mkload_policy(int preservebools);
+<span class="lineNum">     271 </span>                :            : 
+<span class="lineNum">     272 </span>                :            : /* 
+<span class="lineNum">     273 </span>                :            :  * Perform the initial policy load.
+<span class="lineNum">     274 </span>                :            :  * This function determines the desired enforcing mode, sets the
+<span class="lineNum">     275 </span>                :            :  * the *enforce argument accordingly for the caller to use, sets the 
+<span class="lineNum">     276 </span>                :            :  * SELinux kernel enforcing status to match it, and loads the policy.
+<span class="lineNum">     277 </span>                :            :  * It also internally handles the initial selinuxfs mount required to
+<span class="lineNum">     278 </span>                :            :  * perform these actions.
+<span class="lineNum">     279 </span>                :            :  *
+<span class="lineNum">     280 </span>                :            :  * The function returns 0 if everything including the policy load succeeds.
+<span class="lineNum">     281 </span>                :            :  * In this case, init is expected to re-exec itself in order to transition
+<span class="lineNum">     282 </span>                :            :  * to the proper security context.
+<span class="lineNum">     283 </span>                :            :  * Otherwise, the function returns -1, and init must check *enforce to
+<span class="lineNum">     284 </span>                :            :  * determine how to proceed.  If enforcing (*enforce &gt; 0), then init should
+<span class="lineNum">     285 </span>                :            :  * halt the system.  Otherwise, init may proceed normally without a re-exec.
+<span class="lineNum">     286 </span>                :            :  */
+<span class="lineNum">     287 </span>                :            : extern int selinux_init_load_policy(int *enforce);
+<span class="lineNum">     288 </span>                :            : 
+<span class="lineNum">     289 </span>                :            : /* Translate boolean strict to name value pair. */
+<span class="lineNum">     290 </span>                :            : typedef struct {
+<span class="lineNum">     291 </span>                :            :         char *name;
+<span class="lineNum">     292 </span>                :            :         int value;
+<span class="lineNum">     293 </span>                :            : } SELboolean;
+<span class="lineNum">     294 </span>                :            : /* save a list of booleans in a single transaction.  */
+<span class="lineNum">     295 </span>                :            : extern int security_set_boolean_list(size_t boolcnt,
+<span class="lineNum">     296 </span>                :            :                                      SELboolean * boollist, int permanent);
+<span class="lineNum">     297 </span>                :            : 
+<span class="lineNum">     298 </span>                :            : /* Load policy boolean settings.
+<span class="lineNum">     299 </span>                :            :    Path may be NULL, in which case the booleans are loaded from
+<span class="lineNum">     300 </span>                :            :    the active policy boolean configuration file. */
+<span class="lineNum">     301 </span>                :            : extern int security_load_booleans(char *path);
+<span class="lineNum">     302 </span>                :            : 
+<span class="lineNum">     303 </span>                :            : /* Check the validity of a security context. */
+<span class="lineNum">     304 </span>                :            : extern int security_check_context(const security_context_t con);
+<span class="lineNum">     305 </span>                :            : extern int security_check_context_raw(const security_context_t con);
+<span class="lineNum">     306 </span>                :            : 
+<span class="lineNum">     307 </span>                :            : /* Canonicalize a security context. */
+<span class="lineNum">     308 </span>                :            : extern int security_canonicalize_context(const security_context_t con,
+<span class="lineNum">     309 </span>                :            :                                          security_context_t * canoncon);
+<span class="lineNum">     310 </span>                :            : extern int security_canonicalize_context_raw(const security_context_t con,
+<span class="lineNum">     311 </span>                :            :                                              security_context_t * canoncon);
+<span class="lineNum">     312 </span>                :            : 
+<span class="lineNum">     313 </span>                :            : /* Get the enforce flag value. */
+<span class="lineNum">     314 </span>                :            : extern int security_getenforce(void);
+<span class="lineNum">     315 </span>                :            : 
+<span class="lineNum">     316 </span>                :            : /* Set the enforce flag value. */
+<span class="lineNum">     317 </span>                :            : extern int security_setenforce(int value);
+<span class="lineNum">     318 </span>                :            : 
+<span class="lineNum">     319 </span>                :            : /* Get the behavior for undefined classes/permissions */
+<span class="lineNum">     320 </span>                :            : extern int security_deny_unknown(void);
+<span class="lineNum">     321 </span>                :            : 
+<span class="lineNum">     322 </span>                :            : /* Disable SELinux at runtime (must be done prior to initial policy load). */
+<span class="lineNum">     323 </span>                :            : extern int security_disable(void);
+<span class="lineNum">     324 </span>                :            : 
+<span class="lineNum">     325 </span>                :            : /* Get the policy version number. */
+<span class="lineNum">     326 </span>                :            : extern int security_policyvers(void);
+<span class="lineNum">     327 </span>                :            : 
+<span class="lineNum">     328 </span>                :            : /* Get the boolean names */
+<span class="lineNum">     329 </span>                :            : extern int security_get_boolean_names(char ***names, int *len);
+<span class="lineNum">     330 </span>                :            : 
+<span class="lineNum">     331 </span>                :            : /* Get the pending value for the boolean */
+<span class="lineNum">     332 </span>                :            : extern int security_get_boolean_pending(const char *name);
+<span class="lineNum">     333 </span>                :            : 
+<span class="lineNum">     334 </span>                :            : /* Get the active value for the boolean */
+<span class="lineNum">     335 </span>                :            : extern int security_get_boolean_active(const char *name);
+<span class="lineNum">     336 </span>                :            : 
+<span class="lineNum">     337 </span>                :            : /* Set the pending value for the boolean */
+<span class="lineNum">     338 </span>                :            : extern int security_set_boolean(const char *name, int value);
+<span class="lineNum">     339 </span>                :            : 
+<span class="lineNum">     340 </span>                :            : /* Commit the pending values for the booleans */
+<span class="lineNum">     341 </span>                :            : extern int security_commit_booleans(void);
+<span class="lineNum">     342 </span>                :            : 
+<span class="lineNum">     343 </span>                :            : /* Userspace class mapping support */
+<span class="lineNum">     344 </span>                :            : struct security_class_mapping {
+<span class="lineNum">     345 </span>                :            :         const char *name;
+<span class="lineNum">     346 </span>                :            :         const char *perms[sizeof(access_vector_t) * 8 + 1];
+<span class="lineNum">     347 </span>                :            : };
+<span class="lineNum">     348 </span>                :            : 
+<span class="lineNum">     349 </span>                :            : extern int selinux_set_mapping(struct security_class_mapping *map);
+<span class="lineNum">     350 </span>                :            : 
+<span class="lineNum">     351 </span>                :            : /* Common helpers */
+<span class="lineNum">     352 </span>                :            : 
+<span class="lineNum">     353 </span>                :            : /* Convert between security class values and string names */
+<span class="lineNum">     354 </span>                :            : extern security_class_t string_to_security_class(const char *name);
+<span class="lineNum">     355 </span>                :            : extern const char *security_class_to_string(security_class_t cls);
+<span class="lineNum">     356 </span>                :            : 
+<span class="lineNum">     357 </span>                :            : /* Convert between individual access vector permissions and string names */
+<span class="lineNum">     358 </span>                :            : extern const char *security_av_perm_to_string(security_class_t tclass,
+<span class="lineNum">     359 </span>                :            :                                               access_vector_t perm);
+<span class="lineNum">     360 </span>                :            : extern access_vector_t string_to_av_perm(security_class_t tclass,
+<span class="lineNum">     361 </span>                :            :                                          const char *name);
+<span class="lineNum">     362 </span>                :            : 
+<span class="lineNum">     363 </span>                :            : /* Returns an access vector in a string representation.  User must free the
+<span class="lineNum">     364 </span>                :            :  * returned string via free(). */
+<span class="lineNum">     365 </span>                :            : extern int security_av_string(security_class_t tclass,
+<span class="lineNum">     366 </span>                :            :                               access_vector_t av, char **result);
+<span class="lineNum">     367 </span>                :            : 
+<span class="lineNum">     368 </span>                :            : /* Display an access vector in a string representation. */
+<span class="lineNum">     369 </span>                :            : extern void print_access_vector(security_class_t tclass, access_vector_t av);
+<span class="lineNum">     370 </span>                :            : 
+<span class="lineNum">     371 </span>                :            : /* Set the function used by matchpathcon_init when displaying
+<span class="lineNum">     372 </span>                :            :    errors about the file_contexts configuration.  If not set,
+<span class="lineNum">     373 </span>                :            :    then this defaults to fprintf(stderr, fmt, ...). */
+<span class="lineNum">     374 </span>                :            : extern void set_matchpathcon_printf(void (*f) (const char *fmt, ...));
+<span class="lineNum">     375 </span>                :            : 
+<span class="lineNum">     376 </span>                :            : /* Set the function used by matchpathcon_init when checking the
+<span class="lineNum">     377 </span>                :            :    validity of a context in the file contexts configuration.  If not set,
+<span class="lineNum">     378 </span>                :            :    then this defaults to a test based on security_check_context().  
+<span class="lineNum">     379 </span>                :            :    The function is also responsible for reporting any such error, and
+<span class="lineNum">     380 </span>                :            :    may include the 'path' and 'lineno' in such error messages. */
+<span class="lineNum">     381 </span>                :            : extern void set_matchpathcon_invalidcon(int (*f) (const char *path,
+<span class="lineNum">     382 </span>                :            :                                                   unsigned lineno,
+<span class="lineNum">     383 </span>                :            :                                                   char *context));
+<span class="lineNum">     384 </span>                :            : 
+<span class="lineNum">     385 </span>                :            : /* Same as above, but also allows canonicalization of the context,
+<span class="lineNum">     386 </span>                :            :    by changing *context to refer to the canonical form.  If not set,
+<span class="lineNum">     387 </span>                :            :    and invalidcon is also not set, then this defaults to calling
+<span class="lineNum">     388 </span>                :            :    security_canonicalize_context(). */
+<span class="lineNum">     389 </span>                :            : extern void set_matchpathcon_canoncon(int (*f) (const char *path,
+<span class="lineNum">     390 </span>                :            :                                                 unsigned lineno,
+<span class="lineNum">     391 </span>                :            :                                                 char **context));
+<span class="lineNum">     392 </span>                :            : 
+<span class="lineNum">     393 </span>                :            : /* Set flags controlling operation of matchpathcon_init or matchpathcon. */
+<span class="lineNum">     394 </span>                :            : #define MATCHPATHCON_BASEONLY 1 /* Only process the base file_contexts file. */
+<span class="lineNum">     395 </span>                :            : #define MATCHPATHCON_NOTRANS  2 /* Do not perform any context translation. */
+<span class="lineNum">     396 </span>                :            : #define MATCHPATHCON_VALIDATE 4 /* Validate/canonicalize contexts at init time. */
+<span class="lineNum">     397 </span>                :            : extern void set_matchpathcon_flags(unsigned int flags);
+<span class="lineNum">     398 </span>                :            : 
+<span class="lineNum">     399 </span>                :            : /* Load the file contexts configuration specified by 'path'
+<span class="lineNum">     400 </span>                :            :    into memory for use by subsequent matchpathcon calls.  
+<span class="lineNum">     401 </span>                :            :    If 'path' is NULL, then load the active file contexts configuration,
+<span class="lineNum">     402 </span>                :            :    i.e. the path returned by selinux_file_context_path().
+<span class="lineNum">     403 </span>                :            :    Unless the MATCHPATHCON_BASEONLY flag has been set, this
+<span class="lineNum">     404 </span>                :            :    function also checks for a 'path'.homedirs file and 
+<span class="lineNum">     405 </span>                :            :    a 'path'.local file and loads additional specifications 
+<span class="lineNum">     406 </span>                :            :    from them if present. */
+<span class="lineNum">     407 </span>                :            : extern int matchpathcon_init(const char *path);
+<span class="lineNum">     408 </span>                :            : 
+<span class="lineNum">     409 </span>                :            : /* Same as matchpathcon_init, but only load entries with
+<span class="lineNum">     410 </span>                :            :    regexes that have stems that are prefixes of 'prefix'. */
+<span class="lineNum">     411 </span>                :            : extern int matchpathcon_init_prefix(const char *path, const char *prefix);
+<span class="lineNum">     412 </span>                :            : 
+<span class="lineNum">     413 </span>                :            : /* Free the memory allocated by matchpathcon_init. */
+<span class="lineNum">     414 </span>                :            : extern void matchpathcon_fini(void);
+<span class="lineNum">     415 </span>                :            : 
+<span class="lineNum">     416 </span>                :            : /* Match the specified pathname and mode against the file contexts
+<span class="lineNum">     417 </span>                :            :    configuration and set *con to refer to the resulting context.
+<span class="lineNum">     418 </span>                :            :    'mode' can be 0 to disable mode matching.
+<span class="lineNum">     419 </span>                :            :    Caller must free via freecon.
+<span class="lineNum">     420 </span>                :            :    If matchpathcon_init has not already been called, then this function
+<span class="lineNum">     421 </span>                :            :    will call it upon its first invocation with a NULL path. */
+<span class="lineNum">     422 </span>                :            : extern int matchpathcon(const char *path,
+<span class="lineNum">     423 </span>                :            :                         mode_t mode, security_context_t * con);
+<span class="lineNum">     424 </span>                :            : 
+<span class="lineNum">     425 </span>                :            : /* Same as above, but return a specification index for 
+<span class="lineNum">     426 </span>                :            :    later use in a matchpathcon_filespec_add() call - see below. */
+<span class="lineNum">     427 </span>                :            : extern int matchpathcon_index(const char *path,
+<span class="lineNum">     428 </span>                :            :                               mode_t mode, security_context_t * con);
+<span class="lineNum">     429 </span>                :            : 
+<span class="lineNum">     430 </span>                :            : /* Maintain an association between an inode and a specification index,
+<span class="lineNum">     431 </span>                :            :    and check whether a conflicting specification is already associated
+<span class="lineNum">     432 </span>                :            :    with the same inode (e.g. due to multiple hard links).  If so, then
+<span class="lineNum">     433 </span>                :            :    use the latter of the two specifications based on their order in the 
+<span class="lineNum">     434 </span>                :            :    file contexts configuration.  Return the used specification index. */
+<span class="lineNum">     435 </span>                :            : extern int matchpathcon_filespec_add(ino_t ino, int specind, const char *file);
+<span class="lineNum">     436 </span>                :            : 
+<span class="lineNum">     437 </span>                :            : /* Destroy any inode associations that have been added, e.g. to restart
+<span class="lineNum">     438 </span>                :            :    for a new filesystem. */
+<span class="lineNum">     439 </span>                :            : extern void matchpathcon_filespec_destroy(void);
+<span class="lineNum">     440 </span>                :            : 
+<span class="lineNum">     441 </span>                :            : /* Display statistics on the hash table usage for the associations. */
+<span class="lineNum">     442 </span>                :            : extern void matchpathcon_filespec_eval(void);
+<span class="lineNum">     443 </span>                :            : 
+<span class="lineNum">     444 </span>                :            : /* Check to see whether any specifications had no matches and report them.
+<span class="lineNum">     445 </span>                :            :    The 'str' is used as a prefix for any warning messages. */
+<span class="lineNum">     446 </span>                :            : extern void matchpathcon_checkmatches(char *str);
+<span class="lineNum">     447 </span>                :            : 
+<span class="lineNum">     448 </span>                :            : /* Match the specified media and against the media contexts 
+<span class="lineNum">     449 </span>                :            :    configuration and set *con to refer to the resulting context.
+<span class="lineNum">     450 </span>                :            :    Caller must free con via freecon. */
+<span class="lineNum">     451 </span>                :            : extern int matchmediacon(const char *media, security_context_t * con);
+<span class="lineNum">     452 </span>                :            : 
+<span class="lineNum">     453 </span>                :            : /*
+<span class="lineNum">     454 </span>                :            :   selinux_getenforcemode reads the /etc/selinux/config file and determines 
+<span class="lineNum">     455 </span>                :            :   whether the machine should be started in enforcing (1), permissive (0) or 
+<span class="lineNum">     456 </span>                :            :   disabled (-1) mode.
+<span class="lineNum">     457 </span>                :            :  */
+<span class="lineNum">     458 </span>                :            : extern int selinux_getenforcemode(int *enforce);
+<span class="lineNum">     459 </span>                :            : 
+<span class="lineNum">     460 </span>                :            : /*
+<span class="lineNum">     461 </span>                :            :   selinux_getpolicytype reads the /etc/selinux/config file and determines 
+<span class="lineNum">     462 </span>                :            :   what the default policy for the machine is.  Calling application must 
+<span class="lineNum">     463 </span>                :            :   free policytype.
+<span class="lineNum">     464 </span>                :            :  */
+<span class="lineNum">     465 </span>                :            : extern int selinux_getpolicytype(char **policytype);
+<span class="lineNum">     466 </span>                :            : 
+<span class="lineNum">     467 </span>                :            : /*
+<span class="lineNum">     468 </span>                :            :   selinux_policy_root reads the /etc/selinux/config file and returns 
+<span class="lineNum">     469 </span>                :            :   the directory path under which the compiled policy file and context 
+<span class="lineNum">     470 </span>                :            :   configuration files exist.
+<span class="lineNum">     471 </span>                :            :  */
+<span class="lineNum">     472 </span>                :            : extern const char *selinux_policy_root(void);
+<span class="lineNum">     473 </span>                :            : 
+<span class="lineNum">     474 </span>                :            : /* These functions return the paths to specific files under the 
+<span class="lineNum">     475 </span>                :            :    policy root directory. */
+<span class="lineNum">     476 </span>                :            : extern const char *selinux_binary_policy_path(void);
+<span class="lineNum">     477 </span>                :            : extern const char *selinux_failsafe_context_path(void);
+<span class="lineNum">     478 </span>                :            : extern const char *selinux_removable_context_path(void);
+<span class="lineNum">     479 </span>                :            : extern const char *selinux_default_context_path(void);
+<span class="lineNum">     480 </span>                :            : extern const char *selinux_user_contexts_path(void);
+<span class="lineNum">     481 </span>                :            : extern const char *selinux_file_context_path(void);
+<span class="lineNum">     482 </span>                :            : extern const char *selinux_file_context_homedir_path(void);
+<span class="lineNum">     483 </span>                :            : extern const char *selinux_file_context_local_path(void);
+<span class="lineNum">     484 </span>                :            : extern const char *selinux_file_context_subs_path(void);
+<span class="lineNum">     485 </span>                :            : extern const char *selinux_homedir_context_path(void);
+<span class="lineNum">     486 </span>                :            : extern const char *selinux_media_context_path(void);
+<span class="lineNum">     487 </span>                :            : extern const char *selinux_virtual_domain_context_path(void);
+<span class="lineNum">     488 </span>                :            : extern const char *selinux_virtual_image_context_path(void);
+<span class="lineNum">     489 </span>                :            : extern const char *selinux_x_context_path(void);
+<span class="lineNum">     490 </span>                :            : extern const char *selinux_sepgsql_context_path(void);
+<span class="lineNum">     491 </span>                :            : extern const char *selinux_contexts_path(void);
+<span class="lineNum">     492 </span>                :            : extern const char *selinux_securetty_types_path(void);
+<span class="lineNum">     493 </span>                :            : extern const char *selinux_booleans_path(void);
+<span class="lineNum">     494 </span>                :            : extern const char *selinux_customizable_types_path(void);
+<span class="lineNum">     495 </span>                :            : extern const char *selinux_users_path(void);
+<span class="lineNum">     496 </span>                :            : extern const char *selinux_usersconf_path(void);
+<span class="lineNum">     497 </span>                :            : extern const char *selinux_translations_path(void);
+<span class="lineNum">     498 </span>                :            : extern const char *selinux_colors_path(void);
+<span class="lineNum">     499 </span>                :            : extern const char *selinux_netfilter_context_path(void);
+<span class="lineNum">     500 </span>                :            : extern const char *selinux_path(void);
+<span class="lineNum">     501 </span>                :            : 
+<span class="lineNum">     502 </span>                :            : /* Check a permission in the passwd class.
+<span class="lineNum">     503 </span>                :            :    Return 0 if granted or -1 otherwise. */
+<span class="lineNum">     504 </span>                :            : extern int selinux_check_passwd_access(access_vector_t requested);
+<span class="lineNum">     505 </span>                :            : extern int checkPasswdAccess(access_vector_t requested);
+<span class="lineNum">     506 </span>                :            : 
+<span class="lineNum">     507 </span>                :            : /* Check if the tty_context is defined as a securetty
+<span class="lineNum">     508 </span>                :            :    Return 0 if secure, &lt; 0 otherwise. */
+<span class="lineNum">     509 </span>                :            : extern int selinux_check_securetty_context(const security_context_t tty_context);
+<span class="lineNum">     510 </span>                :            : 
+<span class="lineNum">     511 </span>                :            : /* Set the path to the selinuxfs mount point explicitly.
+<span class="lineNum">     512 </span>                :            :    Normally, this is determined automatically during libselinux 
+<span class="lineNum">     513 </span>                :            :    initialization, but this is not always possible, e.g. for /sbin/init
+<span class="lineNum">     514 </span>                :            :    which performs the initial mount of selinuxfs. */
+<span class="lineNum">     515 </span>                :            : void set_selinuxmnt(char *mnt);
+<span class="lineNum">     516 </span>                :            : 
+<span class="lineNum">     517 </span>                :            : /* clear selinuxmnt variable and free allocated memory */
+<span class="lineNum">     518 </span>                :            : void fini_selinuxmnt(void);
+<span class="lineNum">     519 </span>                :            : 
+<span class="lineNum">     520 </span>                :            : /* Execute a helper for rpm in an appropriate security context. */
+<span class="lineNum">     521 </span>                :            : extern int rpm_execcon(unsigned int verified,
+<span class="lineNum">     522 </span>                :            :                        const char *filename,
+<span class="lineNum">     523 </span>                :            :                        char *const argv[], char *const envp[]);
+<span class="lineNum">     524 </span>                :            : 
+<span class="lineNum">     525 </span>                :            : /* Returns whether a file context is customizable, and should not 
+<span class="lineNum">     526 </span>                :            :    be relabeled . */
+<span class="lineNum">     527 </span>                :            : extern int is_context_customizable(const security_context_t scontext);
+<span class="lineNum">     528 </span>                :            : 
+<span class="lineNum">     529 </span>                :            : /* Perform context translation between the human-readable format
+<span class="lineNum">     530 </span>                :            :    (&quot;translated&quot;) and the internal system format (&quot;raw&quot;). 
+<span class="lineNum">     531 </span>                :            :    Caller must free the resulting context via freecon.  
+<span class="lineNum">     532 </span>                :            :    Returns -1 upon an error or 0 otherwise.
+<span class="lineNum">     533 </span>                :            :    If passed NULL, sets the returned context to NULL and returns 0. */
+<span class="lineNum">     534 </span>                :            : extern int selinux_trans_to_raw_context(const security_context_t trans,
+<span class="lineNum">     535 </span>                :            :                                         security_context_t * rawp);
+<span class="lineNum">     536 </span>                :            : extern int selinux_raw_to_trans_context(const security_context_t raw,
+<span class="lineNum">     537 </span>                :            :                                         security_context_t * transp);
+<span class="lineNum">     538 </span>                :            : 
+<span class="lineNum">     539 </span>                :            : /* Perform context translation between security contexts
+<span class="lineNum">     540 </span>                :            :    and display colors.  Returns a space-separated list of ten
+<span class="lineNum">     541 </span>                :            :    ten hex RGB triples prefixed by hash marks, e.g. &quot;#ff0000&quot;.
+<span class="lineNum">     542 </span>                :            :    Caller must free the resulting string via free.
+<span class="lineNum">     543 </span>                :            :    Returns -1 upon an error or 0 otherwise. */
+<span class="lineNum">     544 </span>                :            : extern int selinux_raw_context_to_color(const security_context_t raw,
+<span class="lineNum">     545 </span>                :            :                                         char **color_str);
+<span class="lineNum">     546 </span>                :            : 
+<span class="lineNum">     547 </span>                :            : /* Get the SELinux username and level to use for a given Linux username. 
+<span class="lineNum">     548 </span>                :            :    These values may then be passed into the get_ordered_context_list*
+<span class="lineNum">     549 </span>                :            :    and get_default_context* functions to obtain a context for the user.
+<span class="lineNum">     550 </span>                :            :    Returns 0 on success or -1 otherwise.
+<span class="lineNum">     551 </span>                :            :    Caller must free the returned strings via free. */
+<span class="lineNum">     552 </span>                :            : extern int getseuserbyname(const char *linuxuser, char **seuser, char **level);
+<span class="lineNum">     553 </span>                :            : 
+<span class="lineNum">     554 </span>                :            : /* Get the SELinux username and level to use for a given Linux username and service. 
+<span class="lineNum">     555 </span>                :            :    These values may then be passed into the get_ordered_context_list*
+<span class="lineNum">     556 </span>                :            :    and get_default_context* functions to obtain a context for the user.
+<span class="lineNum">     557 </span>                :            :    Returns 0 on success or -1 otherwise.
+<span class="lineNum">     558 </span>                :            :    Caller must free the returned strings via free. */
+<span class="lineNum">     559 </span>                :            : extern int getseuser(const char *username, const char *service, 
+<span class="lineNum">     560 </span>                :            :                      char **r_seuser, char **r_level);
+<span class="lineNum">     561 </span>                :            : 
+<span class="lineNum">     562 </span>                :            : /* Compare two file contexts, return 0 if equivalent. */
+<span class="lineNum">     563 </span>                :            : extern int selinux_file_context_cmp(const security_context_t a,
+<span class="lineNum">     564 </span>                :            :                              const security_context_t b);
+<span class="lineNum">     565 </span>                :            : 
+<span class="lineNum">     566 </span>                :            : /* 
+<span class="lineNum">     567 </span>                :            :  * Verify the context of the file 'path' against policy.
+<span class="lineNum">     568 </span>                :            :  * Return 0 if correct. 
+<span class="lineNum">     569 </span>                :            :  */
+<span class="lineNum">     570 </span>                :            : extern int selinux_file_context_verify(const char *path, mode_t mode);
+<span class="lineNum">     571 </span>                :            : 
+<span class="lineNum">     572 </span>                :            : /* This function sets the file context on to the system defaults returns 0 on success */
+<span class="lineNum">     573 </span>                :            : extern int selinux_lsetfilecon_default(const char *path);
+<span class="lineNum">     574 </span>                :            : 
+<span class="lineNum">     575 </span>                :            : /* 
+<span class="lineNum">     576 </span>                :            :  * Force a reset of the loaded configuration
+<span class="lineNum">     577 </span>                :            :  * WARNING: This is not thread safe. Be very sure that no other threads
+<span class="lineNum">     578 </span>                :            :  * are calling into libselinux when this is called.
+<span class="lineNum">     579 </span>                :            :  */
+<span class="lineNum">     580 </span>                :            : extern void selinux_reset_config(void);
+<span class="lineNum">     581 </span>                :            : 
+<span class="lineNum">     582 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">     583 </span>                :            : }
+<span class="lineNum">     584 </span>                :            : #endif
+<span class="lineNum">     585 </span>                :            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

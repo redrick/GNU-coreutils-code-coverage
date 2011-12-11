@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - unnamed - src/getlimits.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - getlimits.c<span style="font-size: 80%;"> (source / <a href="getlimits.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">unnamed</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntry">49</td>
+            <td class="headerCovTableEntryHi">79.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2011-12-11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">66.7 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">50.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* getlimits - print various platform dependent limits.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2008-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       6 </span>                :            :    the Free Software Foundation, either version 3 of the License, or
+<span class="lineNum">       7 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       8 </span>                :            : 
+<span class="lineNum">       9 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      10 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      11 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      12 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      13 </span>                :            : 
+<span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      15 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :            : /* Written by Pádraig Brady  */
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :            : #include &lt;config.h&gt;             /* sets _FILE_OFFSET_BITS=64 etc. */
+<span class="lineNum">      20 </span>                :            : #include &lt;stdio.h&gt;
+<span class="lineNum">      21 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      22 </span>                :            : #include &lt;float.h&gt;
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :            : #include &quot;system.h&quot;
+<span class="lineNum">      25 </span>                :            : #include &quot;long-options.h&quot;
+<span class="lineNum">      26 </span>                :            : 
+<span class="lineNum">      27 </span>                :            : #define PROGRAM_NAME &quot;getlimits&quot;
+<span class="lineNum">      28 </span>                :            : 
+<span class="lineNum">      29 </span>                :            : #define AUTHORS proper_name_utf8 (&quot;Padraig Brady&quot;, &quot;P\303\241draig Brady&quot;)
+<span class="lineNum">      30 </span>                :            : 
+<span class="lineNum">      31 </span>                :            : #ifndef TIME_T_MAX
+<span class="lineNum">      32 </span>                :            : # define TIME_T_MAX TYPE_MAXIMUM (time_t)
+<span class="lineNum">      33 </span>                :            : #endif
+<span class="lineNum">      34 </span>                :            : 
+<span class="lineNum">      35 </span>                :            : #ifndef TIME_T_MIN
+<span class="lineNum">      36 </span>                :            : # define TIME_T_MIN TYPE_MINIMUM (time_t)
+<span class="lineNum">      37 </span>                :            : #endif
+<span class="lineNum">      38 </span>                :            : 
+<span class="lineNum">      39 </span>                :            : #ifndef SSIZE_MIN
+<span class="lineNum">      40 </span>                :            : # define SSIZE_MIN TYPE_MINIMUM (ssize_t)
+<span class="lineNum">      41 </span>                :            : #endif
+<span class="lineNum">      42 </span>                :            : 
+<span class="lineNum">      43 </span>                :            : #ifndef PID_T_MIN
+<span class="lineNum">      44 </span>                :            : # define PID_T_MIN TYPE_MINIMUM (pid_t)
+<span class="lineNum">      45 </span>                :            : #endif
+<span class="lineNum">      46 </span>                :            : 
+<span class="lineNum">      47 </span>                :            : /* These are not interesting to print.
+<span class="lineNum">      48 </span>                :            :  * Instead of these defines it would be nice to be able to do
+<span class="lineNum">      49 </span>                :            :  * #ifdef (TYPE##_MIN) in function macro below.  */
+<span class="lineNum">      50 </span>                :            : #define SIZE_MIN 0
+<span class="lineNum">      51 </span>                :            : #define UCHAR_MIN 0
+<span class="lineNum">      52 </span>                :            : #define UINT_MIN 0
+<span class="lineNum">      53 </span>                :            : #define ULONG_MIN 0
+<span class="lineNum">      54 </span>                :            : #define UINTMAX_MIN 0
+<span class="lineNum">      55 </span>                :            : #define UID_T_MIN 0
+<span class="lineNum">      56 </span>                :            : #define GID_T_MIN 0
+<a name="57"><span class="lineNum">      57 </span>                :            : </a>
+<span class="lineNum">      58 </span>                :            : void
+<span class="lineNum">      59 </span>                :<span class="lineNoCov">          0 : usage (int status)</span>
+<span class="lineNum">      60 </span>                :            : {
+<span class="lineNum">      61 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">      62 </span>                :<span class="lineNoCov">          0 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
+<span class="lineNum">      63 </span>                :            :              program_name);
+<span class="lineNum">      64 </span>                :            :   else
+<span class="lineNum">      65 </span>                :            :     {
+<span class="lineNum">      66 </span>                :<span class="lineNoCov">          0 :       printf (_(&quot;\</span>
+<span class="lineNum">      67 </span>                :            : Usage: %s\n\
+<span class="lineNum">      68 </span>                :            : &quot;), program_name);
+<span class="lineNum">      69 </span>                :            : 
+<span class="lineNum">      70 </span>                :<span class="lineNoCov">          0 :       fputs (_(&quot;\</span>
+<span class="lineNum">      71 </span>                :            : Output platform dependent limits in a format useful for shell scripts.\n\
+<span class="lineNum">      72 </span>                :            : \n\
+<span class="lineNum">      73 </span>                :            : &quot;), stdout);
+<span class="lineNum">      74 </span>                :<span class="lineNoCov">          0 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">      75 </span>                :<span class="lineNoCov">          0 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">      76 </span>                :<span class="lineNoCov">          0 :       emit_ancillary_info ();</span>
+<span class="lineNum">      77 </span>                :            :     }
+<span class="lineNum">      78 </span>                :<span class="lineNoCov">          0 :   exit (status);</span>
+<span class="lineNum">      79 </span>                :            : }
+<span class="lineNum">      80 </span>                :            : 
+<span class="lineNum">      81 </span>                :            : /* Add one to the absolute value of the number whose textual
+<span class="lineNum">      82 </span>                :            :    representation is BUF + 1.  Do this in-place, in the buffer.
+<span class="lineNum">      83 </span>                :            :    Return a pointer to the result, which is normally BUF + 1, but is
+<a name="84"><span class="lineNum">      84 </span>                :            :    BUF if the representation grew in size.  */</a>
+<span class="lineNum">      85 </span>                :            : static char const *
+<span class="lineNum">      86 </span>                :<span class="lineCov">       2430 : decimal_absval_add_one (char *buf)</span>
+<span class="lineNum">      87 </span>                :            : {
+<span class="lineNum">      88 </span>                :<span class="lineCov">       2430 :   bool negative = (buf[1] == '-');</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">       2430 :   char *absnum = buf + 1 + negative;</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">       2430 :   char *p = absnum + strlen (absnum);</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">       2430 :   absnum[-1] = '0';</span>
+<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2430 times"> + </span>]:<span class="lineCov">       2430 :   while (*--p == '9')</span>
+<span class="lineNum">      93 </span>                :<span class="lineNoCov">          0 :     *p = '0';</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">       2430 :   ++*p;</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">       2430 :   char *result = MIN (absnum, p);</span>
+<span class="lineNum">      96 </span>        [<span class="branchCov" title="Branch 0 was taken 900 times"> + </span><span class="branchCov" title="Branch 1 was taken 1530 times"> + </span>]:<span class="lineCov">       2430 :   if (negative)</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">        900 :     *--result = '-';</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">       2430 :   return result;</span>
+<span class="lineNum">      99 </span>                :            : }
+<a name="100"><span class="lineNum">     100 </span>                :            : </a>
+<span class="lineNum">     101 </span>                :            : int
+<span class="lineNum">     102 </span>                :<span class="lineCov">         90 : main (int argc, char **argv)</span>
+<span class="lineNum">     103 </span>                :            : {
+<span class="lineNum">     104 </span>                :            :   char limit[1 + MAX (INT_BUFSIZE_BOUND (intmax_t),
+<span class="lineNum">     105 </span>                :            :                       INT_BUFSIZE_BOUND (uintmax_t))];
+<span class="lineNum">     106 </span>                :            : 
+<span class="lineNum">     107 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     108 </span>                :<span class="lineCov">         90 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">         90 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">         90 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">         90 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     112 </span>                :            : 
+<span class="lineNum">     113 </span>                :<span class="lineCov">         90 :   initialize_exit_failure (EXIT_FAILURE);</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">         90 :   atexit (close_stdout);</span>
+<span class="lineNum">     115 </span>                :            : 
+<span class="lineNum">     116 </span>                :<span class="lineCov">         90 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, VERSION,</span>
+<span class="lineNum">     117 </span>                :            :                       usage, AUTHORS, (char const *) NULL);
+<span class="lineNum">     118 </span>                :            : 
+<span class="lineNum">     119 </span>                :            : #define print_int(TYPE)                                                  \
+<span class="lineNum">     120 </span>                :            :   sprintf (limit + 1, &quot;%&quot;PRIuMAX, (uintmax_t) TYPE##_MAX);               \
+<span class="lineNum">     121 </span>                :            :   printf (#TYPE&quot;_MAX=%s\n&quot;, limit + 1);                                  \
+<span class="lineNum">     122 </span>                :            :   printf (#TYPE&quot;_OFLOW=%s\n&quot;, decimal_absval_add_one (limit));           \
+<span class="lineNum">     123 </span>                :            :   if (TYPE##_MIN)                                                        \
+<span class="lineNum">     124 </span>                :            :     {                                                                    \
+<span class="lineNum">     125 </span>                :            :       sprintf (limit + 1, &quot;%&quot;PRIdMAX, (intmax_t) TYPE##_MIN);            \
+<span class="lineNum">     126 </span>                :            :       printf (#TYPE&quot;_MIN=%s\n&quot;, limit + 1);                              \
+<span class="lineNum">     127 </span>                :            :       printf (#TYPE&quot;_UFLOW=%s\n&quot;, decimal_absval_add_one (limit));       \
+<span class="lineNum">     128 </span>                :            :     }
+<span class="lineNum">     129 </span>                :            : 
+<span class="lineNum">     130 </span>                :            : #define print_float(TYPE)                                                \
+<span class="lineNum">     131 </span>                :            :   printf (#TYPE&quot;_MIN=%Le\n&quot;, (long double)TYPE##_MIN);                   \
+<span class="lineNum">     132 </span>                :            :   printf (#TYPE&quot;_MAX=%Le\n&quot;, (long double)TYPE##_MAX);
+<span class="lineNum">     133 </span>                :            : 
+<span class="lineNum">     134 </span>                :            :   /* Variable sized ints */
+<span class="lineNum">     135 </span>                :<span class="lineCov">         90 :   print_int (CHAR);</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">         90 :   print_int (SCHAR);</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">         90 :   print_int (UCHAR);</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">         90 :   print_int (SHRT);</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">         90 :   print_int (INT);</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">         90 :   print_int (UINT);</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">         90 :   print_int (LONG);</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">         90 :   print_int (ULONG);</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">         90 :   print_int (SIZE);</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">         90 :   print_int (SSIZE);</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">         90 :   print_int (TIME_T);</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">         90 :   print_int (UID_T);</span>
+<span class="lineNum">     147 </span>                :<span class="lineCov">         90 :   print_int (GID_T);</span>
+<span class="lineNum">     148 </span>                :<span class="lineCov">         90 :   print_int (PID_T);</span>
+<span class="lineNum">     149 </span>                :<span class="lineCov">         90 :   print_int (OFF_T);</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">         90 :   print_int (INTMAX);</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">         90 :   print_int (UINTMAX);</span>
+<span class="lineNum">     152 </span>                :            : 
+<span class="lineNum">     153 </span>                :            :   /* Variable sized floats */
+<span class="lineNum">     154 </span>                :<span class="lineCov">         90 :   print_float (FLT);</span>
+<span class="lineNum">     155 </span>                :<span class="lineCov">         90 :   print_float (DBL);</span>
+<span class="lineNum">     156 </span>                :<span class="lineCov">         90 :   print_float (LDBL);</span>
+<span class="lineNum">     157 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

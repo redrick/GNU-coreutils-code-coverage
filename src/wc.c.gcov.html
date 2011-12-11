@@ -1,0 +1,897 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - unnamed - src/wc.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - wc.c<span style="font-size: 80%;"> (source / <a href="wc.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">unnamed</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">267</td>
+            <td class="headerCovTableEntry">313</td>
+            <td class="headerCovTableEntryHi">85.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2011-12-11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">196</td>
+            <td class="headerCovTableEntry">251</td>
+            <td class="headerCovTableEntryHi">78.1 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* wc - print the number of lines, words, and bytes in files</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1985, 1991, 1995-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       6 </span>                :            :    the Free Software Foundation, either version 3 of the License, or
+<span class="lineNum">       7 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       8 </span>                :            : 
+<span class="lineNum">       9 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      10 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      11 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      12 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      13 </span>                :            : 
+<span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      15 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :            : /* Written by Paul Rubin, phr@ocf.berkeley.edu
+<span class="lineNum">      18 </span>                :            :    and David MacKenzie, djm@gnu.ai.mit.edu. */
+<span class="lineNum">      19 </span>                :            : 
+<span class="lineNum">      20 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      21 </span>                :            : 
+<span class="lineNum">      22 </span>                :            : #include &lt;stdio.h&gt;
+<span class="lineNum">      23 </span>                :            : #include &lt;assert.h&gt;
+<span class="lineNum">      24 </span>                :            : #include &lt;getopt.h&gt;
+<span class="lineNum">      25 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      26 </span>                :            : #include &lt;wchar.h&gt;
+<span class="lineNum">      27 </span>                :            : #include &lt;wctype.h&gt;
+<span class="lineNum">      28 </span>                :            : 
+<span class="lineNum">      29 </span>                :            : #include &quot;system.h&quot;
+<span class="lineNum">      30 </span>                :            : #include &quot;argv-iter.h&quot;
+<span class="lineNum">      31 </span>                :            : #include &quot;error.h&quot;
+<span class="lineNum">      32 </span>                :            : #include &quot;fadvise.h&quot;
+<span class="lineNum">      33 </span>                :            : #include &quot;mbchar.h&quot;
+<span class="lineNum">      34 </span>                :            : #include &quot;physmem.h&quot;
+<span class="lineNum">      35 </span>                :            : #include &quot;quote.h&quot;
+<span class="lineNum">      36 </span>                :            : #include &quot;quotearg.h&quot;
+<span class="lineNum">      37 </span>                :            : #include &quot;readtokens0.h&quot;
+<span class="lineNum">      38 </span>                :            : #include &quot;safe-read.h&quot;
+<span class="lineNum">      39 </span>                :            : #include &quot;xfreopen.h&quot;
+<span class="lineNum">      40 </span>                :            : 
+<span class="lineNum">      41 </span>                :            : #if !defined iswspace &amp;&amp; !HAVE_ISWSPACE
+<span class="lineNum">      42 </span>                :            : # define iswspace(wc) \
+<span class="lineNum">      43 </span>                :            :     ((wc) == to_uchar (wc) &amp;&amp; isspace (to_uchar (wc)))
+<span class="lineNum">      44 </span>                :            : #endif
+<span class="lineNum">      45 </span>                :            : 
+<span class="lineNum">      46 </span>                :            : /* The official name of this program (e.g., no `g' prefix).  */
+<span class="lineNum">      47 </span>                :            : #define PROGRAM_NAME &quot;wc&quot;
+<span class="lineNum">      48 </span>                :            : 
+<span class="lineNum">      49 </span>                :            : #define AUTHORS \
+<span class="lineNum">      50 </span>                :            :   proper_name (&quot;Paul Rubin&quot;), \
+<span class="lineNum">      51 </span>                :            :   proper_name (&quot;David MacKenzie&quot;)
+<span class="lineNum">      52 </span>                :            : 
+<span class="lineNum">      53 </span>                :            : /* Size of atomic reads. */
+<span class="lineNum">      54 </span>                :            : #define BUFFER_SIZE (16 * 1024)
+<span class="lineNum">      55 </span>                :            : 
+<span class="lineNum">      56 </span>                :            : /* Cumulative number of lines, words, chars and bytes in all files so far.
+<span class="lineNum">      57 </span>                :            :    max_line_length is the maximum over all files processed so far.  */
+<span class="lineNum">      58 </span>                :            : static uintmax_t total_lines;
+<span class="lineNum">      59 </span>                :            : static uintmax_t total_words;
+<span class="lineNum">      60 </span>                :            : static uintmax_t total_chars;
+<span class="lineNum">      61 </span>                :            : static uintmax_t total_bytes;
+<span class="lineNum">      62 </span>                :            : static uintmax_t max_line_length;
+<span class="lineNum">      63 </span>                :            : 
+<span class="lineNum">      64 </span>                :            : /* Which counts to print. */
+<span class="lineNum">      65 </span>                :            : static bool print_lines, print_words, print_chars, print_bytes;
+<span class="lineNum">      66 </span>                :            : static bool print_linelength;
+<span class="lineNum">      67 </span>                :            : 
+<span class="lineNum">      68 </span>                :            : /* The print width of each count.  */
+<span class="lineNum">      69 </span>                :            : static int number_width;
+<span class="lineNum">      70 </span>                :            : 
+<span class="lineNum">      71 </span>                :            : /* True if we have ever read the standard input. */
+<span class="lineNum">      72 </span>                :            : static bool have_read_stdin;
+<span class="lineNum">      73 </span>                :            : 
+<span class="lineNum">      74 </span>                :            : /* The result of calling fstat or stat on a file descriptor or file.  */
+<span class="lineNum">      75 </span>                :            : struct fstatus
+<span class="lineNum">      76 </span>                :            : {
+<span class="lineNum">      77 </span>                :            :   /* If positive, fstat or stat has not been called yet.  Otherwise,
+<span class="lineNum">      78 </span>                :            :      this is the value returned from fstat or stat.  */
+<span class="lineNum">      79 </span>                :            :   int failed;
+<span class="lineNum">      80 </span>                :            : 
+<span class="lineNum">      81 </span>                :            :   /* If FAILED is zero, this is the file's status.  */
+<span class="lineNum">      82 </span>                :            :   struct stat st;
+<span class="lineNum">      83 </span>                :            : };
+<span class="lineNum">      84 </span>                :            : 
+<span class="lineNum">      85 </span>                :            : /* For long options that have no equivalent short option, use a
+<span class="lineNum">      86 </span>                :            :    non-character as a pseudo short option, starting with CHAR_MAX + 1.  */
+<span class="lineNum">      87 </span>                :            : enum
+<span class="lineNum">      88 </span>                :            : {
+<span class="lineNum">      89 </span>                :            :   FILES0_FROM_OPTION = CHAR_MAX + 1
+<span class="lineNum">      90 </span>                :            : };
+<span class="lineNum">      91 </span>                :            : 
+<span class="lineNum">      92 </span>                :            : static struct option const longopts[] =
+<span class="lineNum">      93 </span>                :            : {
+<span class="lineNum">      94 </span>                :            :   {&quot;bytes&quot;, no_argument, NULL, 'c'},
+<span class="lineNum">      95 </span>                :            :   {&quot;chars&quot;, no_argument, NULL, 'm'},
+<span class="lineNum">      96 </span>                :            :   {&quot;lines&quot;, no_argument, NULL, 'l'},
+<span class="lineNum">      97 </span>                :            :   {&quot;words&quot;, no_argument, NULL, 'w'},
+<span class="lineNum">      98 </span>                :            :   {&quot;files0-from&quot;, required_argument, NULL, FILES0_FROM_OPTION},
+<span class="lineNum">      99 </span>                :            :   {&quot;max-line-length&quot;, no_argument, NULL, 'L'},
+<span class="lineNum">     100 </span>                :            :   {GETOPT_HELP_OPTION_DECL},
+<span class="lineNum">     101 </span>                :            :   {GETOPT_VERSION_OPTION_DECL},
+<span class="lineNum">     102 </span>                :            :   {NULL, 0, NULL, 0}
+<span class="lineNum">     103 </span>                :            : };
+<a name="104"><span class="lineNum">     104 </span>                :            : </a>
+<span class="lineNum">     105 </span>                :            : void
+<span class="lineNum">     106 </span>                :<span class="lineCov">         25 : usage (int status)</span>
+<span class="lineNum">     107 </span>                :            : {
+<span class="lineNum">     108 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         25 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">         10 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
+<span class="lineNum">     110 </span>                :            :              program_name);
+<span class="lineNum">     111 </span>                :            :   else
+<span class="lineNum">     112 </span>                :            :     {
+<span class="lineNum">     113 </span>                :<span class="lineCov">         15 :       printf (_(&quot;\</span>
+<span class="lineNum">     114 </span>                :            : Usage: %s [OPTION]... [FILE]...\n\
+<span class="lineNum">     115 </span>                :            :   or:  %s [OPTION]... --files0-from=F\n\
+<span class="lineNum">     116 </span>                :            : &quot;),
+<span class="lineNum">     117 </span>                :            :               program_name, program_name);
+<span class="lineNum">     118 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     119 </span>                :            : Print newline, word, and byte counts for each FILE, and a total line if\n\
+<span class="lineNum">     120 </span>                :            : more than one FILE is specified.  With no FILE, or when FILE is -,\n\
+<span class="lineNum">     121 </span>                :            : read standard input.  A word is a non-zero-length sequence of characters\n\
+<span class="lineNum">     122 </span>                :            : delimited by white space.\n\
+<span class="lineNum">     123 </span>                :            : The options below may be used to select which counts are printed, always in\n\
+<span class="lineNum">     124 </span>                :            : the following order: newline, word, character, byte, maximum line length.\n\
+<span class="lineNum">     125 </span>                :            :   -c, --bytes            print the byte counts\n\
+<span class="lineNum">     126 </span>                :            :   -m, --chars            print the character counts\n\
+<span class="lineNum">     127 </span>                :            :   -l, --lines            print the newline counts\n\
+<span class="lineNum">     128 </span>                :            : &quot;), stdout);
+<span class="lineNum">     129 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     130 </span>                :            :       --files0-from=F    read input from the files specified by\n\
+<span class="lineNum">     131 </span>                :            :                            NUL-terminated names in file F;\n\
+<span class="lineNum">     132 </span>                :            :                            If F is - then read names from standard input\n\
+<span class="lineNum">     133 </span>                :            :   -L, --max-line-length  print the length of the longest line\n\
+<span class="lineNum">     134 </span>                :            :   -w, --words            print the word counts\n\
+<span class="lineNum">     135 </span>                :            : &quot;), stdout);
+<span class="lineNum">     136 </span>                :<span class="lineCov">         15 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">         15 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">         15 :       emit_ancillary_info ();</span>
+<span class="lineNum">     139 </span>                :            :     }
+<span class="lineNum">     140 </span>                :<span class="lineCov">         25 :   exit (status);</span>
+<span class="lineNum">     141 </span>                :            : }
+<span class="lineNum">     142 </span>                :            : 
+<span class="lineNum">     143 </span>                :            : /* FILE is the name of the file (or NULL for standard input)
+<a name="144"><span class="lineNum">     144 </span>                :            :    associated with the specified counters.  */</a>
+<span class="lineNum">     145 </span>                :            : static void
+<span class="lineNum">     146 </span>                :<span class="lineCov">      38636 : write_counts (uintmax_t lines,</span>
+<span class="lineNum">     147 </span>                :            :               uintmax_t words,
+<span class="lineNum">     148 </span>                :            :               uintmax_t chars,
+<span class="lineNum">     149 </span>                :            :               uintmax_t bytes,
+<span class="lineNum">     150 </span>                :            :               uintmax_t linelength,
+<span class="lineNum">     151 </span>                :            :               const char *file)
+<span class="lineNum">     152 </span>                :            : {
+<span class="lineNum">     153 </span>                :            :   static char const format_sp_int[] = &quot; %*s&quot;;
+<span class="lineNum">     154 </span>                :<span class="lineCov">      38636 :   char const *format_int = format_sp_int + 1;</span>
+<span class="lineNum">     155 </span>                :            :   char buf[INT_BUFSIZE_BOUND (uintmax_t)];
+<span class="lineNum">     156 </span>                :            : 
+<span class="lineNum">     157 </span>        [<span class="branchCov" title="Branch 0 was taken 32486 times"> + </span><span class="branchCov" title="Branch 1 was taken 6150 times"> + </span>]:<span class="lineCov">      38636 :   if (print_lines)</span>
+<span class="lineNum">     158 </span>                :            :     {
+<span class="lineNum">     159 </span>                :<span class="lineCov">      32486 :       printf (format_int, number_width, umaxtostr (lines, buf));</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">      32486 :       format_int = format_sp_int;</span>
+<span class="lineNum">     161 </span>                :            :     }
+<span class="lineNum">     162 </span>        [<span class="branchCov" title="Branch 0 was taken 30122 times"> + </span><span class="branchCov" title="Branch 1 was taken 8514 times"> + </span>]:<span class="lineCov">      38636 :   if (print_words)</span>
+<span class="lineNum">     163 </span>                :            :     {
+<span class="lineNum">     164 </span>                :<span class="lineCov">      30122 :       printf (format_int, number_width, umaxtostr (words, buf));</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">      30122 :       format_int = format_sp_int;</span>
+<span class="lineNum">     166 </span>                :            :     }
+<span class="lineNum">     167 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 38636 times"> + </span>]:<span class="lineCov">      38636 :   if (print_chars)</span>
+<span class="lineNum">     168 </span>                :            :     {
+<span class="lineNum">     169 </span>                :<span class="lineNoCov">          0 :       printf (format_int, number_width, umaxtostr (chars, buf));</span>
+<span class="lineNum">     170 </span>                :<span class="lineNoCov">          0 :       format_int = format_sp_int;</span>
+<span class="lineNum">     171 </span>                :            :     }
+<span class="lineNum">     172 </span>        [<span class="branchCov" title="Branch 0 was taken 34537 times"> + </span><span class="branchCov" title="Branch 1 was taken 4099 times"> + </span>]:<span class="lineCov">      38636 :   if (print_bytes)</span>
+<span class="lineNum">     173 </span>                :            :     {
+<span class="lineNum">     174 </span>                :<span class="lineCov">      34537 :       printf (format_int, number_width, umaxtostr (bytes, buf));</span>
+<span class="lineNum">     175 </span>                :<span class="lineCov">      34537 :       format_int = format_sp_int;</span>
+<span class="lineNum">     176 </span>                :            :     }
+<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 1695 times"> + </span><span class="branchCov" title="Branch 1 was taken 36941 times"> + </span>]:<span class="lineCov">      38636 :   if (print_linelength)</span>
+<span class="lineNum">     178 </span>                :            :     {
+<span class="lineNum">     179 </span>                :<span class="lineCov">       1695 :       printf (format_int, number_width, umaxtostr (linelength, buf));</span>
+<span class="lineNum">     180 </span>                :            :     }
+<span class="lineNum">     181 </span>        [<span class="branchCov" title="Branch 0 was taken 30085 times"> + </span><span class="branchCov" title="Branch 1 was taken 8551 times"> + </span>]:<span class="lineCov">      38636 :   if (file)</span>
+<span class="lineNum">     182 </span>                :<span class="lineCov">      30085 :     printf (&quot; %s&quot;, file);</span>
+<span class="lineNum">     183 </span>                :<span class="lineCov">      38636 :   putchar ('\n');</span>
+<span class="lineNum">     184 </span>                :<span class="lineCov">      38636 : }</span>
+<span class="lineNum">     185 </span>                :            : 
+<span class="lineNum">     186 </span>                :            : /* Count words.  FILE_X is the name of the file (or NULL for standard
+<span class="lineNum">     187 </span>                :            :    input) that is open on descriptor FD.  *FSTATUS is its status.
+<a name="188"><span class="lineNum">     188 </span>                :            :    Return true if successful.  */</a>
+<span class="lineNum">     189 </span>                :            : static bool
+<span class="lineNum">     190 </span>                :<span class="lineCov">      38596 : wc (int fd, char const *file_x, struct fstatus *fstatus)</span>
+<span class="lineNum">     191 </span>                :            : {
+<span class="lineNum">     192 </span>                :<span class="lineCov">      38596 :   bool ok = true;</span>
+<span class="lineNum">     193 </span>                :            :   char buf[BUFFER_SIZE + 1];
+<span class="lineNum">     194 </span>                :            :   size_t bytes_read;
+<span class="lineNum">     195 </span>                :            :   uintmax_t lines, words, chars, bytes, linelength;
+<span class="lineNum">     196 </span>                :            :   bool count_bytes, count_chars, count_complicated;
+<span class="lineNum">     197 </span>        [<span class="branchCov" title="Branch 0 was taken 8551 times"> + </span><span class="branchCov" title="Branch 1 was taken 30045 times"> + </span>]:<span class="lineCov">      38596 :   char const *file = file_x ? file_x : _(&quot;standard input&quot;);</span>
+<span class="lineNum">     198 </span>                :            : 
+<span class="lineNum">     199 </span>                :<span class="lineCov">      38596 :   lines = words = chars = bytes = linelength = 0;</span>
+<span class="lineNum">     200 </span>                :            : 
+<span class="lineNum">     201 </span>                :            :   /* If in the current locale, chars are equivalent to bytes, we prefer
+<span class="lineNum">     202 </span>                :            :      counting bytes, because that's easier.  */
+<span class="lineNum">     203 </span>                :            : #if MB_LEN_MAX &gt; 1
+<span class="lineNum">     204 </span>        [<span class="branchCov" title="Branch 1 was taken 720 times"> + </span><span class="branchCov" title="Branch 2 was taken 37876 times"> + </span>]:<span class="lineCov">      38596 :   if (MB_CUR_MAX &gt; 1)</span>
+<span class="lineNum">     205 </span>                :            :     {
+<span class="lineNum">     206 </span>                :<span class="lineCov">        720 :       count_bytes = print_bytes;</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">        720 :       count_chars = print_chars;</span>
+<span class="lineNum">     208 </span>                :            :     }
+<span class="lineNum">     209 </span>                :            :   else
+<span class="lineNum">     210 </span>                :            : #endif
+<span class="lineNum">     211 </span>                :            :     {
+<span class="lineNum">     212 </span>[<span class="branchCov" title="Branch 0 was taken 3379 times"> + </span><span class="branchCov" title="Branch 1 was taken 34497 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 3379 times"> + </span>]:<span class="lineCov">      37876 :       count_bytes = print_bytes || print_chars;</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">      37876 :       count_chars = false;</span>
+<span class="lineNum">     214 </span>                :            :     }
+<span class="lineNum">     215 </span>[<span class="branchCov" title="Branch 0 was taken 8514 times"> + </span><span class="branchCov" title="Branch 1 was taken 30082 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 1695 times"> + </span><span class="branchCov" title="Branch 3 was taken 6819 times"> + </span>]:<span class="lineCov">      38596 :   count_complicated = print_words || print_linelength;</span>
+<span class="lineNum">     216 </span>                :            : 
+<span class="lineNum">     217 </span>                :            :   /* Advise the kernel of our access pattern only if we will read().  */
+<span class="lineNum">     218 </span>[<span class="branchCov" title="Branch 0 was taken 34497 times"> + </span><span class="branchCov" title="Branch 1 was taken 4099 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 34497 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">      38596 :   if (!count_bytes || count_chars || print_lines || count_complicated)</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 4435 times"> + </span><span class="branchCov" title="Branch 5 was taken 30062 times"> + </span>][<span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchCov" title="Branch 7 was taken 4435 times"> + </span>]
+<span class="lineNum">     219 </span>                :<span class="lineCov">      34161 :     fdadvise (fd, 0, 0, FADVISE_SEQUENTIAL);</span>
+<span class="lineNum">     220 </span>                :            : 
+<span class="lineNum">     221 </span>                :            :   /* When counting only bytes, save some line- and word-counting
+<span class="lineNum">     222 </span>                :            :      overhead.  If FD is a `regular' Unix file, using lseek is enough
+<span class="lineNum">     223 </span>                :            :      to get its `size' in bytes.  Otherwise, read blocks of BUFFER_SIZE
+<span class="lineNum">     224 </span>                :            :      bytes at a time until EOF.  Note that the `size' (number of bytes)
+<span class="lineNum">     225 </span>                :            :      that wc reports is smaller than stats.st_size when the file is not
+<span class="lineNum">     226 </span>                :            :      positioned at its beginning.  That's why the lseek calls below are
+<span class="lineNum">     227 </span>                :            :      necessary.  For example the command
+<span class="lineNum">     228 </span>                :            :      `(dd ibs=99k skip=1 count=0; ./wc -c) &lt; /etc/group'
+<span class="lineNum">     229 </span>                :            :      should make wc report `0' bytes.  */
+<span class="lineNum">     230 </span>                :            : 
+<span class="lineNum">     231 </span>[<span class="branchCov" title="Branch 0 was taken 34497 times"> + </span><span class="branchCov" title="Branch 1 was taken 4099 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 34497 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">      38596 :   if (count_bytes &amp;&amp; !count_chars &amp;&amp; !print_lines &amp;&amp; !count_complicated)</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 4435 times"> + </span><span class="branchCov" title="Branch 5 was taken 30062 times"> + </span>][<span class="branchCov" title="Branch 6 was taken 4435 times"> + </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span>]
+<span class="lineNum">     232 </span>                :<span class="lineCov">       4435 :     {</span>
+<span class="lineNum">     233 </span>                :            :       off_t current_pos, end_pos;
+<span class="lineNum">     234 </span>                :            : 
+<span class="lineNum">     235 </span>        [<span class="branchCov" title="Branch 0 was taken 4435 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       4435 :       if (0 &lt; fstatus-&gt;failed)</span>
+<span class="lineNum">     236 </span>                :<span class="lineCov">       4435 :         fstatus-&gt;failed = fstat (fd, &amp;fstatus-&gt;st);</span>
+<span class="lineNum">     237 </span>                :            : 
+<span class="lineNum">     238 </span>[<span class="branchCov" title="Branch 0 was taken 4435 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 2215 times"> + </span><span class="branchCov" title="Branch 3 was taken 2220 times"> + </span>]:<span class="lineCov">       4435 :       if (! fstatus-&gt;failed &amp;&amp; S_ISREG (fstatus-&gt;st.st_mode)</span>
+<span class="lineNum">     239 </span>        [<span class="branchCov" title="Branch 1 was taken 2215 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">       2215 :           &amp;&amp; (current_pos = lseek (fd, 0, SEEK_CUR)) != -1</span>
+<span class="lineNum">     240 </span>        [<span class="branchCov" title="Branch 1 was taken 2215 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">       2215 :           &amp;&amp; (end_pos = lseek (fd, 0, SEEK_END)) != -1)</span>
+<span class="lineNum">     241 </span>                :            :         {
+<span class="lineNum">     242 </span>                :            :           /* Be careful here.  The current position may actually be
+<span class="lineNum">     243 </span>                :            :              beyond the end of the file.  As in the example above.  */
+<span class="lineNum">     244 </span>        [<span class="branchCov" title="Branch 0 was taken 2215 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       2215 :           bytes = end_pos &lt; current_pos ? 0 : end_pos - current_pos;</span>
+<span class="lineNum">     245 </span>                :            :         }
+<span class="lineNum">     246 </span>                :            :       else
+<span class="lineNum">     247 </span>                :            :         {
+<span class="lineNum">     248 </span>                :<span class="lineCov">       2220 :           fdadvise (fd, 0, 0, FADVISE_SEQUENTIAL);</span>
+<span class="lineNum">     249 </span>        [<span class="branchCov" title="Branch 1 was taken 2215 times"> + </span><span class="branchCov" title="Branch 2 was taken 2220 times"> + </span>]:<span class="lineCov">       4435 :           while ((bytes_read = safe_read (fd, buf, BUFFER_SIZE)) &gt; 0)</span>
+<span class="lineNum">     250 </span>                :            :             {
+<span class="lineNum">     251 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2215 times"> + </span>]:<span class="lineCov">       2215 :               if (bytes_read == SAFE_READ_ERROR)</span>
+<span class="lineNum">     252 </span>                :            :                 {
+<span class="lineNum">     253 </span>                :<span class="lineNoCov">          0 :                   error (0, errno, &quot;%s&quot;, file);</span>
+<span class="lineNum">     254 </span>                :<span class="lineNoCov">          0 :                   ok = false;</span>
+<span class="lineNum">     255 </span>                :<span class="lineNoCov">          0 :                   break;</span>
+<span class="lineNum">     256 </span>                :            :                 }
+<span class="lineNum">     257 </span>                :<span class="lineCov">       2215 :               bytes += bytes_read;</span>
+<span class="lineNum">     258 </span>                :            :             }
+<span class="lineNum">     259 </span>                :            :         }
+<span class="lineNum">     260 </span>                :            :     }
+<span class="lineNum">     261 </span>[<span class="branchCov" title="Branch 0 was taken 34161 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 2384 times"> + </span><span class="branchCov" title="Branch 3 was taken 31777 times"> + </span>]:<span class="lineCov">      36545 :   else if (!count_chars &amp;&amp; !count_complicated)</span>
+<span class="lineNum">     262 </span>                :            :     {
+<span class="lineNum">     263 </span>                :            :       /* Use a separate loop when counting only lines or lines and bytes --
+<span class="lineNum">     264 </span>                :            :          but not chars or words.  */
+<span class="lineNum">     265 </span>        [<span class="branchCov" title="Branch 1 was taken 2397 times"> + </span><span class="branchCov" title="Branch 2 was taken 2384 times"> + </span>]:<span class="lineCov">       4781 :       while ((bytes_read = safe_read (fd, buf, BUFFER_SIZE)) &gt; 0)</span>
+<span class="lineNum">     266 </span>                :            :         {
+<span class="lineNum">     267 </span>                :<span class="lineCov">       2397 :           char *p = buf;</span>
+<span class="lineNum">     268 </span>                :            : 
+<span class="lineNum">     269 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2397 times"> + </span>]:<span class="lineCov">       2397 :           if (bytes_read == SAFE_READ_ERROR)</span>
+<span class="lineNum">     270 </span>                :            :             {
+<span class="lineNum">     271 </span>                :<span class="lineNoCov">          0 :               error (0, errno, &quot;%s&quot;, file);</span>
+<span class="lineNum">     272 </span>                :<span class="lineNoCov">          0 :               ok = false;</span>
+<span class="lineNum">     273 </span>                :<span class="lineNoCov">          0 :               break;</span>
+<span class="lineNum">     274 </span>                :            :             }
+<span class="lineNum">     275 </span>                :            : 
+<span class="lineNum">     276 </span>        [<span class="branchCov" title="Branch 0 was taken 19837 times"> + </span><span class="branchCov" title="Branch 1 was taken 2397 times"> + </span>]:<span class="lineCov">      22234 :           while ((p = memchr (p, '\n', (buf + bytes_read) - p)))</span>
+<span class="lineNum">     277 </span>                :            :             {
+<span class="lineNum">     278 </span>                :<span class="lineCov">      19837 :               ++p;</span>
+<span class="lineNum">     279 </span>                :<span class="lineCov">      19837 :               ++lines;</span>
+<span class="lineNum">     280 </span>                :            :             }
+<span class="lineNum">     281 </span>                :<span class="lineCov">       2397 :           bytes += bytes_read;</span>
+<span class="lineNum">     282 </span>                :            :         }
+<span class="lineNum">     283 </span>                :            :     }
+<span class="lineNum">     284 </span>                :            : #if MB_LEN_MAX &gt; 1
+<span class="lineNum">     285 </span>                :            : # define SUPPORT_OLD_MBRTOWC 1
+<span class="lineNum">     286 </span>        [<span class="branchCov" title="Branch 1 was taken 720 times"> + </span><span class="branchCov" title="Branch 2 was taken 31057 times"> + </span>]:<span class="lineCov">      31777 :   else if (MB_CUR_MAX &gt; 1)</span>
+<span class="lineNum">     287 </span>                :            :     {
+<span class="lineNum">     288 </span>                :<span class="lineCov">        720 :       bool in_word = false;</span>
+<span class="lineNum">     289 </span>                :<span class="lineCov">        720 :       uintmax_t linepos = 0;</span>
+<span class="lineNum">     290 </span>                :<span class="lineCov">        720 :       mbstate_t state = { 0, };</span>
+<span class="lineNum">     291 </span>                :<span class="lineCov">        720 :       bool in_shift = false;</span>
+<span class="lineNum">     292 </span>                :            : # if SUPPORT_OLD_MBRTOWC
+<span class="lineNum">     293 </span>                :            :       /* Back-up the state before each multibyte character conversion and
+<span class="lineNum">     294 </span>                :            :          move the last incomplete character of the buffer to the front
+<span class="lineNum">     295 </span>                :            :          of the buffer.  This is needed because we don't know whether
+<span class="lineNum">     296 </span>                :            :          the `mbrtowc' function updates the state when it returns -2, -
+<span class="lineNum">     297 </span>                :            :          this is the ISO C 99 and glibc-2.2 behaviour - or not - amended
+<span class="lineNum">     298 </span>                :            :          ANSI C, glibc-2.1 and Solaris 5.7 behaviour.  We don't have an
+<span class="lineNum">     299 </span>                :            :          autoconf test for this, yet.  */
+<span class="lineNum">     300 </span>                :<span class="lineCov">        720 :       size_t prev = 0; /* number of bytes carried over from previous round */</span>
+<span class="lineNum">     301 </span>                :            : # else
+<span class="lineNum">     302 </span>                :            :       const size_t prev = 0;
+<span class="lineNum">     303 </span>                :            : # endif
+<span class="lineNum">     304 </span>                :            : 
+<span class="lineNum">     305 </span>        [<span class="branchCov" title="Branch 1 was taken 720 times"> + </span><span class="branchCov" title="Branch 2 was taken 720 times"> + </span>]:<span class="lineCov">       1440 :       while ((bytes_read = safe_read (fd, buf + prev, BUFFER_SIZE - prev)) &gt; 0)</span>
+<span class="lineNum">     306 </span>                :            :         {
+<span class="lineNum">     307 </span>                :            :           const char *p;
+<span class="lineNum">     308 </span>                :            : # if SUPPORT_OLD_MBRTOWC
+<span class="lineNum">     309 </span>                :            :           mbstate_t backup_state;
+<span class="lineNum">     310 </span>                :            : # endif
+<span class="lineNum">     311 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 720 times"> + </span>]:<span class="lineCov">        720 :           if (bytes_read == SAFE_READ_ERROR)</span>
+<span class="lineNum">     312 </span>                :            :             {
+<span class="lineNum">     313 </span>                :<span class="lineNoCov">          0 :               error (0, errno, &quot;%s&quot;, file);</span>
+<span class="lineNum">     314 </span>                :<span class="lineNoCov">          0 :               ok = false;</span>
+<span class="lineNum">     315 </span>                :<span class="lineNoCov">          0 :               break;</span>
+<span class="lineNum">     316 </span>                :            :             }
+<span class="lineNum">     317 </span>                :            : 
+<span class="lineNum">     318 </span>                :<span class="lineCov">        720 :           bytes += bytes_read;</span>
+<span class="lineNum">     319 </span>                :<span class="lineCov">        720 :           p = buf;</span>
+<span class="lineNum">     320 </span>                :<span class="lineCov">        720 :           bytes_read += prev;</span>
+<span class="lineNum">     321 </span>                :            :           do
+<span class="lineNum">     322 </span>                :            :             {
+<span class="lineNum">     323 </span>                :            :               wchar_t wide_char;
+<span class="lineNum">     324 </span>                :            :               size_t n;
+<span class="lineNum">     325 </span>                :            : 
+<span class="lineNum">     326 </span>[<span class="branchCov" title="Branch 0 was taken 5280 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 4120 times"> + </span><span class="branchCov" title="Branch 4 was taken 1160 times"> + </span>]:<span class="lineCov">       5280 :               if (!in_shift &amp;&amp; is_basic (*p))</span>
+<span class="lineNum">     327 </span>                :            :                 {
+<span class="lineNum">     328 </span>                :            :                   /* Handle most ASCII characters quickly, without calling
+<span class="lineNum">     329 </span>                :            :                      mbrtowc().  */
+<span class="lineNum">     330 </span>                :<span class="lineCov">       4120 :                   n = 1;</span>
+<span class="lineNum">     331 </span>                :<span class="lineCov">       4120 :                   wide_char = *p;</span>
+<span class="lineNum">     332 </span>                :            :                 }
+<span class="lineNum">     333 </span>                :            :               else
+<span class="lineNum">     334 </span>                :            :                 {
+<span class="lineNum">     335 </span>                :<span class="lineCov">       1160 :                   in_shift = true;</span>
+<span class="lineNum">     336 </span>                :            : # if SUPPORT_OLD_MBRTOWC
+<span class="lineNum">     337 </span>                :<span class="lineCov">       1160 :                   backup_state = state;</span>
+<span class="lineNum">     338 </span>                :            : # endif
+<span class="lineNum">     339 </span>                :<span class="lineCov">       1160 :                   n = mbrtowc (&amp;wide_char, p, bytes_read, &amp;state);</span>
+<span class="lineNum">     340 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1160 times"> + </span>]:<span class="lineCov">       1160 :                   if (n == (size_t) -2)</span>
+<span class="lineNum">     341 </span>                :            :                     {
+<span class="lineNum">     342 </span>                :            : # if SUPPORT_OLD_MBRTOWC
+<span class="lineNum">     343 </span>                :<span class="lineNoCov">          0 :                       state = backup_state;</span>
+<span class="lineNum">     344 </span>                :            : # endif
+<span class="lineNum">     345 </span>                :<span class="lineNoCov">          0 :                       break;</span>
+<span class="lineNum">     346 </span>                :            :                     }
+<span class="lineNum">     347 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1160 times"> + </span>]:<span class="lineCov">       1160 :                   if (n == (size_t) -1)</span>
+<span class="lineNum">     348 </span>                :            :                     {
+<span class="lineNum">     349 </span>                :            :                       /* Remember that we read a byte, but don't complain
+<span class="lineNum">     350 </span>                :            :                          about the error.  Because of the decoding error,
+<span class="lineNum">     351 </span>                :            :                          this is a considered to be byte but not a
+<span class="lineNum">     352 </span>                :            :                          character (that is, chars is not incremented).  */
+<span class="lineNum">     353 </span>                :<span class="lineNoCov">          0 :                       p++;</span>
+<span class="lineNum">     354 </span>                :<span class="lineNoCov">          0 :                       bytes_read--;</span>
+<span class="lineNum">     355 </span>                :<span class="lineNoCov">          0 :                       continue;</span>
+<span class="lineNum">     356 </span>                :            :                     }
+<span class="lineNum">     357 </span>        [<span class="branchCov" title="Branch 1 was taken 1160 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">       1160 :                   if (mbsinit (&amp;state))</span>
+<span class="lineNum">     358 </span>                :<span class="lineCov">       1160 :                     in_shift = false;</span>
+<span class="lineNum">     359 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1160 times"> + </span>]:<span class="lineCov">       1160 :                   if (n == 0)</span>
+<span class="lineNum">     360 </span>                :            :                     {
+<span class="lineNum">     361 </span>                :<span class="lineNoCov">          0 :                       wide_char = 0;</span>
+<span class="lineNum">     362 </span>                :<span class="lineNoCov">          0 :                       n = 1;</span>
+<span class="lineNum">     363 </span>                :            :                     }
+<span class="lineNum">     364 </span>                :            :                 }
+<span class="lineNum">     365 </span>                :<span class="lineCov">       5280 :               p += n;</span>
+<span class="lineNum">     366 </span>                :<span class="lineCov">       5280 :               bytes_read -= n;</span>
+<span class="lineNum">     367 </span>                :<span class="lineCov">       5280 :               chars++;</span>
+<span class="lineNum">     368 </span>  [<span class="branchCov" title="Branch 0 was taken 720 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">       5280 :               switch (wide_char)</span>
+<span class="lineNum">         </span>         <span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 4560 times"> + </span>]
+<span class="lineNum">     369 </span>                :            :                 {
+<span class="lineNum">     370 </span>                :            :                 case '\n':
+<span class="lineNum">     371 </span>                :<span class="lineCov">        720 :                   lines++;</span>
+<span class="lineNum">     372 </span>                :            :                   /* Fall through. */
+<span class="lineNum">     373 </span>                :            :                 case '\r':
+<span class="lineNum">     374 </span>                :            :                 case '\f':
+<span class="lineNum">     375 </span>        [<span class="branchCov" title="Branch 0 was taken 720 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        720 :                   if (linepos &gt; linelength)</span>
+<span class="lineNum">     376 </span>                :<span class="lineCov">        720 :                     linelength = linepos;</span>
+<span class="lineNum">     377 </span>                :<span class="lineCov">        720 :                   linepos = 0;</span>
+<span class="lineNum">     378 </span>                :<span class="lineCov">        720 :                   goto mb_word_separator;</span>
+<span class="lineNum">     379 </span>                :            :                 case '\t':
+<span class="lineNum">     380 </span>                :<span class="lineNoCov">          0 :                   linepos += 8 - (linepos % 8);</span>
+<span class="lineNum">     381 </span>                :<span class="lineNoCov">          0 :                   goto mb_word_separator;</span>
+<span class="lineNum">     382 </span>                :            :                 case ' ':
+<span class="lineNum">     383 </span>                :<span class="lineNoCov">          0 :                   linepos++;</span>
+<span class="lineNum">     384 </span>                :            :                   /* Fall through. */
+<span class="lineNum">     385 </span>                :            :                 case '\v':
+<span class="lineNum">     386 </span>                :            :                 mb_word_separator:
+<span class="lineNum">     387 </span>                :<span class="lineCov">        720 :                   words += in_word;</span>
+<span class="lineNum">     388 </span>                :<span class="lineCov">        720 :                   in_word = false;</span>
+<span class="lineNum">     389 </span>                :<span class="lineCov">        720 :                   break;</span>
+<span class="lineNum">     390 </span>                :            :                 default:
+<span class="lineNum">     391 </span>        [<span class="branchCov" title="Branch 0 was taken 4560 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       4560 :                   if (iswprint (wide_char))</span>
+<span class="lineNum">     392 </span>                :            :                     {
+<span class="lineNum">     393 </span>                :<span class="lineCov">       4560 :                       int width = wcwidth (wide_char);</span>
+<span class="lineNum">     394 </span>        [<span class="branchCov" title="Branch 0 was taken 4560 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       4560 :                       if (width &gt; 0)</span>
+<span class="lineNum">     395 </span>                :<span class="lineCov">       4560 :                         linepos += width;</span>
+<span class="lineNum">     396 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4560 times"> + </span>]:<span class="lineCov">       4560 :                       if (iswspace (wide_char))</span>
+<span class="lineNum">     397 </span>                :<span class="lineNoCov">          0 :                         goto mb_word_separator;</span>
+<span class="lineNum">     398 </span>                :<span class="lineCov">       4560 :                       in_word = true;</span>
+<span class="lineNum">     399 </span>                :            :                     }
+<span class="lineNum">     400 </span>                :<span class="lineCov">       4560 :                   break;</span>
+<span class="lineNum">     401 </span>                :            :                 }
+<span class="lineNum">     402 </span>                :            :             }
+<span class="lineNum">     403 </span>        [<span class="branchCov" title="Branch 0 was taken 4560 times"> + </span><span class="branchCov" title="Branch 1 was taken 720 times"> + </span>]:<span class="lineCov">       5280 :           while (bytes_read &gt; 0);</span>
+<span class="lineNum">     404 </span>                :            : 
+<span class="lineNum">     405 </span>                :            : # if SUPPORT_OLD_MBRTOWC
+<span class="lineNum">     406 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 720 times"> + </span>]:<span class="lineCov">        720 :           if (bytes_read &gt; 0)</span>
+<span class="lineNum">     407 </span>                :            :             {
+<span class="lineNum">     408 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               if (bytes_read == BUFFER_SIZE)</span>
+<span class="lineNum">     409 </span>                :            :                 {
+<span class="lineNum">     410 </span>                :            :                   /* Encountered a very long redundant shift sequence.  */
+<span class="lineNum">     411 </span>                :<span class="lineNoCov">          0 :                   p++;</span>
+<span class="lineNum">     412 </span>                :<span class="lineNoCov">          0 :                   bytes_read--;</span>
+<span class="lineNum">     413 </span>                :            :                 }
+<span class="lineNum">     414 </span>                :<span class="lineNoCov">          0 :               memmove (buf, p, bytes_read);</span>
+<span class="lineNum">     415 </span>                :            :             }
+<span class="lineNum">     416 </span>                :<span class="lineCov">        720 :           prev = bytes_read;</span>
+<span class="lineNum">     417 </span>                :            : # endif
+<span class="lineNum">     418 </span>                :            :         }
+<span class="lineNum">     419 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 720 times"> + </span>]:<span class="lineCov">        720 :       if (linepos &gt; linelength)</span>
+<span class="lineNum">     420 </span>                :<span class="lineNoCov">          0 :         linelength = linepos;</span>
+<span class="lineNum">     421 </span>                :<span class="lineCov">        720 :       words += in_word;</span>
+<span class="lineNum">     422 </span>                :            :     }
+<span class="lineNum">     423 </span>                :            : #endif
+<span class="lineNum">     424 </span>                :            :   else
+<span class="lineNum">     425 </span>                :            :     {
+<span class="lineNum">     426 </span>                :<span class="lineCov">      31057 :       bool in_word = false;</span>
+<span class="lineNum">     427 </span>                :<span class="lineCov">      31057 :       uintmax_t linepos = 0;</span>
+<span class="lineNum">     428 </span>                :            : 
+<span class="lineNum">     429 </span>        [<span class="branchCov" title="Branch 1 was taken 1012 times"> + </span><span class="branchCov" title="Branch 2 was taken 31057 times"> + </span>]:<span class="lineCov">      32069 :       while ((bytes_read = safe_read (fd, buf, BUFFER_SIZE)) &gt; 0)</span>
+<span class="lineNum">     430 </span>                :            :         {
+<span class="lineNum">     431 </span>                :<span class="lineCov">       1012 :           const char *p = buf;</span>
+<span class="lineNum">     432 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1012 times"> + </span>]:<span class="lineCov">       1012 :           if (bytes_read == SAFE_READ_ERROR)</span>
+<span class="lineNum">     433 </span>                :            :             {
+<span class="lineNum">     434 </span>                :<span class="lineNoCov">          0 :               error (0, errno, &quot;%s&quot;, file);</span>
+<span class="lineNum">     435 </span>                :<span class="lineNoCov">          0 :               ok = false;</span>
+<span class="lineNum">     436 </span>                :<span class="lineNoCov">          0 :               break;</span>
+<span class="lineNum">     437 </span>                :            :             }
+<span class="lineNum">     438 </span>                :            : 
+<span class="lineNum">     439 </span>                :<span class="lineCov">       1012 :           bytes += bytes_read;</span>
+<span class="lineNum">     440 </span>                :            :           do
+<span class="lineNum">     441 </span>                :            :             {
+<span class="lineNum">     442 </span>  [<span class="branchCov" title="Branch 0 was taken 1027 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 27 times"> + </span> :<span class="lineCov">       7503 :               switch (*p++)</span>
+<span class="lineNum">         </span>         <span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 6449 times"> + </span>]
+<span class="lineNum">     443 </span>                :            :                 {
+<span class="lineNum">     444 </span>                :            :                 case '\n':
+<span class="lineNum">     445 </span>                :<span class="lineCov">       1027 :                   lines++;</span>
+<span class="lineNum">     446 </span>                :            :                   /* Fall through. */
+<span class="lineNum">     447 </span>                :            :                 case '\r':
+<span class="lineNum">     448 </span>                :            :                 case '\f':
+<span class="lineNum">     449 </span>        [<span class="branchCov" title="Branch 0 was taken 1012 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">       1027 :                   if (linepos &gt; linelength)</span>
+<span class="lineNum">     450 </span>                :<span class="lineCov">       1012 :                     linelength = linepos;</span>
+<span class="lineNum">     451 </span>                :<span class="lineCov">       1027 :                   linepos = 0;</span>
+<span class="lineNum">     452 </span>                :<span class="lineCov">       1027 :                   goto word_separator;</span>
+<span class="lineNum">     453 </span>                :            :                 case '\t':
+<span class="lineNum">     454 </span>                :<span class="lineNoCov">          0 :                   linepos += 8 - (linepos % 8);</span>
+<span class="lineNum">     455 </span>                :<span class="lineNoCov">          0 :                   goto word_separator;</span>
+<span class="lineNum">     456 </span>                :            :                 case ' ':
+<span class="lineNum">     457 </span>                :<span class="lineCov">         27 :                   linepos++;</span>
+<span class="lineNum">     458 </span>                :            :                   /* Fall through. */
+<span class="lineNum">     459 </span>                :            :                 case '\v':
+<span class="lineNum">     460 </span>                :            :                 word_separator:
+<span class="lineNum">     461 </span>                :<span class="lineCov">       1054 :                   words += in_word;</span>
+<span class="lineNum">     462 </span>                :<span class="lineCov">       1054 :                   in_word = false;</span>
+<span class="lineNum">     463 </span>                :<span class="lineCov">       1054 :                   break;</span>
+<span class="lineNum">     464 </span>                :            :                 default:
+<span class="lineNum">     465 </span>        [<span class="branchCov" title="Branch 2 was taken 6449 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       6449 :                   if (isprint (to_uchar (p[-1])))</span>
+<span class="lineNum">     466 </span>                :            :                     {
+<span class="lineNum">     467 </span>                :<span class="lineCov">       6449 :                       linepos++;</span>
+<span class="lineNum">     468 </span>        [<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 6449 times"> + </span>]:<span class="lineCov">       6449 :                       if (isspace (to_uchar (p[-1])))</span>
+<span class="lineNum">     469 </span>                :<span class="lineNoCov">          0 :                         goto word_separator;</span>
+<span class="lineNum">     470 </span>                :<span class="lineCov">       6449 :                       in_word = true;</span>
+<span class="lineNum">     471 </span>                :            :                     }
+<span class="lineNum">     472 </span>                :<span class="lineCov">       6449 :                   break;</span>
+<span class="lineNum">     473 </span>                :            :                 }
+<span class="lineNum">     474 </span>                :            :             }
+<span class="lineNum">     475 </span>        [<span class="branchCov" title="Branch 0 was taken 6491 times"> + </span><span class="branchCov" title="Branch 1 was taken 1012 times"> + </span>]:<span class="lineCov">       7503 :           while (--bytes_read);</span>
+<span class="lineNum">     476 </span>                :            :         }
+<span class="lineNum">     477 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 31047 times"> + </span>]:<span class="lineCov">      31057 :       if (linepos &gt; linelength)</span>
+<span class="lineNum">     478 </span>                :<span class="lineCov">         10 :         linelength = linepos;</span>
+<span class="lineNum">     479 </span>                :<span class="lineCov">      31057 :       words += in_word;</span>
+<span class="lineNum">     480 </span>                :            :     }
+<span class="lineNum">     481 </span>                :            : 
+<span class="lineNum">     482 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 38596 times"> + </span>]:<span class="lineCov">      38596 :   if (count_chars &lt; print_chars)</span>
+<span class="lineNum">     483 </span>                :<span class="lineNoCov">          0 :     chars = bytes;</span>
+<span class="lineNum">     484 </span>                :            : 
+<span class="lineNum">     485 </span>                :<span class="lineCov">      38596 :   write_counts (lines, words, chars, bytes, linelength, file_x);</span>
+<span class="lineNum">     486 </span>                :<span class="lineCov">      38596 :   total_lines += lines;</span>
+<span class="lineNum">     487 </span>                :<span class="lineCov">      38596 :   total_words += words;</span>
+<span class="lineNum">     488 </span>                :<span class="lineCov">      38596 :   total_chars += chars;</span>
+<span class="lineNum">     489 </span>                :<span class="lineCov">      38596 :   total_bytes += bytes;</span>
+<span class="lineNum">     490 </span>        [<span class="branchCov" title="Branch 0 was taken 1732 times"> + </span><span class="branchCov" title="Branch 1 was taken 36864 times"> + </span>]:<span class="lineCov">      38596 :   if (linelength &gt; max_line_length)</span>
+<span class="lineNum">     491 </span>                :<span class="lineCov">       1732 :     max_line_length = linelength;</span>
+<span class="lineNum">     492 </span>                :            : 
+<span class="lineNum">     493 </span>                :<span class="lineCov">      38596 :   return ok;</span>
+<span class="lineNum">     494 </span>                :            : }
+<a name="495"><span class="lineNum">     495 </span>                :            : </a>
+<span class="lineNum">     496 </span>                :            : static bool
+<span class="lineNum">     497 </span>                :<span class="lineCov">      38596 : wc_file (char const *file, struct fstatus *fstatus)</span>
+<span class="lineNum">     498 </span>                :            : {
+<span class="lineNum">     499 </span>[<span class="branchCov" title="Branch 0 was taken 30045 times"> + </span><span class="branchCov" title="Branch 1 was taken 8551 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 30045 times"> + </span>]:<span class="lineCov">      38596 :   if (! file || STREQ (file, &quot;-&quot;))</span>
+<span class="lineNum">     500 </span>                :            :     {
+<span class="lineNum">     501 </span>                :<span class="lineCov">       8551 :       have_read_stdin = true;</span>
+<span class="lineNum">     502 </span>                :            :       if (O_BINARY &amp;&amp; ! isatty (STDIN_FILENO))
+<span class="lineNum">     503 </span>                :            :         xfreopen (NULL, &quot;rb&quot;, stdin);
+<span class="lineNum">     504 </span>                :<span class="lineCov">       8551 :       return wc (STDIN_FILENO, file, fstatus);</span>
+<span class="lineNum">     505 </span>                :            :     }
+<span class="lineNum">     506 </span>                :            :   else
+<span class="lineNum">     507 </span>                :            :     {
+<span class="lineNum">     508 </span>                :<span class="lineCov">      30045 :       int fd = open (file, O_RDONLY | O_BINARY);</span>
+<span class="lineNum">     509 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30045 times"> + </span>]:<span class="lineCov">      30045 :       if (fd == -1)</span>
+<span class="lineNum">     510 </span>                :            :         {
+<span class="lineNum">     511 </span>                :<span class="lineNoCov">          0 :           error (0, errno, &quot;%s&quot;, file);</span>
+<span class="lineNum">     512 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     513 </span>                :            :         }
+<span class="lineNum">     514 </span>                :            :       else
+<span class="lineNum">     515 </span>                :            :         {
+<span class="lineNum">     516 </span>                :<span class="lineCov">      30045 :           bool ok = wc (fd, file, fstatus);</span>
+<span class="lineNum">     517 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 30045 times"> + </span>]:<span class="lineCov">      30045 :           if (close (fd) != 0)</span>
+<span class="lineNum">     518 </span>                :            :             {
+<span class="lineNum">     519 </span>                :<span class="lineNoCov">          0 :               error (0, errno, &quot;%s&quot;, file);</span>
+<span class="lineNum">     520 </span>                :<span class="lineNoCov">          0 :               return false;</span>
+<span class="lineNum">     521 </span>                :            :             }
+<span class="lineNum">     522 </span>                :<span class="lineCov">      38596 :           return ok;</span>
+<span class="lineNum">     523 </span>                :            :         }
+<span class="lineNum">     524 </span>                :            :     }
+<span class="lineNum">     525 </span>                :            : }
+<span class="lineNum">     526 </span>                :            : 
+<span class="lineNum">     527 </span>                :            : /* Return the file status for the NFILES files addressed by FILE.
+<span class="lineNum">     528 </span>                :            :    Optimize the case where only one number is printed, for just one
+<span class="lineNum">     529 </span>                :            :    file; in that case we can use a print width of 1, so we don't need
+<span class="lineNum">     530 </span>                :            :    to stat the file.  Handle the case of (nfiles == 0) in the same way;
+<span class="lineNum">     531 </span>                :            :    that happens when we don't know how long the list of file names will be.  */
+<a name="532"><span class="lineNum">     532 </span>                :            : </a>
+<span class="lineNum">     533 </span>                :            : static struct fstatus *
+<span class="lineNum">     534 </span>                :<span class="lineCov">       8626 : get_input_fstatus (int nfiles, char *const *file)</span>
+<span class="lineNum">     535 </span>                :            : {
+<span class="lineNum">     536 </span>        [<span class="branchCov" title="Branch 0 was taken 8611 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">       8626 :   struct fstatus *fstatus = xnmalloc (nfiles ? nfiles : 1, sizeof *fstatus);</span>
+<span class="lineNum">     537 </span>                :            : 
+<span class="lineNum">     538 </span>        [<span class="branchCov" title="Branch 0 was taken 8611 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">       8626 :   if (nfiles == 0</span>
+<span class="lineNum">     539 </span>        [<span class="branchCov" title="Branch 0 was taken 8571 times"> + </span><span class="branchCov" title="Branch 1 was taken 40 times"> + </span>]:<span class="lineCov">       8611 :       || (nfiles == 1</span>
+<span class="lineNum">     540 </span>        [<span class="branchCov" title="Branch 0 was taken 8534 times"> + </span><span class="branchCov" title="Branch 1 was taken 37 times"> + </span>]:<span class="lineCov">       8571 :           &amp;&amp; ((print_lines + print_words + print_chars</span>
+<span class="lineNum">     541 </span>                :<span class="lineCov">       8571 :                + print_bytes + print_linelength)</span>
+<span class="lineNum">     542 </span>                :            :               == 1)))
+<span class="lineNum">     543 </span>                :<span class="lineCov">       8549 :     fstatus[0].failed = 1;</span>
+<span class="lineNum">     544 </span>                :            :   else
+<span class="lineNum">     545 </span>                :            :     {
+<span class="lineNum">     546 </span>                :            :       int i;
+<span class="lineNum">     547 </span>                :            : 
+<span class="lineNum">     548 </span>        [<span class="branchCov" title="Branch 0 was taken 30087 times"> + </span><span class="branchCov" title="Branch 1 was taken 77 times"> + </span>]:<span class="lineCov">      30164 :       for (i = 0; i &lt; nfiles; i++)</span>
+<span class="lineNum">     549 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 30065 times"> + </span>]:<span class="lineCov">      30070 :         fstatus[i].failed = (! file[i] || STREQ (file[i], &quot;-&quot;)</span>
+<span class="lineNum">     550 </span>                :<span class="lineCov">         22 :                              ? fstat (STDIN_FILENO, &amp;fstatus[i].st)</span>
+<span class="lineNum">     551 </span>        [<span class="branchCov" title="Branch 0 was taken 30070 times"> + </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">      60157 :                              : stat (file[i], &amp;fstatus[i].st));</span>
+<span class="lineNum">     552 </span>                :            :     }
+<span class="lineNum">     553 </span>                :            : 
+<span class="lineNum">     554 </span>                :<span class="lineCov">       8626 :   return fstatus;</span>
+<span class="lineNum">     555 </span>                :            : }
+<span class="lineNum">     556 </span>                :            : 
+<span class="lineNum">     557 </span>                :            : /* Return a print width suitable for the NFILES files whose status is
+<span class="lineNum">     558 </span>                :            :    recorded in FSTATUS.  Optimize the same special case that
+<span class="lineNum">     559 </span>                :            :    get_input_fstatus optimizes.  */
+<a name="560"><span class="lineNum">     560 </span>                :            : </a>
+<span class="lineNum">     561 </span>                :            : static int _GL_ATTRIBUTE_PURE
+<span class="lineNum">     562 </span>                :<span class="lineCov">       8626 : compute_number_width (int nfiles, struct fstatus const *fstatus)</span>
+<span class="lineNum">     563 </span>                :            : {
+<span class="lineNum">     564 </span>                :<span class="lineCov">       8626 :   int width = 1;</span>
+<span class="lineNum">     565 </span>                :            : 
+<span class="lineNum">     566 </span>[<span class="branchCov" title="Branch 0 was taken 8611 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 77 times"> + </span><span class="branchCov" title="Branch 3 was taken 8534 times"> + </span>]:<span class="lineCov">       8626 :   if (0 &lt; nfiles &amp;&amp; fstatus[0].failed &lt;= 0)</span>
+<span class="lineNum">     567 </span>                :            :     {
+<span class="lineNum">     568 </span>                :<span class="lineCov">         77 :       int minimum_width = 1;</span>
+<span class="lineNum">     569 </span>                :<span class="lineCov">         77 :       uintmax_t regular_total = 0;</span>
+<span class="lineNum">     570 </span>                :            :       int i;
+<span class="lineNum">     571 </span>                :            : 
+<span class="lineNum">     572 </span>        [<span class="branchCov" title="Branch 0 was taken 30087 times"> + </span><span class="branchCov" title="Branch 1 was taken 77 times"> + </span>]:<span class="lineCov">      30164 :       for (i = 0; i &lt; nfiles; i++)</span>
+<span class="lineNum">     573 </span>        [<span class="branchCov" title="Branch 0 was taken 30062 times"> + </span><span class="branchCov" title="Branch 1 was taken 25 times"> + </span>]:<span class="lineCov">      30087 :         if (! fstatus[i].failed)</span>
+<span class="lineNum">     574 </span>                :            :           {
+<span class="lineNum">     575 </span>        [<span class="branchCov" title="Branch 0 was taken 30050 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">      30062 :             if (S_ISREG (fstatus[i].st.st_mode))</span>
+<span class="lineNum">     576 </span>                :<span class="lineCov">      30050 :               regular_total += fstatus[i].st.st_size;</span>
+<span class="lineNum">     577 </span>                :            :             else
+<span class="lineNum">     578 </span>                :<span class="lineCov">         12 :               minimum_width = 7;</span>
+<span class="lineNum">     579 </span>                :            :           }
+<span class="lineNum">     580 </span>                :            : 
+<span class="lineNum">     581 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 77 times"> + </span>]:<span class="lineCov">         87 :       for (; 10 &lt;= regular_total; regular_total /= 10)</span>
+<span class="lineNum">     582 </span>                :<span class="lineCov">         10 :         width++;</span>
+<span class="lineNum">     583 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 65 times"> + </span>]:<span class="lineCov">         77 :       if (width &lt; minimum_width)</span>
+<span class="lineNum">     584 </span>                :<span class="lineCov">         12 :         width = minimum_width;</span>
+<span class="lineNum">     585 </span>                :            :     }
+<span class="lineNum">     586 </span>                :            : 
+<span class="lineNum">     587 </span>                :<span class="lineCov">       8626 :   return width;</span>
+<span class="lineNum">     588 </span>                :            : }
+<span class="lineNum">     589 </span>                :            : 
+<a name="590"><span class="lineNum">     590 </span>                :            : </a>
+<span class="lineNum">     591 </span>                :            : int
+<span class="lineNum">     592 </span>                :<span class="lineCov">       8696 : main (int argc, char **argv)</span>
+<span class="lineNum">     593 </span>                :            : {
+<span class="lineNum">     594 </span>                :            :   bool ok;
+<span class="lineNum">     595 </span>                :            :   int optc;
+<span class="lineNum">     596 </span>                :            :   int nfiles;
+<span class="lineNum">     597 </span>                :            :   char **files;
+<span class="lineNum">     598 </span>                :<span class="lineCov">       8696 :   char *files_from = NULL;</span>
+<span class="lineNum">     599 </span>                :            :   struct fstatus *fstatus;
+<span class="lineNum">     600 </span>                :            :   struct Tokens tok;
+<span class="lineNum">     601 </span>                :            : 
+<span class="lineNum">     602 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     603 </span>                :<span class="lineCov">       8696 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     604 </span>                :<span class="lineCov">       8696 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     605 </span>                :<span class="lineCov">       8696 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     606 </span>                :<span class="lineCov">       8696 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     607 </span>                :            : 
+<span class="lineNum">     608 </span>                :<span class="lineCov">       8696 :   atexit (close_stdout);</span>
+<span class="lineNum">     609 </span>                :            : 
+<span class="lineNum">     610 </span>                :            :   /* Line buffer stdout to ensure lines are written atomically and immediately
+<span class="lineNum">     611 </span>                :            :      so that processes running in parallel do not intersperse their output.  */
+<span class="lineNum">     612 </span>                :<span class="lineCov">       8696 :   setvbuf (stdout, NULL, _IOLBF, 0);</span>
+<span class="lineNum">     613 </span>                :            : 
+<span class="lineNum">     614 </span>                :<span class="lineCov">       8696 :   print_lines = print_words = print_chars = print_bytes = false;</span>
+<span class="lineNum">     615 </span>                :<span class="lineCov">       8696 :   print_linelength = false;</span>
+<span class="lineNum">     616 </span>                :<span class="lineCov">       8696 :   total_lines = total_words = total_chars = total_bytes = max_line_length = 0;</span>
+<span class="lineNum">     617 </span>                :            : 
+<span class="lineNum">     618 </span>        [<span class="branchCov" title="Branch 1 was taken 8664 times"> + </span><span class="branchCov" title="Branch 2 was taken 8636 times"> + </span>]:<span class="lineCov">      17300 :   while ((optc = getopt_long (argc, argv, &quot;clLmw&quot;, longopts, NULL)) != -1)</span>
+<span class="lineNum">     619 </span>  [<span class="branchCov" title="Branch 0 was taken 4435 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2384 times"> + </span><span class="branchCov" title="Branch 3 was taken 20 times"> + </span> :<span class="lineCov">       8664 :     switch (optc)</span>
+<span class="lineNum">         </span>   <span class="branchCov" title="Branch 4 was taken 1695 times"> + </span><span class="branchCov" title="Branch 5 was taken 70 times"> + </span><span class="branchCov" title="Branch 6 was taken 15 times"> + </span><span class="branchCov" title="Branch 7 was taken 40 times"> + </span> 
+<span class="lineNum">         </span>            <span class="branchCov" title="Branch 8 was taken 5 times"> + </span>]
+<span class="lineNum">     620 </span>                :            :       {
+<span class="lineNum">     621 </span>                :            :       case 'c':
+<span class="lineNum">     622 </span>                :<span class="lineCov">       4435 :         print_bytes = true;</span>
+<span class="lineNum">     623 </span>                :<span class="lineCov">       4435 :         break;</span>
+<span class="lineNum">     624 </span>                :            : 
+<span class="lineNum">     625 </span>                :            :       case 'm':
+<span class="lineNum">     626 </span>                :<span class="lineNoCov">          0 :         print_chars = true;</span>
+<span class="lineNum">     627 </span>                :<span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     628 </span>                :            : 
+<span class="lineNum">     629 </span>                :            :       case 'l':
+<span class="lineNum">     630 </span>                :<span class="lineCov">       2384 :         print_lines = true;</span>
+<span class="lineNum">     631 </span>                :<span class="lineCov">       2384 :         break;</span>
+<span class="lineNum">     632 </span>                :            : 
+<span class="lineNum">     633 </span>                :            :       case 'w':
+<span class="lineNum">     634 </span>                :<span class="lineCov">         20 :         print_words = true;</span>
+<span class="lineNum">     635 </span>                :<span class="lineCov">         20 :         break;</span>
+<span class="lineNum">     636 </span>                :            : 
+<span class="lineNum">     637 </span>                :            :       case 'L':
+<span class="lineNum">     638 </span>                :<span class="lineCov">       1695 :         print_linelength = true;</span>
+<span class="lineNum">     639 </span>                :<span class="lineCov">       1695 :         break;</span>
+<span class="lineNum">     640 </span>                :            : 
+<span class="lineNum">     641 </span>                :            :       case FILES0_FROM_OPTION:
+<span class="lineNum">     642 </span>                :<span class="lineCov">         70 :         files_from = optarg;</span>
+<span class="lineNum">     643 </span>                :<span class="lineCov">         70 :         break;</span>
+<span class="lineNum">     644 </span>                :            : 
+<span class="lineNum">     645 </span>                :<span class="lineCov">         15 :       case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     646 </span>                :            : 
+<span class="lineNum">     647 </span>                :<span class="lineCov">         40 :       case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     648 </span>                :            : 
+<span class="lineNum">     649 </span>                :            :       default:
+<span class="lineNum">     650 </span>                :<span class="lineCov">          5 :         usage (EXIT_FAILURE);</span>
+<span class="lineNum">     651 </span>                :            :       }
+<span class="lineNum">     652 </span>                :            : 
+<span class="lineNum">     653 </span>[<span class="branchCov" title="Branch 0 was taken 6252 times"> + </span><span class="branchCov" title="Branch 1 was taken 2384 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 6232 times"> + </span><span class="branchCov" title="Branch 3 was taken 20 times"> + </span>]:<span class="lineCov">       8636 :   if (! (print_lines || print_words || print_chars || print_bytes</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 6232 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>][<span class="branchCov" title="Branch 6 was taken 1797 times"> + </span><span class="branchCov" title="Branch 7 was taken 4435 times"> + </span>]
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 102 times"> + </span><span class="branchCov" title="Branch 9 was taken 1695 times"> + </span>]
+<span class="lineNum">     654 </span>                :<span class="lineCov">       1797 :          || print_linelength))</span>
+<span class="lineNum">     655 </span>                :<span class="lineCov">        102 :     print_lines = print_words = print_bytes = true;</span>
+<span class="lineNum">     656 </span>                :            : 
+<span class="lineNum">     657 </span>                :<span class="lineCov">       8636 :   bool read_tokens = false;</span>
+<span class="lineNum">     658 </span>                :            :   struct argv_iterator *ai;
+<span class="lineNum">     659 </span>        [<span class="branchCov" title="Branch 0 was taken 70 times"> + </span><span class="branchCov" title="Branch 1 was taken 8566 times"> + </span>]:<span class="lineCov">       8636 :   if (files_from)</span>
+<span class="lineNum">     660 </span>                :            :     {
+<span class="lineNum">     661 </span>                :            :       FILE *stream;
+<span class="lineNum">     662 </span>                :            : 
+<span class="lineNum">     663 </span>                :            :       /* When using --files0-from=F, you may not specify any files
+<span class="lineNum">     664 </span>                :            :          on the command-line.  */
+<span class="lineNum">     665 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 65 times"> + </span>]:<span class="lineCov">         70 :       if (optind &lt; argc)</span>
+<span class="lineNum">     666 </span>                :            :         {
+<span class="lineNum">     667 </span>                :<span class="lineCov">          5 :           error (0, 0, _(&quot;extra operand %s&quot;), quote (argv[optind]));</span>
+<span class="lineNum">     668 </span>                :<span class="lineCov">          5 :           fprintf (stderr, &quot;%s\n&quot;,</span>
+<span class="lineNum">     669 </span>                :            :                    _(&quot;file operands cannot be combined with --files0-from&quot;));
+<span class="lineNum">     670 </span>                :<span class="lineCov">          5 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     671 </span>                :            :         }
+<span class="lineNum">     672 </span>                :            : 
+<span class="lineNum">     673 </span>        [<span class="branchCov" title="Branch 0 was taken 40 times"> + </span><span class="branchCov" title="Branch 1 was taken 25 times"> + </span>]:<span class="lineCov">         65 :       if (STREQ (files_from, &quot;-&quot;))</span>
+<span class="lineNum">     674 </span>                :<span class="lineCov">         40 :         stream = stdin;</span>
+<span class="lineNum">     675 </span>                :            :       else
+<span class="lineNum">     676 </span>                :            :         {
+<span class="lineNum">     677 </span>                :<span class="lineCov">         25 :           stream = fopen (files_from, &quot;r&quot;);</span>
+<span class="lineNum">     678 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         25 :           if (stream == NULL)</span>
+<span class="lineNum">     679 </span>                :<span class="lineCov">          5 :             error (EXIT_FAILURE, errno, _(&quot;cannot open %s for reading&quot;),</span>
+<span class="lineNum">     680 </span>                :            :                    quote (files_from));
+<span class="lineNum">     681 </span>                :            :         }
+<span class="lineNum">     682 </span>                :            : 
+<span class="lineNum">     683 </span>                :            :       /* Read the file list into RAM if we can detect its size and that
+<span class="lineNum">     684 </span>                :            :          size is reasonable.  Otherwise, we'll read a name at a time.  */
+<span class="lineNum">     685 </span>                :            :       struct stat st;
+<span class="lineNum">     686 </span>        [<span class="branchCov" title="Branch 2 was taken 60 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         60 :       if (fstat (fileno (stream), &amp;st) == 0</span>
+<span class="lineNum">     687 </span>        [<span class="branchCov" title="Branch 0 was taken 50 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         60 :           &amp;&amp; S_ISREG (st.st_mode)</span>
+<span class="lineNum">     688 </span>[<span class="branchCov" title="Branch 1 was taken 50 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 4 was taken 50 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]:<span class="lineCov">         50 :           &amp;&amp; st.st_size &lt;= MIN (10 * 1024 * 1024, physmem_available () / 2))</span>
+<span class="lineNum">     689 </span>                :            :         {
+<span class="lineNum">     690 </span>                :<span class="lineCov">         50 :           read_tokens = true;</span>
+<span class="lineNum">     691 </span>                :<span class="lineCov">         50 :           readtokens0_init (&amp;tok);</span>
+<span class="lineNum">     692 </span>[<span class="branchCov" title="Branch 1 was taken 50 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 50 times"> + </span>]:<span class="lineCov">         50 :           if (! readtokens0 (stream, &amp;tok) || fclose (stream) != 0)</span>
+<span class="lineNum">     693 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0, _(&quot;cannot read file names from %s&quot;),</span>
+<span class="lineNum">     694 </span>                :            :                    quote (files_from));
+<span class="lineNum">     695 </span>                :<span class="lineCov">         50 :           files = tok.tok;</span>
+<span class="lineNum">     696 </span>                :<span class="lineCov">         50 :           nfiles = tok.n_tok;</span>
+<span class="lineNum">     697 </span>                :<span class="lineCov">         50 :           ai = argv_iter_init_argv (files);</span>
+<span class="lineNum">     698 </span>                :            :         }
+<span class="lineNum">     699 </span>                :            :       else
+<span class="lineNum">     700 </span>                :            :         {
+<span class="lineNum">     701 </span>                :<span class="lineCov">         10 :           files = NULL;</span>
+<span class="lineNum">     702 </span>                :<span class="lineCov">         10 :           nfiles = 0;</span>
+<span class="lineNum">     703 </span>                :<span class="lineCov">         60 :           ai = argv_iter_init_stream (stream);</span>
+<span class="lineNum">     704 </span>                :            :         }
+<span class="lineNum">     705 </span>                :            :     }
+<span class="lineNum">     706 </span>                :            :   else
+<span class="lineNum">     707 </span>                :            :     {
+<span class="lineNum">     708 </span>                :            :       static char *stdin_only[] = { NULL };
+<span class="lineNum">     709 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 8551 times"> + </span>]:<span class="lineCov">       8566 :       files = (optind &lt; argc ? argv + optind : stdin_only);</span>
+<span class="lineNum">     710 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 8551 times"> + </span>]:<span class="lineCov">       8566 :       nfiles = (optind &lt; argc ? argc - optind : 1);</span>
+<span class="lineNum">     711 </span>                :<span class="lineCov">       8566 :       ai = argv_iter_init_argv (files);</span>
+<span class="lineNum">     712 </span>                :            :     }
+<span class="lineNum">     713 </span>                :            : 
+<span class="lineNum">     714 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8626 times"> + </span>]:<span class="lineCov">       8626 :   if (!ai)</span>
+<span class="lineNum">     715 </span>                :<span class="lineNoCov">          0 :     xalloc_die ();</span>
+<span class="lineNum">     716 </span>                :            : 
+<span class="lineNum">     717 </span>                :<span class="lineCov">       8626 :   fstatus = get_input_fstatus (nfiles, files);</span>
+<span class="lineNum">     718 </span>                :<span class="lineCov">       8626 :   number_width = compute_number_width (nfiles, fstatus);</span>
+<span class="lineNum">     719 </span>                :            : 
+<span class="lineNum">     720 </span>                :            :   int i;
+<span class="lineNum">     721 </span>                :<span class="lineCov">       8626 :   ok = true;</span>
+<span class="lineNum">     722 </span>                :<span class="lineCov">       8626 :   for (i = 0; /* */; i++)</span>
+<span class="lineNum">     723 </span>                :            :     {
+<span class="lineNum">     724 </span>                :<span class="lineCov">      38696 :       bool skip_file = false;</span>
+<span class="lineNum">     725 </span>                :            :       enum argv_iter_err ai_err;
+<span class="lineNum">     726 </span>                :<span class="lineCov">      38696 :       char *file_name = argv_iter (ai, &amp;ai_err);</span>
+<span class="lineNum">     727 </span>        [<span class="branchCov" title="Branch 0 was taken 8626 times"> + </span><span class="branchCov" title="Branch 1 was taken 30070 times"> + </span>]:<span class="lineCov">      38696 :       if (!file_name)</span>
+<span class="lineNum">     728 </span>                :            :         {
+<span class="lineNum">     729 </span>  [<span class="branchCov" title="Branch 0 was taken 8621 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       8626 :           switch (ai_err)</span>
+<span class="lineNum">     730 </span>                :            :             {
+<span class="lineNum">     731 </span>                :            :             case AI_ERR_EOF:
+<span class="lineNum">     732 </span>                :<span class="lineCov">       8621 :               goto argv_iter_done;</span>
+<span class="lineNum">     733 </span>                :            :             case AI_ERR_READ:
+<span class="lineNum">     734 </span>                :<span class="lineCov">          5 :               error (0, errno, _(&quot;%s: read error&quot;),</span>
+<span class="lineNum">     735 </span>                :            :                      quotearg_colon (files_from));
+<span class="lineNum">     736 </span>                :<span class="lineCov">          5 :               ok = false;</span>
+<span class="lineNum">     737 </span>                :<span class="lineCov">          5 :               goto argv_iter_done;</span>
+<span class="lineNum">     738 </span>                :            :             case AI_ERR_MEM:
+<span class="lineNum">     739 </span>                :<span class="lineNoCov">          0 :               xalloc_die ();</span>
+<span class="lineNum">     740 </span>                :            :             default:
+<span class="lineNum">     741 </span>                :<span class="lineNoCov">          0 :               assert (!&quot;unexpected error code from argv_iter&quot;);</span>
+<span class="lineNum">     742 </span>                :            :             }
+<span class="lineNum">     743 </span>                :            :         }
+<span class="lineNum">     744 </span>[<span class="branchCov" title="Branch 0 was taken 70 times"> + </span><span class="branchCov" title="Branch 1 was taken 30000 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 60 times"> + </span><span class="branchCov" title="Branch 3 was taken 10 times"> + </span>]:<span class="lineCov">      30070 :       if (files_from &amp;&amp; STREQ (files_from, &quot;-&quot;) &amp;&amp; STREQ (file_name, &quot;-&quot;))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 5 times"> + </span><span class="branchCov" title="Branch 5 was taken 55 times"> + </span>]
+<span class="lineNum">     745 </span>                :            :         {
+<span class="lineNum">     746 </span>                :            :           /* Give a better diagnostic in an unusual case:
+<span class="lineNum">     747 </span>                :            :              printf - | wc --files0-from=- */
+<span class="lineNum">     748 </span>                :<span class="lineCov">          5 :           error (0, 0, _(&quot;when reading file names from stdin, &quot;</span>
+<span class="lineNum">     749 </span>                :            :                          &quot;no file name of %s allowed&quot;),
+<span class="lineNum">     750 </span>                :            :                  quote (file_name));
+<span class="lineNum">     751 </span>                :<span class="lineCov">          5 :           skip_file = true;</span>
+<span class="lineNum">     752 </span>                :            :         }
+<span class="lineNum">     753 </span>                :            : 
+<span class="lineNum">     754 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 30050 times"> + </span>]:<span class="lineCov">      30070 :       if (!file_name[0])</span>
+<span class="lineNum">     755 </span>                :            :         {
+<span class="lineNum">     756 </span>                :            :           /* Diagnose a zero-length file name.  When it's one
+<span class="lineNum">     757 </span>                :            :              among many, knowing the record number may help.
+<span class="lineNum">     758 </span>                :            :              FIXME: currently print the record number only with
+<span class="lineNum">     759 </span>                :            :              --files0-from=FILE.  Maybe do it for argv, too?  */
+<span class="lineNum">     760 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :           if (files_from == NULL)</span>
+<span class="lineNum">     761 </span>                :<span class="lineNoCov">          0 :             error (0, 0, &quot;%s&quot;, _(&quot;invalid zero-length file name&quot;));</span>
+<span class="lineNum">     762 </span>                :            :           else
+<span class="lineNum">     763 </span>                :            :             {
+<span class="lineNum">     764 </span>                :            :               /* Using the standard `filename:line-number:' prefix here is
+<span class="lineNum">     765 </span>                :            :                  not totally appropriate, since NUL is the separator, not NL,
+<span class="lineNum">     766 </span>                :            :                  but it might be better than nothing.  */
+<span class="lineNum">     767 </span>                :<span class="lineCov">         20 :               unsigned long int file_number = argv_iter_n_args (ai);</span>
+<span class="lineNum">     768 </span>                :<span class="lineCov">         20 :               error (0, 0, &quot;%s:%lu: %s&quot;, quotearg_colon (files_from),</span>
+<span class="lineNum">     769 </span>                :            :                      file_number, _(&quot;invalid zero-length file name&quot;));
+<span class="lineNum">     770 </span>                :            :             }
+<span class="lineNum">     771 </span>                :<span class="lineCov">         20 :           skip_file = true;</span>
+<span class="lineNum">     772 </span>                :            :         }
+<span class="lineNum">     773 </span>                :            : 
+<span class="lineNum">     774 </span>        [<span class="branchCov" title="Branch 0 was taken 25 times"> + </span><span class="branchCov" title="Branch 1 was taken 30045 times"> + </span>]:<span class="lineCov">      30070 :       if (skip_file)</span>
+<span class="lineNum">     775 </span>                :<span class="lineCov">         25 :         ok = false;</span>
+<span class="lineNum">     776 </span>                :            :       else
+<span class="lineNum">     777 </span>        [<span class="branchCov" title="Branch 0 was taken 30045 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      30045 :         ok &amp;= wc_file (file_name, &amp;fstatus[nfiles ? i : 0]);</span>
+<span class="lineNum">     778 </span>                :<span class="lineCov">      30070 :     }</span>
+<span class="lineNum">     779 </span>                :            :  argv_iter_done:
+<span class="lineNum">     780 </span>                :            : 
+<span class="lineNum">     781 </span>                :            :   /* No arguments on the command line is fine.  That means read from stdin.
+<span class="lineNum">     782 </span>                :            :      However, no arguments on the --files0-from input stream is an error
+<span class="lineNum">     783 </span>                :            :      means don't read anything.  */
+<span class="lineNum">     784 </span>[<span class="branchCov" title="Branch 0 was taken 8601 times"> + </span><span class="branchCov" title="Branch 1 was taken 25 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 8566 times"> + </span><span class="branchCov" title="Branch 3 was taken 35 times"> + </span>]:<span class="lineCov">       8626 :   if (ok &amp;&amp; !files_from &amp;&amp; argv_iter_n_args (ai) == 0)</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 8551 times"> + </span><span class="branchCov" title="Branch 6 was taken 15 times"> + </span>]
+<span class="lineNum">     785 </span>                :<span class="lineCov">       8551 :     ok &amp;= wc_file (NULL, &amp;fstatus[0]);</span>
+<span class="lineNum">     786 </span>                :            : 
+<span class="lineNum">     787 </span>        [<span class="branchCov" title="Branch 0 was taken 50 times"> + </span><span class="branchCov" title="Branch 1 was taken 8576 times"> + </span>]:<span class="lineCov">       8626 :   if (read_tokens)</span>
+<span class="lineNum">     788 </span>                :<span class="lineCov">         50 :     readtokens0_free (&amp;tok);</span>
+<span class="lineNum">     789 </span>                :            : 
+<span class="lineNum">     790 </span>        [<span class="branchCov" title="Branch 1 was taken 40 times"> + </span><span class="branchCov" title="Branch 2 was taken 8586 times"> + </span>]:<span class="lineCov">       8626 :   if (1 &lt; argv_iter_n_args (ai))</span>
+<span class="lineNum">     791 </span>                :<span class="lineCov">         40 :     write_counts (total_lines, total_words, total_chars, total_bytes,</span>
+<span class="lineNum">     792 </span>                :<span class="lineCov">         40 :                   max_line_length, _(&quot;total&quot;));</span>
+<span class="lineNum">     793 </span>                :            : 
+<span class="lineNum">     794 </span>                :<span class="lineCov">       8626 :   argv_iter_free (ai);</span>
+<span class="lineNum">     795 </span>                :            : 
+<span class="lineNum">     796 </span>                :<span class="lineCov">       8626 :   free (fstatus);</span>
+<span class="lineNum">     797 </span>                :            : 
+<span class="lineNum">     798 </span>[<span class="branchCov" title="Branch 0 was taken 8551 times"> + </span><span class="branchCov" title="Branch 1 was taken 75 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 8551 times"> + </span>]:<span class="lineCov">       8626 :   if (have_read_stdin &amp;&amp; close (STDIN_FILENO) != 0)</span>
+<span class="lineNum">     799 </span>                :<span class="lineNoCov">          0 :     error (EXIT_FAILURE, errno, &quot;-&quot;);</span>
+<span class="lineNum">     800 </span>                :            : 
+<span class="lineNum">     801 </span>        [<span class="branchCov" title="Branch 0 was taken 8601 times"> + </span><span class="branchCov" title="Branch 1 was taken 25 times"> + </span>]:<span class="lineCov">       8626 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
+<span class="lineNum">     802 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

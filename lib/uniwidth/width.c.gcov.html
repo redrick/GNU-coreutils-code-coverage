@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - unnamed - lib/uniwidth/width.c</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">lib/uniwidth</a> - width.c<span style="font-size: 80%;"> (source / <a href="width.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">unnamed</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2011-12-11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">78</td>
+            <td class="headerCovTableEntry">78</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* Determine display width of Unicode character.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2001-2002, 2006-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Written by Bruno Haible &lt;bruno@clisp.org&gt;, 2002.
+<span class="lineNum">       4 </span>                :            : 
+<span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify it
+<span class="lineNum">       6 </span>                :            :    under the terms of the GNU General Public License as published
+<span class="lineNum">       7 </span>                :            :    by the Free Software Foundation; either version 3 of the License, or
+<span class="lineNum">       8 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       9 </span>                :            : 
+<span class="lineNum">      10 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      11 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      12 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<span class="lineNum">      13 </span>                :            :    General Public License for more details.
+<span class="lineNum">      14 </span>                :            : 
+<span class="lineNum">      15 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      16 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      17 </span>                :            : 
+<span class="lineNum">      18 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      19 </span>                :            : 
+<span class="lineNum">      20 </span>                :            : /* Specification.  */
+<span class="lineNum">      21 </span>                :            : #include &quot;uniwidth.h&quot;
+<span class="lineNum">      22 </span>                :            : 
+<span class="lineNum">      23 </span>                :            : #include &quot;cjk.h&quot;
+<span class="lineNum">      24 </span>                :            : 
+<span class="lineNum">      25 </span>                :            : /*
+<span class="lineNum">      26 </span>                :            :  * Non-spacing attribute table.
+<span class="lineNum">      27 </span>                :            :  * Consists of:
+<span class="lineNum">      28 </span>                :            :  * - Non-spacing characters; generated from PropList.txt or
+<span class="lineNum">      29 </span>                :            :  *   &quot;grep '^[^;]*;[^;]*;[^;]*;[^;]*;NSM;' UnicodeData.txt&quot;
+<span class="lineNum">      30 </span>                :            :  * - Format control characters; generated from
+<span class="lineNum">      31 </span>                :            :  *   &quot;grep '^[^;]*;[^;]*;Cf;' UnicodeData.txt&quot;
+<span class="lineNum">      32 </span>                :            :  * - Zero width characters; generated from
+<span class="lineNum">      33 </span>                :            :  *   &quot;grep '^[^;]*;ZERO WIDTH ' UnicodeData.txt&quot;
+<span class="lineNum">      34 </span>                :            :  */
+<span class="lineNum">      35 </span>                :            : static const unsigned char nonspacing_table_data[27*64] = {
+<span class="lineNum">      36 </span>                :            :   /* 0x0000-0x01ff */
+<span class="lineNum">      37 </span>                :            :   0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, /* 0x0000-0x003f */
+<span class="lineNum">      38 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, /* 0x0040-0x007f */
+<span class="lineNum">      39 </span>                :            :   0xff, 0xff, 0xff, 0xff, 0x00, 0x20, 0x00, 0x00, /* 0x0080-0x00bf */
+<span class="lineNum">      40 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x00c0-0x00ff */
+<span class="lineNum">      41 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0100-0x013f */
+<span class="lineNum">      42 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0140-0x017f */
+<span class="lineNum">      43 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0180-0x01bf */
+<span class="lineNum">      44 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x01c0-0x01ff */
+<span class="lineNum">      45 </span>                :            :   /* 0x0200-0x03ff */
+<span class="lineNum">      46 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0200-0x023f */
+<span class="lineNum">      47 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0240-0x027f */
+<span class="lineNum">      48 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0280-0x02bf */
+<span class="lineNum">      49 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x02c0-0x02ff */
+<span class="lineNum">      50 </span>                :            :   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, /* 0x0300-0x033f */
+<span class="lineNum">      51 </span>                :            :   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, /* 0x0340-0x037f */
+<span class="lineNum">      52 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0380-0x03bf */
+<span class="lineNum">      53 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x03c0-0x03ff */
+<span class="lineNum">      54 </span>                :            :   /* 0x0400-0x05ff */
+<span class="lineNum">      55 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0400-0x043f */
+<span class="lineNum">      56 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0440-0x047f */
+<span class="lineNum">      57 </span>                :            :   0xf8, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0480-0x04bf */
+<span class="lineNum">      58 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x04c0-0x04ff */
+<span class="lineNum">      59 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0500-0x053f */
+<span class="lineNum">      60 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0540-0x057f */
+<span class="lineNum">      61 </span>                :            :   0x00, 0x00, 0xfe, 0xff, 0xff, 0xff, 0xff, 0xbf, /* 0x0580-0x05bf */
+<span class="lineNum">      62 </span>                :            :   0xb6, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x05c0-0x05ff */
+<span class="lineNum">      63 </span>                :            :   /* 0x0600-0x07ff */
+<span class="lineNum">      64 </span>                :            :   0x0f, 0x00, 0xff, 0x07, 0x00, 0x00, 0x00, 0x00, /* 0x0600-0x063f */
+<span class="lineNum">      65 </span>                :            :   0x00, 0xf8, 0xff, 0xff, 0x00, 0x00, 0x01, 0x00, /* 0x0640-0x067f */
+<span class="lineNum">      66 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0680-0x06bf */
+<span class="lineNum">      67 </span>                :            :   0x00, 0x00, 0xc0, 0xbf, 0x9f, 0x3d, 0x00, 0x00, /* 0x06c0-0x06ff */
+<span class="lineNum">      68 </span>                :            :   0x00, 0x80, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, /* 0x0700-0x073f */
+<span class="lineNum">      69 </span>                :            :   0xff, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0740-0x077f */
+<span class="lineNum">      70 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0xc0, 0xff, 0x01, 0x00, /* 0x0780-0x07bf */
+<span class="lineNum">      71 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x0f, 0x00, /* 0x07c0-0x07ff */
+<span class="lineNum">      72 </span>                :            :   /* 0x0800-0x09ff */
+<span class="lineNum">      73 </span>                :            :   0x00, 0x00, 0xc0, 0xfb, 0xef, 0x3e, 0x00, 0x00, /* 0x0800-0x083f */
+<span class="lineNum">      74 </span>                :            :   0x00, 0x00, 0x00, 0x0e, 0x00, 0x00, 0x00, 0x00, /* 0x0840-0x087f */
+<span class="lineNum">      75 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0880-0x08bf */
+<span class="lineNum">      76 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x08c0-0x08ff */
+<span class="lineNum">      77 </span>                :            :   0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x14, /* 0x0900-0x093f */
+<span class="lineNum">      78 </span>                :            :   0xfe, 0x21, 0xfe, 0x00, 0x0c, 0x00, 0x00, 0x00, /* 0x0940-0x097f */
+<span class="lineNum">      79 </span>                :            :   0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, /* 0x0980-0x09bf */
+<span class="lineNum">      80 </span>                :            :   0x1e, 0x20, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, /* 0x09c0-0x09ff */
+<span class="lineNum">      81 </span>                :            :   /* 0x0a00-0x0bff */
+<span class="lineNum">      82 </span>                :            :   0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, /* 0x0a00-0x0a3f */
+<span class="lineNum">      83 </span>                :            :   0x86, 0x39, 0x02, 0x00, 0x00, 0x00, 0x23, 0x00, /* 0x0a40-0x0a7f */
+<span class="lineNum">      84 </span>                :            :   0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, /* 0x0a80-0x0abf */
+<span class="lineNum">      85 </span>                :            :   0xbe, 0x21, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, /* 0x0ac0-0x0aff */
+<span class="lineNum">      86 </span>                :            :   0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90, /* 0x0b00-0x0b3f */
+<span class="lineNum">      87 </span>                :            :   0x1e, 0x20, 0x40, 0x00, 0x0c, 0x00, 0x00, 0x00, /* 0x0b40-0x0b7f */
+<span class="lineNum">      88 </span>                :            :   0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0b80-0x0bbf */
+<span class="lineNum">      89 </span>                :            :   0x01, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0bc0-0x0bff */
+<span class="lineNum">      90 </span>                :            :   /* 0x0c00-0x0dff */
+<span class="lineNum">      91 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, /* 0x0c00-0x0c3f */
+<span class="lineNum">      92 </span>                :            :   0xc1, 0x3d, 0x60, 0x00, 0x0c, 0x00, 0x00, 0x00, /* 0x0c40-0x0c7f */
+<span class="lineNum">      93 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, /* 0x0c80-0x0cbf */
+<span class="lineNum">      94 </span>                :            :   0x00, 0x30, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, /* 0x0cc0-0x0cff */
+<span class="lineNum">      95 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0d00-0x0d3f */
+<span class="lineNum">      96 </span>                :            :   0x1e, 0x20, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, /* 0x0d40-0x0d7f */
+<span class="lineNum">      97 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0d80-0x0dbf */
+<span class="lineNum">      98 </span>                :            :   0x00, 0x04, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0dc0-0x0dff */
+<span class="lineNum">      99 </span>                :            :   /* 0x0e00-0x0fff */
+<span class="lineNum">     100 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf2, 0x07, /* 0x0e00-0x0e3f */
+<span class="lineNum">     101 </span>                :            :   0x80, 0x7f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0e40-0x0e7f */
+<span class="lineNum">     102 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf2, 0x1b, /* 0x0e80-0x0ebf */
+<span class="lineNum">     103 </span>                :            :   0x00, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0ec0-0x0eff */
+<span class="lineNum">     104 </span>                :            :   0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0xa0, 0x02, /* 0x0f00-0x0f3f */
+<span class="lineNum">     105 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xfe, 0x7f, /* 0x0f40-0x0f7f */
+<span class="lineNum">     106 </span>                :            :   0xdf, 0xe0, 0xff, 0xfe, 0xff, 0xff, 0xff, 0x1f, /* 0x0f80-0x0fbf */
+<span class="lineNum">     107 </span>                :            :   0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x0fc0-0x0fff */
+<span class="lineNum">     108 </span>                :            :   /* 0x1000-0x11ff */
+<span class="lineNum">     109 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0xe0, 0xfd, 0x66, /* 0x1000-0x103f */
+<span class="lineNum">     110 </span>                :            :   0x00, 0x00, 0x00, 0xc3, 0x01, 0x00, 0x1e, 0x00, /* 0x1040-0x107f */
+<span class="lineNum">     111 </span>                :            :   0x64, 0x20, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, /* 0x1080-0x10bf */
+<span class="lineNum">     112 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10c0-0x10ff */
+<span class="lineNum">     113 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1100-0x113f */
+<span class="lineNum">     114 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1140-0x117f */
+<span class="lineNum">     115 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1180-0x11bf */
+<span class="lineNum">     116 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x11c0-0x11ff */
+<span class="lineNum">     117 </span>                :            :   /* 0x1200-0x13ff */
+<span class="lineNum">     118 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1200-0x123f */
+<span class="lineNum">     119 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1240-0x127f */
+<span class="lineNum">     120 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1280-0x12bf */
+<span class="lineNum">     121 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x12c0-0x12ff */
+<span class="lineNum">     122 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1300-0x133f */
+<span class="lineNum">     123 </span>                :            :   0x00, 0x00, 0x00, 0xe0, 0x00, 0x00, 0x00, 0x00, /* 0x1340-0x137f */
+<span class="lineNum">     124 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1380-0x13bf */
+<span class="lineNum">     125 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x13c0-0x13ff */
+<span class="lineNum">     126 </span>                :            :   /* 0x1600-0x17ff */
+<span class="lineNum">     127 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1600-0x163f */
+<span class="lineNum">     128 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1640-0x167f */
+<span class="lineNum">     129 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1680-0x16bf */
+<span class="lineNum">     130 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x16c0-0x16ff */
+<span class="lineNum">     131 </span>                :            :   0x00, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x1c, 0x00, /* 0x1700-0x173f */
+<span class="lineNum">     132 </span>                :            :   0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x0c, 0x00, /* 0x1740-0x177f */
+<span class="lineNum">     133 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xb0, 0x3f, /* 0x1780-0x17bf */
+<span class="lineNum">     134 </span>                :            :   0x40, 0xfe, 0x0f, 0x20, 0x00, 0x00, 0x00, 0x00, /* 0x17c0-0x17ff */
+<span class="lineNum">     135 </span>                :            :   /* 0x1800-0x19ff */
+<span class="lineNum">     136 </span>                :            :   0x00, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1800-0x183f */
+<span class="lineNum">     137 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1840-0x187f */
+<span class="lineNum">     138 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, /* 0x1880-0x18bf */
+<span class="lineNum">     139 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x18c0-0x18ff */
+<span class="lineNum">     140 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x87, 0x01, 0x04, 0x0e, /* 0x1900-0x193f */
+<span class="lineNum">     141 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1940-0x197f */
+<span class="lineNum">     142 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1980-0x19bf */
+<span class="lineNum">     143 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x19c0-0x19ff */
+<span class="lineNum">     144 </span>                :            :   /* 0x1a00-0x1bff */
+<span class="lineNum">     145 </span>                :            :   0x00, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00, 0x00, /* 0x1a00-0x1a3f */
+<span class="lineNum">     146 </span>                :            :   0x00, 0x00, 0x40, 0x7f, 0xe5, 0x1f, 0xf8, 0x9f, /* 0x1a40-0x1a7f */
+<span class="lineNum">     147 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1a80-0x1abf */
+<span class="lineNum">     148 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1ac0-0x1aff */
+<span class="lineNum">     149 </span>                :            :   0x0f, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd0, 0x17, /* 0x1b00-0x1b3f */
+<span class="lineNum">     150 </span>                :            :   0x04, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x0f, 0x00, /* 0x1b40-0x1b7f */
+<span class="lineNum">     151 </span>                :            :   0x03, 0x00, 0x00, 0x00, 0x3c, 0x03, 0x00, 0x00, /* 0x1b80-0x1bbf */
+<span class="lineNum">     152 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x40, 0xa3, 0x03, 0x00, /* 0x1bc0-0x1bff */
+<span class="lineNum">     153 </span>                :            :   /* 0x1c00-0x1dff */
+<span class="lineNum">     154 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0xcf, 0x00, /* 0x1c00-0x1c3f */
+<span class="lineNum">     155 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1c40-0x1c7f */
+<span class="lineNum">     156 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1c80-0x1cbf */
+<span class="lineNum">     157 </span>                :            :   0x00, 0x00, 0xf7, 0xff, 0xfd, 0x21, 0x00, 0x00, /* 0x1cc0-0x1cff */
+<span class="lineNum">     158 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d00-0x1d3f */
+<span class="lineNum">     159 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d40-0x1d7f */
+<span class="lineNum">     160 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d80-0x1dbf */
+<span class="lineNum">     161 </span>                :            :   0xff, 0xff, 0xff, 0xff, 0x7f, 0x00, 0x00, 0xf0, /* 0x1dc0-0x1dff */
+<span class="lineNum">     162 </span>                :            :   /* 0x2000-0x21ff */
+<span class="lineNum">     163 </span>                :            :   0x00, 0xf8, 0x00, 0x00, 0x00, 0x7c, 0x00, 0x00, /* 0x2000-0x203f */
+<span class="lineNum">     164 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x1f, 0xfc, 0x00, 0x00, /* 0x2040-0x207f */
+<span class="lineNum">     165 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2080-0x20bf */
+<span class="lineNum">     166 </span>                :            :   0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00, /* 0x20c0-0x20ff */
+<span class="lineNum">     167 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2100-0x213f */
+<span class="lineNum">     168 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2140-0x217f */
+<span class="lineNum">     169 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2180-0x21bf */
+<span class="lineNum">     170 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x21c0-0x21ff */
+<span class="lineNum">     171 </span>                :            :   /* 0x2c00-0x2dff */
+<span class="lineNum">     172 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2c00-0x2c3f */
+<span class="lineNum">     173 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2c40-0x2c7f */
+<span class="lineNum">     174 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2c80-0x2cbf */
+<span class="lineNum">     175 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x03, 0x00, /* 0x2cc0-0x2cff */
+<span class="lineNum">     176 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2d00-0x2d3f */
+<span class="lineNum">     177 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, /* 0x2d40-0x2d7f */
+<span class="lineNum">     178 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x2d80-0x2dbf */
+<span class="lineNum">     179 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, /* 0x2dc0-0x2dff */
+<span class="lineNum">     180 </span>                :            :   /* 0x3000-0x31ff */
+<span class="lineNum">     181 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0xfc, 0x00, 0x00, /* 0x3000-0x303f */
+<span class="lineNum">     182 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x3040-0x307f */
+<span class="lineNum">     183 </span>                :            :   0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x00, /* 0x3080-0x30bf */
+<span class="lineNum">     184 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x30c0-0x30ff */
+<span class="lineNum">     185 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x3100-0x313f */
+<span class="lineNum">     186 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x3140-0x317f */
+<span class="lineNum">     187 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x3180-0x31bf */
+<span class="lineNum">     188 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x31c0-0x31ff */
+<span class="lineNum">     189 </span>                :            :   /* 0xa600-0xa7ff */
+<span class="lineNum">     190 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa600-0xa63f */
+<span class="lineNum">     191 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x07, 0x30, /* 0xa640-0xa67f */
+<span class="lineNum">     192 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa680-0xa6bf */
+<span class="lineNum">     193 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, /* 0xa6c0-0xa6ff */
+<span class="lineNum">     194 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa700-0xa73f */
+<span class="lineNum">     195 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa740-0xa77f */
+<span class="lineNum">     196 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa780-0xa7bf */
+<span class="lineNum">     197 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa7c0-0xa7ff */
+<span class="lineNum">     198 </span>                :            :   /* 0xa800-0xa9ff */
+<span class="lineNum">     199 </span>                :            :   0x44, 0x08, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, /* 0xa800-0xa83f */
+<span class="lineNum">     200 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa840-0xa87f */
+<span class="lineNum">     201 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa880-0xa8bf */
+<span class="lineNum">     202 </span>                :            :   0x10, 0x00, 0x00, 0x00, 0xff, 0xff, 0x03, 0x00, /* 0xa8c0-0xa8ff */
+<span class="lineNum">     203 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0xc0, 0x3f, 0x00, 0x00, /* 0xa900-0xa93f */
+<span class="lineNum">     204 </span>                :            :   0x80, 0xff, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa940-0xa97f */
+<span class="lineNum">     205 </span>                :            :   0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc8, 0x13, /* 0xa980-0xa9bf */
+<span class="lineNum">     206 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xa9c0-0xa9ff */
+<span class="lineNum">     207 </span>                :            :   /* 0xaa00-0xabff */
+<span class="lineNum">     208 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x7e, 0x66, 0x00, /* 0xaa00-0xaa3f */
+<span class="lineNum">     209 </span>                :            :   0x08, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xaa40-0xaa7f */
+<span class="lineNum">     210 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9d, 0xc1, /* 0xaa80-0xaabf */
+<span class="lineNum">     211 </span>                :            :   0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xaac0-0xaaff */
+<span class="lineNum">     212 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xab00-0xab3f */
+<span class="lineNum">     213 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xab40-0xab7f */
+<span class="lineNum">     214 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xab80-0xabbf */
+<span class="lineNum">     215 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x20, 0x21, 0x00, 0x00, /* 0xabc0-0xabff */
+<span class="lineNum">     216 </span>                :            :   /* 0xfa00-0xfbff */
+<span class="lineNum">     217 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfa00-0xfa3f */
+<span class="lineNum">     218 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfa40-0xfa7f */
+<span class="lineNum">     219 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfa80-0xfabf */
+<span class="lineNum">     220 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfac0-0xfaff */
+<span class="lineNum">     221 </span>                :            :   0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, /* 0xfb00-0xfb3f */
+<span class="lineNum">     222 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfb40-0xfb7f */
+<span class="lineNum">     223 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfb80-0xfbbf */
+<span class="lineNum">     224 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfbc0-0xfbff */
+<span class="lineNum">     225 </span>                :            :   /* 0xfe00-0xffff */
+<span class="lineNum">     226 </span>                :            :   0xff, 0xff, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, /* 0xfe00-0xfe3f */
+<span class="lineNum">     227 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfe40-0xfe7f */
+<span class="lineNum">     228 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xfe80-0xfebf */
+<span class="lineNum">     229 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, /* 0xfec0-0xfeff */
+<span class="lineNum">     230 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xff00-0xff3f */
+<span class="lineNum">     231 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xff40-0xff7f */
+<span class="lineNum">     232 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0xff80-0xffbf */
+<span class="lineNum">     233 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0e, /* 0xffc0-0xffff */
+<span class="lineNum">     234 </span>                :            :   /* 0x10000-0x101ff */
+<span class="lineNum">     235 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10000-0x1003f */
+<span class="lineNum">     236 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10040-0x1007f */
+<span class="lineNum">     237 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10080-0x100bf */
+<span class="lineNum">     238 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x100c0-0x100ff */
+<span class="lineNum">     239 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10100-0x1013f */
+<span class="lineNum">     240 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10140-0x1017f */
+<span class="lineNum">     241 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10180-0x101bf */
+<span class="lineNum">     242 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, /* 0x101c0-0x101ff */
+<span class="lineNum">     243 </span>                :            :   /* 0x10a00-0x10bff */
+<span class="lineNum">     244 </span>                :            :   0x6e, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87, /* 0x10a00-0x10a3f */
+<span class="lineNum">     245 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10a40-0x10a7f */
+<span class="lineNum">     246 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10a80-0x10abf */
+<span class="lineNum">     247 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10ac0-0x10aff */
+<span class="lineNum">     248 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10b00-0x10b3f */
+<span class="lineNum">     249 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10b40-0x10b7f */
+<span class="lineNum">     250 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10b80-0x10bbf */
+<span class="lineNum">     251 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x10bc0-0x10bff */
+<span class="lineNum">     252 </span>                :            :   /* 0x11000-0x111ff */
+<span class="lineNum">     253 </span>                :            :   0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, /* 0x11000-0x1103f */
+<span class="lineNum">     254 </span>                :            :   0x7f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x11040-0x1107f */
+<span class="lineNum">     255 </span>                :            :   0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78, 0x26, /* 0x11080-0x110bf */
+<span class="lineNum">     256 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x110c0-0x110ff */
+<span class="lineNum">     257 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x11100-0x1113f */
+<span class="lineNum">     258 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x11140-0x1117f */
+<span class="lineNum">     259 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x11180-0x111bf */
+<span class="lineNum">     260 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x111c0-0x111ff */
+<span class="lineNum">     261 </span>                :            :   /* 0x1d000-0x1d1ff */
+<span class="lineNum">     262 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d000-0x1d03f */
+<span class="lineNum">     263 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d040-0x1d07f */
+<span class="lineNum">     264 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d080-0x1d0bf */
+<span class="lineNum">     265 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d0c0-0x1d0ff */
+<span class="lineNum">     266 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d100-0x1d13f */
+<span class="lineNum">     267 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x80, 0x03, 0xf8, 0xff, /* 0x1d140-0x1d17f */
+<span class="lineNum">     268 </span>                :            :   0xe7, 0x0f, 0x00, 0x00, 0x00, 0x3c, 0x00, 0x00, /* 0x1d180-0x1d1bf */
+<span class="lineNum">     269 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d1c0-0x1d1ff */
+<span class="lineNum">     270 </span>                :            :   /* 0x1d200-0x1d3ff */
+<span class="lineNum">     271 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d200-0x1d23f */
+<span class="lineNum">     272 </span>                :            :   0x1c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d240-0x1d27f */
+<span class="lineNum">     273 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d280-0x1d2bf */
+<span class="lineNum">     274 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d2c0-0x1d2ff */
+<span class="lineNum">     275 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d300-0x1d33f */
+<span class="lineNum">     276 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d340-0x1d37f */
+<span class="lineNum">     277 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* 0x1d380-0x1d3bf */
+<span class="lineNum">     278 </span>                :            :   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  /* 0x1d3c0-0x1d3ff */
+<span class="lineNum">     279 </span>                :            : };
+<span class="lineNum">     280 </span>                :            : static const signed char nonspacing_table_ind[240] = {
+<span class="lineNum">     281 </span>                :            :    0,  1,  2,  3,  4,  5,  6,  7, /* 0x0000-0x0fff */
+<span class="lineNum">     282 </span>                :            :    8,  9, -1, 10, 11, 12, 13, -1, /* 0x1000-0x1fff */
+<span class="lineNum">     283 </span>                :            :   14, -1, -1, -1, -1, -1, 15, -1, /* 0x2000-0x2fff */
+<span class="lineNum">     284 </span>                :            :   16, -1, -1, -1, -1, -1, -1, -1, /* 0x3000-0x3fff */
+<span class="lineNum">     285 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x4000-0x4fff */
+<span class="lineNum">     286 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x5000-0x5fff */
+<span class="lineNum">     287 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x6000-0x6fff */
+<span class="lineNum">     288 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x7000-0x7fff */
+<span class="lineNum">     289 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x8000-0x8fff */
+<span class="lineNum">     290 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x9000-0x9fff */
+<span class="lineNum">     291 </span>                :            :   -1, -1, -1, 17, 18, 19, -1, -1, /* 0xa000-0xafff */
+<span class="lineNum">     292 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0xb000-0xbfff */
+<span class="lineNum">     293 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0xc000-0xcfff */
+<span class="lineNum">     294 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0xd000-0xdfff */
+<span class="lineNum">     295 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0xe000-0xefff */
+<span class="lineNum">     296 </span>                :            :   -1, -1, -1, -1, -1, 20, -1, 21, /* 0xf000-0xffff */
+<span class="lineNum">     297 </span>                :            :   22, -1, -1, -1, -1, 23, -1, -1, /* 0x10000-0x10fff */
+<span class="lineNum">     298 </span>                :            :   24, -1, -1, -1, -1, -1, -1, -1, /* 0x11000-0x11fff */
+<span class="lineNum">     299 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x12000-0x12fff */
+<span class="lineNum">     300 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x13000-0x13fff */
+<span class="lineNum">     301 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x14000-0x14fff */
+<span class="lineNum">     302 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x15000-0x15fff */
+<span class="lineNum">     303 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x16000-0x16fff */
+<span class="lineNum">     304 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x17000-0x17fff */
+<span class="lineNum">     305 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x18000-0x18fff */
+<span class="lineNum">     306 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x19000-0x19fff */
+<span class="lineNum">     307 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x1a000-0x1afff */
+<span class="lineNum">     308 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x1b000-0x1bfff */
+<span class="lineNum">     309 </span>                :            :   -1, -1, -1, -1, -1, -1, -1, -1, /* 0x1c000-0x1cfff */
+<span class="lineNum">     310 </span>                :            :   25, 26, -1, -1, -1, -1, -1, -1  /* 0x1d000-0x1dfff */
+<span class="lineNum">     311 </span>                :            : };
+<span class="lineNum">     312 </span>                :            : 
+<a name="313"><span class="lineNum">     313 </span>                :            : /* Determine number of column positions required for UC.  */</a>
+<span class="lineNum">     314 </span>                :            : int
+<span class="lineNum">     315 </span>                :<span class="lineCov">   11141660 : uc_width (ucs4_t uc, const char *encoding)</span>
+<span class="lineNum">     316 </span>                :            : {
+<span class="lineNum">     317 </span>                :            :   /* Test for non-spacing or control character.  */
+<span class="lineNum">     318 </span>        [<span class="branchCov" title="Branch 0 was taken 1229320 times"> + </span><span class="branchCov" title="Branch 1 was taken 9912340 times"> + </span>]:<span class="lineCov">   11141660 :   if ((uc &gt;&gt; 9) &lt; 240)</span>
+<span class="lineNum">     319 </span>                :            :     {
+<span class="lineNum">     320 </span>                :<span class="lineCov">    1229320 :       int ind = nonspacing_table_ind[uc &gt;&gt; 9];</span>
+<span class="lineNum">     321 </span>        [<span class="branchCov" title="Branch 0 was taken 138755 times"> + </span><span class="branchCov" title="Branch 1 was taken 1090565 times"> + </span>]:<span class="lineCov">    1229320 :       if (ind &gt;= 0)</span>
+<span class="lineNum">     322 </span>        [<span class="branchCov" title="Branch 0 was taken 10800 times"> + </span><span class="branchCov" title="Branch 1 was taken 127955 times"> + </span>]:<span class="lineCov">     138755 :         if ((nonspacing_table_data[64*ind + ((uc &gt;&gt; 3) &amp; 63)] &gt;&gt; (uc &amp; 7)) &amp; 1)</span>
+<span class="lineNum">     323 </span>                :            :           {
+<span class="lineNum">     324 </span>[<span class="branchCov" title="Branch 0 was taken 10790 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 640 times"> + </span><span class="branchCov" title="Branch 3 was taken 10150 times"> + </span>]:<span class="lineCov">      10800 :             if (uc &gt; 0 &amp;&amp; uc &lt; 0xa0)</span>
+<span class="lineNum">     325 </span>                :<span class="lineCov">        640 :               return -1;</span>
+<span class="lineNum">     326 </span>                :            :             else
+<span class="lineNum">     327 </span>                :<span class="lineCov">      10160 :               return 0;</span>
+<span class="lineNum">     328 </span>                :            :           }
+<span class="lineNum">     329 </span>                :            :     }
+<span class="lineNum">     330 </span>        [<span class="branchCov" title="Branch 0 was taken 5130 times"> + </span><span class="branchCov" title="Branch 1 was taken 9907210 times"> + </span>]:<span class="lineCov">    9912340 :   else if ((uc &gt;&gt; 9) == (0xe0000 &gt;&gt; 9))</span>
+<span class="lineNum">     331 </span>                :            :     {
+<span class="lineNum">     332 </span>        [<span class="branchCov" title="Branch 0 was taken 2560 times"> + </span><span class="branchCov" title="Branch 1 was taken 2570 times"> + </span>]:<span class="lineCov">       5130 :       if (uc &gt;= 0xe0100)</span>
+<span class="lineNum">     333 </span>                :            :         {
+<span class="lineNum">     334 </span>        [<span class="branchCov" title="Branch 0 was taken 2400 times"> + </span><span class="branchCov" title="Branch 1 was taken 160 times"> + </span>]:<span class="lineCov">       2560 :           if (uc &lt;= 0xe01ef)</span>
+<span class="lineNum">     335 </span>                :<span class="lineCov">       2400 :             return 0;</span>
+<span class="lineNum">     336 </span>                :            :         }
+<span class="lineNum">     337 </span>                :            :       else
+<span class="lineNum">     338 </span>                :            :         {
+<span class="lineNum">     339 </span>[<span class="branchCov" title="Branch 0 was taken 2245 times"> + </span><span class="branchCov" title="Branch 1 was taken 325 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 980 times"> + </span><span class="branchCov" title="Branch 3 was taken 1590 times"> + </span>]:<span class="lineCov">       2570 :           if (uc &gt;= 0xe0020 ? uc &lt;= 0xe007f : uc == 0xe0001)</span>
+<span class="lineNum">     340 </span>                :<span class="lineCov">        980 :             return 0;</span>
+<span class="lineNum">     341 </span>                :            :         }
+<span class="lineNum">     342 </span>                :            :     }
+<span class="lineNum">     343 </span>                :            :   /* Test for double-width character.
+<span class="lineNum">     344 </span>                :            :    * Generated from &quot;grep '^[^;]\{4,5\};[WF]' EastAsianWidth.txt&quot;
+<span class="lineNum">     345 </span>                :            :    * and            &quot;grep '^[^;]\{4,5\};[^WF]' EastAsianWidth.txt&quot;
+<span class="lineNum">     346 </span>                :            :    */
+<span class="lineNum">     347 </span>        [<span class="branchCov" title="Branch 0 was taken 11089515 times"> + </span><span class="branchCov" title="Branch 1 was taken 37965 times"> + </span>]:<span class="lineCov">   11127480 :   if (uc &gt;= 0x1100</span>
+<span class="lineNum">     348 </span>        [<span class="branchCov" title="Branch 0 was taken 11088555 times"> + </span><span class="branchCov" title="Branch 1 was taken 960 times"> + </span>]:<span class="lineCov">   11089515 :       &amp;&amp; ((uc &lt; 0x1160) /* Hangul Jamo */</span>
+<span class="lineNum">     349 </span>[<span class="branchCov" title="Branch 0 was taken 11045485 times"> + </span><span class="branchCov" title="Branch 1 was taken 43070 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 11045465 times"> + </span><span class="branchCov" title="Branch 3 was taken 20 times"> + </span>]:<span class="lineCov">   11088555 :           || (uc &gt;= 0x2329 &amp;&amp; uc &lt; 0x232b) /* Angle Brackets */</span>
+<span class="lineNum">     350 </span>[<span class="branchCov" title="Branch 0 was taken 11016815 times"> + </span><span class="branchCov" title="Branch 1 was taken 71720 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 302805 times"> + </span><span class="branchCov" title="Branch 3 was taken 10714010 times"> + </span>]:<span class="lineCov">   11088535 :           || (uc &gt;= 0x2e80 &amp;&amp; uc &lt; 0xa4d0  /* CJK ... Yi */</span>
+<span class="lineNum">     351 </span>[<span class="branchCov" title="Branch 0 was taken 302795 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 222880 times"> + </span><span class="branchCov" title="Branch 3 was taken 79915 times"> + </span>]:<span class="lineCov">     302805 :               &amp;&amp; !(uc == 0x303f) &amp;&amp; !(uc &gt;= 0x4dc0 &amp;&amp; uc &lt; 0x4e00))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 640 times"> + </span><span class="branchCov" title="Branch 5 was taken 222240 times"> + </span>]
+<span class="lineNum">     352 </span>[<span class="branchCov" title="Branch 0 was taken 10696450 times"> + </span><span class="branchCov" title="Branch 1 was taken 89930 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10584725 times"> + </span><span class="branchCov" title="Branch 3 was taken 111725 times"> + </span>]:<span class="lineCov">   10786380 :           || (uc &gt;= 0xac00 &amp;&amp; uc &lt; 0xd7a4) /* Hangul Syllables */</span>
+<span class="lineNum">     353 </span>[<span class="branchCov" title="Branch 0 was taken 10499325 times"> + </span><span class="branchCov" title="Branch 1 was taken 175330 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10494205 times"> + </span><span class="branchCov" title="Branch 3 was taken 5120 times"> + </span>]:<span class="lineCov">   10674655 :           || (uc &gt;= 0xf900 &amp;&amp; uc &lt; 0xfb00) /* CJK Compatibility Ideographs */</span>
+<span class="lineNum">     354 </span>[<span class="branchCov" title="Branch 0 was taken 10486535 times"> + </span><span class="branchCov" title="Branch 1 was taken 183000 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10486375 times"> + </span><span class="branchCov" title="Branch 3 was taken 160 times"> + </span>]:<span class="lineCov">   10669535 :           || (uc &gt;= 0xfe10 &amp;&amp; uc &lt; 0xfe20) /* Presentation Forms for Vertical */</span>
+<span class="lineNum">     355 </span>[<span class="branchCov" title="Branch 0 was taken 10486285 times"> + </span><span class="branchCov" title="Branch 1 was taken 183090 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10485645 times"> + </span><span class="branchCov" title="Branch 3 was taken 640 times"> + </span>]:<span class="lineCov">   10669375 :           || (uc &gt;= 0xfe30 &amp;&amp; uc &lt; 0xfe70) /* CJK Compatibility Forms */</span>
+<span class="lineNum">     356 </span>[<span class="branchCov" title="Branch 0 was taken 10484215 times"> + </span><span class="branchCov" title="Branch 1 was taken 184520 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10483240 times"> + </span><span class="branchCov" title="Branch 3 was taken 975 times"> + </span>]:<span class="lineCov">   10668735 :           || (uc &gt;= 0xff00 &amp;&amp; uc &lt; 0xff61) /* Fullwidth Forms */</span>
+<span class="lineNum">     357 </span>[<span class="branchCov" title="Branch 0 was taken 10481970 times"> + </span><span class="branchCov" title="Branch 1 was taken 185790 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10481900 times"> + </span><span class="branchCov" title="Branch 3 was taken 70 times"> + </span>]:<span class="lineCov">   10667760 :           || (uc &gt;= 0xffe0 &amp;&amp; uc &lt; 0xffe7) /* Fullwidth Signs */</span>
+<span class="lineNum">     358 </span>[<span class="branchCov" title="Branch 0 was taken 9827040 times"> + </span><span class="branchCov" title="Branch 1 was taken 840650 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 9171670 times"> + </span><span class="branchCov" title="Branch 3 was taken 655370 times"> + </span>]:<span class="lineCov">   10667690 :           || (uc &gt;= 0x20000 &amp;&amp; uc &lt;= 0x2ffff) /* Supplementary Ideographic Plane */</span>
+<span class="lineNum">     359 </span>[<span class="branchCov" title="Branch 0 was taken 9171670 times"> + </span><span class="branchCov" title="Branch 1 was taken 840650 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 655360 times"> + </span><span class="branchCov" title="Branch 3 was taken 8516310 times"> + </span>]:<span class="lineCov">   10012320 :           || (uc &gt;= 0x30000 &amp;&amp; uc &lt;= 0x3ffff) /* Tertiary Ideographic Plane */</span>
+<span class="lineNum">     360 </span>                :            :      )   )
+<span class="lineNum">     361 </span>                :<span class="lineCov">    1732555 :     return 2;</span>
+<span class="lineNum">     362 </span>                :            :   /* In ancient CJK encodings, Cyrillic and most other characters are
+<span class="lineNum">     363 </span>                :            :      double-width as well.  */
+<span class="lineNum">     364 </span>[<span class="branchCov" title="Branch 0 was taken 9393490 times"> + </span><span class="branchCov" title="Branch 1 was taken 1435 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 221050 times"> + </span><span class="branchCov" title="Branch 3 was taken 9172440 times"> + </span>]:<span class="lineCov">    9394925 :   if (uc &gt;= 0x00A1 &amp;&amp; uc &lt; 0xFF61 &amp;&amp; uc != 0x20A9</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 221040 times"> + </span><span class="branchCov" title="Branch 5 was taken 10 times"> + </span>]
+<span class="lineNum">     365 </span>        [<span class="branchCov" title="Branch 1 was taken 110520 times"> + </span><span class="branchCov" title="Branch 2 was taken 110520 times"> + </span>]:<span class="lineCov">     221040 :       &amp;&amp; is_cjk_encoding (encoding))</span>
+<span class="lineNum">     366 </span>                :<span class="lineCov">     110520 :     return 2;</span>
+<span class="lineNum">     367 </span>                :<span class="lineCov">   11141660 :   return 1;</span>
+<span class="lineNum">     368 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

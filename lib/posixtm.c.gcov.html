@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - unnamed - lib/posixtm.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib</a> - posixtm.c<span style="font-size: 80%;"> (source / <a href="posixtm.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">unnamed</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">75</td>
+            <td class="headerCovTableEntry">86</td>
+            <td class="headerCovTableEntryHi">87.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2011-12-11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">48</td>
+            <td class="headerCovTableEntry">60</td>
+            <td class="headerCovTableEntryHi">80.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* Parse dates for touch and date.</a>
+<span class="lineNum">       2 </span>                :            : 
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1989-1991, 1998, 2000-2011 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>                :            : 
+<span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       7 </span>                :            :    the Free Software Foundation; either version 3 of the License, or
+<span class="lineNum">       8 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       9 </span>                :            : 
+<span class="lineNum">      10 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      11 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      12 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      13 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      14 </span>                :            : 
+<span class="lineNum">      15 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      16 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      17 </span>                :            : 
+<span class="lineNum">      18 </span>                :            : /* Yacc-based version written by Jim Kingdon and David MacKenzie.
+<span class="lineNum">      19 </span>                :            :    Rewritten by Jim Meyering.  */
+<span class="lineNum">      20 </span>                :            : 
+<span class="lineNum">      21 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      22 </span>                :            : 
+<span class="lineNum">      23 </span>                :            : #include &quot;posixtm.h&quot;
+<span class="lineNum">      24 </span>                :            : 
+<span class="lineNum">      25 </span>                :            : #include &lt;stdio.h&gt;
+<span class="lineNum">      26 </span>                :            : #include &lt;stdlib.h&gt;
+<span class="lineNum">      27 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      28 </span>                :            : #include &lt;string.h&gt;
+<span class="lineNum">      29 </span>                :            : 
+<span class="lineNum">      30 </span>                :            : #if USE_UNLOCKED_IO
+<span class="lineNum">      31 </span>                :            : # include &quot;unlocked-io.h&quot;
+<span class="lineNum">      32 </span>                :            : #endif
+<span class="lineNum">      33 </span>                :            : 
+<span class="lineNum">      34 </span>                :            : /* ISDIGIT differs from isdigit, as follows:
+<span class="lineNum">      35 </span>                :            :    - Its arg may be any int or unsigned int; it need not be an unsigned char
+<span class="lineNum">      36 </span>                :            :      or EOF.
+<span class="lineNum">      37 </span>                :            :    - It's typically faster.
+<span class="lineNum">      38 </span>                :            :    POSIX says that only '0' through '9' are digits.  Prefer ISDIGIT to
+<span class="lineNum">      39 </span>                :            :    isdigit unless it's important to use the locale's definition
+<span class="lineNum">      40 </span>                :            :    of `digit' even when the host does not conform to POSIX.  */
+<span class="lineNum">      41 </span>                :            : #define ISDIGIT(c) ((unsigned int) (c) - '0' &lt;= 9)
+<span class="lineNum">      42 </span>                :            : 
+<span class="lineNum">      43 </span>                :            : /*
+<span class="lineNum">      44 </span>                :            :   POSIX requires:
+<span class="lineNum">      45 </span>                :            : 
+<span class="lineNum">      46 </span>                :            :   touch -t [[CC]YY]mmddhhmm[.ss] FILE...
+<span class="lineNum">      47 </span>                :            :     8, 10, or 12 digits, followed by optional .ss
+<span class="lineNum">      48 </span>                :            :     (PDS_LEADING_YEAR | PDS_CENTURY | PDS_SECONDS)
+<span class="lineNum">      49 </span>                :            : 
+<span class="lineNum">      50 </span>                :            :   touch mmddhhmm[YY] FILE... (obsoleted by POSIX 1003.1-2001)
+<span class="lineNum">      51 </span>                :            :     8 or 10 digits, YY (if present) must be in the range 69-99
+<span class="lineNum">      52 </span>                :            :     (PDS_TRAILING_YEAR | PDS_PRE_2000)
+<span class="lineNum">      53 </span>                :            : 
+<span class="lineNum">      54 </span>                :            :   date mmddhhmm[[CC]YY]
+<span class="lineNum">      55 </span>                :            :     8, 10, or 12 digits
+<span class="lineNum">      56 </span>                :            :     (PDS_TRAILING_YEAR | PDS_CENTURY)
+<span class="lineNum">      57 </span>                :            : 
+<span class="lineNum">      58 </span>                :            : */
+<a name="59"><span class="lineNum">      59 </span>                :            : </a>
+<span class="lineNum">      60 </span>                :            : static int
+<span class="lineNum">      61 </span>                :<span class="lineCov">        225 : year (struct tm *tm, const int *digit_pair, size_t n, unsigned int syntax_bits)</span>
+<span class="lineNum">      62 </span>                :            : {
+<span class="lineNum">      63 </span>  [<span class="branchCov" title="Branch 0 was taken 40 times"> + </span><span class="branchCov" title="Branch 1 was taken 155 times"> + </span><span class="branchCov" title="Branch 2 was taken 30 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        225 :   switch (n)</span>
+<span class="lineNum">      64 </span>                :            :     {
+<span class="lineNum">      65 </span>                :            :     case 1:
+<span class="lineNum">      66 </span>                :<span class="lineCov">         40 :       tm-&gt;tm_year = *digit_pair;</span>
+<span class="lineNum">      67 </span>                :            :       /* Deduce the century based on the year.
+<span class="lineNum">      68 </span>                :            :          POSIX requires that 00-68 be interpreted as 2000-2068,
+<span class="lineNum">      69 </span>                :            :          and that 69-99 be interpreted as 1969-1999.  */
+<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 0 was taken 25 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         40 :       if (digit_pair[0] &lt;= 68)</span>
+<span class="lineNum">      71 </span>                :            :         {
+<span class="lineNum">      72 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         25 :           if (syntax_bits &amp; PDS_PRE_2000)</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">          5 :             return 1;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">         20 :           tm-&gt;tm_year += 100;</span>
+<span class="lineNum">      75 </span>                :            :         }
+<span class="lineNum">      76 </span>                :<span class="lineCov">         35 :       break;</span>
+<span class="lineNum">      77 </span>                :            : 
+<span class="lineNum">      78 </span>                :            :     case 2:
+<span class="lineNum">      79 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 155 times"> + </span>]:<span class="lineCov">        155 :       if (! (syntax_bits &amp; PDS_CENTURY))</span>
+<span class="lineNum">      80 </span>                :<span class="lineNoCov">          0 :         return 1;</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">        155 :       tm-&gt;tm_year = digit_pair[0] * 100 + digit_pair[1] - 1900;</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">        155 :       break;</span>
+<span class="lineNum">      83 </span>                :            : 
+<span class="lineNum">      84 </span>                :            :     case 0:
+<span class="lineNum">      85 </span>                :            :       {
+<span class="lineNum">      86 </span>                :            :         time_t now;
+<span class="lineNum">      87 </span>                :            :         struct tm *tmp;
+<span class="lineNum">      88 </span>                :            : 
+<span class="lineNum">      89 </span>                :            :         /* Use current year.  */
+<span class="lineNum">      90 </span>                :<span class="lineCov">         30 :         time (&amp;now);</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">         30 :         tmp = localtime (&amp;now);</span>
+<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :         if (! tmp)</span>
+<span class="lineNum">      93 </span>                :<span class="lineNoCov">          0 :           return 1;</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">         30 :         tm-&gt;tm_year = tmp-&gt;tm_year;</span>
+<span class="lineNum">      95 </span>                :            :       }
+<span class="lineNum">      96 </span>                :<span class="lineCov">         30 :       break;</span>
+<span class="lineNum">      97 </span>                :            : 
+<span class="lineNum">      98 </span>                :            :     default:
+<span class="lineNum">      99 </span>                :<span class="lineNoCov">          0 :       abort ();</span>
+<span class="lineNum">     100 </span>                :            :     }
+<span class="lineNum">     101 </span>                :            : 
+<span class="lineNum">     102 </span>                :<span class="lineCov">        225 :   return 0;</span>
+<span class="lineNum">     103 </span>                :            : }
+<a name="104"><span class="lineNum">     104 </span>                :            : </a>
+<span class="lineNum">     105 </span>                :            : static int
+<span class="lineNum">     106 </span>                :<span class="lineCov">        225 : posix_time_parse (struct tm *tm, const char *s, unsigned int syntax_bits)</span>
+<span class="lineNum">     107 </span>                :            : {
+<span class="lineNum">     108 </span>                :<span class="lineCov">        225 :   const char *dot = NULL;</span>
+<span class="lineNum">     109 </span>                :            :   int pair[6];
+<span class="lineNum">     110 </span>                :            :   int *p;
+<span class="lineNum">     111 </span>                :            :   size_t i;
+<span class="lineNum">     112 </span>                :            : 
+<span class="lineNum">     113 </span>                :<span class="lineCov">        225 :   size_t s_len = strlen (s);</span>
+<span class="lineNum">     114 </span>        [<span class="branchCov" title="Branch 0 was taken 175 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">        190 :   size_t len = (((syntax_bits &amp; PDS_SECONDS) &amp;&amp; (dot = strchr (s, '.')))</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">        175 :                 ? (size_t) (dot - s)</span>
+<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 0 was taken 190 times"> + </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">        415 :                 : s_len);</span>
+<span class="lineNum">     117 </span>                :            : 
+<span class="lineNum">     118 </span>[<span class="branchCov" title="Branch 0 was taken 195 times"> + </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 155 times"> + </span><span class="branchCov" title="Branch 3 was taken 40 times"> + </span>]:<span class="lineCov">        225 :   if (len != 8 &amp;&amp; len != 10 &amp;&amp; len != 12)</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 155 times"> + </span>]
+<span class="lineNum">     119 </span>                :<span class="lineNoCov">          0 :     return 1;</span>
+<span class="lineNum">     120 </span>                :            : 
+<span class="lineNum">     121 </span>        [<span class="branchCov" title="Branch 0 was taken 175 times"> + </span><span class="branchCov" title="Branch 1 was taken 50 times"> + </span>]:<span class="lineCov">        225 :   if (dot)</span>
+<span class="lineNum">     122 </span>                :            :     {
+<span class="lineNum">     123 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 175 times"> + </span>]:<span class="lineCov">        175 :       if (!(syntax_bits &amp; PDS_SECONDS))</span>
+<span class="lineNum">     124 </span>                :<span class="lineNoCov">          0 :         return 1;</span>
+<span class="lineNum">     125 </span>                :            : 
+<span class="lineNum">     126 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 175 times"> + </span>]:<span class="lineCov">        175 :       if (s_len - len != 3)</span>
+<span class="lineNum">     127 </span>                :<span class="lineNoCov">          0 :         return 1;</span>
+<span class="lineNum">     128 </span>                :            :     }
+<span class="lineNum">     129 </span>                :            : 
+<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 2500 times"> + </span><span class="branchCov" title="Branch 1 was taken 225 times"> + </span>]:<span class="lineCov">       2725 :   for (i = 0; i &lt; len; i++)</span>
+<span class="lineNum">     131 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2500 times"> + </span>]:<span class="lineCov">       2500 :     if (!ISDIGIT (s[i]))</span>
+<span class="lineNum">     132 </span>                :<span class="lineNoCov">          0 :       return 1;</span>
+<span class="lineNum">     133 </span>                :            : 
+<span class="lineNum">     134 </span>                :<span class="lineCov">        225 :   len /= 2;</span>
+<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 1250 times"> + </span><span class="branchCov" title="Branch 1 was taken 225 times"> + </span>]:<span class="lineCov">       1475 :   for (i = 0; i &lt; len; i++)</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">       1250 :     pair[i] = 10 * (s[2*i] - '0') + s[2*i + 1] - '0';</span>
+<span class="lineNum">     137 </span>                :            : 
+<span class="lineNum">     138 </span>                :<span class="lineCov">        225 :   p = pair;</span>
+<span class="lineNum">     139 </span>        [<span class="branchCov" title="Branch 0 was taken 190 times"> + </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">        225 :   if (syntax_bits &amp; PDS_LEADING_YEAR)</span>
+<span class="lineNum">     140 </span>                :            :     {
+<span class="lineNum">     141 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 190 times"> + </span>]:<span class="lineCov">        190 :       if (year (tm, p, len - 4, syntax_bits))</span>
+<span class="lineNum">     142 </span>                :<span class="lineNoCov">          0 :         return 1;</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">        190 :       p += len - 4;</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">        190 :       len = 4;</span>
+<span class="lineNum">     145 </span>                :            :     }
+<span class="lineNum">     146 </span>                :            : 
+<span class="lineNum">     147 </span>                :            :   /* Handle 8 digits worth of `MMDDhhmm'.  */
+<span class="lineNum">     148 </span>                :<span class="lineCov">        225 :   tm-&gt;tm_mon = *p++ - 1;</span>
+<span class="lineNum">     149 </span>                :<span class="lineCov">        225 :   tm-&gt;tm_mday = *p++;</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">        225 :   tm-&gt;tm_hour = *p++;</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">        225 :   tm-&gt;tm_min = *p++;</span>
+<span class="lineNum">     152 </span>                :<span class="lineCov">        225 :   len -= 4;</span>
+<span class="lineNum">     153 </span>                :            : 
+<span class="lineNum">     154 </span>                :            :   /* Handle any trailing year.  */
+<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 0 was taken 35 times"> + </span><span class="branchCov" title="Branch 1 was taken 190 times"> + </span>]:<span class="lineCov">        225 :   if (syntax_bits &amp; PDS_TRAILING_YEAR)</span>
+<span class="lineNum">     156 </span>                :            :     {
+<span class="lineNum">     157 </span>        [<span class="branchCov" title="Branch 1 was taken 5 times"> + </span><span class="branchCov" title="Branch 2 was taken 30 times"> + </span>]:<span class="lineCov">         35 :       if (year (tm, p, len, syntax_bits))</span>
+<span class="lineNum">     158 </span>                :<span class="lineCov">          5 :         return 1;</span>
+<span class="lineNum">     159 </span>                :            :     }
+<span class="lineNum">     160 </span>                :            : 
+<span class="lineNum">     161 </span>                :            :   /* Handle seconds.  */
+<span class="lineNum">     162 </span>        [<span class="branchCov" title="Branch 0 was taken 45 times"> + </span><span class="branchCov" title="Branch 1 was taken 175 times"> + </span>]:<span class="lineCov">        220 :   if (!dot)</span>
+<span class="lineNum">     163 </span>                :            :     {
+<span class="lineNum">     164 </span>                :<span class="lineCov">         45 :       tm-&gt;tm_sec = 0;</span>
+<span class="lineNum">     165 </span>                :            :     }
+<span class="lineNum">     166 </span>                :            :   else
+<span class="lineNum">     167 </span>                :            :     {
+<span class="lineNum">     168 </span>                :            :       int seconds;
+<span class="lineNum">     169 </span>                :            : 
+<span class="lineNum">     170 </span>                :<span class="lineCov">        175 :       ++dot;</span>
+<span class="lineNum">     171 </span>[<span class="branchCov" title="Branch 0 was taken 175 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 175 times"> + </span>]:<span class="lineCov">        175 :       if (!ISDIGIT (dot[0]) || !ISDIGIT (dot[1]))</span>
+<span class="lineNum">     172 </span>                :<span class="lineNoCov">          0 :         return 1;</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">        175 :       seconds = 10 * (dot[0] - '0') + dot[1] - '0';</span>
+<span class="lineNum">     174 </span>                :            : 
+<span class="lineNum">     175 </span>                :<span class="lineCov">        175 :       tm-&gt;tm_sec = seconds;</span>
+<span class="lineNum">     176 </span>                :            :     }
+<span class="lineNum">     177 </span>                :            : 
+<span class="lineNum">     178 </span>                :<span class="lineCov">        225 :   return 0;</span>
+<span class="lineNum">     179 </span>                :            : }
+<span class="lineNum">     180 </span>                :            : 
+<span class="lineNum">     181 </span>                :            : /* Parse a POSIX-style date, returning true if successful.  */
+<a name="182"><span class="lineNum">     182 </span>                :            : </a>
+<span class="lineNum">     183 </span>                :            : bool
+<span class="lineNum">     184 </span>                :<span class="lineCov">        225 : posixtime (time_t *p, const char *s, unsigned int syntax_bits)</span>
+<span class="lineNum">     185 </span>                :            : {
+<span class="lineNum">     186 </span>                :            :   struct tm tm0;
+<span class="lineNum">     187 </span>                :            :   struct tm tm1;
+<span class="lineNum">     188 </span>                :            :   struct tm const *tm;
+<span class="lineNum">     189 </span>                :            :   time_t t;
+<span class="lineNum">     190 </span>                :            : 
+<span class="lineNum">     191 </span>        [<span class="branchCov" title="Branch 1 was taken 5 times"> + </span><span class="branchCov" title="Branch 2 was taken 220 times"> + </span>]:<span class="lineCov">        225 :   if (posix_time_parse (&amp;tm0, s, syntax_bits))</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">          5 :     return false;</span>
+<span class="lineNum">     193 </span>                :            : 
+<span class="lineNum">     194 </span>                :<span class="lineCov">        220 :   tm1 = tm0;</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">        220 :   tm1.tm_isdst = -1;</span>
+<span class="lineNum">     196 </span>                :<span class="lineCov">        220 :   t = mktime (&amp;tm1);</span>
+<span class="lineNum">     197 </span>                :            : 
+<span class="lineNum">     198 </span>        [<span class="branchCov" title="Branch 0 was taken 215 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">        220 :   if (t != (time_t) -1)</span>
+<span class="lineNum">     199 </span>                :<span class="lineCov">        215 :     tm = &amp;tm1;</span>
+<span class="lineNum">     200 </span>                :            :   else
+<span class="lineNum">     201 </span>                :            :     {
+<span class="lineNum">     202 </span>                :            :       /* mktime returns -1 for errors, but -1 is also a valid time_t
+<span class="lineNum">     203 </span>                :            :          value.  Check whether an error really occurred.  */
+<span class="lineNum">     204 </span>                :<span class="lineCov">          5 :       tm = localtime (&amp;t);</span>
+<span class="lineNum">     205 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :       if (! tm)</span>
+<span class="lineNum">     206 </span>                :<span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     207 </span>                :            :     }
+<span class="lineNum">     208 </span>                :            : 
+<span class="lineNum">     209 </span>                :            :   /* Reject dates like &quot;September 31&quot; and times like &quot;25:61&quot;.
+<span class="lineNum">     210 </span>                :            :      Do not reject times that specify &quot;60&quot; as the number of seconds.  */
+<span class="lineNum">     211 </span>        [<span class="branchCov" title="Branch 0 was taken 40 times"> + </span><span class="branchCov" title="Branch 1 was taken 180 times"> + </span>]:<span class="lineCov">        220 :   if ((tm0.tm_year ^ tm-&gt;tm_year)</span>
+<span class="lineNum">     212 </span>                :<span class="lineCov">        220 :       | (tm0.tm_mon ^ tm-&gt;tm_mon)</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">        220 :       | (tm0.tm_mday ^ tm-&gt;tm_mday)</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">        220 :       | (tm0.tm_hour ^ tm-&gt;tm_hour)</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">        220 :       | (tm0.tm_min ^ tm-&gt;tm_min)</span>
+<span class="lineNum">     216 </span>                :<span class="lineCov">        220 :       | (tm0.tm_sec ^ tm-&gt;tm_sec))</span>
+<span class="lineNum">     217 </span>                :            :     {
+<span class="lineNum">     218 </span>                :            :       /* Any mismatch without 60 in the tm_sec field is invalid.  */
+<span class="lineNum">     219 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         40 :       if (tm0.tm_sec != 60)</span>
+<span class="lineNum">     220 </span>                :<span class="lineCov">         30 :         return false;</span>
+<span class="lineNum">     221 </span>                :            : 
+<span class="lineNum">     222 </span>                :            :       {
+<span class="lineNum">     223 </span>                :            :         /* Allow times like 01:35:60 or 23:59:60.  */
+<span class="lineNum">     224 </span>                :            :         time_t dummy;
+<span class="lineNum">     225 </span>                :            :         char buf[16];
+<span class="lineNum">     226 </span>                :<span class="lineCov">         10 :         char *b = stpcpy (buf, s);</span>
+<span class="lineNum">     227 </span>                :<span class="lineCov">         10 :         strcpy (b - 2, &quot;59&quot;);</span>
+<span class="lineNum">     228 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span>]:<span class="lineCov">         10 :         if (!posixtime (&amp;dummy, buf, syntax_bits))</span>
+<span class="lineNum">     229 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     230 </span>                :            :       }
+<span class="lineNum">     231 </span>                :            :     }
+<span class="lineNum">     232 </span>                :            : 
+<span class="lineNum">     233 </span>                :<span class="lineCov">        190 :   *p = t;</span>
+<span class="lineNum">     234 </span>                :<span class="lineCov">        225 :   return true;</span>
+<span class="lineNum">     235 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

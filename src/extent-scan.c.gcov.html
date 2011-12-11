@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - unnamed - src/extent-scan.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - extent-scan.c<span style="font-size: 80%;"> (source / <a href="extent-scan.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">unnamed</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntry">71</td>
+            <td class="headerCovTableEntryHi">77.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2011-12-11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntryHi">64.3 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* extent-scan.c -- core functions for scanning extents</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2010-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       6 </span>                :            :    the Free Software Foundation, either version 3 of the License, or
+<span class="lineNum">       7 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       8 </span>                :            : 
+<span class="lineNum">       9 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      10 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      11 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      12 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      13 </span>                :            : 
+<span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      15 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :            :    Written by Jie Liu (jeff.liu@oracle.com).  */
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      20 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      21 </span>                :            : #include &lt;sys/ioctl.h&gt;
+<span class="lineNum">      22 </span>                :            : #include &lt;sys/utsname.h&gt;
+<span class="lineNum">      23 </span>                :            : #include &lt;assert.h&gt;
+<span class="lineNum">      24 </span>                :            : 
+<span class="lineNum">      25 </span>                :            : #include &quot;system.h&quot;
+<span class="lineNum">      26 </span>                :            : #include &quot;extent-scan.h&quot;
+<span class="lineNum">      27 </span>                :            : #include &quot;fiemap.h&quot;
+<span class="lineNum">      28 </span>                :            : #include &quot;xstrtol.h&quot;
+<span class="lineNum">      29 </span>                :            : 
+<span class="lineNum">      30 </span>                :            : 
+<span class="lineNum">      31 </span>                :            : /* Work around Linux kernel issues on BTRFS and EXT4 before 2.6.39.
+<span class="lineNum">      32 </span>                :            :    FIXME: remove in 2013, or whenever we're pretty confident
+<a name="33"><span class="lineNum">      33 </span>                :            :    that the offending, unpatched kernels are no longer in use.  */</a>
+<span class="lineNum">      34 </span>                :            : static bool
+<span class="lineNum">      35 </span>                :<span class="lineCov">        210 : extent_need_sync (void)</span>
+<span class="lineNum">      36 </span>                :            : {
+<span class="lineNum">      37 </span>                :            :   /* For now always return true, to be on the safe side.
+<span class="lineNum">      38 </span>                :            :      If/when FIEMAP semantics are well defined (before SEEK_HOLE support
+<span class="lineNum">      39 </span>                :            :      is usable) and kernels implementing them are in use, we may relax
+<span class="lineNum">      40 </span>                :            :      this once again.  */
+<span class="lineNum">      41 </span>                :<span class="lineCov">        210 :   return true;</span>
+<span class="lineNum">      42 </span>                :            : 
+<span class="lineNum">      43 </span>                :            : #if FIEMAP_BEHAVIOR_IS_DEFINED_AND_USABLE
+<span class="lineNum">      44 </span>                :            :   static int need_sync = -1;
+<span class="lineNum">      45 </span>                :            : 
+<span class="lineNum">      46 </span>                :            :   if (need_sync == -1)
+<span class="lineNum">      47 </span>                :            :     {
+<span class="lineNum">      48 </span>                :            :       struct utsname name;
+<span class="lineNum">      49 </span>                :            :       need_sync = 0; /* No workaround by default.  */
+<span class="lineNum">      50 </span>                :            : 
+<span class="lineNum">      51 </span>                :            : # ifdef __linux__
+<span class="lineNum">      52 </span>                :            :       if (uname (&amp;name) != -1 &amp;&amp; STRNCMP_LIT (name.release, &quot;2.6.&quot;) == 0)
+<span class="lineNum">      53 </span>                :            :         {
+<span class="lineNum">      54 </span>                :            :            unsigned long val;
+<span class="lineNum">      55 </span>                :            :            if (xstrtoul (name.release + 4, NULL, 10, &amp;val, NULL) == LONGINT_OK)
+<span class="lineNum">      56 </span>                :            :              {
+<span class="lineNum">      57 </span>                :            :                if (val &lt; 39)
+<span class="lineNum">      58 </span>                :            :                  need_sync = 1;
+<span class="lineNum">      59 </span>                :            :              }
+<span class="lineNum">      60 </span>                :            :         }
+<span class="lineNum">      61 </span>                :            : # endif
+<span class="lineNum">      62 </span>                :            :     }
+<span class="lineNum">      63 </span>                :            : 
+<span class="lineNum">      64 </span>                :            :   return need_sync;
+<span class="lineNum">      65 </span>                :            : #endif
+<span class="lineNum">      66 </span>                :            : }
+<span class="lineNum">      67 </span>                :            : 
+<span class="lineNum">      68 </span>                :            : /* Allocate space for struct extent_scan, initialize the entries if
+<a name="69"><span class="lineNum">      69 </span>                :            :    necessary and return it as the input argument of extent_scan_read().  */</a>
+<span class="lineNum">      70 </span>                :            : extern void
+<span class="lineNum">      71 </span>                :<span class="lineCov">        210 : extent_scan_init (int src_fd, struct extent_scan *scan)</span>
+<span class="lineNum">      72 </span>                :            : {
+<span class="lineNum">      73 </span>                :<span class="lineCov">        210 :   scan-&gt;fd = src_fd;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">        210 :   scan-&gt;ei_count = 0;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">        210 :   scan-&gt;ext_info = NULL;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">        210 :   scan-&gt;scan_start = 0;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">        210 :   scan-&gt;initial_scan_failed = false;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">        210 :   scan-&gt;hit_final_extent = false;</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">        210 :   scan-&gt;fm_flags = extent_need_sync () ? FIEMAP_FLAG_SYNC : 0;</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">        210 : }</span>
+<span class="lineNum">      81 </span>                :            : 
+<span class="lineNum">      82 </span>                :            : #ifdef __linux__
+<span class="lineNum">      83 </span>                :            : # ifndef FS_IOC_FIEMAP
+<span class="lineNum">      84 </span>                :            : #  define FS_IOC_FIEMAP _IOWR ('f', 11, struct fiemap)
+<span class="lineNum">      85 </span>                :            : # endif
+<span class="lineNum">      86 </span>                :            : /* Call ioctl(2) with FS_IOC_FIEMAP (available in linux 2.6.27) to
+<a name="87"><span class="lineNum">      87 </span>                :            :    obtain a map of file extents excluding holes.  */</a>
+<span class="lineNum">      88 </span>                :            : extern bool
+<span class="lineNum">      89 </span>                :<span class="lineCov">        249 : extent_scan_read (struct extent_scan *scan)</span>
+<span class="lineNum">      90 </span>                :            : {
+<span class="lineNum">      91 </span>                :<span class="lineCov">        249 :   unsigned int si = 0;</span>
+<span class="lineNum">      92 </span>                :            :   struct extent_info *last_ei IF_LINT ( = scan-&gt;ext_info);
+<span class="lineNum">      93 </span>                :            : 
+<span class="lineNum">      94 </span>                :            :   while (true)
+<span class="lineNum">      95 </span>                :            :     {
+<span class="lineNum">      96 </span>                :            :       union { struct fiemap f; char c[4096]; } fiemap_buf;
+<span class="lineNum">      97 </span>                :<span class="lineCov">        250 :       struct fiemap *fiemap = &amp;fiemap_buf.f;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">        250 :       struct fiemap_extent *fm_extents = &amp;fiemap-&gt;fm_extents[0];</span>
+<span class="lineNum">      99 </span>                :            :       enum { count = (sizeof fiemap_buf - sizeof *fiemap)/sizeof *fm_extents };
+<span class="lineNum">     100 </span>                :            :       verify (count &gt; 1);
+<span class="lineNum">     101 </span>                :            : 
+<span class="lineNum">     102 </span>                :            :       /* This is required at least to initialize fiemap-&gt;fm_start,
+<span class="lineNum">     103 </span>                :            :          but also serves (in mid 2010) to appease valgrind, which
+<span class="lineNum">     104 </span>                :            :          appears not to know the semantics of the FIEMAP ioctl. */
+<span class="lineNum">     105 </span>                :<span class="lineCov">        250 :       memset (&amp;fiemap_buf, 0, sizeof fiemap_buf);</span>
+<span class="lineNum">     106 </span>                :            : 
+<span class="lineNum">     107 </span>                :<span class="lineCov">        250 :       fiemap-&gt;fm_start = scan-&gt;scan_start;</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">        250 :       fiemap-&gt;fm_flags = scan-&gt;fm_flags;</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">        250 :       fiemap-&gt;fm_extent_count = count;</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">        250 :       fiemap-&gt;fm_length = FIEMAP_MAX_OFFSET - scan-&gt;scan_start;</span>
+<span class="lineNum">     111 </span>                :            : 
+<span class="lineNum">     112 </span>                :            :       /* Fall back to the standard copy if call ioctl(2) failed for
+<span class="lineNum">     113 </span>                :            :          the first time.  */
+<span class="lineNum">     114 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 250 times"> + </span>]:<span class="lineCov">        250 :       if (ioctl (scan-&gt;fd, FS_IOC_FIEMAP, fiemap) &lt; 0)</span>
+<span class="lineNum">     115 </span>                :            :         {
+<span class="lineNum">     116 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (scan-&gt;scan_start == 0)</span>
+<span class="lineNum">     117 </span>                :<span class="lineNoCov">          0 :             scan-&gt;initial_scan_failed = true;</span>
+<span class="lineNum">     118 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     119 </span>                :            :         }
+<span class="lineNum">     120 </span>                :            : 
+<span class="lineNum">     121 </span>                :            :       /* If 0 extents are returned, then no more scans are needed.  */
+<span class="lineNum">     122 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 240 times"> + </span>]:<span class="lineCov">        250 :       if (fiemap-&gt;fm_mapped_extents == 0)</span>
+<span class="lineNum">     123 </span>                :            :         {
+<span class="lineNum">     124 </span>                :<span class="lineCov">         10 :           scan-&gt;hit_final_extent = true;</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">         10 :           return scan-&gt;scan_start != 0;</span>
+<span class="lineNum">     126 </span>                :            :         }
+<span class="lineNum">     127 </span>                :            : 
+<span class="lineNum">     128 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 240 times"> + </span>]:<span class="lineCov">        240 :       assert (scan-&gt;ei_count &lt;= SIZE_MAX - fiemap-&gt;fm_mapped_extents);</span>
+<span class="lineNum">     129 </span>                :<span class="lineCov">        240 :       scan-&gt;ei_count += fiemap-&gt;fm_mapped_extents;</span>
+<span class="lineNum">     130 </span>                :<span class="lineCov">        240 :       scan-&gt;ext_info = xnrealloc (scan-&gt;ext_info, scan-&gt;ei_count,</span>
+<span class="lineNum">     131 </span>                :            :                                   sizeof (struct extent_info));
+<span class="lineNum">     132 </span>                :            : 
+<span class="lineNum">     133 </span>                :<span class="lineCov">        240 :       unsigned int i = 0;</span>
+<span class="lineNum">     134 </span>        [<span class="branchCov" title="Branch 0 was taken 5735 times"> + </span><span class="branchCov" title="Branch 1 was taken 240 times"> + </span>]:<span class="lineCov">       5975 :       for (i = 0; i &lt; fiemap-&gt;fm_mapped_extents; i++)</span>
+<span class="lineNum">     135 </span>                :            :         {
+<span class="lineNum">     136 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5735 times"> + </span>]:<span class="lineCov">       5735 :           assert (fm_extents[i].fe_logical &lt;=</span>
+<span class="lineNum">     137 </span>                :            :                   OFF_T_MAX - fm_extents[i].fe_length);
+<span class="lineNum">     138 </span>                :            : 
+<span class="lineNum">     139 </span>[<span class="branchCov" title="Branch 0 was taken 5496 times"> + </span><span class="branchCov" title="Branch 1 was taken 239 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 5496 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       5735 :           if (si &amp;&amp; last_ei-&gt;ext_flags ==</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">       5496 :               (fm_extents[i].fe_flags &amp; ~FIEMAP_EXTENT_LAST)</span>
+<span class="lineNum">     141 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 5491 times"> + </span>]:<span class="lineCov">       5496 :               &amp;&amp; (last_ei-&gt;ext_logical + last_ei-&gt;ext_length</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">       5496 :                   == fm_extents[i].fe_logical))</span>
+<span class="lineNum">     143 </span>                :            :             {
+<span class="lineNum">     144 </span>                :            :               /* Merge previous with last.  */
+<span class="lineNum">     145 </span>                :<span class="lineCov">          5 :               last_ei-&gt;ext_length += fm_extents[i].fe_length;</span>
+<span class="lineNum">     146 </span>                :            :               /* Copy flags in case different.  */
+<span class="lineNum">     147 </span>                :<span class="lineCov">          5 :               last_ei-&gt;ext_flags = fm_extents[i].fe_flags;</span>
+<span class="lineNum">     148 </span>                :            :             }
+<span class="lineNum">     149 </span>[<span class="branchCov" title="Branch 0 was taken 239 times"> + </span><span class="branchCov" title="Branch 1 was taken 5491 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 239 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       5730 :           else if ((si == 0 &amp;&amp; scan-&gt;scan_start &gt; fm_extents[i].fe_logical)</span>
+<span class="lineNum">     150 </span>[<span class="branchCov" title="Branch 0 was taken 5491 times"> + </span><span class="branchCov" title="Branch 1 was taken 239 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 5491 times"> + </span>]:<span class="lineCov">       5730 :                    || (si &amp;&amp; last_ei-&gt;ext_logical + last_ei-&gt;ext_length &gt;</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">       5491 :                        fm_extents[i].fe_logical))</span>
+<span class="lineNum">     152 </span>                :            :             {
+<span class="lineNum">     153 </span>                :            :               /* BTRFS before 2.6.38 could return overlapping extents
+<span class="lineNum">     154 </span>                :            :                  for sparse files.  We adjust the returned extents
+<span class="lineNum">     155 </span>                :            :                  rather than failing, as otherwise it would be inefficient
+<span class="lineNum">     156 </span>                :            :                  to detect this on the initial scan.  */
+<span class="lineNum">     157 </span>                :            :               uint64_t new_logical;
+<span class="lineNum">     158 </span>                :            :               uint64_t length_adjust;
+<span class="lineNum">     159 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               if (si == 0)</span>
+<span class="lineNum">     160 </span>                :<span class="lineNoCov">          0 :                 new_logical = scan-&gt;scan_start;</span>
+<span class="lineNum">     161 </span>                :            :               else
+<span class="lineNum">     162 </span>                :            :                 {
+<span class="lineNum">     163 </span>                :            :                   /* We could return here if scan-&gt;scan_start == 0
+<span class="lineNum">     164 </span>                :            :                      but don't so as to minimize special cases.  */
+<span class="lineNum">     165 </span>                :<span class="lineNoCov">          0 :                   new_logical = last_ei-&gt;ext_logical + last_ei-&gt;ext_length;</span>
+<span class="lineNum">     166 </span>                :            :                 }
+<span class="lineNum">     167 </span>                :<span class="lineNoCov">          0 :               length_adjust = new_logical - fm_extents[i].fe_logical;</span>
+<span class="lineNum">     168 </span>                :            :               /* If an extent is contained within the previous one, fail.  */
+<span class="lineNum">     169 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               if (length_adjust &lt; fm_extents[i].fe_length)</span>
+<span class="lineNum">     170 </span>                :            :                 {
+<span class="lineNum">     171 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                   if (scan-&gt;scan_start == 0)</span>
+<span class="lineNum">     172 </span>                :<span class="lineNoCov">          0 :                     scan-&gt;initial_scan_failed = true;</span>
+<span class="lineNum">     173 </span>                :<span class="lineNoCov">          0 :                   return false;</span>
+<span class="lineNum">     174 </span>                :            :                 }
+<span class="lineNum">     175 </span>                :<span class="lineNoCov">          0 :               fm_extents[i].fe_logical = new_logical;</span>
+<span class="lineNum">     176 </span>                :<span class="lineNoCov">          0 :               fm_extents[i].fe_length -= length_adjust;</span>
+<span class="lineNum">     177 </span>                :            :               /* Process the adjusted extent again.  */
+<span class="lineNum">     178 </span>                :<span class="lineNoCov">          0 :               i--;</span>
+<span class="lineNum">     179 </span>                :<span class="lineNoCov">          0 :               continue;</span>
+<span class="lineNum">     180 </span>                :            :             }
+<span class="lineNum">     181 </span>                :            :           else
+<span class="lineNum">     182 </span>                :            :             {
+<span class="lineNum">     183 </span>                :<span class="lineCov">       5730 :               last_ei = scan-&gt;ext_info + si;</span>
+<span class="lineNum">     184 </span>                :<span class="lineCov">       5730 :               last_ei-&gt;ext_logical = fm_extents[i].fe_logical;</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">       5730 :               last_ei-&gt;ext_length = fm_extents[i].fe_length;</span>
+<span class="lineNum">     186 </span>                :<span class="lineCov">       5730 :               last_ei-&gt;ext_flags = fm_extents[i].fe_flags;</span>
+<span class="lineNum">     187 </span>                :<span class="lineCov">       5730 :               si++;</span>
+<span class="lineNum">     188 </span>                :            :             }
+<span class="lineNum">     189 </span>                :            :         }
+<span class="lineNum">     190 </span>                :            : 
+<span class="lineNum">     191 </span>        [<span class="branchCov" title="Branch 0 was taken 200 times"> + </span><span class="branchCov" title="Branch 1 was taken 40 times"> + </span>]:<span class="lineCov">        240 :       if (last_ei-&gt;ext_flags &amp; FIEMAP_EXTENT_LAST)</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">        200 :         scan-&gt;hit_final_extent = true;</span>
+<span class="lineNum">     193 </span>                :            : 
+<span class="lineNum">     194 </span>                :            :       /* If we have enough extents, discard the last as it might
+<span class="lineNum">     195 </span>                :            :          be merged with one from the next scan.  */
+<span class="lineNum">     196 </span>[<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 239 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">        240 :       if (si &gt; count &amp;&amp; !scan-&gt;hit_final_extent)</span>
+<span class="lineNum">     197 </span>                :<span class="lineNoCov">          0 :         last_ei = scan-&gt;ext_info + --si - 1;</span>
+<span class="lineNum">     198 </span>                :            : 
+<span class="lineNum">     199 </span>                :            :       /* We don't bother reallocating any trailing slots.  */
+<span class="lineNum">     200 </span>                :<span class="lineCov">        240 :       scan-&gt;ei_count = si;</span>
+<span class="lineNum">     201 </span>                :            : 
+<span class="lineNum">     202 </span>        [<span class="branchCov" title="Branch 0 was taken 200 times"> + </span><span class="branchCov" title="Branch 1 was taken 40 times"> + </span>]:<span class="lineCov">        240 :       if (scan-&gt;hit_final_extent)</span>
+<span class="lineNum">     203 </span>                :<span class="lineCov">        200 :         break;</span>
+<span class="lineNum">     204 </span>                :            :       else
+<span class="lineNum">     205 </span>                :<span class="lineCov">         40 :         scan-&gt;scan_start = last_ei-&gt;ext_logical + last_ei-&gt;ext_length;</span>
+<span class="lineNum">     206 </span>                :            : 
+<span class="lineNum">     207 </span>        [<span class="branchCov" title="Branch 0 was taken 39 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">         40 :       if (si &gt;= count)</span>
+<span class="lineNum">     208 </span>                :<span class="lineCov">         39 :         break;</span>
+<span class="lineNum">     209 </span>                :<span class="lineCov">          1 :     }</span>
+<span class="lineNum">     210 </span>                :            : 
+<span class="lineNum">     211 </span>                :<span class="lineCov">        249 :   return true;</span>
+<span class="lineNum">     212 </span>                :            : }
+<span class="lineNum">     213 </span>                :            : #else
+<span class="lineNum">     214 </span>                :            : extern bool
+<span class="lineNum">     215 </span>                :            : extent_scan_read (struct extent_scan *scan ATTRIBUTE_UNUSED)
+<span class="lineNum">     216 </span>                :            : {
+<span class="lineNum">     217 </span>                :            :   scan-&gt;initial_scan_failed = true;
+<span class="lineNum">     218 </span>                :            :   errno = ENOTSUP;
+<span class="lineNum">     219 </span>                :            :   return false;
+<span class="lineNum">     220 </span>                :            : }
+<span class="lineNum">     221 </span>                :            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

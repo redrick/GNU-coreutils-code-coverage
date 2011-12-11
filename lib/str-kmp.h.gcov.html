@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - unnamed - lib/str-kmp.h</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib</a> - str-kmp.h<span style="font-size: 80%;"> (source / <a href="str-kmp.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">unnamed</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntryHi">77.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2011-12-11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryHi">60.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* Substring search in a NUL terminated string of UNIT elements,</a>
+<span class="lineNum">       2 </span>                :            :    using the Knuth-Morris-Pratt algorithm.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 2005-2011 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>                :            :    Written by Bruno Haible &lt;bruno@clisp.org&gt;, 2005.
+<span class="lineNum">       5 </span>                :            : 
+<span class="lineNum">       6 </span>                :            :    This program is free software; you can redistribute it and/or modify
+<span class="lineNum">       7 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       8 </span>                :            :    the Free Software Foundation; either version 3, or (at your option)
+<span class="lineNum">       9 </span>                :            :    any later version.
+<span class="lineNum">      10 </span>                :            : 
+<span class="lineNum">      11 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      12 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      14 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      15 </span>                :            : 
+<span class="lineNum">      16 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      17 </span>                :            :    along with this program; if not, write to the Free Software Foundation,
+<span class="lineNum">      18 </span>                :            :    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+<span class="lineNum">      19 </span>                :            : 
+<span class="lineNum">      20 </span>                :            : /* Before including this file, you need to define:
+<span class="lineNum">      21 </span>                :            :      UNIT                    The element type of the needle and haystack.
+<span class="lineNum">      22 </span>                :            :      CANON_ELEMENT(c)        A macro that canonicalizes an element right after
+<span class="lineNum">      23 </span>                :            :                              it has been fetched from needle or haystack.
+<span class="lineNum">      24 </span>                :            :                              The argument is of type UNIT; the result must be
+<span class="lineNum">      25 </span>                :            :                              of type UNIT as well.  */
+<span class="lineNum">      26 </span>                :            : 
+<span class="lineNum">      27 </span>                :            : /* Knuth-Morris-Pratt algorithm.
+<span class="lineNum">      28 </span>                :            :    See http://en.wikipedia.org/wiki/Knuth-Morris-Pratt_algorithm
+<span class="lineNum">      29 </span>                :            :    HAYSTACK is the NUL terminated string in which to search for.
+<span class="lineNum">      30 </span>                :            :    NEEDLE is the string to search for in HAYSTACK, consisting of NEEDLE_LEN
+<span class="lineNum">      31 </span>                :            :    units.
+<span class="lineNum">      32 </span>                :            :    Return a boolean indicating success:
+<span class="lineNum">      33 </span>                :            :    Return true and set *RESULTP if the search was completed.
+<a name="34"><span class="lineNum">      34 </span>                :            :    Return false if it was aborted because not enough memory was available.  */</a>
+<span class="lineNum">      35 </span>                :            : static bool
+<span class="lineNum">      36 </span>                :<span class="lineCov">          5 : knuth_morris_pratt (const UNIT *haystack,</span>
+<span class="lineNum">      37 </span>                :            :                     const UNIT *needle, size_t needle_len,
+<span class="lineNum">      38 </span>                :            :                     const UNIT **resultp)
+<span class="lineNum">      39 </span>                :            : {
+<span class="lineNum">      40 </span>                :<span class="lineCov">          5 :   size_t m = needle_len;</span>
+<span class="lineNum">      41 </span>                :            : 
+<span class="lineNum">      42 </span>                :            :   /* Allocate the table.  */
+<span class="lineNum">      43 </span>[<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 5 times"> + </span>]:<span class="lineCov">          5 :   size_t *table = (size_t *) nmalloca (m, sizeof (size_t));</span>
+<span class="lineNum">      44 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :   if (table == NULL)</span>
+<span class="lineNum">      45 </span>                :<span class="lineNoCov">          0 :     return false;</span>
+<span class="lineNum">      46 </span>                :            :   /* Fill the table.
+<span class="lineNum">      47 </span>                :            :      For 0 &lt; i &lt; m:
+<span class="lineNum">      48 </span>                :            :        0 &lt; table[i] &lt;= i is defined such that
+<span class="lineNum">      49 </span>                :            :        forall 0 &lt; x &lt; table[i]: needle[x..i-1] != needle[0..i-1-x],
+<span class="lineNum">      50 </span>                :            :        and table[i] is as large as possible with this property.
+<span class="lineNum">      51 </span>                :            :      This implies:
+<span class="lineNum">      52 </span>                :            :      1) For 0 &lt; i &lt; m:
+<span class="lineNum">      53 </span>                :            :           If table[i] &lt; i,
+<span class="lineNum">      54 </span>                :            :           needle[table[i]..i-1] = needle[0..i-1-table[i]].
+<span class="lineNum">      55 </span>                :            :      2) For 0 &lt; i &lt; m:
+<span class="lineNum">      56 </span>                :            :           rhaystack[0..i-1] == needle[0..i-1]
+<span class="lineNum">      57 </span>                :            :           and exists h, i &lt;= h &lt; m: rhaystack[h] != needle[h]
+<span class="lineNum">      58 </span>                :            :           implies
+<span class="lineNum">      59 </span>                :            :           forall 0 &lt;= x &lt; table[i]: rhaystack[x..x+m-1] != needle[0..m-1].
+<span class="lineNum">      60 </span>                :            :      table[0] remains uninitialized.  */
+<span class="lineNum">      61 </span>                :            :   {
+<span class="lineNum">      62 </span>                :            :     size_t i, j;
+<span class="lineNum">      63 </span>                :            : 
+<span class="lineNum">      64 </span>                :            :     /* i = 1: Nothing to verify for x = 0.  */
+<span class="lineNum">      65 </span>                :<span class="lineCov">          5 :     table[1] = 1;</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">          5 :     j = 0;</span>
+<span class="lineNum">      67 </span>                :            : 
+<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 4999995 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">    5000000 :     for (i = 2; i &lt; m; i++)</span>
+<span class="lineNum">      69 </span>                :            :       {
+<span class="lineNum">      70 </span>                :            :         /* Here: j = i-1 - table[i-1].
+<span class="lineNum">      71 </span>                :            :            The inequality needle[x..i-1] != needle[0..i-1-x] is known to hold
+<span class="lineNum">      72 </span>                :            :            for x &lt; table[i-1], by induction.
+<span class="lineNum">      73 </span>                :            :            Furthermore, if j&gt;0: needle[i-1-j..i-2] = needle[0..j-1].  */
+<span class="lineNum">      74 </span>                :<span class="lineCov">    4999995 :         UNIT b = CANON_ELEMENT (needle[i - 1]);</span>
+<span class="lineNum">      75 </span>                :            : 
+<span class="lineNum">      76 </span>                :            :         for (;;)
+<span class="lineNum">      77 </span>                :            :           {
+<span class="lineNum">      78 </span>                :            :             /* Invariants: The inequality needle[x..i-1] != needle[0..i-1-x]
+<span class="lineNum">      79 </span>                :            :                is known to hold for x &lt; i-1-j.
+<span class="lineNum">      80 </span>                :            :                Furthermore, if j&gt;0: needle[i-1-j..i-2] = needle[0..j-1].  */
+<span class="lineNum">      81 </span>        [<span class="branchCov" title="Branch 0 was taken 4999995 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    4999995 :             if (b == CANON_ELEMENT (needle[j]))</span>
+<span class="lineNum">      82 </span>                :            :               {
+<span class="lineNum">      83 </span>                :            :                 /* Set table[i] := i-1-j.  */
+<span class="lineNum">      84 </span>                :<span class="lineCov">    4999995 :                 table[i] = i - ++j;</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">    4999995 :                 break;</span>
+<span class="lineNum">      86 </span>                :            :               }
+<span class="lineNum">      87 </span>                :            :             /* The inequality needle[x..i-1] != needle[0..i-1-x] also holds
+<span class="lineNum">      88 </span>                :            :                for x = i-1-j, because
+<span class="lineNum">      89 </span>                :            :                  needle[i-1] != needle[j] = needle[i-1-x].  */
+<span class="lineNum">      90 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :             if (j == 0)</span>
+<span class="lineNum">      91 </span>                :            :               {
+<span class="lineNum">      92 </span>                :            :                 /* The inequality holds for all possible x.  */
+<span class="lineNum">      93 </span>                :<span class="lineNoCov">          0 :                 table[i] = i;</span>
+<span class="lineNum">      94 </span>                :<span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">      95 </span>                :            :               }
+<span class="lineNum">      96 </span>                :            :             /* The inequality needle[x..i-1] != needle[0..i-1-x] also holds
+<span class="lineNum">      97 </span>                :            :                for i-1-j &lt; x &lt; i-1-j+table[j], because for these x:
+<span class="lineNum">      98 </span>                :            :                  needle[x..i-2]
+<span class="lineNum">      99 </span>                :            :                  = needle[x-(i-1-j)..j-1]
+<span class="lineNum">     100 </span>                :            :                  != needle[0..j-1-(x-(i-1-j))]  (by definition of table[j])
+<span class="lineNum">     101 </span>                :            :                     = needle[0..i-2-x],
+<span class="lineNum">     102 </span>                :            :                hence needle[x..i-1] != needle[0..i-1-x].
+<span class="lineNum">     103 </span>                :            :                Furthermore
+<span class="lineNum">     104 </span>                :            :                  needle[i-1-j+table[j]..i-2]
+<span class="lineNum">     105 </span>                :            :                  = needle[table[j]..j-1]
+<span class="lineNum">     106 </span>                :            :                  = needle[0..j-1-table[j]]  (by definition of table[j]).  */
+<span class="lineNum">     107 </span>                :<span class="lineNoCov">          0 :             j = j - table[j];</span>
+<span class="lineNum">     108 </span>                :<span class="lineNoCov">          0 :           }</span>
+<span class="lineNum">     109 </span>                :            :         /* Here: j = i - table[i].  */
+<span class="lineNum">     110 </span>                :            :       }
+<span class="lineNum">     111 </span>                :            :   }
+<span class="lineNum">     112 </span>                :            : 
+<span class="lineNum">     113 </span>                :            :   /* Search, using the table to accelerate the processing.  */
+<span class="lineNum">     114 </span>                :            :   {
+<span class="lineNum">     115 </span>                :            :     size_t j;
+<span class="lineNum">     116 </span>                :            :     const UNIT *rhaystack;
+<span class="lineNum">     117 </span>                :            :     const UNIT *phaystack;
+<span class="lineNum">     118 </span>                :            : 
+<span class="lineNum">     119 </span>                :<span class="lineCov">          5 :     *resultp = NULL;</span>
+<span class="lineNum">     120 </span>                :<span class="lineCov">          5 :     j = 0;</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">          5 :     rhaystack = haystack;</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">          5 :     phaystack = haystack;</span>
+<span class="lineNum">     123 </span>                :            :     /* Invariant: phaystack = rhaystack + j.  */
+<span class="lineNum">     124 </span>        [<span class="branchCov" title="Branch 0 was taken 14999905 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">   14999905 :     while (*phaystack != 0)</span>
+<span class="lineNum">     125 </span>        [<span class="branchCov" title="Branch 0 was taken 9999955 times"> + </span><span class="branchCov" title="Branch 1 was taken 4999950 times"> + </span>]:<span class="lineCov">   14999905 :       if (CANON_ELEMENT (needle[j]) == CANON_ELEMENT (*phaystack))</span>
+<span class="lineNum">     126 </span>                :            :         {
+<span class="lineNum">     127 </span>                :<span class="lineCov">    9999955 :           j++;</span>
+<span class="lineNum">     128 </span>                :<span class="lineCov">    9999955 :           phaystack++;</span>
+<span class="lineNum">     129 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 9999950 times"> + </span>]:<span class="lineCov">    9999955 :           if (j == m)</span>
+<span class="lineNum">     130 </span>                :            :             {
+<span class="lineNum">     131 </span>                :            :               /* The entire needle has been found.  */
+<span class="lineNum">     132 </span>                :<span class="lineCov">          5 :               *resultp = rhaystack;</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">          5 :               break;</span>
+<span class="lineNum">     134 </span>                :            :             }
+<span class="lineNum">     135 </span>                :            :         }
+<span class="lineNum">     136 </span>        [<span class="branchCov" title="Branch 0 was taken 4999950 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    4999950 :       else if (j &gt; 0)</span>
+<span class="lineNum">     137 </span>                :            :         {
+<span class="lineNum">     138 </span>                :            :           /* Found a match of needle[0..j-1], mismatch at needle[j].  */
+<span class="lineNum">     139 </span>                :<span class="lineCov">    4999950 :           rhaystack += table[j];</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">    4999950 :           j -= table[j];</span>
+<span class="lineNum">     141 </span>                :            :         }
+<span class="lineNum">     142 </span>                :            :       else
+<span class="lineNum">     143 </span>                :            :         {
+<span class="lineNum">     144 </span>                :            :           /* Found a mismatch at needle[0] already.  */
+<span class="lineNum">     145 </span>                :<span class="lineNoCov">          0 :           rhaystack++;</span>
+<span class="lineNum">     146 </span>                :<span class="lineNoCov">          0 :           phaystack++;</span>
+<span class="lineNum">     147 </span>                :            :         }
+<span class="lineNum">     148 </span>                :            :   }
+<span class="lineNum">     149 </span>                :            : 
+<span class="lineNum">     150 </span>                :<span class="lineCov">          5 :   freea (table);</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">          5 :   return true;</span>
+<span class="lineNum">     152 </span>                :            : }
+<span class="lineNum">     153 </span>                :            : 
+<span class="lineNum">     154 </span>                :            : #undef CANON_ELEMENT
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
