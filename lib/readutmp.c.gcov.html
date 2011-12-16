@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/readutmp.c</title>
+  <title>LCOV - coreutils - lib/readutmp.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">30</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -113,37 +113,37 @@
 <span class="lineNum">      42 </span>                :            :    trailing spaces from the copy, NUL terminate it, and return the copy.  */
 <a name="43"><span class="lineNum">      43 </span>                :            : </a>
 <span class="lineNum">      44 </span>                :            : char *
-<span class="lineNum">      45 </span>                :<span class="lineCov">         10 : extract_trimmed_name (const STRUCT_UTMP *ut)</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">          9 : extract_trimmed_name (const STRUCT_UTMP *ut)</span>
 <span class="lineNum">      46 </span>                :            : {
 <span class="lineNum">      47 </span>                :            :   char *p, *trimmed_name;
 <span class="lineNum">      48 </span>                :            : 
-<span class="lineNum">      49 </span>                :<span class="lineCov">         10 :   trimmed_name = xmalloc (sizeof (UT_USER (ut)) + 1);</span>
-<span class="lineNum">      50 </span>                :<span class="lineCov">         10 :   strncpy (trimmed_name, UT_USER (ut), sizeof (UT_USER (ut)));</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">          9 :   trimmed_name = xmalloc (sizeof (UT_USER (ut)) + 1);</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">          9 :   strncpy (trimmed_name, UT_USER (ut), sizeof (UT_USER (ut)));</span>
 <span class="lineNum">      51 </span>                :            :   /* Append a trailing NUL.  Some systems pad names shorter than the
 <span class="lineNum">      52 </span>                :            :      maximum with spaces, others pad with NULs.  Remove any trailing
 <span class="lineNum">      53 </span>                :            :      spaces.  */
-<span class="lineNum">      54 </span>                :<span class="lineCov">         10 :   trimmed_name[sizeof (UT_USER (ut))] = '\0';</span>
-<span class="lineNum">      55 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         10 :   for (p = trimmed_name + strlen (trimmed_name);</span>
-<span class="lineNum">      56 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :        trimmed_name &lt; p &amp;&amp; p[-1] == ' ';</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">          9 :   trimmed_name[sizeof (UT_USER (ut))] = '\0';</span>
+<span class="lineNum">      55 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          9 :   for (p = trimmed_name + strlen (trimmed_name);</span>
+<span class="lineNum">      56 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :        trimmed_name &lt; p &amp;&amp; p[-1] == ' ';</span>
 <span class="lineNum">      57 </span>                :<span class="lineNoCov">          0 :        *--p = '\0')</span>
 <span class="lineNum">      58 </span>                :<span class="lineNoCov">          0 :     continue;</span>
-<span class="lineNum">      59 </span>                :<span class="lineCov">         10 :   return trimmed_name;</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">          9 :   return trimmed_name;</span>
 <span class="lineNum">      60 </span>                :            : }
 <span class="lineNum">      61 </span>                :            : 
 <span class="lineNum">      62 </span>                :            : /* Is the utmp entry U desired by the user who asked for OPTIONS?  */
 <a name="63"><span class="lineNum">      63 </span>                :            : </a>
 <span class="lineNum">      64 </span>                :            : static inline bool
-<span class="lineNum">      65 </span>                :<span class="lineCov">        135 : desirable_utmp_entry (STRUCT_UTMP const *u, int options)</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">         90 : desirable_utmp_entry (STRUCT_UTMP const *u, int options)</span>
 <span class="lineNum">      66 </span>                :            : {
-<span class="lineNum">      67 </span>[<span class="branchCov" title="Branch 0 was taken 135 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 30 times"> + </span><span class="branchCov" title="Branch 3 was taken 105 times"> + </span>]:<span class="lineCov">        135 :   bool user_proc = IS_USER_PROCESS (u);</span>
-<span class="lineNum">      68 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 135 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">        135 :   if ((options &amp; READ_UTMP_USER_PROCESS) &amp;&amp; !user_proc)</span>
+<span class="lineNum">      67 </span>[<span class="branchCov" title="Branch 0 was taken 90 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 27 times"> + </span><span class="branchCov" title="Branch 3 was taken 63 times"> + </span>]:<span class="lineCov">         90 :   bool user_proc = IS_USER_PROCESS (u);</span>
+<span class="lineNum">      68 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         90 :   if ((options &amp; READ_UTMP_USER_PROCESS) &amp;&amp; !user_proc)</span>
 <span class="lineNum">      69 </span>                :<span class="lineNoCov">          0 :     return false;</span>
-<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 0 was taken 90 times"> + </span><span class="branchCov" title="Branch 1 was taken 45 times"> + </span>]:<span class="lineCov">        135 :   if ((options &amp; READ_UTMP_CHECK_PIDS)</span>
-<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 70 times"> + </span>]:<span class="lineCov">         90 :       &amp;&amp; user_proc</span>
-<span class="lineNum">      72 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         20 :       &amp;&amp; (UT_PID (u) &lt;= 0</span>
-<span class="lineNum">      73 </span>[<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchCov" title="Branch 2 was taken 12 times"> + </span>][<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 8 times"> + </span>]:<span class="lineCov">         20 :           || (kill (UT_PID (u), 0) &lt; 0 &amp;&amp; errno == ESRCH)))</span>
+<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 0 was taken 60 times"> + </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         90 :   if ((options &amp; READ_UTMP_CHECK_PIDS)</span>
+<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">         60 :       &amp;&amp; user_proc</span>
+<span class="lineNum">      72 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         18 :       &amp;&amp; (UT_PID (u) &lt;= 0</span>
+<span class="lineNum">      73 </span>[<span class="branchCov" title="Branch 1 was taken 4 times"> + </span><span class="branchCov" title="Branch 2 was taken 14 times"> + </span>][<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 4 times"> + </span>]:<span class="lineCov">         18 :           || (kill (UT_PID (u), 0) &lt; 0 &amp;&amp; errno == ESRCH)))</span>
 <span class="lineNum">      74 </span>                :<span class="lineNoCov">          0 :     return false;</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">        135 :   return true;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">         90 :   return true;</span>
 <span class="lineNum">      76 </span>                :            : }
 <span class="lineNum">      77 </span>                :            : 
 <span class="lineNum">      78 </span>                :            : /* Read the utmp entries corresponding to file FILE into freshly-
@@ -156,37 +156,37 @@
 <span class="lineNum">      85 </span>                :            : #ifdef UTMP_NAME_FUNCTION
 <a name="86"><span class="lineNum">      86 </span>                :            : </a>
 <span class="lineNum">      87 </span>                :            : int
-<span class="lineNum">      88 </span>                :<span class="lineCov">         15 : read_utmp (char const *file, size_t *n_entries, STRUCT_UTMP **utmp_buf,</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">          9 : read_utmp (char const *file, size_t *n_entries, STRUCT_UTMP **utmp_buf,</span>
 <span class="lineNum">      89 </span>                :            :            int options)
 <span class="lineNum">      90 </span>                :            : {
-<span class="lineNum">      91 </span>                :<span class="lineCov">         15 :   size_t n_read = 0;</span>
-<span class="lineNum">      92 </span>                :<span class="lineCov">         15 :   size_t n_alloc = 0;</span>
-<span class="lineNum">      93 </span>                :<span class="lineCov">         15 :   STRUCT_UTMP *utmp = NULL;</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">          9 :   size_t n_read = 0;</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">          9 :   size_t n_alloc = 0;</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">          9 :   STRUCT_UTMP *utmp = NULL;</span>
 <span class="lineNum">      94 </span>                :            :   STRUCT_UTMP *u;
 <span class="lineNum">      95 </span>                :            : 
 <span class="lineNum">      96 </span>                :            :   /* Ignore the return value for now.
 <span class="lineNum">      97 </span>                :            :      Solaris' utmpname returns 1 upon success -- which is contrary
 <span class="lineNum">      98 </span>                :            :      to what the GNU libc version does.  In addition, older GNU libc
 <span class="lineNum">      99 </span>                :            :      versions are actually void.   */
-<span class="lineNum">     100 </span>                :<span class="lineCov">         15 :   UTMP_NAME_FUNCTION (file);</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">          9 :   UTMP_NAME_FUNCTION (file);</span>
 <span class="lineNum">     101 </span>                :            : 
-<span class="lineNum">     102 </span>                :<span class="lineCov">         15 :   SET_UTMP_ENT ();</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">          9 :   SET_UTMP_ENT ();</span>
 <span class="lineNum">     103 </span>                :            : 
-<span class="lineNum">     104 </span>        [<span class="branchCov" title="Branch 1 was taken 135 times"> + </span><span class="branchCov" title="Branch 2 was taken 15 times"> + </span>]:<span class="lineCov">        150 :   while ((u = GET_UTMP_ENT ()) != NULL)</span>
-<span class="lineNum">     105 </span>        [<span class="branchCov" title="Branch 1 was taken 135 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        135 :     if (desirable_utmp_entry (u, options))</span>
+<span class="lineNum">     104 </span>        [<span class="branchCov" title="Branch 1 was taken 90 times"> + </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">         99 :   while ((u = GET_UTMP_ENT ()) != NULL)</span>
+<span class="lineNum">     105 </span>        [<span class="branchCov" title="Branch 1 was taken 90 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">         90 :     if (desirable_utmp_entry (u, options))</span>
 <span class="lineNum">     106 </span>                :            :       {
-<span class="lineNum">     107 </span>        [<span class="branchCov" title="Branch 0 was taken 90 times"> + </span><span class="branchCov" title="Branch 1 was taken 45 times"> + </span>]:<span class="lineCov">        135 :         if (n_read == n_alloc)</span>
-<span class="lineNum">     108 </span>                :<span class="lineCov">         90 :           utmp = x2nrealloc (utmp, &amp;n_alloc, sizeof *utmp);</span>
+<span class="lineNum">     107 </span>        [<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         90 :         if (n_read == n_alloc)</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">         54 :           utmp = x2nrealloc (utmp, &amp;n_alloc, sizeof *utmp);</span>
 <span class="lineNum">     109 </span>                :            : 
-<span class="lineNum">     110 </span>                :<span class="lineCov">        135 :         utmp[n_read++] = *u;</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">         90 :         utmp[n_read++] = *u;</span>
 <span class="lineNum">     111 </span>                :            :       }
 <span class="lineNum">     112 </span>                :            : 
-<span class="lineNum">     113 </span>                :<span class="lineCov">         15 :   END_UTMP_ENT ();</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">          9 :   END_UTMP_ENT ();</span>
 <span class="lineNum">     114 </span>                :            : 
-<span class="lineNum">     115 </span>                :<span class="lineCov">         15 :   *n_entries = n_read;</span>
-<span class="lineNum">     116 </span>                :<span class="lineCov">         15 :   *utmp_buf = utmp;</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">          9 :   *n_entries = n_read;</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">          9 :   *utmp_buf = utmp;</span>
 <span class="lineNum">     117 </span>                :            : 
-<span class="lineNum">     118 </span>                :<span class="lineCov">         15 :   return 0;</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">          9 :   return 0;</span>
 <span class="lineNum">     119 </span>                :            : }
 <span class="lineNum">     120 </span>                :            : 
 <span class="lineNum">     121 </span>                :            : #else

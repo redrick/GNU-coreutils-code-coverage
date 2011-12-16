@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/dirchownmod.c</title>
+  <title>LCOV - coreutils - lib/dirchownmod.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">17</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -129,22 +129,22 @@
 <span class="lineNum">      58 </span>                :            :    calls may do the chown but not the chmod.  */
 <a name="59"><span class="lineNum">      59 </span>                :            : </a>
 <span class="lineNum">      60 </span>                :            : int
-<span class="lineNum">      61 </span>                :<span class="lineCov">         54 : dirchownmod (int fd, char const *dir, mode_t mkdir_mode,</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">         30 : dirchownmod (int fd, char const *dir, mode_t mkdir_mode,</span>
 <span class="lineNum">      62 </span>                :            :              uid_t owner, gid_t group,
 <span class="lineNum">      63 </span>                :            :              mode_t mode, mode_t mode_bits)
 <span class="lineNum">      64 </span>                :            : {
 <span class="lineNum">      65 </span>                :            :   struct stat st;
-<span class="lineNum">      66 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>]:<span class="lineCov">         54 :   int result = (fd &lt; 0 ? stat (dir, &amp;st) : fstat (fd, &amp;st));</span>
+<span class="lineNum">      66 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :   int result = (fd &lt; 0 ? stat (dir, &amp;st) : fstat (fd, &amp;st));</span>
 <span class="lineNum">      67 </span>                :            : 
-<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         54 :   if (result == 0)</span>
+<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         30 :   if (result == 0)</span>
 <span class="lineNum">      69 </span>                :            :     {
-<span class="lineNum">      70 </span>                :<span class="lineCov">         54 :       mode_t dir_mode = st.st_mode;</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">         30 :       mode_t dir_mode = st.st_mode;</span>
 <span class="lineNum">      71 </span>                :            : 
 <span class="lineNum">      72 </span>                :            :       /* Check whether DIR is a directory.  If FD is nonnegative, this
 <span class="lineNum">      73 </span>                :            :          check avoids changing the ownership and mode bits of the
 <span class="lineNum">      74 </span>                :            :          wrong file in many cases.  This doesn't fix all the race
 <span class="lineNum">      75 </span>                :            :          conditions, but it is better than nothing.  */
-<span class="lineNum">      76 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>]:<span class="lineCov">         54 :       if (! S_ISDIR (dir_mode))</span>
+<span class="lineNum">      76 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :       if (! S_ISDIR (dir_mode))</span>
 <span class="lineNum">      77 </span>                :            :         {
 <span class="lineNum">      78 </span>                :<span class="lineNoCov">          0 :           errno = ENOTDIR;</span>
 <span class="lineNum">      79 </span>                :<span class="lineNoCov">          0 :           result = -1;</span>
@@ -155,15 +155,15 @@
 <span class="lineNum">      84 </span>                :            :              clear the S_ISUID and S_SGID bits.  Keep track of any
 <span class="lineNum">      85 </span>                :            :              file mode bits whose values are indeterminate due to this
 <span class="lineNum">      86 </span>                :            :              issue.  */
-<span class="lineNum">      87 </span>                :<span class="lineCov">         54 :           mode_t indeterminate = 0;</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">         30 :           mode_t indeterminate = 0;</span>
 <span class="lineNum">      88 </span>                :            : 
 <span class="lineNum">      89 </span>                :            :           /* On some systems, chown clears S_ISUID and S_ISGID, so do
 <span class="lineNum">      90 </span>                :            :              chown before chmod.  On older System V hosts, ordinary
 <span class="lineNum">      91 </span>                :            :              users can give their files away via chown; don't worry
 <span class="lineNum">      92 </span>                :            :              about that here, since users shouldn't do that.  */
 <span class="lineNum">      93 </span>                :            : 
-<span class="lineNum">      94 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         54 :           if ((owner != (uid_t) -1 &amp;&amp; owner != st.st_uid)</span>
-<span class="lineNum">      95 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         54 :               || (group != (gid_t) -1 &amp;&amp; group != st.st_gid))</span>
+<span class="lineNum">      94 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         30 :           if ((owner != (uid_t) -1 &amp;&amp; owner != st.st_uid)</span>
+<span class="lineNum">      95 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         30 :               || (group != (gid_t) -1 &amp;&amp; group != st.st_gid))</span>
 <span class="lineNum">      96 </span>                :            :             {
 <span class="lineNum">      97 </span>                :<span class="lineNoCov">          0 :               result = (0 &lt;= fd</span>
 <span class="lineNum">      98 </span>                :            :                         ? fchown (fd, owner, group)
@@ -183,23 +183,23 @@
 <span class="lineNum">     112 </span>                :            :           /* If the file mode bits might not be right, use chmod to
 <span class="lineNum">     113 </span>                :            :              change them.  Don't change bits the user doesn't care
 <span class="lineNum">     114 </span>                :            :              about.  */
-<span class="lineNum">     115 </span>[<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 24 times"> + </span><span class="branchCov" title="Branch 3 was taken 30 times"> + </span>]:<span class="lineCov">         54 :           if (result == 0 &amp;&amp; (((dir_mode ^ mode) | indeterminate) &amp; mode_bits))</span>
+<span class="lineNum">     115 </span>[<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 14 times"> + </span><span class="branchCov" title="Branch 3 was taken 16 times"> + </span>]:<span class="lineCov">         30 :           if (result == 0 &amp;&amp; (((dir_mode ^ mode) | indeterminate) &amp; mode_bits))</span>
 <span class="lineNum">     116 </span>                :            :             {
-<span class="lineNum">     117 </span>                :<span class="lineCov">         24 :               mode_t chmod_mode =</span>
-<span class="lineNum">     118 </span>                :<span class="lineCov">         24 :                 mode | (dir_mode &amp; CHMOD_MODE_BITS &amp; ~mode_bits);</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">         24 :               result = (HAVE_FCHMOD &amp;&amp; 0 &lt;= fd</span>
+<span class="lineNum">     117 </span>                :<span class="lineCov">         14 :               mode_t chmod_mode =</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">         14 :                 mode | (dir_mode &amp; CHMOD_MODE_BITS &amp; ~mode_bits);</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">         14 :               result = (HAVE_FCHMOD &amp;&amp; 0 &lt;= fd</span>
 <span class="lineNum">     120 </span>                :            :                         ? fchmod (fd, chmod_mode)
-<span class="lineNum">     121 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         24 :                         : mkdir_mode != (mode_t) -1</span>
+<span class="lineNum">     121 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         14 :                         : mkdir_mode != (mode_t) -1</span>
 <span class="lineNum">     122 </span>                :            :                         ? lchmod (dir, chmod_mode)
 <span class="lineNum">     123 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         : chmod (dir, chmod_mode));</span>
 <span class="lineNum">     124 </span>                :            :             }
 <span class="lineNum">     125 </span>                :            :         }
 <span class="lineNum">     126 </span>                :            :     }
 <span class="lineNum">     127 </span>                :            : 
-<span class="lineNum">     128 </span>        [<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         54 :   if (0 &lt;= fd)</span>
+<span class="lineNum">     128 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         30 :   if (0 &lt;= fd)</span>
 <span class="lineNum">     129 </span>                :            :     {
-<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         54 :       if (result == 0)</span>
-<span class="lineNum">     131 </span>                :<span class="lineCov">         54 :         result = close (fd);</span>
+<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         30 :       if (result == 0)</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">         30 :         result = close (fd);</span>
 <span class="lineNum">     132 </span>                :            :       else
 <span class="lineNum">     133 </span>                :            :         {
 <span class="lineNum">     134 </span>                :<span class="lineNoCov">          0 :           int e = errno;</span>
@@ -208,7 +208,7 @@
 <span class="lineNum">     137 </span>                :            :         }
 <span class="lineNum">     138 </span>                :            :     }
 <span class="lineNum">     139 </span>                :            : 
-<span class="lineNum">     140 </span>                :<span class="lineCov">         54 :   return result;</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">         30 :   return result;</span>
 <span class="lineNum">     141 </span>                :            : }
 </pre>
       </td>

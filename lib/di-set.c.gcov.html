@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/di-set.c</title>
+  <title>LCOV - coreutils - lib/di-set.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">67</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">10</td>
@@ -144,144 +144,144 @@
 <span class="lineNum">      73 </span>                :            : 
 <a name="74"><span class="lineNum">      74 </span>                :            : /* Hash a device-inode-set entry.  */</a>
 <span class="lineNum">      75 </span>                :            : static size_t
-<span class="lineNum">      76 </span>                :<span class="lineCov">        213 : di_ent_hash (void const *x, size_t table_size)</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">        134 : di_ent_hash (void const *x, size_t table_size)</span>
 <span class="lineNum">      77 </span>                :            : {
-<span class="lineNum">      78 </span>                :<span class="lineCov">        213 :   struct di_ent const *p = x;</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">        213 :   dev_t dev = p-&gt;dev;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">        134 :   struct di_ent const *p = x;</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">        134 :   dev_t dev = p-&gt;dev;</span>
 <span class="lineNum">      80 </span>                :            : 
 <span class="lineNum">      81 </span>                :            :   /* When DEV is wider than size_t, exclusive-OR the words of DEV into H.
 <span class="lineNum">      82 </span>                :            :      This avoids loss of info, without applying % to the wider type,
 <span class="lineNum">      83 </span>                :            :      which could be quite slow on some systems.  */
-<span class="lineNum">      84 </span>                :<span class="lineCov">        213 :   size_t h = dev;</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">        134 :   size_t h = dev;</span>
 <span class="lineNum">      85 </span>                :            :   unsigned int i;
-<span class="lineNum">      86 </span>                :<span class="lineCov">        213 :   unsigned int n_words = sizeof dev / sizeof h + (sizeof dev % sizeof h != 0);</span>
-<span class="lineNum">      87 </span>        [<span class="branchCov" title="Branch 0 was taken 213 times"> + </span><span class="branchCov" title="Branch 1 was taken 213 times"> + </span>]:<span class="lineCov">        426 :   for (i = 1; i &lt; n_words; i++)</span>
-<span class="lineNum">      88 </span>                :<span class="lineCov">        213 :     h ^= dev &gt;&gt; CHAR_BIT * sizeof h * i;</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">        134 :   unsigned int n_words = sizeof dev / sizeof h + (sizeof dev % sizeof h != 0);</span>
+<span class="lineNum">      87 </span>        [<span class="branchCov" title="Branch 0 was taken 134 times"> + </span><span class="branchCov" title="Branch 1 was taken 134 times"> + </span>]:<span class="lineCov">        268 :   for (i = 1; i &lt; n_words; i++)</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">        134 :     h ^= dev &gt;&gt; CHAR_BIT * sizeof h * i;</span>
 <span class="lineNum">      89 </span>                :            : 
-<span class="lineNum">      90 </span>                :<span class="lineCov">        213 :   return h % table_size;</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">        134 :   return h % table_size;</span>
 <span class="lineNum">      91 </span>                :            : }
 <span class="lineNum">      92 </span>                :            : 
 <a name="93"><span class="lineNum">      93 </span>                :            : /* Return true if two device-inode-set entries are the same.  */</a>
 <span class="lineNum">      94 </span>                :            : static bool
-<span class="lineNum">      95 </span>                :<span class="lineCov">         99 : di_ent_compare (void const *x, void const *y)</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">         61 : di_ent_compare (void const *x, void const *y)</span>
 <span class="lineNum">      96 </span>                :            : {
-<span class="lineNum">      97 </span>                :<span class="lineCov">         99 :   struct di_ent const *a = x;</span>
-<span class="lineNum">      98 </span>                :<span class="lineCov">         99 :   struct di_ent const *b = y;</span>
-<span class="lineNum">      99 </span>                :<span class="lineCov">         99 :   return a-&gt;dev == b-&gt;dev;</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">         61 :   struct di_ent const *a = x;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">         61 :   struct di_ent const *b = y;</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">         61 :   return a-&gt;dev == b-&gt;dev;</span>
 <span class="lineNum">     100 </span>                :            : }
 <span class="lineNum">     101 </span>                :            : 
 <a name="102"><span class="lineNum">     102 </span>                :            : /* Free a device-inode-set entry.  */</a>
 <span class="lineNum">     103 </span>                :            : static void
-<span class="lineNum">     104 </span>                :<span class="lineCov">        114 : di_ent_free (void *v)</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">         73 : di_ent_free (void *v)</span>
 <span class="lineNum">     105 </span>                :            : {
-<span class="lineNum">     106 </span>                :<span class="lineCov">        114 :   struct di_ent *a = v;</span>
-<span class="lineNum">     107 </span>                :<span class="lineCov">        114 :   hash_free (a-&gt;ino_set);</span>
-<span class="lineNum">     108 </span>                :<span class="lineCov">        114 :   free (a);</span>
-<span class="lineNum">     109 </span>                :<span class="lineCov">        114 : }</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">         73 :   struct di_ent *a = v;</span>
+<span class="lineNum">     107 </span>                :<span class="lineCov">         73 :   hash_free (a-&gt;ino_set);</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">         73 :   free (a);</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">         73 : }</span>
 <span class="lineNum">     110 </span>                :            : 
 <a name="111"><span class="lineNum">     111 </span>                :            : /* Create a set of device-inode pairs.  Return NULL on allocation failure.  */</a>
 <span class="lineNum">     112 </span>                :            : struct di_set *
-<span class="lineNum">     113 </span>                :<span class="lineCov">        302 : di_set_alloc (void)</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">        182 : di_set_alloc (void)</span>
 <span class="lineNum">     114 </span>                :            : {
-<span class="lineNum">     115 </span>                :<span class="lineCov">        302 :   struct di_set *dis = malloc (sizeof *dis);</span>
-<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 0 was taken 302 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        302 :   if (dis)</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">        182 :   struct di_set *dis = malloc (sizeof *dis);</span>
+<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 0 was taken 182 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        182 :   if (dis)</span>
 <span class="lineNum">     117 </span>                :            :     {
 <span class="lineNum">     118 </span>                :            :       enum { INITIAL_DEV_MAP_SIZE = 11 };
-<span class="lineNum">     119 </span>                :<span class="lineCov">        302 :       dis-&gt;dev_map = hash_initialize (INITIAL_DEV_MAP_SIZE, NULL,</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">        182 :       dis-&gt;dev_map = hash_initialize (INITIAL_DEV_MAP_SIZE, NULL,</span>
 <span class="lineNum">     120 </span>                :            :                                       di_ent_hash, di_ent_compare,
 <span class="lineNum">     121 </span>                :            :                                       di_ent_free);
-<span class="lineNum">     122 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 302 times"> + </span>]:<span class="lineCov">        302 :       if (! dis-&gt;dev_map)</span>
+<span class="lineNum">     122 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 182 times"> + </span>]:<span class="lineCov">        182 :       if (! dis-&gt;dev_map)</span>
 <span class="lineNum">     123 </span>                :            :         {
 <span class="lineNum">     124 </span>                :<span class="lineNoCov">          0 :           free (dis);</span>
 <span class="lineNum">     125 </span>                :<span class="lineNoCov">          0 :           return NULL;</span>
 <span class="lineNum">     126 </span>                :            :         }
-<span class="lineNum">     127 </span>                :<span class="lineCov">        302 :       dis-&gt;ino_map = NULL;</span>
-<span class="lineNum">     128 </span>                :<span class="lineCov">        302 :       dis-&gt;probe = NULL;</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">        182 :       dis-&gt;ino_map = NULL;</span>
+<span class="lineNum">     128 </span>                :<span class="lineCov">        182 :       dis-&gt;probe = NULL;</span>
 <span class="lineNum">     129 </span>                :            :     }
 <span class="lineNum">     130 </span>                :            : 
-<span class="lineNum">     131 </span>                :<span class="lineCov">        302 :   return dis;</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">        182 :   return dis;</span>
 <span class="lineNum">     132 </span>                :            : }
 <span class="lineNum">     133 </span>                :            : 
 <a name="134"><span class="lineNum">     134 </span>                :            : /* Free a set of device-inode pairs.  */</a>
 <span class="lineNum">     135 </span>                :            : void
-<span class="lineNum">     136 </span>                :<span class="lineCov">        302 : di_set_free (struct di_set *dis)</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">        182 : di_set_free (struct di_set *dis)</span>
 <span class="lineNum">     137 </span>                :            : {
-<span class="lineNum">     138 </span>                :<span class="lineCov">        302 :   hash_free (dis-&gt;dev_map);</span>
-<span class="lineNum">     139 </span>                :<span class="lineCov">        302 :   free (dis-&gt;ino_map);</span>
-<span class="lineNum">     140 </span>                :<span class="lineCov">        302 :   free (dis-&gt;probe);</span>
-<span class="lineNum">     141 </span>                :<span class="lineCov">        302 :   free (dis);</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">        302 : }</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">        182 :   hash_free (dis-&gt;dev_map);</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">        182 :   free (dis-&gt;ino_map);</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">        182 :   free (dis-&gt;probe);</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">        182 :   free (dis);</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">        182 : }</span>
 <span class="lineNum">     143 </span>                :            : 
 <a name="144"><span class="lineNum">     144 </span>                :            : /* Hash an encoded inode number I.  */</a>
 <span class="lineNum">     145 </span>                :            : static size_t
-<span class="lineNum">     146 </span>                :<span class="lineCov">      77323 : di_ino_hash (void const *i, size_t table_size)</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">      46689 : di_ino_hash (void const *i, size_t table_size)</span>
 <span class="lineNum">     147 </span>                :            : {
-<span class="lineNum">     148 </span>                :<span class="lineCov">      77323 :   return (hashint) i % table_size;</span>
+<span class="lineNum">     148 </span>                :<span class="lineCov">      46689 :   return (hashint) i % table_size;</span>
 <span class="lineNum">     149 </span>                :            : }
 <span class="lineNum">     150 </span>                :            : 
 <span class="lineNum">     151 </span>                :            : /* Using the DIS table, map a device to a hash table that represents
 <a name="152"><span class="lineNum">     152 </span>                :            :    a set of inode numbers.  Return NULL on error.  */</a>
 <span class="lineNum">     153 </span>                :            : static struct hash_table *
-<span class="lineNum">     154 </span>                :<span class="lineCov">      35574 : map_device (struct di_set *dis, dev_t dev)</span>
+<span class="lineNum">     154 </span>                :<span class="lineCov">      23259 : map_device (struct di_set *dis, dev_t dev)</span>
 <span class="lineNum">     155 </span>                :            : {
 <span class="lineNum">     156 </span>                :            :   /* Find space for the probe, reusing the cache if available.  */
 <span class="lineNum">     157 </span>                :            :   struct di_ent *ent;
-<span class="lineNum">     158 </span>                :<span class="lineCov">      35574 :   struct di_ent *probe = dis-&gt;probe;</span>
-<span class="lineNum">     159 </span>        [<span class="branchCov" title="Branch 0 was taken 35376 times"> + </span><span class="branchCov" title="Branch 1 was taken 198 times"> + </span>]:<span class="lineCov">      35574 :   if (probe)</span>
+<span class="lineNum">     158 </span>                :<span class="lineCov">      23259 :   struct di_ent *probe = dis-&gt;probe;</span>
+<span class="lineNum">     159 </span>        [<span class="branchCov" title="Branch 0 was taken 23134 times"> + </span><span class="branchCov" title="Branch 1 was taken 125 times"> + </span>]:<span class="lineCov">      23259 :   if (probe)</span>
 <span class="lineNum">     160 </span>                :            :     {
 <span class="lineNum">     161 </span>                :            :       /* If repeating a recent query, return the cached result.   */
-<span class="lineNum">     162 </span>        [<span class="branchCov" title="Branch 0 was taken 35361 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">      35376 :       if (probe-&gt;dev == dev)</span>
-<span class="lineNum">     163 </span>                :<span class="lineCov">      35361 :         return probe-&gt;ino_set;</span>
+<span class="lineNum">     162 </span>        [<span class="branchCov" title="Branch 0 was taken 23125 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">      23134 :       if (probe-&gt;dev == dev)</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">      23125 :         return probe-&gt;ino_set;</span>
 <span class="lineNum">     164 </span>                :            :     }
 <span class="lineNum">     165 </span>                :            :   else
 <span class="lineNum">     166 </span>                :            :     {
-<span class="lineNum">     167 </span>                :<span class="lineCov">        198 :       dis-&gt;probe = probe = malloc (sizeof *probe);</span>
-<span class="lineNum">     168 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 198 times"> + </span>]:<span class="lineCov">        198 :       if (! probe)</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">        125 :       dis-&gt;probe = probe = malloc (sizeof *probe);</span>
+<span class="lineNum">     168 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 125 times"> + </span>]:<span class="lineCov">        125 :       if (! probe)</span>
 <span class="lineNum">     169 </span>                :<span class="lineNoCov">          0 :         return NULL;</span>
 <span class="lineNum">     170 </span>                :            :     }
 <span class="lineNum">     171 </span>                :            : 
 <span class="lineNum">     172 </span>                :            :   /* Probe for the device.  */
-<span class="lineNum">     173 </span>                :<span class="lineCov">        213 :   probe-&gt;dev = dev;</span>
-<span class="lineNum">     174 </span>                :<span class="lineCov">        213 :   ent = hash_insert (dis-&gt;dev_map, probe);</span>
-<span class="lineNum">     175 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 213 times"> + </span>]:<span class="lineCov">        213 :   if (! ent)</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">        134 :   probe-&gt;dev = dev;</span>
+<span class="lineNum">     174 </span>                :<span class="lineCov">        134 :   ent = hash_insert (dis-&gt;dev_map, probe);</span>
+<span class="lineNum">     175 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 134 times"> + </span>]:<span class="lineCov">        134 :   if (! ent)</span>
 <span class="lineNum">     176 </span>                :<span class="lineNoCov">          0 :     return NULL;</span>
 <span class="lineNum">     177 </span>                :            : 
-<span class="lineNum">     178 </span>        [<span class="branchCov" title="Branch 0 was taken 99 times"> + </span><span class="branchCov" title="Branch 1 was taken 114 times"> + </span>]:<span class="lineCov">        213 :   if (ent != probe)</span>
+<span class="lineNum">     178 </span>        [<span class="branchCov" title="Branch 0 was taken 61 times"> + </span><span class="branchCov" title="Branch 1 was taken 73 times"> + </span>]:<span class="lineCov">        134 :   if (ent != probe)</span>
 <span class="lineNum">     179 </span>                :            :     {
 <span class="lineNum">     180 </span>                :            :       /* Use the existing entry.  */
-<span class="lineNum">     181 </span>                :<span class="lineCov">         99 :       probe-&gt;ino_set = ent-&gt;ino_set;</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">         61 :       probe-&gt;ino_set = ent-&gt;ino_set;</span>
 <span class="lineNum">     182 </span>                :            :     }
 <span class="lineNum">     183 </span>                :            :   else
 <span class="lineNum">     184 </span>                :            :     {
 <span class="lineNum">     185 </span>                :            :       enum { INITIAL_INO_SET_SIZE = 1021 };
 <span class="lineNum">     186 </span>                :            : 
 <span class="lineNum">     187 </span>                :            :       /* Prepare to allocate a new probe next time; this one is in use.  */
-<span class="lineNum">     188 </span>                :<span class="lineCov">        114 :       dis-&gt;probe = NULL;</span>
+<span class="lineNum">     188 </span>                :<span class="lineCov">         73 :       dis-&gt;probe = NULL;</span>
 <span class="lineNum">     189 </span>                :            : 
 <span class="lineNum">     190 </span>                :            :       /* DEV is new; allocate an inode set for it.  */
-<span class="lineNum">     191 </span>                :<span class="lineCov">        114 :       probe-&gt;ino_set = hash_initialize (INITIAL_INO_SET_SIZE, NULL,</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">         73 :       probe-&gt;ino_set = hash_initialize (INITIAL_INO_SET_SIZE, NULL,</span>
 <span class="lineNum">     192 </span>                :            :                                         di_ino_hash, NULL, NULL);
 <span class="lineNum">     193 </span>                :            :     }
 <span class="lineNum">     194 </span>                :            : 
-<span class="lineNum">     195 </span>                :<span class="lineCov">      35574 :   return probe-&gt;ino_set;</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">      23259 :   return probe-&gt;ino_set;</span>
 <span class="lineNum">     196 </span>                :            : }
 <span class="lineNum">     197 </span>                :            : 
 <span class="lineNum">     198 </span>                :            : /* Using the DIS table, map an inode number to a mapped value.
 <a name="199"><span class="lineNum">     199 </span>                :            :    Return INO_MAP_INSERT_FAILURE on error.  */</a>
 <span class="lineNum">     200 </span>                :            : static hashint
-<span class="lineNum">     201 </span>                :<span class="lineCov">      35574 : map_inode_number (struct di_set *dis, ino_t ino)</span>
+<span class="lineNum">     201 </span>                :<span class="lineCov">      23259 : map_inode_number (struct di_set *dis, ino_t ino)</span>
 <span class="lineNum">     202 </span>                :            : {
-<span class="lineNum">     203 </span>[<span class="branchCov" title="Branch 0 was taken 35564 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 35554 times"> + </span><span class="branchCov" title="Branch 3 was taken 10 times"> + </span>]:<span class="lineCov">      35574 :   if (0 &lt; ino &amp;&amp; ino &lt; LARGE_INO_MIN)</span>
-<span class="lineNum">     204 </span>                :<span class="lineCov">      35554 :     return ino;</span>
+<span class="lineNum">     203 </span>[<span class="branchCov" title="Branch 0 was taken 23253 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 23247 times"> + </span><span class="branchCov" title="Branch 3 was taken 6 times"> + </span>]:<span class="lineCov">      23259 :   if (0 &lt; ino &amp;&amp; ino &lt; LARGE_INO_MIN)</span>
+<span class="lineNum">     204 </span>                :<span class="lineCov">      23247 :     return ino;</span>
 <span class="lineNum">     205 </span>                :            : 
-<span class="lineNum">     206 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         20 :   if (! dis-&gt;ino_map)</span>
+<span class="lineNum">     206 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         12 :   if (! dis-&gt;ino_map)</span>
 <span class="lineNum">     207 </span>                :            :     {
-<span class="lineNum">     208 </span>                :<span class="lineCov">          5 :       dis-&gt;ino_map = ino_map_alloc (LARGE_INO_MIN);</span>
-<span class="lineNum">     209 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :       if (! dis-&gt;ino_map)</span>
+<span class="lineNum">     208 </span>                :<span class="lineCov">          3 :       dis-&gt;ino_map = ino_map_alloc (LARGE_INO_MIN);</span>
+<span class="lineNum">     209 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :       if (! dis-&gt;ino_map)</span>
 <span class="lineNum">     210 </span>                :<span class="lineNoCov">          0 :         return INO_MAP_INSERT_FAILURE;</span>
 <span class="lineNum">     211 </span>                :            :     }
 <span class="lineNum">     212 </span>                :            : 
-<span class="lineNum">     213 </span>                :<span class="lineCov">      35574 :   return ino_map_insert (dis-&gt;ino_map, ino);</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">      23259 :   return ino_map_insert (dis-&gt;ino_map, ino);</span>
 <span class="lineNum">     214 </span>                :            : }
 <span class="lineNum">     215 </span>                :            : 
 <span class="lineNum">     216 </span>                :            : /* Attempt to insert the DEV,INO pair into the set DIS.
@@ -289,44 +289,44 @@
 <span class="lineNum">     218 </span>                :            :    Otherwise, if insertion is successful, return 1.
 <a name="219"><span class="lineNum">     219 </span>                :            :    Upon any failure return -1.  */</a>
 <span class="lineNum">     220 </span>                :            : int
-<span class="lineNum">     221 </span>                :<span class="lineCov">      35564 : di_set_insert (struct di_set *dis, dev_t dev, ino_t ino)</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">      23253 : di_set_insert (struct di_set *dis, dev_t dev, ino_t ino)</span>
 <span class="lineNum">     222 </span>                :            : {
 <span class="lineNum">     223 </span>                :            :   hashint i;
 <span class="lineNum">     224 </span>                :            : 
 <span class="lineNum">     225 </span>                :            :   /* Map the device number to a set of inodes.  */
-<span class="lineNum">     226 </span>                :<span class="lineCov">      35564 :   struct hash_table *ino_set = map_device (dis, dev);</span>
-<span class="lineNum">     227 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 35564 times"> + </span>]:<span class="lineCov">      35564 :   if (! ino_set)</span>
+<span class="lineNum">     226 </span>                :<span class="lineCov">      23253 :   struct hash_table *ino_set = map_device (dis, dev);</span>
+<span class="lineNum">     227 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 23253 times"> + </span>]:<span class="lineCov">      23253 :   if (! ino_set)</span>
 <span class="lineNum">     228 </span>                :<span class="lineNoCov">          0 :     return -1;</span>
 <span class="lineNum">     229 </span>                :            : 
 <span class="lineNum">     230 </span>                :            :   /* Map the inode number to a small representative I.  */
-<span class="lineNum">     231 </span>                :<span class="lineCov">      35564 :   i = map_inode_number (dis, ino);</span>
-<span class="lineNum">     232 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 35564 times"> + </span>]:<span class="lineCov">      35564 :   if (i == INO_MAP_INSERT_FAILURE)</span>
+<span class="lineNum">     231 </span>                :<span class="lineCov">      23253 :   i = map_inode_number (dis, ino);</span>
+<span class="lineNum">     232 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 23253 times"> + </span>]:<span class="lineCov">      23253 :   if (i == INO_MAP_INSERT_FAILURE)</span>
 <span class="lineNum">     233 </span>                :<span class="lineNoCov">          0 :     return -1;</span>
 <span class="lineNum">     234 </span>                :            : 
 <span class="lineNum">     235 </span>                :            :   /* Put I into the inode set.  */
-<span class="lineNum">     236 </span>                :<span class="lineCov">      35564 :   return hash_insert_if_absent (ino_set, (void const *) i, NULL);</span>
+<span class="lineNum">     236 </span>                :<span class="lineCov">      23253 :   return hash_insert_if_absent (ino_set, (void const *) i, NULL);</span>
 <span class="lineNum">     237 </span>                :            : }
 <span class="lineNum">     238 </span>                :            : 
 <span class="lineNum">     239 </span>                :            : /* Look up the DEV,INO pair in the set DIS.
 <span class="lineNum">     240 </span>                :            :    If found, return 1; if not found, return 0.
 <a name="241"><span class="lineNum">     241 </span>                :            :    Upon any failure return -1.  */</a>
 <span class="lineNum">     242 </span>                :            : int
-<span class="lineNum">     243 </span>                :<span class="lineCov">         10 : di_set_lookup (struct di_set *dis, dev_t dev, ino_t ino)</span>
+<span class="lineNum">     243 </span>                :<span class="lineCov">          6 : di_set_lookup (struct di_set *dis, dev_t dev, ino_t ino)</span>
 <span class="lineNum">     244 </span>                :            : {
 <span class="lineNum">     245 </span>                :            :   hashint i;
 <span class="lineNum">     246 </span>                :            : 
 <span class="lineNum">     247 </span>                :            :   /* Map the device number to a set of inodes.  */
-<span class="lineNum">     248 </span>                :<span class="lineCov">         10 :   struct hash_table *ino_set = map_device (dis, dev);</span>
-<span class="lineNum">     249 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :   if (! ino_set)</span>
+<span class="lineNum">     248 </span>                :<span class="lineCov">          6 :   struct hash_table *ino_set = map_device (dis, dev);</span>
+<span class="lineNum">     249 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :   if (! ino_set)</span>
 <span class="lineNum">     250 </span>                :<span class="lineNoCov">          0 :     return -1;</span>
 <span class="lineNum">     251 </span>                :            : 
 <span class="lineNum">     252 </span>                :            :   /* Map the inode number to a small representative I.  */
-<span class="lineNum">     253 </span>                :<span class="lineCov">         10 :   i = map_inode_number (dis, ino);</span>
-<span class="lineNum">     254 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :   if (i == INO_MAP_INSERT_FAILURE)</span>
+<span class="lineNum">     253 </span>                :<span class="lineCov">          6 :   i = map_inode_number (dis, ino);</span>
+<span class="lineNum">     254 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :   if (i == INO_MAP_INSERT_FAILURE)</span>
 <span class="lineNum">     255 </span>                :<span class="lineNoCov">          0 :     return -1;</span>
 <span class="lineNum">     256 </span>                :            : 
 <span class="lineNum">     257 </span>                :            :   /* Perform the look-up.  */
-<span class="lineNum">     258 </span>                :<span class="lineCov">         10 :   return !!hash_lookup (ino_set, (void const *) i);</span>
+<span class="lineNum">     258 </span>                :<span class="lineCov">          6 :   return !!hash_lookup (ino_set, (void const *) i);</span>
 <span class="lineNum">     259 </span>                :            : }
 </pre>
       </td>

@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/freadptr.c</title>
+  <title>LCOV - coreutils - lib/freadptr.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">7</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -95,19 +95,19 @@
 <span class="lineNum">      24 </span>                :            : #include &quot;stdio-impl.h&quot;
 <a name="25"><span class="lineNum">      25 </span>                :            : </a>
 <span class="lineNum">      26 </span>                :            : const char *
-<span class="lineNum">      27 </span>                :<span class="lineCov">       1646 : freadptr (FILE *fp, size_t *sizep)</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">        990 : freadptr (FILE *fp, size_t *sizep)</span>
 <span class="lineNum">      28 </span>                :            : {
 <span class="lineNum">      29 </span>                :            :   size_t size;
 <span class="lineNum">      30 </span>                :            : 
 <span class="lineNum">      31 </span>                :            :   /* Keep this code in sync with freadahead!  */
 <span class="lineNum">      32 </span>                :            : #if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-<span class="lineNum">      33 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1646 times"> + </span>]:<span class="lineCov">       1646 :   if (fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span>
+<span class="lineNum">      33 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 990 times"> + </span>]:<span class="lineCov">        990 :   if (fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span>
 <span class="lineNum">      34 </span>                :<span class="lineNoCov">          0 :     return NULL;</span>
-<span class="lineNum">      35 </span>                :<span class="lineCov">       1646 :   size = fp-&gt;_IO_read_end - fp-&gt;_IO_read_ptr;</span>
-<span class="lineNum">      36 </span>        [<span class="branchCov" title="Branch 0 was taken 95 times"> + </span><span class="branchCov" title="Branch 1 was taken 1551 times"> + </span>]:<span class="lineCov">       1646 :   if (size == 0)</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">         95 :     return NULL;</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">       1551 :   *sizep = size;</span>
-<span class="lineNum">      39 </span>                :<span class="lineCov">       1646 :   return (const char *) fp-&gt;_IO_read_ptr;</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">        990 :   size = fp-&gt;_IO_read_end - fp-&gt;_IO_read_ptr;</span>
+<span class="lineNum">      36 </span>        [<span class="branchCov" title="Branch 0 was taken 57 times"> + </span><span class="branchCov" title="Branch 1 was taken 933 times"> + </span>]:<span class="lineCov">        990 :   if (size == 0)</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">         57 :     return NULL;</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">        933 :   *sizep = size;</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">        990 :   return (const char *) fp-&gt;_IO_read_ptr;</span>
 <span class="lineNum">      40 </span>                :            : #elif defined __sferror || defined __DragonFly__ /* FreeBSD, NetBSD, OpenBSD, DragonFly, MacOS X, Cygwin */
 <span class="lineNum">      41 </span>                :            :   if ((fp_-&gt;_flags &amp; __SWR) != 0 || fp_-&gt;_r &lt; 0)
 <span class="lineNum">      42 </span>                :            :     return NULL;

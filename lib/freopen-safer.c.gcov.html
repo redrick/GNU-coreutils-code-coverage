@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/freopen-safer.c</title>
+  <title>LCOV - coreutils - lib/freopen-safer.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">30</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -100,10 +100,10 @@
 <span class="lineNum">      29 </span>                :            : /* Guarantee that FD is open; all smaller FDs must already be open.
 <a name="30"><span class="lineNum">      30 </span>                :            :    Return true if successful.  */</a>
 <span class="lineNum">      31 </span>                :            : static bool
-<span class="lineNum">      32 </span>                :<span class="lineCov">         55 : protect_fd (int fd)</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">         33 : protect_fd (int fd)</span>
 <span class="lineNum">      33 </span>                :            : {
-<span class="lineNum">      34 </span>                :<span class="lineCov">         55 :   int value = open (&quot;/dev/null&quot;, O_RDONLY);</span>
-<span class="lineNum">      35 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55 times"> + </span>]:<span class="lineCov">         55 :   if (value != fd)</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">         33 :   int value = open (&quot;/dev/null&quot;, O_RDONLY);</span>
+<span class="lineNum">      35 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 33 times"> + </span>]:<span class="lineCov">         33 :   if (value != fd)</span>
 <span class="lineNum">      36 </span>                :            :     {
 <span class="lineNum">      37 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (0 &lt;= value)</span>
 <span class="lineNum">      38 </span>                :            :         {
@@ -112,7 +112,7 @@
 <span class="lineNum">      41 </span>                :            :         }
 <span class="lineNum">      42 </span>                :<span class="lineNoCov">          0 :       return false;</span>
 <span class="lineNum">      43 </span>                :            :     }
-<span class="lineNum">      44 </span>                :<span class="lineCov">         55 :   return true;</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">         33 :   return true;</span>
 <span class="lineNum">      45 </span>                :            : }
 <span class="lineNum">      46 </span>                :            : 
 <span class="lineNum">      47 </span>                :            : /* Like freopen, but guarantee that reopening stdin, stdout, or stderr
@@ -122,7 +122,7 @@
 <span class="lineNum">      51 </span>                :            :    the associated fd of a stream to the lowest available slot.  */
 <a name="52"><span class="lineNum">      52 </span>                :            : </a>
 <span class="lineNum">      53 </span>                :            : FILE *
-<span class="lineNum">      54 </span>                :<span class="lineCov">        797 : freopen_safer (char const *name, char const *mode, FILE *f)</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">        480 : freopen_safer (char const *name, char const *mode, FILE *f)</span>
 <span class="lineNum">      55 </span>                :            : {
 <span class="lineNum">      56 </span>                :            :   /* Unfortunately, we cannot use the fopen_safer approach of using
 <span class="lineNum">      57 </span>                :            :      fdopen (dup_safer (fileno (freopen (cmd, mode, f)))), because we
@@ -130,47 +130,47 @@
 <span class="lineNum">      59 </span>                :            :      is system-dependent, so the best we can do is guarantee that all
 <span class="lineNum">      60 </span>                :            :      lower-valued standard fds are open prior to the freopen call,
 <span class="lineNum">      61 </span>                :            :      even though this puts more pressure on open fds.  */
-<span class="lineNum">      62 </span>                :<span class="lineCov">        797 :   bool protect_in = false;</span>
-<span class="lineNum">      63 </span>                :<span class="lineCov">        797 :   bool protect_out = false;</span>
-<span class="lineNum">      64 </span>                :<span class="lineCov">        797 :   bool protect_err = false;</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">        480 :   bool protect_in = false;</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">        480 :   bool protect_out = false;</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">        480 :   bool protect_err = false;</span>
 <span class="lineNum">      65 </span>                :            :   int saved_errno;
 <span class="lineNum">      66 </span>                :            : 
-<span class="lineNum">      67 </span>  [<span class="branchCov" title="Branch 1 was taken 20 times"> + </span><span class="branchCov" title="Branch 2 was taken 45 times"> + </span><span class="branchCov" title="Branch 3 was taken 10 times"> + </span><span class="branchCov" title="Branch 4 was taken 722 times"> + </span>]:<span class="lineCov">        797 :   switch (fileno (f))</span>
+<span class="lineNum">      67 </span>  [<span class="branchCov" title="Branch 1 was taken 12 times"> + </span><span class="branchCov" title="Branch 2 was taken 27 times"> + </span><span class="branchCov" title="Branch 3 was taken 6 times"> + </span><span class="branchCov" title="Branch 4 was taken 435 times"> + </span>]:<span class="lineCov">        480 :   switch (fileno (f))</span>
 <span class="lineNum">      68 </span>                :            :     {
 <span class="lineNum">      69 </span>                :            :     default: /* -1 or not a standard stream.  */
-<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 1 was taken 5 times"> + </span><span class="branchCov" title="Branch 2 was taken 15 times"> + </span>]:<span class="lineCov">         20 :       if (dup2 (STDERR_FILENO, STDERR_FILENO) != STDERR_FILENO)</span>
-<span class="lineNum">      71 </span>                :<span class="lineCov">          5 :         protect_err = true;</span>
+<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">         12 :       if (dup2 (STDERR_FILENO, STDERR_FILENO) != STDERR_FILENO)</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">          3 :         protect_err = true;</span>
 <span class="lineNum">      72 </span>                :            :       /* fall through */
 <span class="lineNum">      73 </span>                :            :     case STDERR_FILENO:
-<span class="lineNum">      74 </span>        [<span class="branchCov" title="Branch 1 was taken 20 times"> + </span><span class="branchCov" title="Branch 2 was taken 45 times"> + </span>]:<span class="lineCov">         65 :       if (dup2 (STDOUT_FILENO, STDOUT_FILENO) != STDOUT_FILENO)</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">         20 :         protect_out = true;</span>
+<span class="lineNum">      74 </span>        [<span class="branchCov" title="Branch 1 was taken 12 times"> + </span><span class="branchCov" title="Branch 2 was taken 27 times"> + </span>]:<span class="lineCov">         39 :       if (dup2 (STDOUT_FILENO, STDOUT_FILENO) != STDOUT_FILENO)</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">         12 :         protect_out = true;</span>
 <span class="lineNum">      76 </span>                :            :       /* fall through */
 <span class="lineNum">      77 </span>                :            :     case STDOUT_FILENO:
-<span class="lineNum">      78 </span>        [<span class="branchCov" title="Branch 1 was taken 30 times"> + </span><span class="branchCov" title="Branch 2 was taken 45 times"> + </span>]:<span class="lineCov">         75 :       if (dup2 (STDIN_FILENO, STDIN_FILENO) != STDIN_FILENO)</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">         30 :         protect_in = true;</span>
+<span class="lineNum">      78 </span>        [<span class="branchCov" title="Branch 1 was taken 18 times"> + </span><span class="branchCov" title="Branch 2 was taken 27 times"> + </span>]:<span class="lineCov">         45 :       if (dup2 (STDIN_FILENO, STDIN_FILENO) != STDIN_FILENO)</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">         18 :         protect_in = true;</span>
 <span class="lineNum">      80 </span>                :            :       /* fall through */
 <span class="lineNum">      81 </span>                :            :     case STDIN_FILENO:
 <span class="lineNum">      82 </span>                :            :       /* Nothing left to protect.  */
-<span class="lineNum">      83 </span>                :<span class="lineCov">        797 :       break;</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">        480 :       break;</span>
 <span class="lineNum">      84 </span>                :            :     }
-<span class="lineNum">      85 </span>[<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 767 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 30 times"> + </span>]:<span class="lineCov">        797 :   if (protect_in &amp;&amp; !protect_fd (STDIN_FILENO))</span>
+<span class="lineNum">      85 </span>[<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 462 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 18 times"> + </span>]:<span class="lineCov">        480 :   if (protect_in &amp;&amp; !protect_fd (STDIN_FILENO))</span>
 <span class="lineNum">      86 </span>                :<span class="lineNoCov">          0 :     f = NULL;</span>
-<span class="lineNum">      87 </span>[<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 777 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 20 times"> + </span>]:<span class="lineCov">        797 :   else if (protect_out &amp;&amp; !protect_fd (STDOUT_FILENO))</span>
+<span class="lineNum">      87 </span>[<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 468 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 12 times"> + </span>]:<span class="lineCov">        480 :   else if (protect_out &amp;&amp; !protect_fd (STDOUT_FILENO))</span>
 <span class="lineNum">      88 </span>                :<span class="lineNoCov">          0 :     f = NULL;</span>
-<span class="lineNum">      89 </span>[<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 792 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 5 times"> + </span>]:<span class="lineCov">        797 :   else if (protect_err &amp;&amp; !protect_fd (STDERR_FILENO))</span>
+<span class="lineNum">      89 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 477 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 3 times"> + </span>]:<span class="lineCov">        480 :   else if (protect_err &amp;&amp; !protect_fd (STDERR_FILENO))</span>
 <span class="lineNum">      90 </span>                :<span class="lineNoCov">          0 :     f = NULL;</span>
 <span class="lineNum">      91 </span>                :            :   else
-<span class="lineNum">      92 </span>                :<span class="lineCov">        797 :     f = freopen (name, mode, f);</span>
-<span class="lineNum">      93 </span>                :<span class="lineCov">        797 :   saved_errno = errno;</span>
-<span class="lineNum">      94 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 792 times"> + </span>]:<span class="lineCov">        797 :   if (protect_err)</span>
-<span class="lineNum">      95 </span>                :<span class="lineCov">          5 :     close (STDERR_FILENO);</span>
-<span class="lineNum">      96 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 777 times"> + </span>]:<span class="lineCov">        797 :   if (protect_out)</span>
-<span class="lineNum">      97 </span>                :<span class="lineCov">         20 :     close (STDOUT_FILENO);</span>
-<span class="lineNum">      98 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 767 times"> + </span>]:<span class="lineCov">        797 :   if (protect_in)</span>
-<span class="lineNum">      99 </span>                :<span class="lineCov">         30 :     close (STDIN_FILENO);</span>
-<span class="lineNum">     100 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 792 times"> + </span>]:<span class="lineCov">        797 :   if (!f)</span>
-<span class="lineNum">     101 </span>                :<span class="lineCov">          5 :     errno = saved_errno;</span>
-<span class="lineNum">     102 </span>                :<span class="lineCov">        797 :   return f;</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">        480 :     f = freopen (name, mode, f);</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">        480 :   saved_errno = errno;</span>
+<span class="lineNum">      94 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 477 times"> + </span>]:<span class="lineCov">        480 :   if (protect_err)</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">          3 :     close (STDERR_FILENO);</span>
+<span class="lineNum">      96 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 468 times"> + </span>]:<span class="lineCov">        480 :   if (protect_out)</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">         12 :     close (STDOUT_FILENO);</span>
+<span class="lineNum">      98 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 462 times"> + </span>]:<span class="lineCov">        480 :   if (protect_in)</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">         18 :     close (STDIN_FILENO);</span>
+<span class="lineNum">     100 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 477 times"> + </span>]:<span class="lineCov">        480 :   if (!f)</span>
+<span class="lineNum">     101 </span>                :<span class="lineCov">          3 :     errno = saved_errno;</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">        480 :   return f;</span>
 <span class="lineNum">     103 </span>                :            : }
 </pre>
       </td>

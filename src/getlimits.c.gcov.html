@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - src/getlimits.c</title>
+  <title>LCOV - coreutils - src/getlimits.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">39</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -154,37 +154,37 @@
 <span class="lineNum">      83 </span>                :            :    Return a pointer to the result, which is normally BUF + 1, but is
 <a name="84"><span class="lineNum">      84 </span>                :            :    BUF if the representation grew in size.  */</a>
 <span class="lineNum">      85 </span>                :            : static char const *
-<span class="lineNum">      86 </span>                :<span class="lineCov">       2430 : decimal_absval_add_one (char *buf)</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">       1458 : decimal_absval_add_one (char *buf)</span>
 <span class="lineNum">      87 </span>                :            : {
-<span class="lineNum">      88 </span>                :<span class="lineCov">       2430 :   bool negative = (buf[1] == '-');</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">       2430 :   char *absnum = buf + 1 + negative;</span>
-<span class="lineNum">      90 </span>                :<span class="lineCov">       2430 :   char *p = absnum + strlen (absnum);</span>
-<span class="lineNum">      91 </span>                :<span class="lineCov">       2430 :   absnum[-1] = '0';</span>
-<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2430 times"> + </span>]:<span class="lineCov">       2430 :   while (*--p == '9')</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">       1458 :   bool negative = (buf[1] == '-');</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">       1458 :   char *absnum = buf + 1 + negative;</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">       1458 :   char *p = absnum + strlen (absnum);</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">       1458 :   absnum[-1] = '0';</span>
+<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1458 times"> + </span>]:<span class="lineCov">       1458 :   while (*--p == '9')</span>
 <span class="lineNum">      93 </span>                :<span class="lineNoCov">          0 :     *p = '0';</span>
-<span class="lineNum">      94 </span>                :<span class="lineCov">       2430 :   ++*p;</span>
-<span class="lineNum">      95 </span>                :<span class="lineCov">       2430 :   char *result = MIN (absnum, p);</span>
-<span class="lineNum">      96 </span>        [<span class="branchCov" title="Branch 0 was taken 900 times"> + </span><span class="branchCov" title="Branch 1 was taken 1530 times"> + </span>]:<span class="lineCov">       2430 :   if (negative)</span>
-<span class="lineNum">      97 </span>                :<span class="lineCov">        900 :     *--result = '-';</span>
-<span class="lineNum">      98 </span>                :<span class="lineCov">       2430 :   return result;</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">       1458 :   ++*p;</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">       1458 :   char *result = MIN (absnum, p);</span>
+<span class="lineNum">      96 </span>        [<span class="branchCov" title="Branch 0 was taken 540 times"> + </span><span class="branchCov" title="Branch 1 was taken 918 times"> + </span>]:<span class="lineCov">       1458 :   if (negative)</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">        540 :     *--result = '-';</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">       1458 :   return result;</span>
 <span class="lineNum">      99 </span>                :            : }
 <a name="100"><span class="lineNum">     100 </span>                :            : </a>
 <span class="lineNum">     101 </span>                :            : int
-<span class="lineNum">     102 </span>                :<span class="lineCov">         90 : main (int argc, char **argv)</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">         54 : main (int argc, char **argv)</span>
 <span class="lineNum">     103 </span>                :            : {
 <span class="lineNum">     104 </span>                :            :   char limit[1 + MAX (INT_BUFSIZE_BOUND (intmax_t),
 <span class="lineNum">     105 </span>                :            :                       INT_BUFSIZE_BOUND (uintmax_t))];
 <span class="lineNum">     106 </span>                :            : 
 <span class="lineNum">     107 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">     108 </span>                :<span class="lineCov">         90 :   set_program_name (argv[0]);</span>
-<span class="lineNum">     109 </span>                :<span class="lineCov">         90 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     110 </span>                :<span class="lineCov">         90 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     111 </span>                :<span class="lineCov">         90 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">         54 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">         54 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">         54 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">         54 :   textdomain (PACKAGE);</span>
 <span class="lineNum">     112 </span>                :            : 
-<span class="lineNum">     113 </span>                :<span class="lineCov">         90 :   initialize_exit_failure (EXIT_FAILURE);</span>
-<span class="lineNum">     114 </span>                :<span class="lineCov">         90 :   atexit (close_stdout);</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">         54 :   initialize_exit_failure (EXIT_FAILURE);</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">         54 :   atexit (close_stdout);</span>
 <span class="lineNum">     115 </span>                :            : 
-<span class="lineNum">     116 </span>                :<span class="lineCov">         90 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, VERSION,</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">         54 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, VERSION,</span>
 <span class="lineNum">     117 </span>                :            :                       usage, AUTHORS, (char const *) NULL);
 <span class="lineNum">     118 </span>                :            : 
 <span class="lineNum">     119 </span>                :            : #define print_int(TYPE)                                                  \
@@ -203,28 +203,28 @@
 <span class="lineNum">     132 </span>                :            :   printf (#TYPE&quot;_MAX=%Le\n&quot;, (long double)TYPE##_MAX);
 <span class="lineNum">     133 </span>                :            : 
 <span class="lineNum">     134 </span>                :            :   /* Variable sized ints */
-<span class="lineNum">     135 </span>                :<span class="lineCov">         90 :   print_int (CHAR);</span>
-<span class="lineNum">     136 </span>                :<span class="lineCov">         90 :   print_int (SCHAR);</span>
-<span class="lineNum">     137 </span>                :<span class="lineCov">         90 :   print_int (UCHAR);</span>
-<span class="lineNum">     138 </span>                :<span class="lineCov">         90 :   print_int (SHRT);</span>
-<span class="lineNum">     139 </span>                :<span class="lineCov">         90 :   print_int (INT);</span>
-<span class="lineNum">     140 </span>                :<span class="lineCov">         90 :   print_int (UINT);</span>
-<span class="lineNum">     141 </span>                :<span class="lineCov">         90 :   print_int (LONG);</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">         90 :   print_int (ULONG);</span>
-<span class="lineNum">     143 </span>                :<span class="lineCov">         90 :   print_int (SIZE);</span>
-<span class="lineNum">     144 </span>                :<span class="lineCov">         90 :   print_int (SSIZE);</span>
-<span class="lineNum">     145 </span>                :<span class="lineCov">         90 :   print_int (TIME_T);</span>
-<span class="lineNum">     146 </span>                :<span class="lineCov">         90 :   print_int (UID_T);</span>
-<span class="lineNum">     147 </span>                :<span class="lineCov">         90 :   print_int (GID_T);</span>
-<span class="lineNum">     148 </span>                :<span class="lineCov">         90 :   print_int (PID_T);</span>
-<span class="lineNum">     149 </span>                :<span class="lineCov">         90 :   print_int (OFF_T);</span>
-<span class="lineNum">     150 </span>                :<span class="lineCov">         90 :   print_int (INTMAX);</span>
-<span class="lineNum">     151 </span>                :<span class="lineCov">         90 :   print_int (UINTMAX);</span>
+<span class="lineNum">     135 </span>                :<span class="lineCov">         54 :   print_int (CHAR);</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">         54 :   print_int (SCHAR);</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">         54 :   print_int (UCHAR);</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">         54 :   print_int (SHRT);</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">         54 :   print_int (INT);</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">         54 :   print_int (UINT);</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">         54 :   print_int (LONG);</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">         54 :   print_int (ULONG);</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">         54 :   print_int (SIZE);</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">         54 :   print_int (SSIZE);</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">         54 :   print_int (TIME_T);</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">         54 :   print_int (UID_T);</span>
+<span class="lineNum">     147 </span>                :<span class="lineCov">         54 :   print_int (GID_T);</span>
+<span class="lineNum">     148 </span>                :<span class="lineCov">         54 :   print_int (PID_T);</span>
+<span class="lineNum">     149 </span>                :<span class="lineCov">         54 :   print_int (OFF_T);</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">         54 :   print_int (INTMAX);</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">         54 :   print_int (UINTMAX);</span>
 <span class="lineNum">     152 </span>                :            : 
 <span class="lineNum">     153 </span>                :            :   /* Variable sized floats */
-<span class="lineNum">     154 </span>                :<span class="lineCov">         90 :   print_float (FLT);</span>
-<span class="lineNum">     155 </span>                :<span class="lineCov">         90 :   print_float (DBL);</span>
-<span class="lineNum">     156 </span>                :<span class="lineCov">         90 :   print_float (LDBL);</span>
+<span class="lineNum">     154 </span>                :<span class="lineCov">         54 :   print_float (FLT);</span>
+<span class="lineNum">     155 </span>                :<span class="lineCov">         54 :   print_float (DBL);</span>
+<span class="lineNum">     156 </span>                :<span class="lineCov">         54 :   print_float (LDBL);</span>
 <span class="lineNum">     157 </span>                :            : }
 </pre>
       </td>

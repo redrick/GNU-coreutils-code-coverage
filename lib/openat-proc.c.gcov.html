@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/openat-proc.c</title>
+  <title>LCOV - coreutils - lib/openat-proc.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">14</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -124,18 +124,18 @@
 <span class="lineNum">      53 </span>                :            :    return NULL if /proc is not reliable, either because the operating
 <a name="54"><span class="lineNum">      54 </span>                :            :    system support is lacking or because memory is low.  */</a>
 <span class="lineNum">      55 </span>                :            : char *
-<span class="lineNum">      56 </span>                :<span class="lineCov">         50 : openat_proc_name (char buf[OPENAT_BUFFER_SIZE], int fd, char const *file)</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">         30 : openat_proc_name (char buf[OPENAT_BUFFER_SIZE], int fd, char const *file)</span>
 <span class="lineNum">      57 </span>                :            : {
 <span class="lineNum">      58 </span>                :            :   static int proc_status = 0;
 <span class="lineNum">      59 </span>                :            : 
 <span class="lineNum">      60 </span>                :            :   /* Make sure the caller gets ENOENT when appropriate.  */
-<span class="lineNum">      61 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 50 times"> + </span>]:<span class="lineCov">         50 :   if (!*file)</span>
+<span class="lineNum">      61 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :   if (!*file)</span>
 <span class="lineNum">      62 </span>                :            :     {
 <span class="lineNum">      63 </span>                :<span class="lineNoCov">          0 :       buf[0] = '\0';</span>
 <span class="lineNum">      64 </span>                :<span class="lineNoCov">          0 :       return buf;</span>
 <span class="lineNum">      65 </span>                :            :     }
 <span class="lineNum">      66 </span>                :            : 
-<span class="lineNum">      67 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 40 times"> + </span>]:<span class="lineCov">         50 :   if (! proc_status)</span>
+<span class="lineNum">      67 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         30 :   if (! proc_status)</span>
 <span class="lineNum">      68 </span>                :            :     {
 <span class="lineNum">      69 </span>                :            :       /* Set PROC_STATUS to a positive value if /proc/self/fd is
 <span class="lineNum">      70 </span>                :            :          reliable, and a negative value otherwise.  Solaris 10
@@ -145,9 +145,9 @@
 <span class="lineNum">      74 </span>                :            :          problem is exhibited on code that built on Solaris 8 and
 <span class="lineNum">      75 </span>                :            :          running on Solaris 10.  */
 <span class="lineNum">      76 </span>                :            : 
-<span class="lineNum">      77 </span>                :<span class="lineCov">         10 :       int proc_self_fd = open (&quot;/proc/self/fd&quot;,</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">          6 :       int proc_self_fd = open (&quot;/proc/self/fd&quot;,</span>
 <span class="lineNum">      78 </span>                :            :                                O_SEARCH | O_DIRECTORY | O_NOCTTY | O_NONBLOCK);
-<span class="lineNum">      79 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :       if (proc_self_fd &lt; 0)</span>
+<span class="lineNum">      79 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :       if (proc_self_fd &lt; 0)</span>
 <span class="lineNum">      80 </span>                :<span class="lineNoCov">          0 :         proc_status = -1;</span>
 <span class="lineNum">      81 </span>                :            :       else
 <span class="lineNum">      82 </span>                :            :         {
@@ -157,26 +157,26 @@
 <span class="lineNum">      86 </span>                :            :              However, on Solaris, it may resolve to /proc/self/fd/fd, which
 <span class="lineNum">      87 </span>                :            :              cannot exist, since all names in /proc/self/fd are numeric.  */
 <span class="lineNum">      88 </span>                :            :           char dotdot_buf[PROC_SELF_FD_NAME_SIZE_BOUND (sizeof &quot;../fd&quot; - 1)];
-<span class="lineNum">      89 </span>                :<span class="lineCov">         10 :           sprintf (dotdot_buf, PROC_SELF_FD_FORMAT, proc_self_fd, &quot;../fd&quot;);</span>
-<span class="lineNum">      90 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span>]:<span class="lineCov">         10 :           proc_status = access (dotdot_buf, F_OK) ? -1 : 1;</span>
-<span class="lineNum">      91 </span>                :<span class="lineCov">         10 :           close (proc_self_fd);</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">          6 :           sprintf (dotdot_buf, PROC_SELF_FD_FORMAT, proc_self_fd, &quot;../fd&quot;);</span>
+<span class="lineNum">      90 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">          6 :           proc_status = access (dotdot_buf, F_OK) ? -1 : 1;</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">          6 :           close (proc_self_fd);</span>
 <span class="lineNum">      92 </span>                :            :         }
 <span class="lineNum">      93 </span>                :            :     }
 <span class="lineNum">      94 </span>                :            : 
-<span class="lineNum">      95 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 50 times"> + </span>]:<span class="lineCov">         50 :   if (proc_status &lt; 0)</span>
+<span class="lineNum">      95 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :   if (proc_status &lt; 0)</span>
 <span class="lineNum">      96 </span>                :<span class="lineNoCov">          0 :     return NULL;</span>
 <span class="lineNum">      97 </span>                :            :   else
 <span class="lineNum">      98 </span>                :            :     {
-<span class="lineNum">      99 </span>                :<span class="lineCov">         50 :       size_t bufsize = PROC_SELF_FD_NAME_SIZE_BOUND (strlen (file));</span>
-<span class="lineNum">     100 </span>                :<span class="lineCov">         50 :       char *result = buf;</span>
-<span class="lineNum">     101 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 50 times"> + </span>]:<span class="lineCov">         50 :       if (OPENAT_BUFFER_SIZE &lt; bufsize)</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">         30 :       size_t bufsize = PROC_SELF_FD_NAME_SIZE_BOUND (strlen (file));</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">         30 :       char *result = buf;</span>
+<span class="lineNum">     101 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :       if (OPENAT_BUFFER_SIZE &lt; bufsize)</span>
 <span class="lineNum">     102 </span>                :            :         {
 <span class="lineNum">     103 </span>                :<span class="lineNoCov">          0 :           result = malloc (bufsize);</span>
 <span class="lineNum">     104 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (! result)</span>
 <span class="lineNum">     105 </span>                :<span class="lineNoCov">          0 :             return NULL;</span>
 <span class="lineNum">     106 </span>                :            :         }
-<span class="lineNum">     107 </span>                :<span class="lineCov">         50 :       sprintf (result, PROC_SELF_FD_FORMAT, fd, file);</span>
-<span class="lineNum">     108 </span>                :<span class="lineCov">         50 :       return result;</span>
+<span class="lineNum">     107 </span>                :<span class="lineCov">         30 :       sprintf (result, PROC_SELF_FD_FORMAT, fd, file);</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">         30 :       return result;</span>
 <span class="lineNum">     109 </span>                :            :     }
 <span class="lineNum">     110 </span>                :            : }
 </pre>

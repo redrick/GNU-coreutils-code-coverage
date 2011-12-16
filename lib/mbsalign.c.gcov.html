@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/mbsalign.c</title>
+  <title>LCOV - coreutils - lib/mbsalign.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">99</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -108,46 +108,46 @@
 <span class="lineNum">      37 </span>                :            :    Return 1 if replacement made, 0 otherwise.  */
 <a name="38"><span class="lineNum">      38 </span>                :            : </a>
 <span class="lineNum">      39 </span>                :            : static bool
-<span class="lineNum">      40 </span>                :<span class="lineCov">       1000 : wc_ensure_printable (wchar_t *wchars)</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">        600 : wc_ensure_printable (wchar_t *wchars)</span>
 <span class="lineNum">      41 </span>                :            : {
-<span class="lineNum">      42 </span>                :<span class="lineCov">       1000 :   bool replaced = false;</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">       1000 :   wchar_t *wc = wchars;</span>
-<span class="lineNum">      44 </span>        [<span class="branchCov" title="Branch 0 was taken 4045 times"> + </span><span class="branchCov" title="Branch 1 was taken 1000 times"> + </span>]:<span class="lineCov">       5045 :   while (*wc)</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">        600 :   bool replaced = false;</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">        600 :   wchar_t *wc = wchars;</span>
+<span class="lineNum">      44 </span>        [<span class="branchCov" title="Branch 0 was taken 2427 times"> + </span><span class="branchCov" title="Branch 1 was taken 600 times"> + </span>]:<span class="lineCov">       3027 :   while (*wc)</span>
 <span class="lineNum">      45 </span>                :            :     {
-<span class="lineNum">      46 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 4040 times"> + </span>]:<span class="lineCov">       4045 :       if (!iswprint ((wint_t) *wc))</span>
+<span class="lineNum">      46 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 2424 times"> + </span>]:<span class="lineCov">       2427 :       if (!iswprint ((wint_t) *wc))</span>
 <span class="lineNum">      47 </span>                :            :         {
-<span class="lineNum">      48 </span>                :<span class="lineCov">          5 :           *wc = 0xFFFD; /* L'\uFFFD' (replacement char) */</span>
-<span class="lineNum">      49 </span>                :<span class="lineCov">          5 :           replaced = true;</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">          3 :           *wc = 0xFFFD; /* L'\uFFFD' (replacement char) */</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">          3 :           replaced = true;</span>
 <span class="lineNum">      50 </span>                :            :         }
-<span class="lineNum">      51 </span>                :<span class="lineCov">       4045 :       wc++;</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">       2427 :       wc++;</span>
 <span class="lineNum">      52 </span>                :            :     }
-<span class="lineNum">      53 </span>                :<span class="lineCov">       1000 :   return replaced;</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">        600 :   return replaced;</span>
 <span class="lineNum">      54 </span>                :            : }
 <span class="lineNum">      55 </span>                :            : 
 <span class="lineNum">      56 </span>                :            : /* Truncate wchar string to width cells.
 <span class="lineNum">      57 </span>                :            :  * Returns number of cells used.  */
 <a name="58"><span class="lineNum">      58 </span>                :            : </a>
 <span class="lineNum">      59 </span>                :            : static size_t
-<span class="lineNum">      60 </span>                :<span class="lineCov">        255 : wc_truncate (wchar_t *wc, size_t width)</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">        153 : wc_truncate (wchar_t *wc, size_t width)</span>
 <span class="lineNum">      61 </span>                :            : {
-<span class="lineNum">      62 </span>                :<span class="lineCov">        255 :   size_t cells = 0;</span>
-<span class="lineNum">      63 </span>                :<span class="lineCov">        255 :   int next_cells = 0;</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">        153 :   size_t cells = 0;</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">        153 :   int next_cells = 0;</span>
 <span class="lineNum">      64 </span>                :            : 
-<span class="lineNum">      65 </span>        [<span class="branchCov" title="Branch 0 was taken 1495 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">       1500 :   while (*wc)</span>
+<span class="lineNum">      65 </span>        [<span class="branchCov" title="Branch 0 was taken 897 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">        900 :   while (*wc)</span>
 <span class="lineNum">      66 </span>                :            :     {
-<span class="lineNum">      67 </span>                :<span class="lineCov">       1495 :       next_cells = wcwidth (*wc);</span>
-<span class="lineNum">      68 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1495 times"> + </span>]:<span class="lineCov">       1495 :       if (next_cells == -1) /* non printable */</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">        897 :       next_cells = wcwidth (*wc);</span>
+<span class="lineNum">      68 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 897 times"> + </span>]:<span class="lineCov">        897 :       if (next_cells == -1) /* non printable */</span>
 <span class="lineNum">      69 </span>                :            :         {
 <span class="lineNum">      70 </span>                :<span class="lineNoCov">          0 :           *wc = 0xFFFD; /* L'\uFFFD' (replacement char) */</span>
 <span class="lineNum">      71 </span>                :<span class="lineNoCov">          0 :           next_cells = 1;</span>
 <span class="lineNum">      72 </span>                :            :         }
-<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 0 was taken 250 times"> + </span><span class="branchCov" title="Branch 1 was taken 1245 times"> + </span>]:<span class="lineCov">       1495 :       if (cells + next_cells &gt; width)</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">        250 :         break;</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">       1245 :       cells += next_cells;</span>
-<span class="lineNum">      76 </span>                :<span class="lineCov">       1245 :       wc++;</span>
+<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 0 was taken 150 times"> + </span><span class="branchCov" title="Branch 1 was taken 747 times"> + </span>]:<span class="lineCov">        897 :       if (cells + next_cells &gt; width)</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">        150 :         break;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">        747 :       cells += next_cells;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">        747 :       wc++;</span>
 <span class="lineNum">      77 </span>                :            :     }
-<span class="lineNum">      78 </span>                :<span class="lineCov">        255 :   *wc = L'\0';</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">        255 :   return cells;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">        153 :   *wc = L'\0';</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">        153 :   return cells;</span>
 <span class="lineNum">      80 </span>                :            : }
 <span class="lineNum">      81 </span>                :            : 
 <span class="lineNum">      82 </span>                :            : /* Write N_SPACES space characters to DEST while ensuring
@@ -156,14 +156,14 @@
 <span class="lineNum">      85 </span>                :            :    A pointer to the terminating NUL is returned.  */
 <a name="86"><span class="lineNum">      86 </span>                :            : </a>
 <span class="lineNum">      87 </span>                :            : static char*
-<span class="lineNum">      88 </span>                :<span class="lineCov">     171526 : mbs_align_pad (char *dest, const char* dest_end, size_t n_spaces)</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">     103266 : mbs_align_pad (char *dest, const char* dest_end, size_t n_spaces)</span>
 <span class="lineNum">      89 </span>                :            : {
 <span class="lineNum">      90 </span>                :            :   /* FIXME: Should we pad with &quot;figure space&quot; (\u2007)
 <span class="lineNum">      91 </span>                :            :      if non ascii data present?  */
-<span class="lineNum">      92 </span>[<span class="branchCov" title="Branch 0 was taken 89558 times"> + </span><span class="branchCov" title="Branch 1 was taken 171526 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 89558 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     261084 :   while (n_spaces-- &amp;&amp; (dest &lt; dest_end))</span>
-<span class="lineNum">      93 </span>                :<span class="lineCov">      89558 :     *dest++ = ' ';</span>
-<span class="lineNum">      94 </span>                :<span class="lineCov">     171526 :   *dest = '\0';</span>
-<span class="lineNum">      95 </span>                :<span class="lineCov">     171526 :   return dest;</span>
+<span class="lineNum">      92 </span>[<span class="branchCov" title="Branch 0 was taken 53284 times"> + </span><span class="branchCov" title="Branch 1 was taken 103266 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 53284 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     156550 :   while (n_spaces-- &amp;&amp; (dest &lt; dest_end))</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">      53284 :     *dest++ = ' ';</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">     103266 :   *dest = '\0';</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">     103266 :   return dest;</span>
 <span class="lineNum">      96 </span>                :            : }
 <span class="lineNum">      97 </span>                :            : 
 <span class="lineNum">      98 </span>                :            : /* Align a string, SRC, in a field of *WIDTH columns, handling multi-byte
@@ -180,127 +180,127 @@
 <span class="lineNum">     109 </span>                :            :    Update *WIDTH to indicate how many columns were used before padding.  */
 <a name="110"><span class="lineNum">     110 </span>                :            : </a>
 <span class="lineNum">     111 </span>                :            : size_t
-<span class="lineNum">     112 </span>                :<span class="lineCov">      85778 : mbsalign (const char *src, char *dest, size_t dest_size,</span>
+<span class="lineNum">     112 </span>                :<span class="lineCov">      51642 : mbsalign (const char *src, char *dest, size_t dest_size,</span>
 <span class="lineNum">     113 </span>                :            :           size_t *width, mbs_align_t align, int flags)
 <span class="lineNum">     114 </span>                :            : {
-<span class="lineNum">     115 </span>                :<span class="lineCov">      85778 :   size_t ret = SIZE_MAX;</span>
-<span class="lineNum">     116 </span>                :<span class="lineCov">      85778 :   size_t src_size = strlen (src) + 1;</span>
-<span class="lineNum">     117 </span>                :<span class="lineCov">      85778 :   char *newstr = NULL;</span>
-<span class="lineNum">     118 </span>                :<span class="lineCov">      85778 :   wchar_t *str_wc = NULL;</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">      85778 :   const char *str_to_print = src;</span>
-<span class="lineNum">     120 </span>                :<span class="lineCov">      85778 :   size_t n_cols = src_size - 1;</span>
-<span class="lineNum">     121 </span>                :<span class="lineCov">      85778 :   size_t n_used_bytes = n_cols; /* Not including NUL */</span>
-<span class="lineNum">     122 </span>                :<span class="lineCov">      85778 :   size_t n_spaces = 0;</span>
-<span class="lineNum">     123 </span>                :<span class="lineCov">      85778 :   bool conversion = false;</span>
-<span class="lineNum">     124 </span>                :<span class="lineCov">      85778 :   bool wc_enabled = false;</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">      51642 :   size_t ret = SIZE_MAX;</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">      51642 :   size_t src_size = strlen (src) + 1;</span>
+<span class="lineNum">     117 </span>                :<span class="lineCov">      51642 :   char *newstr = NULL;</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">      51642 :   wchar_t *str_wc = NULL;</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">      51642 :   const char *str_to_print = src;</span>
+<span class="lineNum">     120 </span>                :<span class="lineCov">      51642 :   size_t n_cols = src_size - 1;</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">      51642 :   size_t n_used_bytes = n_cols; /* Not including NUL */</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">      51642 :   size_t n_spaces = 0;</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">      51642 :   bool conversion = false;</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">      51642 :   bool wc_enabled = false;</span>
 <span class="lineNum">     125 </span>                :            : 
 <span class="lineNum">     126 </span>                :            :   /* In multi-byte locales convert to wide characters
 <span class="lineNum">     127 </span>                :            :      to allow easy truncation. Also determine number
 <span class="lineNum">     128 </span>                :            :      of screen columns used.  */
-<span class="lineNum">     129 </span>        [<span class="branchCov" title="Branch 1 was taken 1010 times"> + </span><span class="branchCov" title="Branch 2 was taken 84768 times"> + </span>]:<span class="lineCov">      85778 :   if (MB_CUR_MAX &gt; 1)</span>
+<span class="lineNum">     129 </span>        [<span class="branchCov" title="Branch 1 was taken 606 times"> + </span><span class="branchCov" title="Branch 2 was taken 51036 times"> + </span>]:<span class="lineCov">      51642 :   if (MB_CUR_MAX &gt; 1)</span>
 <span class="lineNum">     130 </span>                :            :     {
-<span class="lineNum">     131 </span>                :<span class="lineCov">       1010 :       size_t src_chars = mbstowcs (NULL, src, 0);</span>
-<span class="lineNum">     132 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 1000 times"> + </span>]:<span class="lineCov">       1010 :       if (src_chars == SIZE_MAX)</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">        606 :       size_t src_chars = mbstowcs (NULL, src, 0);</span>
+<span class="lineNum">     132 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 600 times"> + </span>]:<span class="lineCov">        606 :       if (src_chars == SIZE_MAX)</span>
 <span class="lineNum">     133 </span>                :            :         {
-<span class="lineNum">     134 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">         10 :           if (flags &amp; MBA_UNIBYTE_FALLBACK)</span>
-<span class="lineNum">     135 </span>                :<span class="lineCov">          5 :             goto mbsalign_unibyte;</span>
+<span class="lineNum">     134 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          6 :           if (flags &amp; MBA_UNIBYTE_FALLBACK)</span>
+<span class="lineNum">     135 </span>                :<span class="lineCov">          3 :             goto mbsalign_unibyte;</span>
 <span class="lineNum">     136 </span>                :            :           else
-<span class="lineNum">     137 </span>                :<span class="lineCov">          5 :             goto mbsalign_cleanup;</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">          3 :             goto mbsalign_cleanup;</span>
 <span class="lineNum">     138 </span>                :            :         }
-<span class="lineNum">     139 </span>                :<span class="lineCov">       1000 :       src_chars += 1; /* make space for NUL */</span>
-<span class="lineNum">     140 </span>                :<span class="lineCov">       1000 :       str_wc = malloc (src_chars * sizeof (wchar_t));</span>
-<span class="lineNum">     141 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1000 times"> + </span>]:<span class="lineCov">       1000 :       if (str_wc == NULL)</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">        600 :       src_chars += 1; /* make space for NUL */</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">        600 :       str_wc = malloc (src_chars * sizeof (wchar_t));</span>
+<span class="lineNum">     141 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 600 times"> + </span>]:<span class="lineCov">        600 :       if (str_wc == NULL)</span>
 <span class="lineNum">     142 </span>                :            :         {
 <span class="lineNum">     143 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (flags &amp; MBA_UNIBYTE_FALLBACK)</span>
 <span class="lineNum">     144 </span>                :<span class="lineNoCov">          0 :             goto mbsalign_unibyte;</span>
 <span class="lineNum">     145 </span>                :            :           else
 <span class="lineNum">     146 </span>                :<span class="lineNoCov">          0 :             goto mbsalign_cleanup;</span>
 <span class="lineNum">     147 </span>                :            :         }
-<span class="lineNum">     148 </span>        [<span class="branchCov" title="Branch 1 was taken 1000 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">       1000 :       if (mbstowcs (str_wc, src, src_chars) != 0)</span>
+<span class="lineNum">     148 </span>        [<span class="branchCov" title="Branch 1 was taken 600 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        600 :       if (mbstowcs (str_wc, src, src_chars) != 0)</span>
 <span class="lineNum">     149 </span>                :            :         {
-<span class="lineNum">     150 </span>                :<span class="lineCov">       1000 :           str_wc[src_chars - 1] = L'\0';</span>
-<span class="lineNum">     151 </span>                :<span class="lineCov">       1000 :           wc_enabled = true;</span>
-<span class="lineNum">     152 </span>                :<span class="lineCov">       1000 :           conversion = wc_ensure_printable (str_wc);</span>
-<span class="lineNum">     153 </span>                :<span class="lineCov">       1000 :           n_cols = wcswidth (str_wc, src_chars);</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">        600 :           str_wc[src_chars - 1] = L'\0';</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">        600 :           wc_enabled = true;</span>
+<span class="lineNum">     152 </span>                :<span class="lineCov">        600 :           conversion = wc_ensure_printable (str_wc);</span>
+<span class="lineNum">     153 </span>                :<span class="lineCov">        600 :           n_cols = wcswidth (str_wc, src_chars);</span>
 <span class="lineNum">     154 </span>                :            :         }
 <span class="lineNum">     155 </span>                :            :     }
 <span class="lineNum">     156 </span>                :            : 
 <span class="lineNum">     157 </span>                :            :   /* If we transformed or need to truncate the source string
 <span class="lineNum">     158 </span>                :            :      then create a modified copy of it.  */
-<span class="lineNum">     159 </span>[<span class="branchCov" title="Branch 0 was taken 1000 times"> + </span><span class="branchCov" title="Branch 1 was taken 84768 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 995 times"> + </span><span class="branchCov" title="Branch 3 was taken 5 times"> + </span>]:<span class="lineCov">      85768 :   if (wc_enabled &amp;&amp; (conversion || (n_cols &gt; *width)))</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 250 times"> + </span><span class="branchCov" title="Branch 5 was taken 745 times"> + </span>]
+<span class="lineNum">     159 </span>[<span class="branchCov" title="Branch 0 was taken 600 times"> + </span><span class="branchCov" title="Branch 1 was taken 51036 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 597 times"> + </span><span class="branchCov" title="Branch 3 was taken 3 times"> + </span>]:<span class="lineCov">      51636 :   if (wc_enabled &amp;&amp; (conversion || (n_cols &gt; *width)))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 150 times"> + </span><span class="branchCov" title="Branch 5 was taken 447 times"> + </span>]
 <span class="lineNum">     160 </span>                :            :     {
-<span class="lineNum">     161 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 250 times"> + </span>]:<span class="lineCov">        255 :         if (conversion)</span>
+<span class="lineNum">     161 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 150 times"> + </span>]:<span class="lineCov">        153 :         if (conversion)</span>
 <span class="lineNum">     162 </span>                :            :           {
 <span class="lineNum">     163 </span>                :            :              /* May have increased the size by converting
 <span class="lineNum">     164 </span>                :            :                 \t to \uFFFD for example.  */
-<span class="lineNum">     165 </span>                :<span class="lineCov">          5 :             src_size = wcstombs (NULL, str_wc, 0) + 1;</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">          3 :             src_size = wcstombs (NULL, str_wc, 0) + 1;</span>
 <span class="lineNum">     166 </span>                :            :           }
-<span class="lineNum">     167 </span>                :<span class="lineCov">        255 :         newstr = malloc (src_size);</span>
-<span class="lineNum">     168 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 255 times"> + </span>]:<span class="lineCov">        255 :         if (newstr == NULL)</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">        153 :         newstr = malloc (src_size);</span>
+<span class="lineNum">     168 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 153 times"> + </span>]:<span class="lineCov">        153 :         if (newstr == NULL)</span>
 <span class="lineNum">     169 </span>                :            :         {
 <span class="lineNum">     170 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (flags &amp; MBA_UNIBYTE_FALLBACK)</span>
 <span class="lineNum">     171 </span>                :<span class="lineNoCov">          0 :             goto mbsalign_unibyte;</span>
 <span class="lineNum">     172 </span>                :            :           else
 <span class="lineNum">     173 </span>                :<span class="lineNoCov">          0 :             goto mbsalign_cleanup;</span>
 <span class="lineNum">     174 </span>                :            :         }
-<span class="lineNum">     175 </span>                :<span class="lineCov">        255 :         str_to_print = newstr;</span>
-<span class="lineNum">     176 </span>                :<span class="lineCov">        255 :         n_cols = wc_truncate (str_wc, *width);</span>
-<span class="lineNum">     177 </span>                :<span class="lineCov">        255 :         n_used_bytes = wcstombs (newstr, str_wc, src_size);</span>
+<span class="lineNum">     175 </span>                :<span class="lineCov">        153 :         str_to_print = newstr;</span>
+<span class="lineNum">     176 </span>                :<span class="lineCov">        153 :         n_cols = wc_truncate (str_wc, *width);</span>
+<span class="lineNum">     177 </span>                :<span class="lineCov">        153 :         n_used_bytes = wcstombs (newstr, str_wc, src_size);</span>
 <span class="lineNum">     178 </span>                :            :     }
 <span class="lineNum">     179 </span>                :            : 
 <span class="lineNum">     180 </span>                :            : mbsalign_unibyte:
 <span class="lineNum">     181 </span>                :            : 
-<span class="lineNum">     182 </span>        [<span class="branchCov" title="Branch 0 was taken 345 times"> + </span><span class="branchCov" title="Branch 1 was taken 85428 times"> + </span>]:<span class="lineCov">      85773 :   if (n_cols &gt; *width) /* Unibyte truncation required.  */</span>
+<span class="lineNum">     182 </span>        [<span class="branchCov" title="Branch 0 was taken 207 times"> + </span><span class="branchCov" title="Branch 1 was taken 51432 times"> + </span>]:<span class="lineCov">      51639 :   if (n_cols &gt; *width) /* Unibyte truncation required.  */</span>
 <span class="lineNum">     183 </span>                :            :     {
-<span class="lineNum">     184 </span>                :<span class="lineCov">        345 :       n_cols = *width;</span>
-<span class="lineNum">     185 </span>                :<span class="lineCov">        345 :       n_used_bytes = n_cols;</span>
+<span class="lineNum">     184 </span>                :<span class="lineCov">        207 :       n_cols = *width;</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">        207 :       n_used_bytes = n_cols;</span>
 <span class="lineNum">     186 </span>                :            :     }
 <span class="lineNum">     187 </span>                :            : 
-<span class="lineNum">     188 </span>        [<span class="branchCov" title="Branch 0 was taken 43300 times"> + </span><span class="branchCov" title="Branch 1 was taken 42473 times"> + </span>]:<span class="lineCov">      85773 :   if (*width &gt; n_cols) /* Padding required.  */</span>
-<span class="lineNum">     189 </span>                :<span class="lineCov">      43300 :     n_spaces = *width - n_cols;</span>
+<span class="lineNum">     188 </span>        [<span class="branchCov" title="Branch 0 was taken 26020 times"> + </span><span class="branchCov" title="Branch 1 was taken 25619 times"> + </span>]:<span class="lineCov">      51639 :   if (*width &gt; n_cols) /* Padding required.  */</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">      26020 :     n_spaces = *width - n_cols;</span>
 <span class="lineNum">     190 </span>                :            : 
 <span class="lineNum">     191 </span>                :            :   /* indicate to caller how many cells needed (not including padding).  */
-<span class="lineNum">     192 </span>                :<span class="lineCov">      85773 :   *width = n_cols;</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">      51639 :   *width = n_cols;</span>
 <span class="lineNum">     193 </span>                :            : 
 <span class="lineNum">     194 </span>                :            :   /* indicate to caller how many bytes needed (not including NUL).  */
-<span class="lineNum">     195 </span>                :<span class="lineCov">      85773 :   ret = n_used_bytes + (n_spaces * 1);</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">      51639 :   ret = n_used_bytes + (n_spaces * 1);</span>
 <span class="lineNum">     196 </span>                :            : 
 <span class="lineNum">     197 </span>                :            :   /* Write as much NUL terminated output to DEST as possible.  */
-<span class="lineNum">     198 </span>        [<span class="branchCov" title="Branch 0 was taken 85763 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">      85773 :   if (dest_size != 0)</span>
+<span class="lineNum">     198 </span>        [<span class="branchCov" title="Branch 0 was taken 51633 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">      51639 :   if (dest_size != 0)</span>
 <span class="lineNum">     199 </span>                :            :     {
 <span class="lineNum">     200 </span>                :            :       size_t start_spaces, end_spaces, space_left;
-<span class="lineNum">     201 </span>                :<span class="lineCov">      85763 :       char *dest_end = dest + dest_size - 1;</span>
+<span class="lineNum">     201 </span>                :<span class="lineCov">      51633 :       char *dest_end = dest + dest_size - 1;</span>
 <span class="lineNum">     202 </span>                :            : 
-<span class="lineNum">     203 </span>     [<span class="branchCov" title="Branch 0 was taken 83860 times"> + </span><span class="branchCov" title="Branch 1 was taken 1893 times"> + </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span>]:<span class="lineCov">      85763 :       switch (align)</span>
+<span class="lineNum">     203 </span>     [<span class="branchCov" title="Branch 0 was taken 50584 times"> + </span><span class="branchCov" title="Branch 1 was taken 1043 times"> + </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">      51633 :       switch (align)</span>
 <span class="lineNum">     204 </span>                :            :         {
 <span class="lineNum">     205 </span>                :            :         case MBS_ALIGN_LEFT:
-<span class="lineNum">     206 </span>                :<span class="lineCov">      83860 :           start_spaces = 0;</span>
-<span class="lineNum">     207 </span>                :<span class="lineCov">      83860 :           end_spaces = n_spaces;</span>
-<span class="lineNum">     208 </span>                :<span class="lineCov">      83860 :           break;</span>
+<span class="lineNum">     206 </span>                :<span class="lineCov">      50584 :           start_spaces = 0;</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">      50584 :           end_spaces = n_spaces;</span>
+<span class="lineNum">     208 </span>                :<span class="lineCov">      50584 :           break;</span>
 <span class="lineNum">     209 </span>                :            :         case MBS_ALIGN_RIGHT:
-<span class="lineNum">     210 </span>                :<span class="lineCov">       1893 :           start_spaces = n_spaces;</span>
-<span class="lineNum">     211 </span>                :<span class="lineCov">       1893 :           end_spaces = 0;</span>
-<span class="lineNum">     212 </span>                :<span class="lineCov">       1893 :           break;</span>
+<span class="lineNum">     210 </span>                :<span class="lineCov">       1043 :           start_spaces = n_spaces;</span>
+<span class="lineNum">     211 </span>                :<span class="lineCov">       1043 :           end_spaces = 0;</span>
+<span class="lineNum">     212 </span>                :<span class="lineCov">       1043 :           break;</span>
 <span class="lineNum">     213 </span>                :            :         case MBS_ALIGN_CENTER:
 <span class="lineNum">     214 </span>                :            :         default:
-<span class="lineNum">     215 </span>                :<span class="lineCov">         10 :           start_spaces = n_spaces / 2 + n_spaces % 2;</span>
-<span class="lineNum">     216 </span>                :<span class="lineCov">         10 :           end_spaces = n_spaces / 2;</span>
-<span class="lineNum">     217 </span>                :<span class="lineCov">         10 :           break;</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">          6 :           start_spaces = n_spaces / 2 + n_spaces % 2;</span>
+<span class="lineNum">     216 </span>                :<span class="lineCov">          6 :           end_spaces = n_spaces / 2;</span>
+<span class="lineNum">     217 </span>                :<span class="lineCov">          6 :           break;</span>
 <span class="lineNum">     218 </span>                :            :         }
 <span class="lineNum">     219 </span>                :            : 
-<span class="lineNum">     220 </span>                :<span class="lineCov">      85763 :       dest = mbs_align_pad (dest, dest_end, start_spaces);</span>
-<span class="lineNum">     221 </span>                :<span class="lineCov">      85763 :       space_left = dest_end - dest;</span>
-<span class="lineNum">     222 </span>                :<span class="lineCov">      85763 :       dest = mempcpy (dest, str_to_print, MIN (n_used_bytes, space_left));</span>
-<span class="lineNum">     223 </span>                :<span class="lineCov">      85763 :       mbs_align_pad (dest, dest_end, end_spaces);</span>
+<span class="lineNum">     220 </span>                :<span class="lineCov">      51633 :       dest = mbs_align_pad (dest, dest_end, start_spaces);</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">      51633 :       space_left = dest_end - dest;</span>
+<span class="lineNum">     222 </span>                :<span class="lineCov">      51633 :       dest = mempcpy (dest, str_to_print, MIN (n_used_bytes, space_left));</span>
+<span class="lineNum">     223 </span>                :<span class="lineCov">      51633 :       mbs_align_pad (dest, dest_end, end_spaces);</span>
 <span class="lineNum">     224 </span>                :            :     }
 <span class="lineNum">     225 </span>                :            : 
 <span class="lineNum">     226 </span>                :            : mbsalign_cleanup:
 <span class="lineNum">     227 </span>                :            : 
-<span class="lineNum">     228 </span>                :<span class="lineCov">      85778 :   free (str_wc);</span>
-<span class="lineNum">     229 </span>                :<span class="lineCov">      85778 :   free (newstr);</span>
+<span class="lineNum">     228 </span>                :<span class="lineCov">      51642 :   free (str_wc);</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">      51642 :   free (newstr);</span>
 <span class="lineNum">     230 </span>                :            : 
-<span class="lineNum">     231 </span>                :<span class="lineCov">      85778 :   return ret;</span>
+<span class="lineNum">     231 </span>                :<span class="lineCov">      51642 :   return ret;</span>
 <span class="lineNum">     232 </span>                :            : }
 <span class="lineNum">     233 </span>                :            : 
 <span class="lineNum">     234 </span>                :            : /* A wrapper around mbsalign() to dynamically allocate the
@@ -308,28 +308,28 @@
 <span class="lineNum">     236 </span>                :            :    Return NULL on failure.  */
 <a name="237"><span class="lineNum">     237 </span>                :            : </a>
 <span class="lineNum">     238 </span>                :            : char *
-<span class="lineNum">     239 </span>                :<span class="lineCov">       2366 : ambsalign (const char *src, size_t *width, mbs_align_t align, int flags)</span>
+<span class="lineNum">     239 </span>                :<span class="lineCov">       1302 : ambsalign (const char *src, size_t *width, mbs_align_t align, int flags)</span>
 <span class="lineNum">     240 </span>                :            : {
-<span class="lineNum">     241 </span>                :<span class="lineCov">       2366 :   size_t orig_width = *width;</span>
-<span class="lineNum">     242 </span>                :<span class="lineCov">       2366 :   size_t size = *width;         /* Start with enough for unibyte mode.  */</span>
-<span class="lineNum">     243 </span>                :<span class="lineCov">       2366 :   size_t req = size;</span>
-<span class="lineNum">     244 </span>                :<span class="lineCov">       2366 :   char *buf = NULL;</span>
+<span class="lineNum">     241 </span>                :<span class="lineCov">       1302 :   size_t orig_width = *width;</span>
+<span class="lineNum">     242 </span>                :<span class="lineCov">       1302 :   size_t size = *width;         /* Start with enough for unibyte mode.  */</span>
+<span class="lineNum">     243 </span>                :<span class="lineCov">       1302 :   size_t req = size;</span>
+<span class="lineNum">     244 </span>                :<span class="lineCov">       1302 :   char *buf = NULL;</span>
 <span class="lineNum">     245 </span>                :            : 
-<span class="lineNum">     246 </span>        [<span class="branchCov" title="Branch 0 was taken 2366 times"> + </span><span class="branchCov" title="Branch 1 was taken 2366 times"> + </span>]:<span class="lineCov">       4732 :   while (req &gt;= size)</span>
+<span class="lineNum">     246 </span>        [<span class="branchCov" title="Branch 0 was taken 1302 times"> + </span><span class="branchCov" title="Branch 1 was taken 1302 times"> + </span>]:<span class="lineCov">       2604 :   while (req &gt;= size)</span>
 <span class="lineNum">     247 </span>                :            :     {
 <span class="lineNum">     248 </span>                :            :       char *nbuf;
-<span class="lineNum">     249 </span>                :<span class="lineCov">       2366 :       size = req + 1;           /* Space for NUL.  */</span>
-<span class="lineNum">     250 </span>                :<span class="lineCov">       2366 :       nbuf = realloc (buf, size);</span>
-<span class="lineNum">     251 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2366 times"> + </span>]:<span class="lineCov">       2366 :       if (nbuf == NULL)</span>
+<span class="lineNum">     249 </span>                :<span class="lineCov">       1302 :       size = req + 1;           /* Space for NUL.  */</span>
+<span class="lineNum">     250 </span>                :<span class="lineCov">       1302 :       nbuf = realloc (buf, size);</span>
+<span class="lineNum">     251 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1302 times"> + </span>]:<span class="lineCov">       1302 :       if (nbuf == NULL)</span>
 <span class="lineNum">     252 </span>                :            :         {
 <span class="lineNum">     253 </span>                :<span class="lineNoCov">          0 :           free (buf);</span>
 <span class="lineNum">     254 </span>                :<span class="lineNoCov">          0 :           buf = NULL;</span>
 <span class="lineNum">     255 </span>                :<span class="lineNoCov">          0 :           break;</span>
 <span class="lineNum">     256 </span>                :            :         }
-<span class="lineNum">     257 </span>                :<span class="lineCov">       2366 :       buf = nbuf;</span>
-<span class="lineNum">     258 </span>                :<span class="lineCov">       2366 :       *width = orig_width;</span>
-<span class="lineNum">     259 </span>                :<span class="lineCov">       2366 :       req = mbsalign (src, buf, size, width, align, flags);</span>
-<span class="lineNum">     260 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2366 times"> + </span>]:<span class="lineCov">       2366 :       if (req == SIZE_MAX)</span>
+<span class="lineNum">     257 </span>                :<span class="lineCov">       1302 :       buf = nbuf;</span>
+<span class="lineNum">     258 </span>                :<span class="lineCov">       1302 :       *width = orig_width;</span>
+<span class="lineNum">     259 </span>                :<span class="lineCov">       1302 :       req = mbsalign (src, buf, size, width, align, flags);</span>
+<span class="lineNum">     260 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1302 times"> + </span>]:<span class="lineCov">       1302 :       if (req == SIZE_MAX)</span>
 <span class="lineNum">     261 </span>                :            :         {
 <span class="lineNum">     262 </span>                :<span class="lineNoCov">          0 :           free (buf);</span>
 <span class="lineNum">     263 </span>                :<span class="lineNoCov">          0 :           buf = NULL;</span>
@@ -337,7 +337,7 @@
 <span class="lineNum">     265 </span>                :            :         }
 <span class="lineNum">     266 </span>                :            :     }
 <span class="lineNum">     267 </span>                :            : 
-<span class="lineNum">     268 </span>                :<span class="lineCov">       2366 :   return buf;</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">       1302 :   return buf;</span>
 <span class="lineNum">     269 </span>                :            : }
 </pre>
       </td>

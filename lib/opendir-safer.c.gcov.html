@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/opendir-safer.c</title>
+  <title>LCOV - coreutils - lib/opendir-safer.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">14</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -99,15 +99,15 @@
 <span class="lineNum">      28 </span>                :            : /* Like opendir, but do not clobber stdin, stdout, or stderr.  */
 <a name="29"><span class="lineNum">      29 </span>                :            : </a>
 <span class="lineNum">      30 </span>                :            : DIR *
-<span class="lineNum">      31 </span>                :<span class="lineCov">      68447 : opendir_safer (char const *name)</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">      34285 : opendir_safer (char const *name)</span>
 <span class="lineNum">      32 </span>                :            : {
-<span class="lineNum">      33 </span>                :<span class="lineCov">      68447 :   DIR *dp = opendir (name);</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">      34285 :   DIR *dp = opendir (name);</span>
 <span class="lineNum">      34 </span>                :            : 
-<span class="lineNum">      35 </span>        [<span class="branchCov" title="Branch 0 was taken 68447 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      68447 :   if (dp)</span>
+<span class="lineNum">      35 </span>        [<span class="branchCov" title="Branch 0 was taken 34285 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      34285 :   if (dp)</span>
 <span class="lineNum">      36 </span>                :            :     {
-<span class="lineNum">      37 </span>                :<span class="lineCov">      68447 :       int fd = dirfd (dp);</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">      34285 :       int fd = dirfd (dp);</span>
 <span class="lineNum">      38 </span>                :            : 
-<span class="lineNum">      39 </span>[<span class="branchCov" title="Branch 0 was taken 68447 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 15 times"> + </span><span class="branchCov" title="Branch 3 was taken 68432 times"> + </span>]:<span class="lineCov">      68447 :       if (0 &lt;= fd &amp;&amp; fd &lt;= STDERR_FILENO)</span>
+<span class="lineNum">      39 </span>[<span class="branchCov" title="Branch 0 was taken 34285 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 9 times"> + </span><span class="branchCov" title="Branch 3 was taken 34276 times"> + </span>]:<span class="lineCov">      34285 :       if (0 &lt;= fd &amp;&amp; fd &lt;= STDERR_FILENO)</span>
 <span class="lineNum">      40 </span>                :            :         {
 <span class="lineNum">      41 </span>                :            :           /* If fdopendir is native (as on Linux), then it is safe to
 <span class="lineNum">      42 </span>                :            :              assume dirfd(fdopendir(n))==n.  If we are using the
@@ -120,30 +120,30 @@
 <span class="lineNum">      49 </span>                :            :           DIR *newdp;
 <span class="lineNum">      50 </span>                :            :           int e;
 <span class="lineNum">      51 </span>                :            : #if HAVE_FDOPENDIR || GNULIB_FDOPENDIR
-<span class="lineNum">      52 </span>                :<span class="lineCov">         15 :           int f = dup_safer (fd);</span>
-<span class="lineNum">      53 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :           if (f &lt; 0)</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">          9 :           int f = dup_safer (fd);</span>
+<span class="lineNum">      53 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :           if (f &lt; 0)</span>
 <span class="lineNum">      54 </span>                :            :             {
 <span class="lineNum">      55 </span>                :<span class="lineNoCov">          0 :               e = errno;</span>
 <span class="lineNum">      56 </span>                :<span class="lineNoCov">          0 :               newdp = NULL;</span>
 <span class="lineNum">      57 </span>                :            :             }
 <span class="lineNum">      58 </span>                :            :           else
 <span class="lineNum">      59 </span>                :            :             {
-<span class="lineNum">      60 </span>                :<span class="lineCov">         15 :               newdp = fdopendir (f);</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">         15 :               e = errno;</span>
-<span class="lineNum">      62 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :               if (! newdp)</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">          9 :               newdp = fdopendir (f);</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">          9 :               e = errno;</span>
+<span class="lineNum">      62 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :               if (! newdp)</span>
 <span class="lineNum">      63 </span>                :<span class="lineNoCov">          0 :                 close (f);</span>
 <span class="lineNum">      64 </span>                :            :             }
 <span class="lineNum">      65 </span>                :            : #else /* !FDOPENDIR */
 <span class="lineNum">      66 </span>                :            :           newdp = opendir_safer (name);
 <span class="lineNum">      67 </span>                :            :           e = errno;
 <span class="lineNum">      68 </span>                :            : #endif
-<span class="lineNum">      69 </span>                :<span class="lineCov">         15 :           closedir (dp);</span>
-<span class="lineNum">      70 </span>                :<span class="lineCov">         15 :           errno = e;</span>
-<span class="lineNum">      71 </span>                :<span class="lineCov">         15 :           dp = newdp;</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">          9 :           closedir (dp);</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">          9 :           errno = e;</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">          9 :           dp = newdp;</span>
 <span class="lineNum">      72 </span>                :            :         }
 <span class="lineNum">      73 </span>                :            :     }
 <span class="lineNum">      74 </span>                :            : 
-<span class="lineNum">      75 </span>                :<span class="lineCov">      68447 :   return dp;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">      34285 :   return dp;</span>
 <span class="lineNum">      76 </span>                :            : }
 </pre>
       </td>

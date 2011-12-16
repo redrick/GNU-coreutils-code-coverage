@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/getndelim2.c</title>
+  <title>LCOV - coreutils - lib/getndelim2.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">61</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -139,42 +139,42 @@
 <span class="lineNum">      68 </span>                :            : #define MIN_CHUNK 64
 <a name="69"><span class="lineNum">      69 </span>                :            : </a>
 <span class="lineNum">      70 </span>                :            : ssize_t
-<span class="lineNum">      71 </span>                :<span class="lineCov">        768 : getndelim2 (char **lineptr, size_t *linesize, size_t offset, size_t nmax,</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">        462 : getndelim2 (char **lineptr, size_t *linesize, size_t offset, size_t nmax,</span>
 <span class="lineNum">      72 </span>                :            :             int delim1, int delim2, FILE *stream)
 <span class="lineNum">      73 </span>                :            : {
 <span class="lineNum">      74 </span>                :            :   size_t nbytes_avail;          /* Allocated but unused bytes in *LINEPTR.  */
 <span class="lineNum">      75 </span>                :            :   char *read_pos;               /* Where we're reading into *LINEPTR. */
-<span class="lineNum">      76 </span>                :<span class="lineCov">        768 :   ssize_t bytes_stored = -1;</span>
-<span class="lineNum">      77 </span>                :<span class="lineCov">        768 :   char *ptr = *lineptr;</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">        768 :   size_t size = *linesize;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">        462 :   ssize_t bytes_stored = -1;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">        462 :   char *ptr = *lineptr;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">        462 :   size_t size = *linesize;</span>
 <span class="lineNum">      79 </span>                :            :   bool found_delimiter;
 <span class="lineNum">      80 </span>                :            : 
-<span class="lineNum">      81 </span>        [<span class="branchCov" title="Branch 0 was taken 478 times"> + </span><span class="branchCov" title="Branch 1 was taken 290 times"> + </span>]:<span class="lineCov">        768 :   if (!ptr)</span>
+<span class="lineNum">      81 </span>        [<span class="branchCov" title="Branch 0 was taken 288 times"> + </span><span class="branchCov" title="Branch 1 was taken 174 times"> + </span>]:<span class="lineCov">        462 :   if (!ptr)</span>
 <span class="lineNum">      82 </span>                :            :     {
-<span class="lineNum">      83 </span>                :<span class="lineCov">        478 :       size = nmax &lt; MIN_CHUNK ? nmax : MIN_CHUNK;</span>
-<span class="lineNum">      84 </span>                :<span class="lineCov">        478 :       ptr = malloc (size);</span>
-<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 478 times"> + </span>]:<span class="lineCov">        478 :       if (!ptr)</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">        288 :       size = nmax &lt; MIN_CHUNK ? nmax : MIN_CHUNK;</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">        288 :       ptr = malloc (size);</span>
+<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 288 times"> + </span>]:<span class="lineCov">        288 :       if (!ptr)</span>
 <span class="lineNum">      86 </span>                :<span class="lineNoCov">          0 :         return -1;</span>
 <span class="lineNum">      87 </span>                :            :     }
 <span class="lineNum">      88 </span>                :            : 
-<span class="lineNum">      89 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 768 times"> + </span>]:<span class="lineCov">        768 :   if (size &lt; offset)</span>
+<span class="lineNum">      89 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 462 times"> + </span>]:<span class="lineCov">        462 :   if (size &lt; offset)</span>
 <span class="lineNum">      90 </span>                :<span class="lineNoCov">          0 :     goto done;</span>
 <span class="lineNum">      91 </span>                :            : 
-<span class="lineNum">      92 </span>                :<span class="lineCov">        768 :   nbytes_avail = size - offset;</span>
-<span class="lineNum">      93 </span>                :<span class="lineCov">        768 :   read_pos = ptr + offset;</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">        462 :   nbytes_avail = size - offset;</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">        462 :   read_pos = ptr + offset;</span>
 <span class="lineNum">      94 </span>                :            : 
-<span class="lineNum">      95 </span>[<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 758 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 5 times"> + </span><span class="branchCov" title="Branch 3 was taken 5 times"> + </span>]:<span class="lineCov">        768 :   if (nbytes_avail == 0 &amp;&amp; nmax &lt;= size)</span>
-<span class="lineNum">      96 </span>                :<span class="lineCov">          5 :     goto done;</span>
+<span class="lineNum">      95 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 456 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 3 times"> + </span>]:<span class="lineCov">        462 :   if (nbytes_avail == 0 &amp;&amp; nmax &lt;= size)</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">          3 :     goto done;</span>
 <span class="lineNum">      97 </span>                :            : 
 <span class="lineNum">      98 </span>                :            :   /* Normalize delimiters, since memchr2 doesn't handle EOF.  */
-<span class="lineNum">      99 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 743 times"> + </span>]:<span class="lineCov">        763 :   if (delim1 == EOF)</span>
-<span class="lineNum">     100 </span>                :<span class="lineCov">         20 :     delim1 = delim2;</span>
-<span class="lineNum">     101 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 733 times"> + </span>]:<span class="lineCov">        743 :   else if (delim2 == EOF)</span>
-<span class="lineNum">     102 </span>                :<span class="lineCov">         10 :     delim2 = delim1;</span>
+<span class="lineNum">      99 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 447 times"> + </span>]:<span class="lineCov">        459 :   if (delim1 == EOF)</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">         12 :     delim1 = delim2;</span>
+<span class="lineNum">     101 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 441 times"> + </span>]:<span class="lineCov">        447 :   else if (delim2 == EOF)</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">          6 :     delim2 = delim1;</span>
 <span class="lineNum">     103 </span>                :            : 
 <span class="lineNum">     104 </span>                :            :   flockfile (stream);
 <span class="lineNum">     105 </span>                :            : 
-<span class="lineNum">     106 </span>                :<span class="lineCov">        763 :   found_delimiter = false;</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">        459 :   found_delimiter = false;</span>
 <span class="lineNum">     107 </span>                :            :   do
 <span class="lineNum">     108 </span>                :            :     {
 <span class="lineNum">     109 </span>                :            :       /* Here always ptr + size == read_pos + nbytes_avail.
@@ -184,55 +184,55 @@
 <span class="lineNum">     113 </span>                :            :       const char *buffer;
 <span class="lineNum">     114 </span>                :            :       size_t buffer_len;
 <span class="lineNum">     115 </span>                :            : 
-<span class="lineNum">     116 </span>                :<span class="lineCov">        823 :       buffer = freadptr (stream, &amp;buffer_len);</span>
-<span class="lineNum">     117 </span>        [<span class="branchCov" title="Branch 0 was taken 733 times"> + </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>]:<span class="lineCov">        823 :       if (buffer)</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">        495 :       buffer = freadptr (stream, &amp;buffer_len);</span>
+<span class="lineNum">     117 </span>        [<span class="branchCov" title="Branch 0 was taken 441 times"> + </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>]:<span class="lineCov">        495 :       if (buffer)</span>
 <span class="lineNum">     118 </span>                :            :         {
-<span class="lineNum">     119 </span>        [<span class="branchCov" title="Branch 0 was taken 723 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">        733 :           if (delim1 != EOF)</span>
+<span class="lineNum">     119 </span>        [<span class="branchCov" title="Branch 0 was taken 435 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">        441 :           if (delim1 != EOF)</span>
 <span class="lineNum">     120 </span>                :            :             {
-<span class="lineNum">     121 </span>                :<span class="lineCov">        723 :               const char *end = memchr2 (buffer, delim1, delim2, buffer_len);</span>
-<span class="lineNum">     122 </span>        [<span class="branchCov" title="Branch 0 was taken 693 times"> + </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">        723 :               if (end)</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">        435 :               const char *end = memchr2 (buffer, delim1, delim2, buffer_len);</span>
+<span class="lineNum">     122 </span>        [<span class="branchCov" title="Branch 0 was taken 417 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">        435 :               if (end)</span>
 <span class="lineNum">     123 </span>                :            :                 {
-<span class="lineNum">     124 </span>                :<span class="lineCov">        693 :                   buffer_len = end - buffer + 1;</span>
-<span class="lineNum">     125 </span>                :<span class="lineCov">        693 :                   found_delimiter = true;</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">        417 :                   buffer_len = end - buffer + 1;</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">        417 :                   found_delimiter = true;</span>
 <span class="lineNum">     126 </span>                :            :                 }
 <span class="lineNum">     127 </span>                :            :             }
 <span class="lineNum">     128 </span>                :            :         }
 <span class="lineNum">     129 </span>                :            :       else
 <span class="lineNum">     130 </span>                :            :         {
-<span class="lineNum">     131 </span>                :<span class="lineCov">         90 :           c = getc (stream);</span>
-<span class="lineNum">     132 </span>        [<span class="branchCov" title="Branch 0 was taken 70 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         90 :           if (c == EOF)</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">         54 :           c = getc (stream);</span>
+<span class="lineNum">     132 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         54 :           if (c == EOF)</span>
 <span class="lineNum">     133 </span>                :            :             {
 <span class="lineNum">     134 </span>                :            :               /* Return partial line, if any.  */
-<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 40 times"> + </span>]:<span class="lineCov">         70 :               if (read_pos == ptr)</span>
-<span class="lineNum">     136 </span>                :<span class="lineCov">         30 :                 goto unlock_done;</span>
+<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         42 :               if (read_pos == ptr)</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">         18 :                 goto unlock_done;</span>
 <span class="lineNum">     137 </span>                :            :               else
-<span class="lineNum">     138 </span>                :<span class="lineCov">         40 :                 break;</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">         24 :                 break;</span>
 <span class="lineNum">     139 </span>                :            :             }
-<span class="lineNum">     140 </span>[<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 20 times"> + </span>]:<span class="lineCov">         20 :           if (c == delim1 || c == delim2)</span>
+<span class="lineNum">     140 </span>[<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 12 times"> + </span>]:<span class="lineCov">         12 :           if (c == delim1 || c == delim2)</span>
 <span class="lineNum">     141 </span>                :<span class="lineNoCov">          0 :             found_delimiter = true;</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">         20 :           buffer_len = 1;</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">         12 :           buffer_len = 1;</span>
 <span class="lineNum">     143 </span>                :            :         }
 <span class="lineNum">     144 </span>                :            : 
 <span class="lineNum">     145 </span>                :            :       /* We always want at least one byte left in the buffer, since we
 <span class="lineNum">     146 </span>                :            :          always (unless we get an error while reading the first byte)
 <span class="lineNum">     147 </span>                :            :          NUL-terminate the line buffer.  */
 <span class="lineNum">     148 </span>                :            : 
-<span class="lineNum">     149 </span>[<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 723 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 30 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        753 :       if (nbytes_avail &lt; buffer_len + 1 &amp;&amp; size &lt; nmax)</span>
+<span class="lineNum">     149 </span>[<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 435 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 18 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        453 :       if (nbytes_avail &lt; buffer_len + 1 &amp;&amp; size &lt; nmax)</span>
 <span class="lineNum">     150 </span>                :            :         {
 <span class="lineNum">     151 </span>                :            :           /* Grow size proportionally, not linearly, to avoid O(n^2)
 <span class="lineNum">     152 </span>                :            :              running time.  */
-<span class="lineNum">     153 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         30 :           size_t newsize = size &lt; MIN_CHUNK ? size + MIN_CHUNK : 2 * size;</span>
+<span class="lineNum">     153 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         18 :           size_t newsize = size &lt; MIN_CHUNK ? size + MIN_CHUNK : 2 * size;</span>
 <span class="lineNum">     154 </span>                :            :           char *newptr;
 <span class="lineNum">     155 </span>                :            : 
 <span class="lineNum">     156 </span>                :            :           /* Increase newsize so that it becomes
 <span class="lineNum">     157 </span>                :            :              &gt;= (read_pos - ptr) + buffer_len.  */
-<span class="lineNum">     158 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         30 :           if (newsize - (read_pos - ptr) &lt; buffer_len + 1)</span>
-<span class="lineNum">     159 </span>                :<span class="lineCov">         10 :             newsize = (read_pos - ptr) + buffer_len + 1;</span>
+<span class="lineNum">     158 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         18 :           if (newsize - (read_pos - ptr) &lt; buffer_len + 1)</span>
+<span class="lineNum">     159 </span>                :<span class="lineCov">          6 :             newsize = (read_pos - ptr) + buffer_len + 1;</span>
 <span class="lineNum">     160 </span>                :            :           /* Respect nmax.  This handles possible integer overflow.  */
-<span class="lineNum">     161 </span>[<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 5 times"> + </span><span class="branchCov" title="Branch 3 was taken 25 times"> + </span>]:<span class="lineCov">         30 :           if (! (size &lt; newsize &amp;&amp; newsize &lt;= nmax))</span>
-<span class="lineNum">     162 </span>                :<span class="lineCov">          5 :             newsize = nmax;</span>
+<span class="lineNum">     161 </span>[<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 15 times"> + </span>]:<span class="lineCov">         18 :           if (! (size &lt; newsize &amp;&amp; newsize &lt;= nmax))</span>
+<span class="lineNum">     162 </span>                :<span class="lineCov">          3 :             newsize = nmax;</span>
 <span class="lineNum">     163 </span>                :            : 
-<span class="lineNum">     164 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :           if (GETNDELIM2_MAXIMUM &lt; newsize - offset)</span>
+<span class="lineNum">     164 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         18 :           if (GETNDELIM2_MAXIMUM &lt; newsize - offset)</span>
 <span class="lineNum">     165 </span>                :            :             {
 <span class="lineNum">     166 </span>                :<span class="lineNoCov">          0 :               size_t newsizemax = offset + GETNDELIM2_MAXIMUM + 1;</span>
 <span class="lineNum">     167 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               if (size == newsizemax)</span>
@@ -240,51 +240,51 @@
 <span class="lineNum">     169 </span>                :<span class="lineNoCov">          0 :               newsize = newsizemax;</span>
 <span class="lineNum">     170 </span>                :            :             }
 <span class="lineNum">     171 </span>                :            : 
-<span class="lineNum">     172 </span>                :<span class="lineCov">         30 :           nbytes_avail = newsize - (read_pos - ptr);</span>
-<span class="lineNum">     173 </span>                :<span class="lineCov">         30 :           newptr = realloc (ptr, newsize);</span>
-<span class="lineNum">     174 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :           if (!newptr)</span>
+<span class="lineNum">     172 </span>                :<span class="lineCov">         18 :           nbytes_avail = newsize - (read_pos - ptr);</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">         18 :           newptr = realloc (ptr, newsize);</span>
+<span class="lineNum">     174 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         18 :           if (!newptr)</span>
 <span class="lineNum">     175 </span>                :<span class="lineNoCov">          0 :             goto unlock_done;</span>
-<span class="lineNum">     176 </span>                :<span class="lineCov">         30 :           ptr = newptr;</span>
-<span class="lineNum">     177 </span>                :<span class="lineCov">         30 :           size = newsize;</span>
-<span class="lineNum">     178 </span>                :<span class="lineCov">         30 :           read_pos = size - nbytes_avail + ptr;</span>
+<span class="lineNum">     176 </span>                :<span class="lineCov">         18 :           ptr = newptr;</span>
+<span class="lineNum">     177 </span>                :<span class="lineCov">         18 :           size = newsize;</span>
+<span class="lineNum">     178 </span>                :<span class="lineCov">         18 :           read_pos = size - nbytes_avail + ptr;</span>
 <span class="lineNum">     179 </span>                :            :         }
 <span class="lineNum">     180 </span>                :            : 
 <span class="lineNum">     181 </span>                :            :       /* Here, if size &lt; nmax, nbytes_avail &gt;= buffer_len + 1.
 <span class="lineNum">     182 </span>                :            :          If size == nmax, nbytes_avail &gt; 0.  */
 <span class="lineNum">     183 </span>                :            : 
-<span class="lineNum">     184 </span>        [<span class="branchCov" title="Branch 0 was taken 753 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        753 :       if (1 &lt; nbytes_avail)</span>
+<span class="lineNum">     184 </span>        [<span class="branchCov" title="Branch 0 was taken 453 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        453 :       if (1 &lt; nbytes_avail)</span>
 <span class="lineNum">     185 </span>                :            :         {
-<span class="lineNum">     186 </span>                :<span class="lineCov">        753 :           size_t copy_len = nbytes_avail - 1;</span>
-<span class="lineNum">     187 </span>        [<span class="branchCov" title="Branch 0 was taken 728 times"> + </span><span class="branchCov" title="Branch 1 was taken 25 times"> + </span>]:<span class="lineCov">        753 :           if (buffer_len &lt; copy_len)</span>
-<span class="lineNum">     188 </span>                :<span class="lineCov">        728 :             copy_len = buffer_len;</span>
-<span class="lineNum">     189 </span>        [<span class="branchCov" title="Branch 0 was taken 733 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">        753 :           if (buffer)</span>
-<span class="lineNum">     190 </span>                :<span class="lineCov">        733 :             memcpy (read_pos, buffer, copy_len);</span>
+<span class="lineNum">     186 </span>                :<span class="lineCov">        453 :           size_t copy_len = nbytes_avail - 1;</span>
+<span class="lineNum">     187 </span>        [<span class="branchCov" title="Branch 0 was taken 438 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">        453 :           if (buffer_len &lt; copy_len)</span>
+<span class="lineNum">     188 </span>                :<span class="lineCov">        438 :             copy_len = buffer_len;</span>
+<span class="lineNum">     189 </span>        [<span class="branchCov" title="Branch 0 was taken 441 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">        453 :           if (buffer)</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">        441 :             memcpy (read_pos, buffer, copy_len);</span>
 <span class="lineNum">     191 </span>                :            :           else
-<span class="lineNum">     192 </span>                :<span class="lineCov">         20 :             *read_pos = c;</span>
-<span class="lineNum">     193 </span>                :<span class="lineCov">        753 :           read_pos += copy_len;</span>
-<span class="lineNum">     194 </span>                :<span class="lineCov">        753 :           nbytes_avail -= copy_len;</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">         12 :             *read_pos = c;</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">        453 :           read_pos += copy_len;</span>
+<span class="lineNum">     194 </span>                :<span class="lineCov">        453 :           nbytes_avail -= copy_len;</span>
 <span class="lineNum">     195 </span>                :            :         }
 <span class="lineNum">     196 </span>                :            : 
 <span class="lineNum">     197 </span>                :            :       /* Here still nbytes_avail &gt; 0.  */
 <span class="lineNum">     198 </span>                :            : 
-<span class="lineNum">     199 </span>[<span class="branchCov" title="Branch 0 was taken 733 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 733 times"> + </span>]:<span class="lineCov">        753 :       if (buffer &amp;&amp; freadseek (stream, buffer_len))</span>
+<span class="lineNum">     199 </span>[<span class="branchCov" title="Branch 0 was taken 441 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 441 times"> + </span>]:<span class="lineCov">        453 :       if (buffer &amp;&amp; freadseek (stream, buffer_len))</span>
 <span class="lineNum">     200 </span>                :<span class="lineNoCov">          0 :         goto unlock_done;</span>
 <span class="lineNum">     201 </span>                :            :     }
-<span class="lineNum">     202 </span>        [<span class="branchCov" title="Branch 0 was taken 60 times"> + </span><span class="branchCov" title="Branch 1 was taken 693 times"> + </span>]:<span class="lineCov">        753 :   while (!found_delimiter);</span>
+<span class="lineNum">     202 </span>        [<span class="branchCov" title="Branch 0 was taken 36 times"> + </span><span class="branchCov" title="Branch 1 was taken 417 times"> + </span>]:<span class="lineCov">        453 :   while (!found_delimiter);</span>
 <span class="lineNum">     203 </span>                :            : 
 <span class="lineNum">     204 </span>                :            :   /* Done - NUL terminate and return the number of bytes read.
 <span class="lineNum">     205 </span>                :            :      At this point we know that nbytes_avail &gt;= 1.  */
-<span class="lineNum">     206 </span>                :<span class="lineCov">        733 :   *read_pos = '\0';</span>
+<span class="lineNum">     206 </span>                :<span class="lineCov">        441 :   *read_pos = '\0';</span>
 <span class="lineNum">     207 </span>                :            : 
-<span class="lineNum">     208 </span>                :<span class="lineCov">        733 :   bytes_stored = read_pos - (ptr + offset);</span>
+<span class="lineNum">     208 </span>                :<span class="lineCov">        441 :   bytes_stored = read_pos - (ptr + offset);</span>
 <span class="lineNum">     209 </span>                :            : 
 <span class="lineNum">     210 </span>                :            :  unlock_done:
 <span class="lineNum">     211 </span>                :            :   funlockfile (stream);
 <span class="lineNum">     212 </span>                :            : 
 <span class="lineNum">     213 </span>                :            :  done:
-<span class="lineNum">     214 </span>                :<span class="lineCov">        768 :   *lineptr = ptr;</span>
-<span class="lineNum">     215 </span>                :<span class="lineCov">        768 :   *linesize = size;</span>
-<span class="lineNum">     216 </span>        [<span class="branchCov" title="Branch 0 was taken 763 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">        768 :   return bytes_stored ? bytes_stored : -1;</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">        462 :   *lineptr = ptr;</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">        462 :   *linesize = size;</span>
+<span class="lineNum">     216 </span>        [<span class="branchCov" title="Branch 0 was taken 459 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">        462 :   return bytes_stored ? bytes_stored : -1;</span>
 <span class="lineNum">     217 </span>                :            : }
 </pre>
       </td>

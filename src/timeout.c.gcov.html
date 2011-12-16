@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - src/timeout.c</title>
+  <title>LCOV - coreutils - src/timeout.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">113</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -173,7 +173,7 @@
 <span class="lineNum">     102 </span>                :            :    as that's more useful in practice than reporting an error.
 <a name="103"><span class="lineNum">     103 </span>                :            :    '0' means don't timeout.  */</a>
 <span class="lineNum">     104 </span>                :            : static void
-<span class="lineNum">     105 </span>                :<span class="lineCov">        428 : settimeout (double duration)</span>
+<span class="lineNum">     105 </span>                :<span class="lineCov">        236 : settimeout (double duration)</span>
 <span class="lineNum">     106 </span>                :            : {
 <span class="lineNum">     107 </span>                :            : /* timer_settime() provides potentially nanosecond resolution.
 <span class="lineNum">     108 </span>                :            :    setitimer() is more portable (to Darwin for example),
@@ -183,13 +183,13 @@
 <span class="lineNum">     112 </span>                :            :    resolution provided by alarm().  */
 <span class="lineNum">     113 </span>                :            : 
 <span class="lineNum">     114 </span>                :            : #if HAVE_TIMER_SETTIME
-<span class="lineNum">     115 </span>                :<span class="lineCov">        428 :   struct timespec ts = dtotimespec (duration);</span>
-<span class="lineNum">     116 </span>                :<span class="lineCov">        428 :   struct itimerspec its = { {0, 0}, ts };</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">        236 :   struct timespec ts = dtotimespec (duration);</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">        236 :   struct itimerspec its = { {0, 0}, ts };</span>
 <span class="lineNum">     117 </span>                :            :   timer_t timerid;
-<span class="lineNum">     118 </span>        [<span class="branchCov" title="Branch 1 was taken 428 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        428 :   if (timer_create (CLOCK_REALTIME, NULL, &amp;timerid) == 0)</span>
+<span class="lineNum">     118 </span>        [<span class="branchCov" title="Branch 1 was taken 236 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        236 :   if (timer_create (CLOCK_REALTIME, NULL, &amp;timerid) == 0)</span>
 <span class="lineNum">     119 </span>                :            :     {
-<span class="lineNum">     120 </span>        [<span class="branchCov" title="Branch 1 was taken 428 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        428 :       if (timer_settime (timerid, 0, &amp;its, NULL) == 0)</span>
-<span class="lineNum">     121 </span>                :<span class="lineCov">        428 :         return;</span>
+<span class="lineNum">     120 </span>        [<span class="branchCov" title="Branch 1 was taken 236 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        236 :       if (timer_settime (timerid, 0, &amp;its, NULL) == 0)</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">        236 :         return;</span>
 <span class="lineNum">     122 </span>                :            :       else
 <span class="lineNum">     123 </span>                :            :         {
 <span class="lineNum">     124 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;warning: timer_settime&quot;));</span>
@@ -214,7 +214,7 @@
 <span class="lineNum">     143 </span>                :            : /* send SIG avoiding the current process.  */
 <a name="144"><span class="lineNum">     144 </span>                :            : </a>
 <span class="lineNum">     145 </span>                :            : static int
-<span class="lineNum">     146 </span>                :<span class="lineCov">        734 : send_sig (int where, int sig)</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">        394 : send_sig (int where, int sig)</span>
 <span class="lineNum">     147 </span>                :            : {
 <span class="lineNum">     148 </span>                :            :   /* If sending to the group, then ignore the signal,
 <span class="lineNum">     149 </span>                :            :      so we don't go into a signal loop.  Note that this will ignore any of the
@@ -223,22 +223,22 @@
 <span class="lineNum">     152 </span>                :            :      process can be implicitly multithreaded due to some timer_settime()
 <span class="lineNum">     153 </span>                :            :      implementations, therefore a signal sent to the group, can be sent
 <span class="lineNum">     154 </span>                :            :      multiple times to this process.  */
-<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 0 was taken 362 times"> + </span><span class="branchCov" title="Branch 1 was taken 372 times"> + </span>]:<span class="lineCov">        734 :   if (where == 0)</span>
-<span class="lineNum">     156 </span>                :<span class="lineCov">        362 :     signal (sig, SIG_IGN);</span>
-<span class="lineNum">     157 </span>                :<span class="lineCov">        734 :   return kill (where, sig);</span>
+<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 0 was taken 194 times"> + </span><span class="branchCov" title="Branch 1 was taken 200 times"> + </span>]:<span class="lineCov">        394 :   if (where == 0)</span>
+<span class="lineNum">     156 </span>                :<span class="lineCov">        194 :     signal (sig, SIG_IGN);</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">        394 :   return kill (where, sig);</span>
 <span class="lineNum">     158 </span>                :            : }
 <a name="159"><span class="lineNum">     159 </span>                :            : </a>
 <span class="lineNum">     160 </span>                :            : static void
-<span class="lineNum">     161 </span>                :<span class="lineCov">        186 : cleanup (int sig)</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">        100 : cleanup (int sig)</span>
 <span class="lineNum">     162 </span>                :            : {
-<span class="lineNum">     163 </span>        [<span class="branchCov" title="Branch 0 was taken 173 times"> + </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">        186 :   if (sig == SIGALRM)</span>
+<span class="lineNum">     163 </span>        [<span class="branchCov" title="Branch 0 was taken 93 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">        100 :   if (sig == SIGALRM)</span>
 <span class="lineNum">     164 </span>                :            :     {
-<span class="lineNum">     165 </span>                :<span class="lineCov">        173 :       timed_out = 1;</span>
-<span class="lineNum">     166 </span>                :<span class="lineCov">        173 :       sig = term_signal;</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">         93 :       timed_out = 1;</span>
+<span class="lineNum">     166 </span>                :<span class="lineCov">         93 :       sig = term_signal;</span>
 <span class="lineNum">     167 </span>                :            :     }
-<span class="lineNum">     168 </span>        [<span class="branchCov" title="Branch 0 was taken 186 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        186 :   if (monitored_pid)</span>
+<span class="lineNum">     168 </span>        [<span class="branchCov" title="Branch 0 was taken 100 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        100 :   if (monitored_pid)</span>
 <span class="lineNum">     169 </span>                :            :     {
-<span class="lineNum">     170 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 186 times"> + </span>]:<span class="lineCov">        186 :       if (kill_after)</span>
+<span class="lineNum">     170 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 100 times"> + </span>]:<span class="lineCov">        100 :       if (kill_after)</span>
 <span class="lineNum">     171 </span>                :            :         {
 <span class="lineNum">     172 </span>                :            :           /* Start a new timeout after which we'll send SIGKILL.  */
 <span class="lineNum">     173 </span>                :<span class="lineNoCov">          0 :           term_signal = SIGKILL;</span>
@@ -249,40 +249,40 @@
 <span class="lineNum">     178 </span>                :            :       /* Send the signal directly to the monitored child,
 <span class="lineNum">     179 </span>                :            :          in case it has itself become group leader,
 <span class="lineNum">     180 </span>                :            :          or is not running in a separate group.  */
-<span class="lineNum">     181 </span>                :<span class="lineCov">        186 :       send_sig (monitored_pid, sig);</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">        100 :       send_sig (monitored_pid, sig);</span>
 <span class="lineNum">     182 </span>                :            :       /* The normal case is the job has remained in our
 <span class="lineNum">     183 </span>                :            :          newly created process group, so send to all processes in that.  */
-<span class="lineNum">     184 </span>        [<span class="branchCov" title="Branch 0 was taken 181 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">        186 :       if (!foreground)</span>
-<span class="lineNum">     185 </span>                :<span class="lineCov">        181 :         send_sig (0, sig);</span>
-<span class="lineNum">     186 </span>[<span class="branchCov" title="Branch 0 was taken 186 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 186 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        186 :       if (sig != SIGKILL &amp;&amp; sig != SIGCONT)</span>
+<span class="lineNum">     184 </span>        [<span class="branchCov" title="Branch 0 was taken 97 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">        100 :       if (!foreground)</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">         97 :         send_sig (0, sig);</span>
+<span class="lineNum">     186 </span>[<span class="branchCov" title="Branch 0 was taken 100 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 100 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        100 :       if (sig != SIGKILL &amp;&amp; sig != SIGCONT)</span>
 <span class="lineNum">     187 </span>                :            :         {
-<span class="lineNum">     188 </span>                :<span class="lineCov">        186 :           send_sig (monitored_pid, SIGCONT);</span>
-<span class="lineNum">     189 </span>        [<span class="branchCov" title="Branch 0 was taken 181 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">        186 :           if (!foreground)</span>
-<span class="lineNum">     190 </span>                :<span class="lineCov">        181 :             send_sig (0, SIGCONT);</span>
+<span class="lineNum">     188 </span>                :<span class="lineCov">        100 :           send_sig (monitored_pid, SIGCONT);</span>
+<span class="lineNum">     189 </span>        [<span class="branchCov" title="Branch 0 was taken 97 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">        100 :           if (!foreground)</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">         97 :             send_sig (0, SIGCONT);</span>
 <span class="lineNum">     191 </span>                :            :         }
 <span class="lineNum">     192 </span>                :            :     }
 <span class="lineNum">     193 </span>                :            :   else /* we're the child or the child is not exec'd yet.  */
 <span class="lineNum">     194 </span>                :<span class="lineNoCov">          0 :     _exit (128 + sig);</span>
-<span class="lineNum">     195 </span>                :<span class="lineCov">        186 : }</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">        100 : }</span>
 <a name="196"><span class="lineNum">     196 </span>                :            : </a>
 <span class="lineNum">     197 </span>                :            : void
-<span class="lineNum">     198 </span>                :<span class="lineCov">         40 : usage (int status)</span>
+<span class="lineNum">     198 </span>                :<span class="lineCov">         24 : usage (int status)</span>
 <span class="lineNum">     199 </span>                :            : {
-<span class="lineNum">     200 </span>        [<span class="branchCov" title="Branch 0 was taken 25 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         40 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">     201 </span>                :<span class="lineCov">         25 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
+<span class="lineNum">     200 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         24 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     201 </span>                :<span class="lineCov">         15 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
 <span class="lineNum">     202 </span>                :            :              program_name);
 <span class="lineNum">     203 </span>                :            :   else
 <span class="lineNum">     204 </span>                :            :     {
-<span class="lineNum">     205 </span>                :<span class="lineCov">         15 :       printf (_(&quot;\</span>
+<span class="lineNum">     205 </span>                :<span class="lineCov">          9 :       printf (_(&quot;\</span>
 <span class="lineNum">     206 </span>                :            : Usage: %s [OPTION] DURATION COMMAND [ARG]...\n\
 <span class="lineNum">     207 </span>                :            :   or:  %s [OPTION]\n&quot;), program_name, program_name);
 <span class="lineNum">     208 </span>                :            : 
-<span class="lineNum">     209 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     209 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     210 </span>                :            : Start COMMAND, and kill it if still running after DURATION.\n\
 <span class="lineNum">     211 </span>                :            : \n\
 <span class="lineNum">     212 </span>                :            : Mandatory arguments to long options are mandatory for short options too.\n\
 <span class="lineNum">     213 </span>                :            : &quot;), stdout);
-<span class="lineNum">     214 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     215 </span>                :            :       --foreground\n\
 <span class="lineNum">     216 </span>                :            :                  When not running timeout directly from a shell prompt,\n\
 <span class="lineNum">     217 </span>                :            :                  allow COMMAND to read from the TTY and receive TTY signals.\n\
@@ -295,23 +295,23 @@
 <span class="lineNum">     224 </span>                :            :                  SIGNAL may be a name like `HUP' or a number.\n\
 <span class="lineNum">     225 </span>                :            :                  See `kill -l` for a list of signals\n&quot;), stdout);
 <span class="lineNum">     226 </span>                :            : 
-<span class="lineNum">     227 </span>                :<span class="lineCov">         15 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     228 </span>                :<span class="lineCov">         15 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     227 </span>                :<span class="lineCov">          9 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     228 </span>                :<span class="lineCov">          9 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
 <span class="lineNum">     229 </span>                :            : 
-<span class="lineNum">     230 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\n\</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\n\</span>
 <span class="lineNum">     231 </span>                :            : DURATION is a floating point number with an optional suffix:\n\
 <span class="lineNum">     232 </span>                :            : `s' for seconds (the default), `m' for minutes, `h' for hours \
 <span class="lineNum">     233 </span>                :            : or `d' for days.\n&quot;), stdout);
 <span class="lineNum">     234 </span>                :            : 
-<span class="lineNum">     235 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\n\</span>
+<span class="lineNum">     235 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\n\</span>
 <span class="lineNum">     236 </span>                :            : If the command times out, then exit with status 124.  Otherwise, exit\n\
 <span class="lineNum">     237 </span>                :            : with the status of COMMAND.  If no signal is specified, send the TERM\n\
 <span class="lineNum">     238 </span>                :            : signal upon timeout.  The TERM signal kills any process that does not\n\
 <span class="lineNum">     239 </span>                :            : block or catch that signal.  For other processes, it may be necessary to\n\
 <span class="lineNum">     240 </span>                :            : use the KILL (9) signal, since this signal cannot be caught.\n&quot;), stdout);
-<span class="lineNum">     241 </span>                :<span class="lineCov">         15 :       emit_ancillary_info ();</span>
+<span class="lineNum">     241 </span>                :<span class="lineCov">          9 :       emit_ancillary_info ();</span>
 <span class="lineNum">     242 </span>                :            :     }
-<span class="lineNum">     243 </span>                :<span class="lineCov">         40 :   exit (status);</span>
+<span class="lineNum">     243 </span>                :<span class="lineCov">         24 :   exit (status);</span>
 <span class="lineNum">     244 </span>                :            : }
 <span class="lineNum">     245 </span>                :            : 
 <span class="lineNum">     246 </span>                :            : /* Given a floating point value *X, and a suffix character, SUFFIX_CHAR,
@@ -321,17 +321,17 @@
 <span class="lineNum">     250 </span>                :            :    and return false.  Otherwise return true.  */
 <a name="251"><span class="lineNum">     251 </span>                :            : </a>
 <span class="lineNum">     252 </span>                :            : static bool
-<span class="lineNum">     253 </span>                :<span class="lineCov">        443 : apply_time_suffix (double *x, char suffix_char)</span>
+<span class="lineNum">     253 </span>                :<span class="lineCov">        245 : apply_time_suffix (double *x, char suffix_char)</span>
 <span class="lineNum">     254 </span>                :            : {
 <span class="lineNum">     255 </span>                :            :   int multiplier;
 <span class="lineNum">     256 </span>                :            : 
-<span class="lineNum">     257 </span>  [<span class="branchCov" title="Branch 0 was taken 418 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 20 times"> + </span> :<span class="lineCov">        443 :   switch (suffix_char)</span>
-<span class="lineNum">         </span>            <span class="branchCov" title="Branch 4 was taken 5 times"> + </span>]
+<span class="lineNum">     257 </span>  [<span class="branchCov" title="Branch 0 was taken 230 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 12 times"> + </span> :<span class="lineCov">        245 :   switch (suffix_char)</span>
+<span class="lineNum">         </span>            <span class="branchCov" title="Branch 4 was taken 3 times"> + </span>]
 <span class="lineNum">     258 </span>                :            :     {
 <span class="lineNum">     259 </span>                :            :     case 0:
 <span class="lineNum">     260 </span>                :            :     case 's':
-<span class="lineNum">     261 </span>                :<span class="lineCov">        418 :       multiplier = 1;</span>
-<span class="lineNum">     262 </span>                :<span class="lineCov">        418 :       break;</span>
+<span class="lineNum">     261 </span>                :<span class="lineCov">        230 :       multiplier = 1;</span>
+<span class="lineNum">     262 </span>                :<span class="lineCov">        230 :       break;</span>
 <span class="lineNum">     263 </span>                :            :     case 'm':
 <span class="lineNum">     264 </span>                :<span class="lineNoCov">          0 :       multiplier = 60;</span>
 <span class="lineNum">     265 </span>                :<span class="lineNoCov">          0 :       break;</span>
@@ -339,154 +339,154 @@
 <span class="lineNum">     267 </span>                :<span class="lineNoCov">          0 :       multiplier = 60 * 60;</span>
 <span class="lineNum">     268 </span>                :<span class="lineNoCov">          0 :       break;</span>
 <span class="lineNum">     269 </span>                :            :     case 'd':
-<span class="lineNum">     270 </span>                :<span class="lineCov">         20 :       multiplier = 60 * 60 * 24;</span>
-<span class="lineNum">     271 </span>                :<span class="lineCov">         20 :       break;</span>
+<span class="lineNum">     270 </span>                :<span class="lineCov">         12 :       multiplier = 60 * 60 * 24;</span>
+<span class="lineNum">     271 </span>                :<span class="lineCov">         12 :       break;</span>
 <span class="lineNum">     272 </span>                :            :     default:
-<span class="lineNum">     273 </span>                :<span class="lineCov">          5 :       return false;</span>
+<span class="lineNum">     273 </span>                :<span class="lineCov">          3 :       return false;</span>
 <span class="lineNum">     274 </span>                :            :     }
 <span class="lineNum">     275 </span>                :            : 
-<span class="lineNum">     276 </span>                :<span class="lineCov">        438 :   *x *= multiplier;</span>
+<span class="lineNum">     276 </span>                :<span class="lineCov">        242 :   *x *= multiplier;</span>
 <span class="lineNum">     277 </span>                :            : 
-<span class="lineNum">     278 </span>                :<span class="lineCov">        443 :   return true;</span>
+<span class="lineNum">     278 </span>                :<span class="lineCov">        245 :   return true;</span>
 <span class="lineNum">     279 </span>                :            : }
 <a name="280"><span class="lineNum">     280 </span>                :            : </a>
 <span class="lineNum">     281 </span>                :            : static double
-<span class="lineNum">     282 </span>                :<span class="lineCov">        453 : parse_duration (const char* str)</span>
+<span class="lineNum">     282 </span>                :<span class="lineCov">        251 : parse_duration (const char* str)</span>
 <span class="lineNum">     283 </span>                :            : {
 <span class="lineNum">     284 </span>                :            :   double duration;
 <span class="lineNum">     285 </span>                :            :   const char *ep;
 <span class="lineNum">     286 </span>                :            : 
-<span class="lineNum">     287 </span>        [<span class="branchCov" title="Branch 1 was taken 443 times"> + </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span>]:<span class="lineCov">        453 :   if (!xstrtod (str, &amp;ep, &amp;duration, c_strtod)</span>
+<span class="lineNum">     287 </span>        [<span class="branchCov" title="Branch 1 was taken 245 times"> + </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">        251 :   if (!xstrtod (str, &amp;ep, &amp;duration, c_strtod)</span>
 <span class="lineNum">     288 </span>                :            :       /* Nonnegative interval.  */
-<span class="lineNum">     289 </span>        [<span class="branchCov" title="Branch 0 was taken 443 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        443 :       || ! (0 &lt;= duration)</span>
+<span class="lineNum">     289 </span>        [<span class="branchCov" title="Branch 0 was taken 245 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        245 :       || ! (0 &lt;= duration)</span>
 <span class="lineNum">     290 </span>                :            :       /* No extra chars after the number and an optional s,m,h,d char.  */
-<span class="lineNum">     291 </span>[<span class="branchCov" title="Branch 0 was taken 37 times"> + </span><span class="branchCov" title="Branch 1 was taken 406 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 37 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        443 :       || (*ep &amp;&amp; *(ep + 1))</span>
+<span class="lineNum">     291 </span>[<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchCov" title="Branch 1 was taken 226 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 19 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        245 :       || (*ep &amp;&amp; *(ep + 1))</span>
 <span class="lineNum">     292 </span>                :            :       /* Check any suffix char and update timeout based on the suffix.  */
-<span class="lineNum">     293 </span>        [<span class="branchCov" title="Branch 1 was taken 5 times"> + </span><span class="branchCov" title="Branch 2 was taken 438 times"> + </span>]:<span class="lineCov">        443 :       || !apply_time_suffix (&amp;duration, *ep))</span>
+<span class="lineNum">     293 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchCov" title="Branch 2 was taken 242 times"> + </span>]:<span class="lineCov">        245 :       || !apply_time_suffix (&amp;duration, *ep))</span>
 <span class="lineNum">     294 </span>                :            :     {
-<span class="lineNum">     295 </span>                :<span class="lineCov">         15 :       error (0, 0, _(&quot;invalid time interval %s&quot;), quote (str));</span>
-<span class="lineNum">     296 </span>                :<span class="lineCov">         15 :       usage (EXIT_CANCELED);</span>
+<span class="lineNum">     295 </span>                :<span class="lineCov">          9 :       error (0, 0, _(&quot;invalid time interval %s&quot;), quote (str));</span>
+<span class="lineNum">     296 </span>                :<span class="lineCov">          9 :       usage (EXIT_CANCELED);</span>
 <span class="lineNum">     297 </span>                :            :     }
 <span class="lineNum">     298 </span>                :            : 
-<span class="lineNum">     299 </span>                :<span class="lineCov">        438 :   return duration;</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">        242 :   return duration;</span>
 <span class="lineNum">     300 </span>                :            : }
 <a name="301"><span class="lineNum">     301 </span>                :            : </a>
 <span class="lineNum">     302 </span>                :            : static void
-<span class="lineNum">     303 </span>                :<span class="lineCov">        433 : install_signal_handlers (int sigterm)</span>
+<span class="lineNum">     303 </span>                :<span class="lineCov">        239 : install_signal_handlers (int sigterm)</span>
 <span class="lineNum">     304 </span>                :            : {
 <span class="lineNum">     305 </span>                :            :   struct sigaction sa;
-<span class="lineNum">     306 </span>                :<span class="lineCov">        433 :   sigemptyset (&amp;sa.sa_mask);  /* Allow concurrent calls to handler */</span>
-<span class="lineNum">     307 </span>                :<span class="lineCov">        433 :   sa.sa_handler = cleanup;</span>
-<span class="lineNum">     308 </span>                :<span class="lineCov">        433 :   sa.sa_flags = SA_RESTART;   /* Restart syscalls if possible, as that's</span>
+<span class="lineNum">     306 </span>                :<span class="lineCov">        239 :   sigemptyset (&amp;sa.sa_mask);  /* Allow concurrent calls to handler */</span>
+<span class="lineNum">     307 </span>                :<span class="lineCov">        239 :   sa.sa_handler = cleanup;</span>
+<span class="lineNum">     308 </span>                :<span class="lineCov">        239 :   sa.sa_flags = SA_RESTART;   /* Restart syscalls if possible, as that's</span>
 <span class="lineNum">     309 </span>                :            :                                  more likely to work cleanly.  */
 <span class="lineNum">     310 </span>                :            : 
-<span class="lineNum">     311 </span>                :<span class="lineCov">        433 :   sigaction (SIGALRM, &amp;sa, NULL); /* our timeout.  */</span>
-<span class="lineNum">     312 </span>                :<span class="lineCov">        433 :   sigaction (SIGINT, &amp;sa, NULL);  /* Ctrl-C at terminal for example.  */</span>
-<span class="lineNum">     313 </span>                :<span class="lineCov">        433 :   sigaction (SIGQUIT, &amp;sa, NULL); /* Ctrl-\ at terminal for example.  */</span>
-<span class="lineNum">     314 </span>                :<span class="lineCov">        433 :   sigaction (SIGHUP, &amp;sa, NULL);  /* terminal closed for example.  */</span>
-<span class="lineNum">     315 </span>                :<span class="lineCov">        433 :   sigaction (SIGTERM, &amp;sa, NULL); /* if we're killed, stop monitored proc.  */</span>
-<span class="lineNum">     316 </span>                :<span class="lineCov">        433 :   sigaction (sigterm, &amp;sa, NULL); /* user specified termination signal.  */</span>
-<span class="lineNum">     317 </span>                :<span class="lineCov">        433 : }</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">        239 :   sigaction (SIGALRM, &amp;sa, NULL); /* our timeout.  */</span>
+<span class="lineNum">     312 </span>                :<span class="lineCov">        239 :   sigaction (SIGINT, &amp;sa, NULL);  /* Ctrl-C at terminal for example.  */</span>
+<span class="lineNum">     313 </span>                :<span class="lineCov">        239 :   sigaction (SIGQUIT, &amp;sa, NULL); /* Ctrl-\ at terminal for example.  */</span>
+<span class="lineNum">     314 </span>                :<span class="lineCov">        239 :   sigaction (SIGHUP, &amp;sa, NULL);  /* terminal closed for example.  */</span>
+<span class="lineNum">     315 </span>                :<span class="lineCov">        239 :   sigaction (SIGTERM, &amp;sa, NULL); /* if we're killed, stop monitored proc.  */</span>
+<span class="lineNum">     316 </span>                :<span class="lineCov">        239 :   sigaction (sigterm, &amp;sa, NULL); /* user specified termination signal.  */</span>
+<span class="lineNum">     317 </span>                :<span class="lineCov">        239 : }</span>
 <a name="318"><span class="lineNum">     318 </span>                :            : </a>
 <span class="lineNum">     319 </span>                :            : int
-<span class="lineNum">     320 </span>                :<span class="lineCov">        513 : main (int argc, char **argv)</span>
+<span class="lineNum">     320 </span>                :<span class="lineCov">        287 : main (int argc, char **argv)</span>
 <span class="lineNum">     321 </span>                :            : {
 <span class="lineNum">     322 </span>                :            :   double timeout;
 <span class="lineNum">     323 </span>                :            :   char signame[SIG2STR_MAX];
 <span class="lineNum">     324 </span>                :            :   int c;
 <span class="lineNum">     325 </span>                :            : 
 <span class="lineNum">     326 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">     327 </span>                :<span class="lineCov">        513 :   set_program_name (argv[0]);</span>
-<span class="lineNum">     328 </span>                :<span class="lineCov">        513 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     329 </span>                :<span class="lineCov">        513 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     330 </span>                :<span class="lineCov">        513 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     327 </span>                :<span class="lineCov">        287 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     328 </span>                :<span class="lineCov">        287 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     329 </span>                :<span class="lineCov">        287 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     330 </span>                :<span class="lineCov">        287 :   textdomain (PACKAGE);</span>
 <span class="lineNum">     331 </span>                :            : 
-<span class="lineNum">     332 </span>                :<span class="lineCov">        513 :   initialize_exit_failure (EXIT_CANCELED);</span>
-<span class="lineNum">     333 </span>                :<span class="lineCov">        513 :   atexit (close_stdout);</span>
+<span class="lineNum">     332 </span>                :<span class="lineCov">        287 :   initialize_exit_failure (EXIT_CANCELED);</span>
+<span class="lineNum">     333 </span>                :<span class="lineCov">        287 :   atexit (close_stdout);</span>
 <span class="lineNum">     334 </span>                :            : 
-<span class="lineNum">     335 </span>        [<span class="branchCov" title="Branch 1 was taken 95 times"> + </span><span class="branchCov" title="Branch 2 was taken 443 times"> + </span>]:<span class="lineCov">        538 :   while ((c = getopt_long (argc, argv, &quot;+k:s:&quot;, long_options, NULL)) != -1)</span>
+<span class="lineNum">     335 </span>        [<span class="branchCov" title="Branch 1 was taken 57 times"> + </span><span class="branchCov" title="Branch 2 was taken 245 times"> + </span>]:<span class="lineCov">        302 :   while ((c = getopt_long (argc, argv, &quot;+k:s:&quot;, long_options, NULL)) != -1)</span>
 <span class="lineNum">     336 </span>                :            :     {
-<span class="lineNum">     337 </span>  [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span><span class="branchCov" title="Branch 2 was taken 5 times"> + </span><span class="branchCov" title="Branch 3 was taken 15 times"> + </span> :<span class="lineCov">         95 :       switch (c)</span>
-<span class="lineNum">         </span>         <span class="branchCov" title="Branch 4 was taken 40 times"> + </span><span class="branchCov" title="Branch 5 was taken 5 times"> + </span>]
+<span class="lineNum">     337 </span>  [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span><span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 9 times"> + </span> :<span class="lineCov">         57 :       switch (c)</span>
+<span class="lineNum">         </span>         <span class="branchCov" title="Branch 4 was taken 24 times"> + </span><span class="branchCov" title="Branch 5 was taken 3 times"> + </span>]
 <span class="lineNum">     338 </span>                :            :         {
 <span class="lineNum">     339 </span>                :            :         case 'k':
-<span class="lineNum">     340 </span>                :<span class="lineCov">         10 :           kill_after = parse_duration (optarg);</span>
-<span class="lineNum">     341 </span>                :<span class="lineCov">          5 :           break;</span>
+<span class="lineNum">     340 </span>                :<span class="lineCov">          6 :           kill_after = parse_duration (optarg);</span>
+<span class="lineNum">     341 </span>                :<span class="lineCov">          3 :           break;</span>
 <span class="lineNum">     342 </span>                :            : 
 <span class="lineNum">     343 </span>                :            :         case 's':
-<span class="lineNum">     344 </span>                :<span class="lineCov">         20 :           term_signal = operand2sig (optarg, signame);</span>
-<span class="lineNum">     345 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         20 :           if (term_signal == -1)</span>
-<span class="lineNum">     346 </span>                :<span class="lineCov">          5 :             usage (EXIT_CANCELED);</span>
-<span class="lineNum">     347 </span>                :<span class="lineCov">         15 :           break;</span>
+<span class="lineNum">     344 </span>                :<span class="lineCov">         12 :           term_signal = operand2sig (optarg, signame);</span>
+<span class="lineNum">     345 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         12 :           if (term_signal == -1)</span>
+<span class="lineNum">     346 </span>                :<span class="lineCov">          3 :             usage (EXIT_CANCELED);</span>
+<span class="lineNum">     347 </span>                :<span class="lineCov">          9 :           break;</span>
 <span class="lineNum">     348 </span>                :            : 
 <span class="lineNum">     349 </span>                :            :         case FOREGROUND_OPTION:
-<span class="lineNum">     350 </span>                :<span class="lineCov">          5 :           foreground = true;</span>
-<span class="lineNum">     351 </span>                :<span class="lineCov">          5 :           break;</span>
+<span class="lineNum">     350 </span>                :<span class="lineCov">          3 :           foreground = true;</span>
+<span class="lineNum">     351 </span>                :<span class="lineCov">          3 :           break;</span>
 <span class="lineNum">     352 </span>                :            : 
-<span class="lineNum">     353 </span>                :<span class="lineCov">         15 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     353 </span>                :<span class="lineCov">          9 :         case_GETOPT_HELP_CHAR;</span>
 <span class="lineNum">     354 </span>                :            : 
-<span class="lineNum">     355 </span>                :<span class="lineCov">         40 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     355 </span>                :<span class="lineCov">         24 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
 <span class="lineNum">     356 </span>                :            : 
 <span class="lineNum">     357 </span>                :            :         default:
-<span class="lineNum">     358 </span>                :<span class="lineCov">          5 :           usage (EXIT_CANCELED);</span>
+<span class="lineNum">     358 </span>                :<span class="lineCov">          3 :           usage (EXIT_CANCELED);</span>
 <span class="lineNum">     359 </span>                :            :           break;
 <span class="lineNum">     360 </span>                :            :         }
 <span class="lineNum">     361 </span>                :            :     }
 <span class="lineNum">     362 </span>                :            : 
-<span class="lineNum">     363 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 443 times"> + </span>]:<span class="lineCov">        443 :   if (argc - optind &lt; 2)</span>
+<span class="lineNum">     363 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 245 times"> + </span>]:<span class="lineCov">        245 :   if (argc - optind &lt; 2)</span>
 <span class="lineNum">     364 </span>                :<span class="lineNoCov">          0 :     usage (EXIT_CANCELED);</span>
 <span class="lineNum">     365 </span>                :            : 
-<span class="lineNum">     366 </span>                :<span class="lineCov">        443 :   timeout = parse_duration (argv[optind++]);</span>
+<span class="lineNum">     366 </span>                :<span class="lineCov">        245 :   timeout = parse_duration (argv[optind++]);</span>
 <span class="lineNum">     367 </span>                :            : 
-<span class="lineNum">     368 </span>                :<span class="lineCov">        433 :   argv += optind;</span>
+<span class="lineNum">     368 </span>                :<span class="lineCov">        239 :   argv += optind;</span>
 <span class="lineNum">     369 </span>                :            : 
 <span class="lineNum">     370 </span>                :            :   /* Ensure we're in our own group so all subprocesses can be killed.
 <span class="lineNum">     371 </span>                :            :      Note we don't just put the child in a separate group as
 <span class="lineNum">     372 </span>                :            :      then we would need to worry about foreground and background groups
 <span class="lineNum">     373 </span>                :            :      and propagating signals between them.  */
-<span class="lineNum">     374 </span>        [<span class="branchCov" title="Branch 0 was taken 428 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">        433 :   if (!foreground)</span>
-<span class="lineNum">     375 </span>                :<span class="lineCov">        428 :     setpgid (0, 0);</span>
+<span class="lineNum">     374 </span>        [<span class="branchCov" title="Branch 0 was taken 236 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">        239 :   if (!foreground)</span>
+<span class="lineNum">     375 </span>                :<span class="lineCov">        236 :     setpgid (0, 0);</span>
 <span class="lineNum">     376 </span>                :            : 
 <span class="lineNum">     377 </span>                :            :   /* Setup handlers before fork() so that we
 <span class="lineNum">     378 </span>                :            :      handle any signals caused by child, without races.  */
-<span class="lineNum">     379 </span>                :<span class="lineCov">        433 :   install_signal_handlers (term_signal);</span>
-<span class="lineNum">     380 </span>                :<span class="lineCov">        433 :   signal (SIGTTIN, SIG_IGN);   /* Don't stop if background child needs tty.  */</span>
-<span class="lineNum">     381 </span>                :<span class="lineCov">        433 :   signal (SIGTTOU, SIG_IGN);   /* Don't stop if background child needs tty.  */</span>
-<span class="lineNum">     382 </span>                :<span class="lineCov">        433 :   signal (SIGCHLD, SIG_DFL);   /* Don't inherit CHLD handling from parent.   */</span>
+<span class="lineNum">     379 </span>                :<span class="lineCov">        239 :   install_signal_handlers (term_signal);</span>
+<span class="lineNum">     380 </span>                :<span class="lineCov">        239 :   signal (SIGTTIN, SIG_IGN);   /* Don't stop if background child needs tty.  */</span>
+<span class="lineNum">     381 </span>                :<span class="lineCov">        239 :   signal (SIGTTOU, SIG_IGN);   /* Don't stop if background child needs tty.  */</span>
+<span class="lineNum">     382 </span>                :<span class="lineCov">        239 :   signal (SIGCHLD, SIG_DFL);   /* Don't inherit CHLD handling from parent.   */</span>
 <span class="lineNum">     383 </span>                :            : 
-<span class="lineNum">     384 </span>                :<span class="lineCov">        433 :   monitored_pid = fork ();</span>
-<span class="lineNum">     385 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 861 times"> + </span>]:<span class="lineCov">        861 :   if (monitored_pid == -1)</span>
+<span class="lineNum">     384 </span>                :<span class="lineCov">        239 :   monitored_pid = fork ();</span>
+<span class="lineNum">     385 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 475 times"> + </span>]:<span class="lineCov">        475 :   if (monitored_pid == -1)</span>
 <span class="lineNum">     386 </span>                :            :     {
 <span class="lineNum">     387 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;fork system call failed&quot;));</span>
 <span class="lineNum">     388 </span>                :<span class="lineNoCov">          0 :       return EXIT_CANCELED;</span>
 <span class="lineNum">     389 </span>                :            :     }
-<span class="lineNum">     390 </span>        [<span class="branchCov" title="Branch 0 was taken 433 times"> + </span><span class="branchCov" title="Branch 1 was taken 428 times"> + </span>]:<span class="lineCov">        861 :   else if (monitored_pid == 0)</span>
+<span class="lineNum">     390 </span>        [<span class="branchCov" title="Branch 0 was taken 239 times"> + </span><span class="branchCov" title="Branch 1 was taken 236 times"> + </span>]:<span class="lineCov">        475 :   else if (monitored_pid == 0)</span>
 <span class="lineNum">     391 </span>                :            :     {                           /* child */
 <span class="lineNum">     392 </span>                :            :       int exit_status;
 <span class="lineNum">     393 </span>                :            : 
 <span class="lineNum">     394 </span>                :            :       /* exec doesn't reset SIG_IGN -&gt; SIG_DFL.  */
-<span class="lineNum">     395 </span>                :<span class="lineCov">        433 :       signal (SIGTTIN, SIG_DFL);</span>
-<span class="lineNum">     396 </span>                :<span class="lineCov">        433 :       signal (SIGTTOU, SIG_DFL);</span>
+<span class="lineNum">     395 </span>                :<span class="lineCov">        239 :       signal (SIGTTIN, SIG_DFL);</span>
+<span class="lineNum">     396 </span>                :<span class="lineCov">        239 :       signal (SIGTTOU, SIG_DFL);</span>
 <span class="lineNum">     397 </span>                :            : 
-<span class="lineNum">     398 </span>                :<span class="lineCov">        433 :       execvp (argv[0], argv);   /* FIXME: should we use &quot;sh -c&quot; ... here?  */</span>
+<span class="lineNum">     398 </span>                :<span class="lineCov">        239 :       execvp (argv[0], argv);   /* FIXME: should we use &quot;sh -c&quot; ... here?  */</span>
 <span class="lineNum">     399 </span>                :            : 
 <span class="lineNum">     400 </span>                :            :       /* exit like sh, env, nohup, ...  */
-<span class="lineNum">     401 </span>        [<span class="branchCov" title="Branch 1 was taken 5 times"> + </span><span class="branchCov" title="Branch 2 was taken 5 times"> + </span>]:<span class="lineCov">        433 :       exit_status = (errno == ENOENT ? EXIT_ENOENT : EXIT_CANNOT_INVOKE);</span>
-<span class="lineNum">     402 </span>                :<span class="lineCov">         10 :       error (0, errno, _(&quot;failed to run command %s&quot;), quote (argv[0]));</span>
-<span class="lineNum">     403 </span>                :<span class="lineCov">         10 :       return exit_status;</span>
+<span class="lineNum">     401 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchCov" title="Branch 2 was taken 3 times"> + </span>]:<span class="lineCov">        239 :       exit_status = (errno == ENOENT ? EXIT_ENOENT : EXIT_CANNOT_INVOKE);</span>
+<span class="lineNum">     402 </span>                :<span class="lineCov">          6 :       error (0, errno, _(&quot;failed to run command %s&quot;), quote (argv[0]));</span>
+<span class="lineNum">     403 </span>                :<span class="lineCov">          6 :       return exit_status;</span>
 <span class="lineNum">     404 </span>                :            :     }
 <span class="lineNum">     405 </span>                :            :   else
 <span class="lineNum">     406 </span>                :            :     {
 <span class="lineNum">     407 </span>                :            :       pid_t wait_result;
 <span class="lineNum">     408 </span>                :            :       int status;
 <span class="lineNum">     409 </span>                :            : 
-<span class="lineNum">     410 </span>                :<span class="lineCov">        428 :       settimeout (timeout);</span>
+<span class="lineNum">     410 </span>                :<span class="lineCov">        236 :       settimeout (timeout);</span>
 <span class="lineNum">     411 </span>                :            : 
-<span class="lineNum">     412 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 428 times"> + </span>]:<span class="lineCov">        428 :       while ((wait_result = waitpid (monitored_pid, &amp;status, 0)) &lt; 0</span>
+<span class="lineNum">     412 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 236 times"> + </span>]:<span class="lineCov">        236 :       while ((wait_result = waitpid (monitored_pid, &amp;status, 0)) &lt; 0</span>
 <span class="lineNum">     413 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :              &amp;&amp; errno == EINTR)</span>
 <span class="lineNum">     414 </span>                :<span class="lineNoCov">          0 :         continue;</span>
 <span class="lineNum">     415 </span>                :            : 
-<span class="lineNum">     416 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 428 times"> + </span>]:<span class="lineCov">        428 :       if (wait_result &lt; 0)</span>
+<span class="lineNum">     416 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 236 times"> + </span>]:<span class="lineCov">        236 :       if (wait_result &lt; 0)</span>
 <span class="lineNum">     417 </span>                :            :         {
 <span class="lineNum">     418 </span>                :            :           /* shouldn't happen.  */
 <span class="lineNum">     419 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;error waiting for command&quot;));</span>
@@ -494,11 +494,11 @@
 <span class="lineNum">     421 </span>                :            :         }
 <span class="lineNum">     422 </span>                :            :       else
 <span class="lineNum">     423 </span>                :            :         {
-<span class="lineNum">     424 </span>        [<span class="branchCov" title="Branch 0 was taken 255 times"> + </span><span class="branchCov" title="Branch 1 was taken 173 times"> + </span>]:<span class="lineCov">        428 :           if (WIFEXITED (status))</span>
-<span class="lineNum">     425 </span>                :<span class="lineCov">        255 :             status = WEXITSTATUS (status);</span>
-<span class="lineNum">     426 </span>        [<span class="branchCov" title="Branch 0 was taken 173 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        173 :           else if (WIFSIGNALED (status))</span>
+<span class="lineNum">     424 </span>        [<span class="branchCov" title="Branch 0 was taken 143 times"> + </span><span class="branchCov" title="Branch 1 was taken 93 times"> + </span>]:<span class="lineCov">        236 :           if (WIFEXITED (status))</span>
+<span class="lineNum">     425 </span>                :<span class="lineCov">        143 :             status = WEXITSTATUS (status);</span>
+<span class="lineNum">     426 </span>        [<span class="branchCov" title="Branch 0 was taken 93 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         93 :           else if (WIFSIGNALED (status))</span>
 <span class="lineNum">     427 </span>                :            :             {
-<span class="lineNum">     428 </span>                :<span class="lineCov">        173 :               int sig = WTERMSIG (status);</span>
+<span class="lineNum">     428 </span>                :<span class="lineCov">         93 :               int sig = WTERMSIG (status);</span>
 <span class="lineNum">     429 </span>                :            : /* The following is not used as one cannot disable processing
 <span class="lineNum">     430 </span>                :            :    by a filter in /proc/sys/kernel/core_pattern on Linux.  */
 <span class="lineNum">     431 </span>                :            : #if 0 &amp;&amp; HAVE_SETRLIMIT &amp;&amp; defined RLIMIT_CORE
@@ -514,7 +514,7 @@
 <span class="lineNum">     441 </span>                :            :                     error (0, errno, _(&quot;warning: disabling core dumps failed&quot;));
 <span class="lineNum">     442 </span>                :            :                 }
 <span class="lineNum">     443 </span>                :            : #endif
-<span class="lineNum">     444 </span>                :<span class="lineCov">        173 :               status = sig + 128; /* what sh returns for signaled processes.  */</span>
+<span class="lineNum">     444 </span>                :<span class="lineCov">         93 :               status = sig + 128; /* what sh returns for signaled processes.  */</span>
 <span class="lineNum">     445 </span>                :            :             }
 <span class="lineNum">     446 </span>                :            :           else
 <span class="lineNum">     447 </span>                :            :             {
@@ -524,10 +524,10 @@
 <span class="lineNum">     451 </span>                :            :             }
 <span class="lineNum">     452 </span>                :            :         }
 <span class="lineNum">     453 </span>                :            : 
-<span class="lineNum">     454 </span>        [<span class="branchCov" title="Branch 0 was taken 173 times"> + </span><span class="branchCov" title="Branch 1 was taken 255 times"> + </span>]:<span class="lineCov">        428 :       if (timed_out)</span>
-<span class="lineNum">     455 </span>                :<span class="lineCov">        173 :         return EXIT_TIMEDOUT;</span>
+<span class="lineNum">     454 </span>        [<span class="branchCov" title="Branch 0 was taken 93 times"> + </span><span class="branchCov" title="Branch 1 was taken 143 times"> + </span>]:<span class="lineCov">        236 :       if (timed_out)</span>
+<span class="lineNum">     455 </span>                :<span class="lineCov">         93 :         return EXIT_TIMEDOUT;</span>
 <span class="lineNum">     456 </span>                :            :       else
-<span class="lineNum">     457 </span>                :<span class="lineCov">        438 :         return status;</span>
+<span class="lineNum">     457 </span>                :<span class="lineCov">        242 :         return status;</span>
 <span class="lineNum">     458 </span>                :            :     }
 <span class="lineNum">     459 </span>                :            : }
 </pre>

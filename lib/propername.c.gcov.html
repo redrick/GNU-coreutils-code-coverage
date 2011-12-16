@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/propername.c</title>
+  <title>LCOV - coreutils - lib/propername.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">27</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -260,23 +260,23 @@
 <span class="lineNum">     185 </span>                :            :    characters.  */
 <a name="186"><span class="lineNum">     186 </span>                :            : </a>
 <span class="lineNum">     187 </span>                :            : const char *
-<span class="lineNum">     188 </span>                :<span class="lineCov">        845 : proper_name_utf8 (const char *name_ascii, const char *name_utf8)</span>
+<span class="lineNum">     188 </span>                :<span class="lineCov">        508 : proper_name_utf8 (const char *name_ascii, const char *name_utf8)</span>
 <span class="lineNum">     189 </span>                :            : {
 <span class="lineNum">     190 </span>                :            :   /* See whether there is a translation.   */
-<span class="lineNum">     191 </span>                :<span class="lineCov">        845 :   const char *translation = gettext (name_ascii);</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">        508 :   const char *translation = gettext (name_ascii);</span>
 <span class="lineNum">     192 </span>                :            : 
 <span class="lineNum">     193 </span>                :            :   /* Try to convert NAME_UTF8 to the locale encoding.  */
-<span class="lineNum">     194 </span>                :<span class="lineCov">        845 :   const char *locale_code = locale_charset ();</span>
-<span class="lineNum">     195 </span>                :<span class="lineCov">        845 :   char *alloc_name_converted = NULL;</span>
-<span class="lineNum">     196 </span>                :<span class="lineCov">        845 :   char *alloc_name_converted_translit = NULL;</span>
-<span class="lineNum">     197 </span>                :<span class="lineCov">        845 :   const char *name_converted = NULL;</span>
-<span class="lineNum">     198 </span>                :<span class="lineCov">        845 :   const char *name_converted_translit = NULL;</span>
+<span class="lineNum">     194 </span>                :<span class="lineCov">        508 :   const char *locale_code = locale_charset ();</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">        508 :   char *alloc_name_converted = NULL;</span>
+<span class="lineNum">     196 </span>                :<span class="lineCov">        508 :   char *alloc_name_converted_translit = NULL;</span>
+<span class="lineNum">     197 </span>                :<span class="lineCov">        508 :   const char *name_converted = NULL;</span>
+<span class="lineNum">     198 </span>                :<span class="lineCov">        508 :   const char *name_converted_translit = NULL;</span>
 <span class="lineNum">     199 </span>                :            :   const char *name;
 <span class="lineNum">     200 </span>                :            : 
-<span class="lineNum">     201 </span>        [<span class="branchCov" title="Branch 1 was taken 845 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        845 :   if (c_strcasecmp (locale_code, &quot;UTF-8&quot;) != 0)</span>
+<span class="lineNum">     201 </span>        [<span class="branchCov" title="Branch 1 was taken 508 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        508 :   if (c_strcasecmp (locale_code, &quot;UTF-8&quot;) != 0)</span>
 <span class="lineNum">     202 </span>                :            :     {
 <span class="lineNum">     203 </span>                :            : #if HAVE_ICONV
-<span class="lineNum">     204 </span>                :<span class="lineCov">        845 :       name_converted = alloc_name_converted =</span>
+<span class="lineNum">     204 </span>                :<span class="lineCov">        508 :       name_converted = alloc_name_converted =</span>
 <span class="lineNum">     205 </span>                :            :         xstr_iconv (name_utf8, &quot;UTF-8&quot;, locale_code);
 <span class="lineNum">     206 </span>                :            : 
 <span class="lineNum">     207 </span>                :            : # if (((__GLIBC__ == 2 &amp;&amp; __GLIBC_MINOR__ &gt;= 2) || __GLIBC__ &gt; 2) \
@@ -285,28 +285,28 @@
 <span class="lineNum">     210 </span>                :            :       {
 <span class="lineNum">     211 </span>                :            :         char *converted_translit;
 <span class="lineNum">     212 </span>                :            : 
-<span class="lineNum">     213 </span>                :<span class="lineCov">        845 :         size_t len = strlen (locale_code);</span>
-<span class="lineNum">     214 </span>                :<span class="lineCov">        845 :         char *locale_code_translit = XNMALLOC (len + 10 + 1, char);</span>
-<span class="lineNum">     215 </span>                :<span class="lineCov">        845 :         memcpy (locale_code_translit, locale_code, len);</span>
-<span class="lineNum">     216 </span>                :<span class="lineCov">        845 :         memcpy (locale_code_translit + len, &quot;//TRANSLIT&quot;, 10 + 1);</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">        508 :         size_t len = strlen (locale_code);</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">        508 :         char *locale_code_translit = XNMALLOC (len + 10 + 1, char);</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">        508 :         memcpy (locale_code_translit, locale_code, len);</span>
+<span class="lineNum">     216 </span>                :<span class="lineCov">        508 :         memcpy (locale_code_translit + len, &quot;//TRANSLIT&quot;, 10 + 1);</span>
 <span class="lineNum">     217 </span>                :            : 
-<span class="lineNum">     218 </span>                :<span class="lineCov">        845 :         converted_translit =</span>
+<span class="lineNum">     218 </span>                :<span class="lineCov">        508 :         converted_translit =</span>
 <span class="lineNum">     219 </span>                :            :           xstr_iconv (name_utf8, &quot;UTF-8&quot;, locale_code_translit);
 <span class="lineNum">     220 </span>                :            : 
-<span class="lineNum">     221 </span>                :<span class="lineCov">        845 :         free (locale_code_translit);</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">        508 :         free (locale_code_translit);</span>
 <span class="lineNum">     222 </span>                :            : 
-<span class="lineNum">     223 </span>        [<span class="branchCov" title="Branch 0 was taken 845 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        845 :         if (converted_translit != NULL)</span>
+<span class="lineNum">     223 </span>        [<span class="branchCov" title="Branch 0 was taken 508 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        508 :         if (converted_translit != NULL)</span>
 <span class="lineNum">     224 </span>                :            :           {
 <span class="lineNum">     225 </span>                :            : #  if !_LIBICONV_VERSION
 <span class="lineNum">     226 </span>                :            :             /* Don't use the transliteration if it added question marks.
 <span class="lineNum">     227 </span>                :            :                glibc's transliteration falls back to question marks; libiconv's
 <span class="lineNum">     228 </span>                :            :                transliteration does not.
 <span class="lineNum">     229 </span>                :            :                mbschr is equivalent to strchr in this case.  */
-<span class="lineNum">     230 </span>        [<span class="branchCov" title="Branch 0 was taken 840 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">        845 :             if (strchr (converted_translit, '?') != NULL)</span>
-<span class="lineNum">     231 </span>                :<span class="lineCov">        840 :               free (converted_translit);</span>
+<span class="lineNum">     230 </span>        [<span class="branchCov" title="Branch 0 was taken 505 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">        508 :             if (strchr (converted_translit, '?') != NULL)</span>
+<span class="lineNum">     231 </span>                :<span class="lineCov">        505 :               free (converted_translit);</span>
 <span class="lineNum">     232 </span>                :            :             else
 <span class="lineNum">     233 </span>                :            : #  endif
-<span class="lineNum">     234 </span>                :<span class="lineCov">          5 :               name_converted_translit = alloc_name_converted_translit =</span>
+<span class="lineNum">     234 </span>                :<span class="lineCov">          3 :               name_converted_translit = alloc_name_converted_translit =</span>
 <span class="lineNum">     235 </span>                :            :                 converted_translit;
 <span class="lineNum">     236 </span>                :            :           }
 <span class="lineNum">     237 </span>                :            :       }
@@ -320,14 +320,14 @@
 <span class="lineNum">     245 </span>                :            :     }
 <span class="lineNum">     246 </span>                :            : 
 <span class="lineNum">     247 </span>                :            :   /* The name in locale encoding.  */
-<span class="lineNum">     248 </span>        [<span class="branchCov" title="Branch 0 was taken 840 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">       1685 :   name = (name_converted != NULL ? name_converted :</span>
-<span class="lineNum">     249 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 840 times"> + </span>]:<span class="lineCov">        840 :           name_converted_translit != NULL ? name_converted_translit :</span>
+<span class="lineNum">     248 </span>        [<span class="branchCov" title="Branch 0 was taken 505 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">       1013 :   name = (name_converted != NULL ? name_converted :</span>
+<span class="lineNum">     249 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 505 times"> + </span>]:<span class="lineCov">        505 :           name_converted_translit != NULL ? name_converted_translit :</span>
 <span class="lineNum">     250 </span>                :            :           name_ascii);
 <span class="lineNum">     251 </span>                :            : 
 <span class="lineNum">     252 </span>                :            :   /* See whether we have a translation.  Some translators have not understood
 <span class="lineNum">     253 </span>                :            :      that they should use the UTF-8 form of the name, if possible.  So if the
 <span class="lineNum">     254 </span>                :            :      translator provided a no-op translation, we ignore it.  */
-<span class="lineNum">     255 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 845 times"> + </span>]:<span class="lineCov">        845 :   if (strcmp (translation, name_ascii) != 0)</span>
+<span class="lineNum">     255 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 508 times"> + </span>]:<span class="lineCov">        508 :   if (strcmp (translation, name_ascii) != 0)</span>
 <span class="lineNum">     256 </span>                :            :     {
 <span class="lineNum">     257 </span>                :            :       /* See whether the translation contains the original name.  */
 <span class="lineNum">     258 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (mbsstr_trimmed_wordbounded (translation, name_ascii)</span>
@@ -359,12 +359,12 @@
 <span class="lineNum">     284 </span>                :            :     }
 <span class="lineNum">     285 </span>                :            :   else
 <span class="lineNum">     286 </span>                :            :     {
-<span class="lineNum">     287 </span>[<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 840 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 5 times"> + </span>]:<span class="lineCov">        845 :       if (alloc_name_converted != NULL &amp;&amp; alloc_name_converted != name)</span>
+<span class="lineNum">     287 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 505 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 3 times"> + </span>]:<span class="lineCov">        508 :       if (alloc_name_converted != NULL &amp;&amp; alloc_name_converted != name)</span>
 <span class="lineNum">     288 </span>                :<span class="lineNoCov">          0 :         free (alloc_name_converted);</span>
-<span class="lineNum">     289 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 840 times"> + </span>]:<span class="lineCov">        845 :       if (alloc_name_converted_translit != NULL</span>
-<span class="lineNum">     290 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          5 :           &amp;&amp; alloc_name_converted_translit != name)</span>
-<span class="lineNum">     291 </span>                :<span class="lineCov">          5 :         free (alloc_name_converted_translit);</span>
-<span class="lineNum">     292 </span>                :<span class="lineCov">        845 :       return name;</span>
+<span class="lineNum">     289 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 505 times"> + </span>]:<span class="lineCov">        508 :       if (alloc_name_converted_translit != NULL</span>
+<span class="lineNum">     290 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          3 :           &amp;&amp; alloc_name_converted_translit != name)</span>
+<span class="lineNum">     291 </span>                :<span class="lineCov">          3 :         free (alloc_name_converted_translit);</span>
+<span class="lineNum">     292 </span>                :<span class="lineCov">        508 :       return name;</span>
 <span class="lineNum">     293 </span>                :            :     }
 <span class="lineNum">     294 </span>                :            : }
 <span class="lineNum">     295 </span>                :            : 

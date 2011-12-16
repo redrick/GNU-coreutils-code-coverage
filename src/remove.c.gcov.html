@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - src/remove.c</title>
+  <title>LCOV - coreutils - src/remove.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">155</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">11</td>
@@ -138,25 +138,25 @@
 <span class="lineNum">      67 </span>                :            :    with errno == ST-&gt;st_ino.  Otherwise, the status has already
 <a name="68"><span class="lineNum">      68 </span>                :            :    been gotten, so return 0.  */</a>
 <span class="lineNum">      69 </span>                :            : static int
-<span class="lineNum">      70 </span>                :<span class="lineCov">      51492 : cache_fstatat (int fd, char const *file, struct stat *st, int flag)</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">      25757 : cache_fstatat (int fd, char const *file, struct stat *st, int flag)</span>
 <span class="lineNum">      71 </span>                :            : {
-<span class="lineNum">      72 </span>[<span class="branchCov" title="Branch 0 was taken 51327 times"> + </span><span class="branchCov" title="Branch 1 was taken 165 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 16 times"> + </span><span class="branchCov" title="Branch 4 was taken 51311 times"> + </span>]:<span class="lineCov">      51492 :   if (st-&gt;st_size == -1 &amp;&amp; fstatat (fd, file, st, flag) != 0)</span>
+<span class="lineNum">      72 </span>[<span class="branchCov" title="Branch 0 was taken 25670 times"> + </span><span class="branchCov" title="Branch 1 was taken 87 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 8 times"> + </span><span class="branchCov" title="Branch 4 was taken 25662 times"> + </span>]:<span class="lineCov">      25757 :   if (st-&gt;st_size == -1 &amp;&amp; fstatat (fd, file, st, flag) != 0)</span>
 <span class="lineNum">      73 </span>                :            :     {
-<span class="lineNum">      74 </span>                :<span class="lineCov">         16 :       st-&gt;st_size = -2;</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">         16 :       st-&gt;st_ino = errno;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">          8 :       st-&gt;st_size = -2;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">          8 :       st-&gt;st_ino = errno;</span>
 <span class="lineNum">      76 </span>                :            :     }
-<span class="lineNum">      77 </span>        [<span class="branchCov" title="Branch 0 was taken 51476 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">      51492 :   if (0 &lt;= st-&gt;st_size)</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">      51476 :     return 0;</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">         16 :   errno = (int) st-&gt;st_ino;</span>
-<span class="lineNum">      80 </span>                :<span class="lineCov">      51492 :   return -1;</span>
+<span class="lineNum">      77 </span>        [<span class="branchCov" title="Branch 0 was taken 25749 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">      25757 :   if (0 &lt;= st-&gt;st_size)</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">      25749 :     return 0;</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">          8 :   errno = (int) st-&gt;st_ino;</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">      25757 :   return -1;</span>
 <span class="lineNum">      81 </span>                :            : }
 <span class="lineNum">      82 </span>                :            : 
 <a name="83"><span class="lineNum">      83 </span>                :            : /* Initialize a fstatat cache *ST.  Return ST for convenience.  */</a>
 <span class="lineNum">      84 </span>                :            : static inline struct stat *
-<span class="lineNum">      85 </span>                :<span class="lineCov">    2014018 : cache_stat_init (struct stat *st)</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">     818263 : cache_stat_init (struct stat *st)</span>
 <span class="lineNum">      86 </span>                :            : {
-<span class="lineNum">      87 </span>                :<span class="lineCov">    2014018 :   st-&gt;st_size = -1;</span>
-<span class="lineNum">      88 </span>                :<span class="lineCov">    2014018 :   return st;</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">     818263 :   st-&gt;st_size = -1;</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">     818263 :   return st;</span>
 <span class="lineNum">      89 </span>                :            : }
 <span class="lineNum">      90 </span>                :            : 
 <span class="lineNum">      91 </span>                :            : /* Return true if *ST has been statted.  */
@@ -178,16 +178,16 @@
 <span class="lineNum">     107 </span>                :            :    -1 and set errno if there is some problem in determining the answer.
 <a name="108"><span class="lineNum">     108 </span>                :            :    Set *BUF to the file status.  */</a>
 <span class="lineNum">     109 </span>                :            : static int
-<span class="lineNum">     110 </span>                :<span class="lineCov">      52222 : write_protected_non_symlink (int fd_cwd,</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">      26565 : write_protected_non_symlink (int fd_cwd,</span>
 <span class="lineNum">     111 </span>                :            :                              char const *file,
 <span class="lineNum">     112 </span>                :            :                              struct stat *buf)
 <span class="lineNum">     113 </span>                :            : {
-<span class="lineNum">     114 </span>        [<span class="branchCov" title="Branch 1 was taken 908 times"> + </span><span class="branchCov" title="Branch 2 was taken 51314 times"> + </span>]:<span class="lineCov">      52222 :   if (can_write_any_file ())</span>
+<span class="lineNum">     114 </span>        [<span class="branchCov" title="Branch 1 was taken 908 times"> + </span><span class="branchCov" title="Branch 2 was taken 25657 times"> + </span>]:<span class="lineCov">      26565 :   if (can_write_any_file ())</span>
 <span class="lineNum">     115 </span>                :<span class="lineCov">        908 :     return 0;</span>
-<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 1 was taken 16 times"> + </span><span class="branchCov" title="Branch 2 was taken 51298 times"> + </span>]:<span class="lineCov">      51314 :   if (cache_fstatat (fd_cwd, file, buf, AT_SYMLINK_NOFOLLOW) != 0)</span>
-<span class="lineNum">     117 </span>                :<span class="lineCov">         16 :     return -1;</span>
-<span class="lineNum">     118 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 51278 times"> + </span>]:<span class="lineCov">      51298 :   if (S_ISLNK (buf-&gt;st_mode))</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">         20 :     return 0;</span>
+<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchCov" title="Branch 2 was taken 25649 times"> + </span>]:<span class="lineCov">      25657 :   if (cache_fstatat (fd_cwd, file, buf, AT_SYMLINK_NOFOLLOW) != 0)</span>
+<span class="lineNum">     117 </span>                :<span class="lineCov">          8 :     return -1;</span>
+<span class="lineNum">     118 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 25639 times"> + </span>]:<span class="lineCov">      25649 :   if (S_ISLNK (buf-&gt;st_mode))</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">         10 :     return 0;</span>
 <span class="lineNum">     120 </span>                :            :   /* Here, we know FILE is not a symbolic link.  */
 <span class="lineNum">     121 </span>                :            : 
 <span class="lineNum">     122 </span>                :            :   /* In order to be reentrant -- i.e., to avoid changing the working
@@ -237,10 +237,10 @@
 <span class="lineNum">     166 </span>                :            :         mess up with long file names). */
 <span class="lineNum">     167 </span>                :            : 
 <span class="lineNum">     168 </span>                :            :   {
-<span class="lineNum">     169 </span>        [<span class="branchCov" title="Branch 1 was taken 51262 times"> + </span><span class="branchCov" title="Branch 2 was taken 16 times"> + </span>]:<span class="lineCov">      51278 :     if (faccessat (fd_cwd, file, W_OK, AT_EACCESS) == 0)</span>
-<span class="lineNum">     170 </span>                :<span class="lineCov">      51262 :       return 0;</span>
+<span class="lineNum">     169 </span>        [<span class="branchCov" title="Branch 1 was taken 25631 times"> + </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">      25639 :     if (faccessat (fd_cwd, file, W_OK, AT_EACCESS) == 0)</span>
+<span class="lineNum">     170 </span>                :<span class="lineCov">      25631 :       return 0;</span>
 <span class="lineNum">     171 </span>                :            : 
-<span class="lineNum">     172 </span>        [<span class="branchCov" title="Branch 1 was taken 16 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">      52222 :     return errno == EACCES ? 1 : -1;</span>
+<span class="lineNum">     172 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">      26565 :     return errno == EACCES ? 1 : -1;</span>
 <span class="lineNum">     173 </span>                :            :   }
 <span class="lineNum">     174 </span>                :            : }
 <span class="lineNum">     175 </span>                :            : 
@@ -258,50 +258,50 @@
 <span class="lineNum">     187 </span>                :            :    appropriate to try to remove it with rmdir (e.g. recursive mode).
 <a name="188"><span class="lineNum">     188 </span>                :            :    Don't even try to set *IS_EMPTY_P when MODE == PA_REMOVE_DIR.  */</a>
 <span class="lineNum">     189 </span>                :            : static enum RM_status
-<span class="lineNum">     190 </span>                :<span class="lineCov">    2014018 : prompt (FTS const *fts, FTSENT const *ent, bool is_dir,</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">     818263 : prompt (FTS const *fts, FTSENT const *ent, bool is_dir,</span>
 <span class="lineNum">     191 </span>                :            :         struct rm_options const *x, enum Prompt_action mode,
 <span class="lineNum">     192 </span>                :            :         Ternary *is_empty_p)
 <span class="lineNum">     193 </span>                :            : {
-<span class="lineNum">     194 </span>                :<span class="lineCov">    2014018 :   int fd_cwd = fts-&gt;fts_cwd_fd;</span>
-<span class="lineNum">     195 </span>                :<span class="lineCov">    2014018 :   char const *full_name = ent-&gt;fts_path;</span>
-<span class="lineNum">     196 </span>                :<span class="lineCov">    2014018 :   char const *filename = ent-&gt;fts_accpath;</span>
-<span class="lineNum">     197 </span>        [<span class="branchCov" title="Branch 0 was taken 132794 times"> + </span><span class="branchCov" title="Branch 1 was taken 1881224 times"> + </span>]:<span class="lineCov">    2014018 :   if (is_empty_p)</span>
-<span class="lineNum">     198 </span>                :<span class="lineCov">     132794 :     *is_empty_p = T_UNKNOWN;</span>
+<span class="lineNum">     194 </span>                :<span class="lineCov">     818263 :   int fd_cwd = fts-&gt;fts_cwd_fd;</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">     818263 :   char const *full_name = ent-&gt;fts_path;</span>
+<span class="lineNum">     196 </span>                :<span class="lineCov">     818263 :   char const *filename = ent-&gt;fts_accpath;</span>
+<span class="lineNum">     197 </span>        [<span class="branchCov" title="Branch 0 was taken 69876 times"> + </span><span class="branchCov" title="Branch 1 was taken 748387 times"> + </span>]:<span class="lineCov">     818263 :   if (is_empty_p)</span>
+<span class="lineNum">     198 </span>                :<span class="lineCov">      69876 :     *is_empty_p = T_UNKNOWN;</span>
 <span class="lineNum">     199 </span>                :            : 
 <span class="lineNum">     200 </span>                :            :   struct stat st;
-<span class="lineNum">     201 </span>                :<span class="lineCov">    2014018 :   struct stat *sbuf = &amp;st;</span>
-<span class="lineNum">     202 </span>                :<span class="lineCov">    2014018 :   cache_stat_init (sbuf);</span>
+<span class="lineNum">     201 </span>                :<span class="lineCov">     818263 :   struct stat *sbuf = &amp;st;</span>
+<span class="lineNum">     202 </span>                :<span class="lineCov">     818263 :   cache_stat_init (sbuf);</span>
 <span class="lineNum">     203 </span>                :            : 
-<span class="lineNum">     204 </span>        [<span class="branchCov" title="Branch 0 was taken 265575 times"> + </span><span class="branchCov" title="Branch 1 was taken 1748443 times"> + </span>]:<span class="lineCov">    2014018 :   int dirent_type = is_dir ? DT_DIR : DT_UNKNOWN;</span>
-<span class="lineNum">     205 </span>                :<span class="lineCov">    2014018 :   int write_protected = 0;</span>
+<span class="lineNum">     204 </span>        [<span class="branchCov" title="Branch 0 was taken 139745 times"> + </span><span class="branchCov" title="Branch 1 was taken 678518 times"> + </span>]:<span class="lineCov">     818263 :   int dirent_type = is_dir ? DT_DIR : DT_UNKNOWN;</span>
+<span class="lineNum">     205 </span>                :<span class="lineCov">     818263 :   int write_protected = 0;</span>
 <span class="lineNum">     206 </span>                :            : 
 <span class="lineNum">     207 </span>                :            :   /* When nonzero, this indicates that we failed to remove a child entry,
 <span class="lineNum">     208 </span>                :            :      either because the user declined an interactive prompt, or due to
 <span class="lineNum">     209 </span>                :            :      some other failure, like permissions.  */
-<span class="lineNum">     210 </span>        [<span class="branchCov" title="Branch 0 was taken 41 times"> + </span><span class="branchCov" title="Branch 1 was taken 2013977 times"> + </span>]:<span class="lineCov">    2014018 :   if (ent-&gt;fts_number)</span>
-<span class="lineNum">     211 </span>                :<span class="lineCov">         41 :     return RM_USER_DECLINED;</span>
+<span class="lineNum">     210 </span>        [<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 818242 times"> + </span>]:<span class="lineCov">     818263 :   if (ent-&gt;fts_number)</span>
+<span class="lineNum">     211 </span>                :<span class="lineCov">         21 :     return RM_USER_DECLINED;</span>
 <span class="lineNum">     212 </span>                :            : 
-<span class="lineNum">     213 </span>        [<span class="branchCov" title="Branch 0 was taken 1961750 times"> + </span><span class="branchCov" title="Branch 1 was taken 52227 times"> + </span>]:<span class="lineCov">    2013977 :   if (x-&gt;interactive == RMI_NEVER)</span>
-<span class="lineNum">     214 </span>                :<span class="lineCov">    1961750 :     return RM_OK;</span>
+<span class="lineNum">     213 </span>        [<span class="branchCov" title="Branch 0 was taken 791674 times"> + </span><span class="branchCov" title="Branch 1 was taken 26568 times"> + </span>]:<span class="lineCov">     818242 :   if (x-&gt;interactive == RMI_NEVER)</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">     791674 :     return RM_OK;</span>
 <span class="lineNum">     215 </span>                :            : 
-<span class="lineNum">     216 </span>                :<span class="lineCov">      52227 :   int wp_errno = 0;</span>
-<span class="lineNum">     217 </span>        [<span class="branchCov" title="Branch 0 was taken 52227 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      52227 :   if (!x-&gt;ignore_missing_files</span>
-<span class="lineNum">     218 </span>[<span class="branchCov" title="Branch 0 was taken 52094 times"> + </span><span class="branchCov" title="Branch 1 was taken 133 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 52089 times"> + </span><span class="branchCov" title="Branch 3 was taken 5 times"> + </span>]:<span class="lineCov">      52227 :       &amp;&amp; ((x-&gt;interactive == RMI_ALWAYS) || x-&gt;stdin_tty)</span>
-<span class="lineNum">     219 </span>        [<span class="branchCov" title="Branch 0 was taken 52222 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      52222 :       &amp;&amp; dirent_type != DT_LNK)</span>
+<span class="lineNum">     216 </span>                :<span class="lineCov">      26568 :   int wp_errno = 0;</span>
+<span class="lineNum">     217 </span>        [<span class="branchCov" title="Branch 0 was taken 26568 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      26568 :   if (!x-&gt;ignore_missing_files</span>
+<span class="lineNum">     218 </span>[<span class="branchCov" title="Branch 0 was taken 26493 times"> + </span><span class="branchCov" title="Branch 1 was taken 75 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 26490 times"> + </span><span class="branchCov" title="Branch 3 was taken 3 times"> + </span>]:<span class="lineCov">      26568 :       &amp;&amp; ((x-&gt;interactive == RMI_ALWAYS) || x-&gt;stdin_tty)</span>
+<span class="lineNum">     219 </span>        [<span class="branchCov" title="Branch 0 was taken 26565 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      26565 :       &amp;&amp; dirent_type != DT_LNK)</span>
 <span class="lineNum">     220 </span>                :            :     {
-<span class="lineNum">     221 </span>                :<span class="lineCov">      52222 :       write_protected = write_protected_non_symlink (fd_cwd, filename, sbuf);</span>
-<span class="lineNum">     222 </span>                :<span class="lineCov">      52222 :       wp_errno = errno;</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">      26565 :       write_protected = write_protected_non_symlink (fd_cwd, filename, sbuf);</span>
+<span class="lineNum">     222 </span>                :<span class="lineCov">      26565 :       wp_errno = errno;</span>
 <span class="lineNum">     223 </span>                :            :     }
 <span class="lineNum">     224 </span>                :            : 
-<span class="lineNum">     225 </span>[<span class="branchCov" title="Branch 0 was taken 52195 times"> + </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 121 times"> + </span><span class="branchCov" title="Branch 3 was taken 52074 times"> + </span>]:<span class="lineCov">      52227 :   if (write_protected || x-&gt;interactive == RMI_ALWAYS)</span>
+<span class="lineNum">     225 </span>[<span class="branchCov" title="Branch 0 was taken 26552 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 69 times"> + </span><span class="branchCov" title="Branch 3 was taken 26483 times"> + </span>]:<span class="lineCov">      26568 :   if (write_protected || x-&gt;interactive == RMI_ALWAYS)</span>
 <span class="lineNum">     226 </span>                :            :     {
-<span class="lineNum">     227 </span>[<span class="branchCov" title="Branch 0 was taken 137 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 69 times"> + </span><span class="branchCov" title="Branch 3 was taken 68 times"> + </span>]:<span class="lineCov">        153 :       if (0 &lt;= write_protected &amp;&amp; dirent_type == DT_UNKNOWN)</span>
+<span class="lineNum">     227 </span>[<span class="branchCov" title="Branch 0 was taken 77 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 39 times"> + </span><span class="branchCov" title="Branch 3 was taken 38 times"> + </span>]:<span class="lineCov">         85 :       if (0 &lt;= write_protected &amp;&amp; dirent_type == DT_UNKNOWN)</span>
 <span class="lineNum">     228 </span>                :            :         {
-<span class="lineNum">     229 </span>        [<span class="branchCov" title="Branch 1 was taken 69 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">         69 :           if (cache_fstatat (fd_cwd, filename, sbuf, AT_SYMLINK_NOFOLLOW) == 0)</span>
+<span class="lineNum">     229 </span>        [<span class="branchCov" title="Branch 1 was taken 39 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">         39 :           if (cache_fstatat (fd_cwd, filename, sbuf, AT_SYMLINK_NOFOLLOW) == 0)</span>
 <span class="lineNum">     230 </span>                :            :             {
-<span class="lineNum">     231 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 61 times"> + </span>]:<span class="lineCov">         69 :               if (S_ISLNK (sbuf-&gt;st_mode))</span>
-<span class="lineNum">     232 </span>                :<span class="lineCov">          8 :                 dirent_type = DT_LNK;</span>
-<span class="lineNum">     233 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 61 times"> + </span>]:<span class="lineCov">         61 :               else if (S_ISDIR (sbuf-&gt;st_mode))</span>
+<span class="lineNum">     231 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">         39 :               if (S_ISLNK (sbuf-&gt;st_mode))</span>
+<span class="lineNum">     232 </span>                :<span class="lineCov">          4 :                 dirent_type = DT_LNK;</span>
+<span class="lineNum">     233 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">         35 :               else if (S_ISDIR (sbuf-&gt;st_mode))</span>
 <span class="lineNum">     234 </span>                :<span class="lineNoCov">          0 :                 dirent_type = DT_DIR;</span>
 <span class="lineNum">     235 </span>                :            :               /* Otherwise it doesn't matter, so leave it DT_UNKNOWN.  */
 <span class="lineNum">     236 </span>                :            :             }
@@ -313,59 +313,59 @@
 <span class="lineNum">     242 </span>                :            :             }
 <span class="lineNum">     243 </span>                :            :         }
 <span class="lineNum">     244 </span>                :            : 
-<span class="lineNum">     245 </span>        [<span class="branchCov" title="Branch 0 was taken 137 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">        153 :       if (0 &lt;= write_protected)</span>
-<span class="lineNum">     246 </span>     [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 68 times"> + </span><span class="branchCov" title="Branch 2 was taken 61 times"> + </span>]:<span class="lineCov">        137 :         switch (dirent_type)</span>
+<span class="lineNum">     245 </span>        [<span class="branchCov" title="Branch 0 was taken 77 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">         85 :       if (0 &lt;= write_protected)</span>
+<span class="lineNum">     246 </span>     [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span><span class="branchCov" title="Branch 2 was taken 35 times"> + </span>]:<span class="lineCov">         77 :         switch (dirent_type)</span>
 <span class="lineNum">     247 </span>                :            :           {
 <span class="lineNum">     248 </span>                :            :           case DT_LNK:
 <span class="lineNum">     249 </span>                :            :             /* Using permissions doesn't make sense for symlinks.  */
-<span class="lineNum">     250 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :             if (x-&gt;interactive != RMI_ALWAYS)</span>
+<span class="lineNum">     250 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          4 :             if (x-&gt;interactive != RMI_ALWAYS)</span>
 <span class="lineNum">     251 </span>                :<span class="lineNoCov">          0 :               return RM_OK;</span>
-<span class="lineNum">     252 </span>                :<span class="lineCov">          8 :             break;</span>
+<span class="lineNum">     252 </span>                :<span class="lineCov">          4 :             break;</span>
 <span class="lineNum">     253 </span>                :            : 
 <span class="lineNum">     254 </span>                :            :           case DT_DIR:
-<span class="lineNum">     255 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 68 times"> + </span>]:<span class="lineCov">         68 :             if (!x-&gt;recursive)</span>
+<span class="lineNum">     255 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span>]:<span class="lineCov">         38 :             if (!x-&gt;recursive)</span>
 <span class="lineNum">     256 </span>                :            :               {
 <span class="lineNum">     257 </span>                :<span class="lineNoCov">          0 :                 write_protected = -1;</span>
 <span class="lineNum">     258 </span>                :<span class="lineNoCov">          0 :                 wp_errno = EISDIR;</span>
 <span class="lineNum">     259 </span>                :            :               }
-<span class="lineNum">     260 </span>                :<span class="lineCov">         68 :             break;</span>
+<span class="lineNum">     260 </span>                :<span class="lineCov">         38 :             break;</span>
 <span class="lineNum">     261 </span>                :            :           }
 <span class="lineNum">     262 </span>                :            : 
-<span class="lineNum">     263 </span>                :<span class="lineCov">        153 :       char const *quoted_name = quote (full_name);</span>
+<span class="lineNum">     263 </span>                :<span class="lineCov">         85 :       char const *quoted_name = quote (full_name);</span>
 <span class="lineNum">     264 </span>                :            : 
-<span class="lineNum">     265 </span>        [<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 137 times"> + </span>]:<span class="lineCov">        153 :       if (write_protected &lt; 0)</span>
+<span class="lineNum">     265 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 77 times"> + </span>]:<span class="lineCov">         85 :       if (write_protected &lt; 0)</span>
 <span class="lineNum">     266 </span>                :            :         {
-<span class="lineNum">     267 </span>                :<span class="lineCov">         16 :           error (0, wp_errno, _(&quot;cannot remove %s&quot;), quoted_name);</span>
-<span class="lineNum">     268 </span>                :<span class="lineCov">         16 :           return RM_ERROR;</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">          8 :           error (0, wp_errno, _(&quot;cannot remove %s&quot;), quoted_name);</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">          8 :           return RM_ERROR;</span>
 <span class="lineNum">     269 </span>                :            :         }
 <span class="lineNum">     270 </span>                :            : 
 <span class="lineNum">     271 </span>                :            :       bool is_empty;
-<span class="lineNum">     272 </span>        [<span class="branchCov" title="Branch 0 was taken 40 times"> + </span><span class="branchCov" title="Branch 1 was taken 97 times"> + </span>]:<span class="lineCov">        137 :       if (is_empty_p)</span>
+<span class="lineNum">     272 </span>        [<span class="branchCov" title="Branch 0 was taken 22 times"> + </span><span class="branchCov" title="Branch 1 was taken 55 times"> + </span>]:<span class="lineCov">         77 :       if (is_empty_p)</span>
 <span class="lineNum">     273 </span>                :            :         {
-<span class="lineNum">     274 </span>                :<span class="lineCov">         40 :           is_empty = is_empty_dir (fd_cwd, filename);</span>
-<span class="lineNum">     275 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         40 :           *is_empty_p = is_empty ? T_YES : T_NO;</span>
+<span class="lineNum">     274 </span>                :<span class="lineCov">         22 :           is_empty = is_empty_dir (fd_cwd, filename);</span>
+<span class="lineNum">     275 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">         22 :           *is_empty_p = is_empty ? T_YES : T_NO;</span>
 <span class="lineNum">     276 </span>                :            :         }
 <span class="lineNum">     277 </span>                :            :       else
-<span class="lineNum">     278 </span>                :<span class="lineCov">         97 :         is_empty = false;</span>
+<span class="lineNum">     278 </span>                :<span class="lineCov">         55 :         is_empty = false;</span>
 <span class="lineNum">     279 </span>                :            : 
 <span class="lineNum">     280 </span>                :            :       /* Issue the prompt.  */
-<span class="lineNum">     281 </span>        [<span class="branchCov" title="Branch 0 was taken 68 times"> + </span><span class="branchCov" title="Branch 1 was taken 69 times"> + </span>]:<span class="lineCov">        137 :       if (dirent_type == DT_DIR</span>
-<span class="lineNum">     282 </span>        [<span class="branchCov" title="Branch 0 was taken 40 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         68 :           &amp;&amp; mode == PA_DESCEND_INTO_DIR</span>
-<span class="lineNum">     283 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         40 :           &amp;&amp; !is_empty)</span>
-<span class="lineNum">     284 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         fprintf (stderr,</span>
+<span class="lineNum">     281 </span>        [<span class="branchCov" title="Branch 0 was taken 38 times"> + </span><span class="branchCov" title="Branch 1 was taken 39 times"> + </span>]:<span class="lineCov">         77 :       if (dirent_type == DT_DIR</span>
+<span class="lineNum">     282 </span>        [<span class="branchCov" title="Branch 0 was taken 22 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">         38 :           &amp;&amp; mode == PA_DESCEND_INTO_DIR</span>
+<span class="lineNum">     283 </span>        [<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         22 :           &amp;&amp; !is_empty)</span>
+<span class="lineNum">     284 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">         16 :         fprintf (stderr,</span>
 <span class="lineNum">     285 </span>                :            :                  (write_protected
 <span class="lineNum">     286 </span>                :            :                   ? _(&quot;%s: descend into write-protected directory %s? &quot;)
 <span class="lineNum">     287 </span>                :            :                   : _(&quot;%s: descend into directory %s? &quot;)),
 <span class="lineNum">     288 </span>                :            :                  program_name, quoted_name);
 <span class="lineNum">     289 </span>                :            :       else
 <span class="lineNum">     290 </span>                :            :         {
-<span class="lineNum">     291 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 109 times"> + </span>]:<span class="lineCov">        109 :           if (cache_fstatat (fd_cwd, filename, sbuf, AT_SYMLINK_NOFOLLOW) != 0)</span>
+<span class="lineNum">     291 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 61 times"> + </span>]:<span class="lineCov">         61 :           if (cache_fstatat (fd_cwd, filename, sbuf, AT_SYMLINK_NOFOLLOW) != 0)</span>
 <span class="lineNum">     292 </span>                :            :             {
 <span class="lineNum">     293 </span>                :<span class="lineNoCov">          0 :               error (0, errno, _(&quot;cannot remove %s&quot;), quoted_name);</span>
 <span class="lineNum">     294 </span>                :<span class="lineNoCov">          0 :               return RM_ERROR;</span>
 <span class="lineNum">     295 </span>                :            :             }
 <span class="lineNum">     296 </span>                :            : 
-<span class="lineNum">     297 </span>        [<span class="branchCov" title="Branch 1 was taken 16 times"> + </span><span class="branchCov" title="Branch 2 was taken 93 times"> + </span>]:<span class="lineCov">        109 :           fprintf (stderr,</span>
+<span class="lineNum">     297 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchCov" title="Branch 2 was taken 53 times"> + </span>]:<span class="lineCov">         61 :           fprintf (stderr,</span>
 <span class="lineNum">     298 </span>                :            :                    (write_protected
 <span class="lineNum">     299 </span>                :            :                     /* TRANSLATORS: You may find it more convenient to
 <span class="lineNum">     300 </span>                :            :                        translate &quot;%s: remove %s (write-protected) %s? &quot;
@@ -376,10 +376,10 @@
 <span class="lineNum">     305 </span>                :            :                    program_name, file_type (sbuf), quoted_name);
 <span class="lineNum">     306 </span>                :            :         }
 <span class="lineNum">     307 </span>                :            : 
-<span class="lineNum">     308 </span>        [<span class="branchCov" title="Branch 1 was taken 34 times"> + </span><span class="branchCov" title="Branch 2 was taken 103 times"> + </span>]:<span class="lineCov">        137 :       if (!yesno ())</span>
-<span class="lineNum">     309 </span>                :<span class="lineCov">         34 :         return RM_USER_DECLINED;</span>
+<span class="lineNum">     308 </span>        [<span class="branchCov" title="Branch 1 was taken 20 times"> + </span><span class="branchCov" title="Branch 2 was taken 57 times"> + </span>]:<span class="lineCov">         77 :       if (!yesno ())</span>
+<span class="lineNum">     309 </span>                :<span class="lineCov">         20 :         return RM_USER_DECLINED;</span>
 <span class="lineNum">     310 </span>                :            :     }
-<span class="lineNum">     311 </span>                :<span class="lineCov">    2014018 :   return RM_OK;</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">     818263 :   return RM_OK;</span>
 <span class="lineNum">     312 </span>                :            : }
 <span class="lineNum">     313 </span>                :            : 
 <span class="lineNum">     314 </span>                :            : /* Return true if FILENAME is a directory (and not a symlink to a directory).
@@ -416,7 +416,7 @@
 <span class="lineNum">     345 </span>                :            :    value of ERRNUM, return true if the specified file system object
 <a name="346"><span class="lineNum">     346 </span>                :            :    is guaranteed not to exist;  otherwise, return false.  */</a>
 <span class="lineNum">     347 </span>                :            : static inline bool
-<span class="lineNum">     348 </span>                :<span class="lineCov">       3392 : nonexistent_file_errno (int errnum)</span>
+<span class="lineNum">     348 </span>                :<span class="lineCov">       2018 : nonexistent_file_errno (int errnum)</span>
 <span class="lineNum">     349 </span>                :            : {
 <span class="lineNum">     350 </span>                :            :   /* Do not include ELOOP here, since the specified file may indeed
 <span class="lineNum">     351 </span>                :            :      exist, but be (in)accessible only via too long a symlink chain.
@@ -430,72 +430,72 @@
 <span class="lineNum">     359 </span>                :            :      http://austingroupbugs.net/view.php?id=293
 <span class="lineNum">     360 </span>                :            :   */
 <span class="lineNum">     361 </span>                :            : 
-<span class="lineNum">     362 </span>        [<span class="branchCov" title="Branch 0 was taken 3351 times"> + </span><span class="branchCov" title="Branch 1 was taken 41 times"> + </span>]:<span class="lineCov">       3392 :   switch (errnum)</span>
+<span class="lineNum">     362 </span>        [<span class="branchCov" title="Branch 0 was taken 1997 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">       2018 :   switch (errnum)</span>
 <span class="lineNum">     363 </span>                :            :     {
 <span class="lineNum">     364 </span>                :            :     case EILSEQ:
 <span class="lineNum">     365 </span>                :            :     case EINVAL:
 <span class="lineNum">     366 </span>                :            :     case ENOENT:
 <span class="lineNum">     367 </span>                :            :     case ENOTDIR:
-<span class="lineNum">     368 </span>                :<span class="lineCov">       3351 :       return true;</span>
+<span class="lineNum">     368 </span>                :<span class="lineCov">       1997 :       return true;</span>
 <span class="lineNum">     369 </span>                :            :     default:
-<span class="lineNum">     370 </span>                :<span class="lineCov">       3392 :       return false;</span>
+<span class="lineNum">     370 </span>                :<span class="lineCov">       2018 :       return false;</span>
 <span class="lineNum">     371 </span>                :            :     }
 <span class="lineNum">     372 </span>                :            : }
 <span class="lineNum">     373 </span>                :            : 
 <a name="374"><span class="lineNum">     374 </span>                :            : /* Encapsulate the test for whether the errno value, ERRNUM, is ignorable.  */</a>
 <span class="lineNum">     375 </span>                :            : static inline bool
-<span class="lineNum">     376 </span>                :<span class="lineCov">       3395 : ignorable_missing (struct rm_options const *x, int errnum)</span>
+<span class="lineNum">     376 </span>                :<span class="lineCov">       2021 : ignorable_missing (struct rm_options const *x, int errnum)</span>
 <span class="lineNum">     377 </span>                :            : {
-<span class="lineNum">     378 </span>[<span class="branchCov" title="Branch 0 was taken 3392 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 3351 times"> + </span><span class="branchCov" title="Branch 4 was taken 41 times"> + </span>]:<span class="lineCov">       3395 :   return x-&gt;ignore_missing_files &amp;&amp; nonexistent_file_errno (errnum);</span>
+<span class="lineNum">     378 </span>[<span class="branchCov" title="Branch 0 was taken 2018 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 1997 times"> + </span><span class="branchCov" title="Branch 4 was taken 21 times"> + </span>]:<span class="lineCov">       2021 :   return x-&gt;ignore_missing_files &amp;&amp; nonexistent_file_errno (errnum);</span>
 <span class="lineNum">     379 </span>                :            : }
 <span class="lineNum">     380 </span>                :            : 
 <a name="381"><span class="lineNum">     381 </span>                :            : /* Tell fts not to traverse into the hierarchy at ENT.  */</a>
 <span class="lineNum">     382 </span>                :            : static void
-<span class="lineNum">     383 </span>                :<span class="lineCov">         56 : fts_skip_tree (FTS *fts, FTSENT *ent)</span>
+<span class="lineNum">     383 </span>                :<span class="lineCov">         32 : fts_skip_tree (FTS *fts, FTSENT *ent)</span>
 <span class="lineNum">     384 </span>                :            : {
-<span class="lineNum">     385 </span>                :<span class="lineCov">         56 :   fts_set (fts, ent, FTS_SKIP);</span>
+<span class="lineNum">     385 </span>                :<span class="lineCov">         32 :   fts_set (fts, ent, FTS_SKIP);</span>
 <span class="lineNum">     386 </span>                :            :   /* Ensure that we do not process ENT a second time.  */
-<span class="lineNum">     387 </span>                :<span class="lineCov">         56 :   ignore_value (fts_read (fts));</span>
-<span class="lineNum">     388 </span>                :<span class="lineCov">         56 : }</span>
+<span class="lineNum">     387 </span>                :<span class="lineCov">         32 :   ignore_value (fts_read (fts));</span>
+<span class="lineNum">     388 </span>                :<span class="lineCov">         32 : }</span>
 <span class="lineNum">     389 </span>                :            : 
 <span class="lineNum">     390 </span>                :            : /* Upon unlink failure, or when the user declines to remove ENT, mark
 <span class="lineNum">     391 </span>                :            :    each of its ancestor directories, so that we know not to prompt for
 <a name="392"><span class="lineNum">     392 </span>                :            :    its removal.  */</a>
 <span class="lineNum">     393 </span>                :            : static void
-<span class="lineNum">     394 </span>                :<span class="lineCov">         64 : mark_ancestor_dirs (FTSENT *ent)</span>
+<span class="lineNum">     394 </span>                :<span class="lineCov">         36 : mark_ancestor_dirs (FTSENT *ent)</span>
 <span class="lineNum">     395 </span>                :            : {
 <span class="lineNum">     396 </span>                :            :   FTSENT *p;
-<span class="lineNum">     397 </span>        [<span class="branchCov" title="Branch 0 was taken 41 times"> + </span><span class="branchCov" title="Branch 1 was taken 64 times"> + </span>]:<span class="lineCov">        105 :   for (p = ent-&gt;fts_parent; FTS_ROOTLEVEL &lt;= p-&gt;fts_level; p = p-&gt;fts_parent)</span>
+<span class="lineNum">     397 </span>        [<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         57 :   for (p = ent-&gt;fts_parent; FTS_ROOTLEVEL &lt;= p-&gt;fts_level; p = p-&gt;fts_parent)</span>
 <span class="lineNum">     398 </span>                :            :     {
-<span class="lineNum">     399 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 41 times"> + </span>]:<span class="lineCov">         41 :       if (p-&gt;fts_number)</span>
+<span class="lineNum">     399 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         21 :       if (p-&gt;fts_number)</span>
 <span class="lineNum">     400 </span>                :<span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     401 </span>                :<span class="lineCov">         41 :       p-&gt;fts_number = 1;</span>
+<span class="lineNum">     401 </span>                :<span class="lineCov">         21 :       p-&gt;fts_number = 1;</span>
 <span class="lineNum">     402 </span>                :            :     }
-<span class="lineNum">     403 </span>                :<span class="lineCov">         64 : }</span>
+<span class="lineNum">     403 </span>                :<span class="lineCov">         36 : }</span>
 <span class="lineNum">     404 </span>                :            : 
 <span class="lineNum">     405 </span>                :            : /* Remove the file system object specified by ENT.  IS_DIR specifies
 <span class="lineNum">     406 </span>                :            :    whether it is expected to be a directory or non-directory.
 <a name="407"><span class="lineNum">     407 </span>                :            :    Return RM_OK upon success, else RM_ERROR.  */</a>
 <span class="lineNum">     408 </span>                :            : static enum RM_status
-<span class="lineNum">     409 </span>                :<span class="lineCov">    1881145 : excise (FTS *fts, FTSENT *ent, struct rm_options const *x, bool is_dir)</span>
+<span class="lineNum">     409 </span>                :<span class="lineCov">     748344 : excise (FTS *fts, FTSENT *ent, struct rm_options const *x, bool is_dir)</span>
 <span class="lineNum">     410 </span>                :            : {
-<span class="lineNum">     411 </span>        [<span class="branchCov" title="Branch 0 was taken 132742 times"> + </span><span class="branchCov" title="Branch 1 was taken 1748403 times"> + </span>]:<span class="lineCov">    1881145 :   int flag = is_dir ? AT_REMOVEDIR : 0;</span>
-<span class="lineNum">     412 </span>        [<span class="branchCov" title="Branch 1 was taken 1877750 times"> + </span><span class="branchCov" title="Branch 2 was taken 3395 times"> + </span>]:<span class="lineCov">    1881145 :   if (unlinkat (fts-&gt;fts_cwd_fd, ent-&gt;fts_accpath, flag) == 0)</span>
+<span class="lineNum">     411 </span>        [<span class="branchCov" title="Branch 0 was taken 69848 times"> + </span><span class="branchCov" title="Branch 1 was taken 678496 times"> + </span>]:<span class="lineCov">     748344 :   int flag = is_dir ? AT_REMOVEDIR : 0;</span>
+<span class="lineNum">     412 </span>        [<span class="branchCov" title="Branch 1 was taken 746323 times"> + </span><span class="branchCov" title="Branch 2 was taken 2021 times"> + </span>]:<span class="lineCov">     748344 :   if (unlinkat (fts-&gt;fts_cwd_fd, ent-&gt;fts_accpath, flag) == 0)</span>
 <span class="lineNum">     413 </span>                :            :     {
-<span class="lineNum">     414 </span>        [<span class="branchCov" title="Branch 0 was taken 115 times"> + </span><span class="branchCov" title="Branch 1 was taken 1877635 times"> + </span>]:<span class="lineCov">    1877750 :       if (x-&gt;verbose)</span>
+<span class="lineNum">     414 </span>        [<span class="branchCov" title="Branch 0 was taken 69 times"> + </span><span class="branchCov" title="Branch 1 was taken 746254 times"> + </span>]:<span class="lineCov">     746323 :       if (x-&gt;verbose)</span>
 <span class="lineNum">     415 </span>                :            :         {
-<span class="lineNum">     416 </span>        [<span class="branchCov" title="Branch 1 was taken 70 times"> + </span><span class="branchCov" title="Branch 2 was taken 45 times"> + </span>]:<span class="lineCov">        115 :           printf ((is_dir</span>
+<span class="lineNum">     416 </span>        [<span class="branchCov" title="Branch 1 was taken 42 times"> + </span><span class="branchCov" title="Branch 2 was taken 27 times"> + </span>]:<span class="lineCov">         69 :           printf ((is_dir</span>
 <span class="lineNum">     417 </span>                :            :                    ? _(&quot;removed directory: %s\n&quot;)
-<span class="lineNum">     418 </span>                :<span class="lineCov">        115 :                    : _(&quot;removed %s\n&quot;)), quote (ent-&gt;fts_path));</span>
+<span class="lineNum">     418 </span>                :<span class="lineCov">         69 :                    : _(&quot;removed %s\n&quot;)), quote (ent-&gt;fts_path));</span>
 <span class="lineNum">     419 </span>                :            :         }
-<span class="lineNum">     420 </span>                :<span class="lineCov">    1877750 :       return RM_OK;</span>
+<span class="lineNum">     420 </span>                :<span class="lineCov">     746323 :       return RM_OK;</span>
 <span class="lineNum">     421 </span>                :            :     }
 <span class="lineNum">     422 </span>                :            : 
 <span class="lineNum">     423 </span>                :            :   /* The unlinkat from kernels like linux-2.6.32 reports EROFS even for
 <span class="lineNum">     424 </span>                :            :      nonexistent files.  When the file is indeed missing, map that to ENOENT,
 <span class="lineNum">     425 </span>                :            :      so that rm -f ignores it, as required.  Even without -f, this is useful
 <span class="lineNum">     426 </span>                :            :      because it makes rm print the more precise diagnostic.  */
-<span class="lineNum">     427 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 3394 times"> + </span>]:<span class="lineCov">       3395 :   if (errno == EROFS)</span>
+<span class="lineNum">     427 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 2020 times"> + </span>]:<span class="lineCov">       2021 :   if (errno == EROFS)</span>
 <span class="lineNum">     428 </span>                :            :     {
 <span class="lineNum">     429 </span>                :            :       struct stat st;
 <span class="lineNum">     430 </span>  [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">          1 :       if ( ! (lstatat (fts-&gt;fts_cwd_fd, ent-&gt;fts_accpath, &amp;st)</span>
@@ -503,18 +503,18 @@
 <span class="lineNum">     432 </span>                :<span class="lineCov">          1 :         errno = EROFS;</span>
 <span class="lineNum">     433 </span>                :            :     }
 <span class="lineNum">     434 </span>                :            : 
-<span class="lineNum">     435 </span>        [<span class="branchCov" title="Branch 2 was taken 3351 times"> + </span><span class="branchCov" title="Branch 3 was taken 44 times"> + </span>]:<span class="lineCov">       3395 :   if (ignorable_missing (x, errno))</span>
-<span class="lineNum">     436 </span>                :<span class="lineCov">       3351 :     return RM_OK;</span>
+<span class="lineNum">     435 </span>        [<span class="branchCov" title="Branch 2 was taken 1997 times"> + </span><span class="branchCov" title="Branch 3 was taken 24 times"> + </span>]:<span class="lineCov">       2021 :   if (ignorable_missing (x, errno))</span>
+<span class="lineNum">     436 </span>                :<span class="lineCov">       1997 :     return RM_OK;</span>
 <span class="lineNum">     437 </span>                :            : 
 <span class="lineNum">     438 </span>                :            :   /* When failing to rmdir an unreadable directory, the typical
 <span class="lineNum">     439 </span>                :            :      errno value is EISDIR, but that is not as useful to the user
 <span class="lineNum">     440 </span>                :            :      as the errno value from the failed open (probably EPERM).
 <span class="lineNum">     441 </span>                :            :      Use the earlier, more descriptive errno value.  */
-<span class="lineNum">     442 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         44 :   if (ent-&gt;fts_info == FTS_DNR)</span>
-<span class="lineNum">     443 </span>                :<span class="lineCov">          8 :     errno = ent-&gt;fts_errno;</span>
-<span class="lineNum">     444 </span>                :<span class="lineCov">         44 :   error (0, errno, _(&quot;cannot remove %s&quot;), quote (ent-&gt;fts_path));</span>
-<span class="lineNum">     445 </span>                :<span class="lineCov">         44 :   mark_ancestor_dirs (ent);</span>
-<span class="lineNum">     446 </span>                :<span class="lineCov">    1881145 :   return RM_ERROR;</span>
+<span class="lineNum">     442 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         24 :   if (ent-&gt;fts_info == FTS_DNR)</span>
+<span class="lineNum">     443 </span>                :<span class="lineCov">          4 :     errno = ent-&gt;fts_errno;</span>
+<span class="lineNum">     444 </span>                :<span class="lineCov">         24 :   error (0, errno, _(&quot;cannot remove %s&quot;), quote (ent-&gt;fts_path));</span>
+<span class="lineNum">     445 </span>                :<span class="lineCov">         24 :   mark_ancestor_dirs (ent);</span>
+<span class="lineNum">     446 </span>                :<span class="lineCov">     748344 :   return RM_ERROR;</span>
 <span class="lineNum">     447 </span>                :            : }
 <span class="lineNum">     448 </span>                :            : 
 <span class="lineNum">     449 </span>                :            : /* This function is called once for every file system object that fts
@@ -524,41 +524,41 @@
 <span class="lineNum">     453 </span>                :            :    Return RM_ERROR upon error, RM_USER_DECLINED for a negative response
 <a name="454"><span class="lineNum">     454 </span>                :            :    to an interactive prompt, and otherwise, RM_OK.  */</a>
 <span class="lineNum">     455 </span>                :            : static enum RM_status
-<span class="lineNum">     456 </span>                :<span class="lineCov">    2014063 : rm_fts (FTS *fts, FTSENT *ent, struct rm_options const *x)</span>
+<span class="lineNum">     456 </span>                :<span class="lineCov">     818290 : rm_fts (FTS *fts, FTSENT *ent, struct rm_options const *x)</span>
 <span class="lineNum">     457 </span>                :            : {
-<span class="lineNum">     458 </span>  [<span class="branchCov" title="Branch 0 was taken 132838 times"> + </span><span class="branchCov" title="Branch 1 was taken 1881225 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">    2014063 :   switch (ent-&gt;fts_info)</span>
+<span class="lineNum">     458 </span>  [<span class="branchCov" title="Branch 0 was taken 69902 times"> + </span><span class="branchCov" title="Branch 1 was taken 748388 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">     818290 :   switch (ent-&gt;fts_info)</span>
 <span class="lineNum">         </span>            <span class="branchNoCov" title="Branch 4 was not taken"> - </span>]
 <span class="lineNum">     459 </span>                :            :     {
 <span class="lineNum">     460 </span>                :            :     case FTS_D:                 /* preorder directory */
-<span class="lineNum">     461 </span>        [<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchCov" title="Branch 1 was taken 132819 times"> + </span>]:<span class="lineCov">     132838 :       if (! x-&gt;recursive)</span>
+<span class="lineNum">     461 </span>        [<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 69891 times"> + </span>]:<span class="lineCov">      69902 :       if (! x-&gt;recursive)</span>
 <span class="lineNum">     462 </span>                :            :         {
 <span class="lineNum">     463 </span>                :            :           /* This is the first (pre-order) encounter with a directory.
 <span class="lineNum">     464 </span>                :            :              Not recursive, so arrange to skip contents.  */
-<span class="lineNum">     465 </span>                :<span class="lineCov">         19 :           error (0, EISDIR, _(&quot;cannot remove %s&quot;), quote (ent-&gt;fts_path));</span>
-<span class="lineNum">     466 </span>                :<span class="lineCov">         19 :           mark_ancestor_dirs (ent);</span>
-<span class="lineNum">     467 </span>                :<span class="lineCov">         19 :           fts_skip_tree (fts, ent);</span>
-<span class="lineNum">     468 </span>                :<span class="lineCov">         19 :           return RM_ERROR;</span>
+<span class="lineNum">     465 </span>                :<span class="lineCov">         11 :           error (0, EISDIR, _(&quot;cannot remove %s&quot;), quote (ent-&gt;fts_path));</span>
+<span class="lineNum">     466 </span>                :<span class="lineCov">         11 :           mark_ancestor_dirs (ent);</span>
+<span class="lineNum">     467 </span>                :<span class="lineCov">         11 :           fts_skip_tree (fts, ent);</span>
+<span class="lineNum">     468 </span>                :<span class="lineCov">         11 :           return RM_ERROR;</span>
 <span class="lineNum">     469 </span>                :            :         }
 <span class="lineNum">     470 </span>                :            : 
 <span class="lineNum">     471 </span>                :            :       /* Perform checks that can apply only for command-line arguments.  */
-<span class="lineNum">     472 </span>        [<span class="branchCov" title="Branch 0 was taken 11373 times"> + </span><span class="branchCov" title="Branch 1 was taken 121446 times"> + </span>]:<span class="lineCov">     132819 :       if (ent-&gt;fts_level == FTS_ROOTLEVEL)</span>
+<span class="lineNum">     472 </span>        [<span class="branchCov" title="Branch 0 was taken 6039 times"> + </span><span class="branchCov" title="Branch 1 was taken 63852 times"> + </span>]:<span class="lineCov">      69891 :       if (ent-&gt;fts_level == FTS_ROOTLEVEL)</span>
 <span class="lineNum">     473 </span>                :            :         {
-<span class="lineNum">     474 </span>        [<span class="branchCov" title="Branch 1 was taken 25 times"> + </span><span class="branchCov" title="Branch 2 was taken 11348 times"> + </span>]:<span class="lineCov">      11373 :           if (strip_trailing_slashes (ent-&gt;fts_path))</span>
-<span class="lineNum">     475 </span>                :<span class="lineCov">         25 :             ent-&gt;fts_pathlen = strlen (ent-&gt;fts_path);</span>
+<span class="lineNum">     474 </span>        [<span class="branchCov" title="Branch 1 was taken 15 times"> + </span><span class="branchCov" title="Branch 2 was taken 6024 times"> + </span>]:<span class="lineCov">       6039 :           if (strip_trailing_slashes (ent-&gt;fts_path))</span>
+<span class="lineNum">     475 </span>                :<span class="lineCov">         15 :             ent-&gt;fts_pathlen = strlen (ent-&gt;fts_path);</span>
 <span class="lineNum">     476 </span>                :            : 
 <span class="lineNum">     477 </span>                :            :           /* If the basename of a command line argument is &quot;.&quot; or &quot;..&quot;,
 <span class="lineNum">     478 </span>                :            :              diagnose it and do nothing more with that argument.  */
-<span class="lineNum">     479 </span>        [<span class="branchCov" title="Branch 2 was taken 25 times"> + </span><span class="branchCov" title="Branch 3 was taken 11348 times"> + </span>]:<span class="lineCov">      11373 :           if (dot_or_dotdot (last_component (ent-&gt;fts_accpath)))</span>
+<span class="lineNum">     479 </span>        [<span class="branchCov" title="Branch 2 was taken 15 times"> + </span><span class="branchCov" title="Branch 3 was taken 6024 times"> + </span>]:<span class="lineCov">       6039 :           if (dot_or_dotdot (last_component (ent-&gt;fts_accpath)))</span>
 <span class="lineNum">     480 </span>                :            :             {
-<span class="lineNum">     481 </span>                :<span class="lineCov">         25 :               error (0, 0, _(&quot;cannot remove directory: %s&quot;),</span>
-<span class="lineNum">     482 </span>                :<span class="lineCov">         25 :                      quote (ent-&gt;fts_path));</span>
-<span class="lineNum">     483 </span>                :<span class="lineCov">         25 :               fts_skip_tree (fts, ent);</span>
-<span class="lineNum">     484 </span>                :<span class="lineCov">         25 :               return RM_ERROR;</span>
+<span class="lineNum">     481 </span>                :<span class="lineCov">         15 :               error (0, 0, _(&quot;cannot remove directory: %s&quot;),</span>
+<span class="lineNum">     482 </span>                :<span class="lineCov">         15 :                      quote (ent-&gt;fts_path));</span>
+<span class="lineNum">     483 </span>                :<span class="lineCov">         15 :               fts_skip_tree (fts, ent);</span>
+<span class="lineNum">     484 </span>                :<span class="lineCov">         15 :               return RM_ERROR;</span>
 <span class="lineNum">     485 </span>                :            :             }
 <span class="lineNum">     486 </span>                :            : 
 <span class="lineNum">     487 </span>                :            :           /* If a command line argument resolves to &quot;/&quot; (and --preserve-root
 <span class="lineNum">     488 </span>                :            :              is in effect -- default) diagnose and skip it.  */
-<span class="lineNum">     489 </span>[<span class="branchCov" title="Branch 0 was taken 11348 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 11348 times"> + </span>]:<span class="lineCov">      11348 :           if (ROOT_DEV_INO_CHECK (x-&gt;root_dev_ino, ent-&gt;fts_statp))</span>
+<span class="lineNum">     489 </span>[<span class="branchCov" title="Branch 0 was taken 6024 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 6024 times"> + </span>]:<span class="lineCov">       6024 :           if (ROOT_DEV_INO_CHECK (x-&gt;root_dev_ino, ent-&gt;fts_statp))</span>
 <span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
 <span class="lineNum">     490 </span>                :            :             {
 <span class="lineNum">     491 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               ROOT_DEV_INO_WARN (ent-&gt;fts_path);</span>
@@ -569,24 +569,24 @@
 <span class="lineNum">     496 </span>                :            : 
 <span class="lineNum">     497 </span>                :            :       {
 <span class="lineNum">     498 </span>                :            :         Ternary is_empty_directory;
-<span class="lineNum">     499 </span>                :<span class="lineCov">     132794 :         enum RM_status s = prompt (fts, ent, true /*is_dir*/, x,</span>
+<span class="lineNum">     499 </span>                :<span class="lineCov">      69876 :         enum RM_status s = prompt (fts, ent, true /*is_dir*/, x,</span>
 <span class="lineNum">     500 </span>                :            :                                    PA_DESCEND_INTO_DIR, &amp;is_empty_directory);
 <span class="lineNum">     501 </span>                :            : 
-<span class="lineNum">     502 </span>[<span class="branchCov" title="Branch 0 was taken 132794 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 12 times"> + </span><span class="branchCov" title="Branch 3 was taken 132782 times"> + </span>]:<span class="lineCov">     132794 :         if (s == RM_OK &amp;&amp; is_empty_directory == T_YES)</span>
+<span class="lineNum">     502 </span>[<span class="branchCov" title="Branch 0 was taken 69876 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 6 times"> + </span><span class="branchCov" title="Branch 3 was taken 69870 times"> + </span>]:<span class="lineCov">      69876 :         if (s == RM_OK &amp;&amp; is_empty_directory == T_YES)</span>
 <span class="lineNum">     503 </span>                :            :           {
 <span class="lineNum">     504 </span>                :            :             /* When we know (from prompt when in interactive mode)
 <span class="lineNum">     505 </span>                :            :                that this is an empty directory, don't prompt twice.  */
-<span class="lineNum">     506 </span>                :<span class="lineCov">         12 :             s = excise (fts, ent, x, true);</span>
-<span class="lineNum">     507 </span>                :<span class="lineCov">         12 :             fts_skip_tree (fts, ent);</span>
+<span class="lineNum">     506 </span>                :<span class="lineCov">          6 :             s = excise (fts, ent, x, true);</span>
+<span class="lineNum">     507 </span>                :<span class="lineCov">          6 :             fts_skip_tree (fts, ent);</span>
 <span class="lineNum">     508 </span>                :            :           }
 <span class="lineNum">     509 </span>                :            : 
-<span class="lineNum">     510 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 132794 times"> + </span>]:<span class="lineCov">     132794 :         if (s != RM_OK)</span>
+<span class="lineNum">     510 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 69876 times"> + </span>]:<span class="lineCov">      69876 :         if (s != RM_OK)</span>
 <span class="lineNum">     511 </span>                :            :           {
 <span class="lineNum">     512 </span>                :<span class="lineNoCov">          0 :             mark_ancestor_dirs (ent);</span>
 <span class="lineNum">     513 </span>                :<span class="lineNoCov">          0 :             fts_skip_tree (fts, ent);</span>
 <span class="lineNum">     514 </span>                :            :           }
 <span class="lineNum">     515 </span>                :            : 
-<span class="lineNum">     516 </span>                :<span class="lineCov">     132794 :         return s;</span>
+<span class="lineNum">     516 </span>                :<span class="lineCov">      69876 :         return s;</span>
 <span class="lineNum">     517 </span>                :            :       }
 <span class="lineNum">     518 </span>                :            : 
 <span class="lineNum">     519 </span>                :            :     case FTS_F:                 /* regular file */
@@ -601,10 +601,10 @@
 <span class="lineNum">     528 </span>                :            :         /* With --one-file-system, do not attempt to remove a mount point.
 <span class="lineNum">     529 </span>                :            :            fts' FTS_XDEV ensures that we don't process any entries under
 <span class="lineNum">     530 </span>                :            :            the mount point.  */
-<span class="lineNum">     531 </span>        [<span class="branchCov" title="Branch 0 was taken 132762 times"> + </span><span class="branchCov" title="Branch 1 was taken 1748463 times"> + </span>]:<span class="lineCov">    1881225 :         if (ent-&gt;fts_info == FTS_DP</span>
-<span class="lineNum">     532 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 132750 times"> + </span>]:<span class="lineCov">     132762 :             &amp;&amp; x-&gt;one_file_system</span>
-<span class="lineNum">     533 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         12 :             &amp;&amp; FTS_ROOTLEVEL &lt; ent-&gt;fts_level</span>
-<span class="lineNum">     534 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          6 :             &amp;&amp; ent-&gt;fts_statp-&gt;st_dev != fts-&gt;fts_dev)</span>
+<span class="lineNum">     531 </span>        [<span class="branchCov" title="Branch 0 was taken 69860 times"> + </span><span class="branchCov" title="Branch 1 was taken 678528 times"> + </span>]:<span class="lineCov">     748388 :         if (ent-&gt;fts_info == FTS_DP</span>
+<span class="lineNum">     532 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 69852 times"> + </span>]:<span class="lineCov">      69860 :             &amp;&amp; x-&gt;one_file_system</span>
+<span class="lineNum">     533 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          8 :             &amp;&amp; FTS_ROOTLEVEL &lt; ent-&gt;fts_level</span>
+<span class="lineNum">     534 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          4 :             &amp;&amp; ent-&gt;fts_statp-&gt;st_dev != fts-&gt;fts_dev)</span>
 <span class="lineNum">     535 </span>                :            :           {
 <span class="lineNum">     536 </span>                :<span class="lineCov">          1 :             mark_ancestor_dirs (ent);</span>
 <span class="lineNum">     537 </span>                :<span class="lineCov">          1 :             error (0, 0, _(&quot;skipping %s, since it's on a different device&quot;),</span>
@@ -612,11 +612,11 @@
 <span class="lineNum">     539 </span>                :<span class="lineCov">          1 :             return RM_ERROR;</span>
 <span class="lineNum">     540 </span>                :            :           }
 <span class="lineNum">     541 </span>                :            : 
-<span class="lineNum">     542 </span>[<span class="branchCov" title="Branch 0 was taken 1748463 times"> + </span><span class="branchCov" title="Branch 1 was taken 132761 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 20 times"> + </span><span class="branchCov" title="Branch 3 was taken 1748443 times"> + </span>]:<span class="lineCov">    1881224 :         bool is_dir = ent-&gt;fts_info == FTS_DP || ent-&gt;fts_info == FTS_DNR;</span>
-<span class="lineNum">     543 </span>                :<span class="lineCov">    1881224 :         enum RM_status s = prompt (fts, ent, is_dir, x, PA_REMOVE_DIR, NULL);</span>
-<span class="lineNum">     544 </span>        [<span class="branchCov" title="Branch 0 was taken 91 times"> + </span><span class="branchCov" title="Branch 1 was taken 1881133 times"> + </span>]:<span class="lineCov">    1881224 :         if (s != RM_OK)</span>
-<span class="lineNum">     545 </span>                :<span class="lineCov">         91 :           return s;</span>
-<span class="lineNum">     546 </span>                :<span class="lineCov">    1881133 :         return excise (fts, ent, x, is_dir);</span>
+<span class="lineNum">     542 </span>[<span class="branchCov" title="Branch 0 was taken 678528 times"> + </span><span class="branchCov" title="Branch 1 was taken 69859 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10 times"> + </span><span class="branchCov" title="Branch 3 was taken 678518 times"> + </span>]:<span class="lineCov">     748387 :         bool is_dir = ent-&gt;fts_info == FTS_DP || ent-&gt;fts_info == FTS_DNR;</span>
+<span class="lineNum">     543 </span>                :<span class="lineCov">     748387 :         enum RM_status s = prompt (fts, ent, is_dir, x, PA_REMOVE_DIR, NULL);</span>
+<span class="lineNum">     544 </span>        [<span class="branchCov" title="Branch 0 was taken 49 times"> + </span><span class="branchCov" title="Branch 1 was taken 748338 times"> + </span>]:<span class="lineCov">     748387 :         if (s != RM_OK)</span>
+<span class="lineNum">     545 </span>                :<span class="lineCov">         49 :           return s;</span>
+<span class="lineNum">     546 </span>                :<span class="lineCov">     748338 :         return excise (fts, ent, x, is_dir);</span>
 <span class="lineNum">     547 </span>                :            :       }
 <span class="lineNum">     548 </span>                :            : 
 <span class="lineNum">     549 </span>                :            :     case FTS_DC:                /* directory that causes cycles */
@@ -638,59 +638,59 @@
 <span class="lineNum">     565 </span>                :<span class="lineNoCov">          0 :              ent-&gt;fts_info,</span>
 <span class="lineNum">     566 </span>                :<span class="lineNoCov">          0 :              quote (ent-&gt;fts_path),</span>
 <span class="lineNum">     567 </span>                :            :              PACKAGE_BUGREPORT);
-<span class="lineNum">     568 </span>                :<span class="lineCov">    2014063 :       abort ();</span>
+<span class="lineNum">     568 </span>                :<span class="lineCov">     818290 :       abort ();</span>
 <span class="lineNum">     569 </span>                :            :     }
 <span class="lineNum">     570 </span>                :            : }
 <span class="lineNum">     571 </span>                :            : 
 <span class="lineNum">     572 </span>                :            : /* Remove FILEs, honoring options specified via X.
 <a name="573"><span class="lineNum">     573 </span>                :            :    Return RM_OK if successful.  */</a>
 <span class="lineNum">     574 </span>                :            : enum RM_status
-<span class="lineNum">     575 </span>                :<span class="lineCov">      20321 : rm (char *const *file, struct rm_options const *x)</span>
+<span class="lineNum">     575 </span>                :<span class="lineCov">      10694 : rm (char *const *file, struct rm_options const *x)</span>
 <span class="lineNum">     576 </span>                :            : {
-<span class="lineNum">     577 </span>                :<span class="lineCov">      20321 :   enum RM_status rm_status = RM_OK;</span>
+<span class="lineNum">     577 </span>                :<span class="lineCov">      10694 :   enum RM_status rm_status = RM_OK;</span>
 <span class="lineNum">     578 </span>                :            : 
-<span class="lineNum">     579 </span>        [<span class="branchCov" title="Branch 0 was taken 20321 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      20321 :   if (*file)</span>
+<span class="lineNum">     579 </span>        [<span class="branchCov" title="Branch 0 was taken 10694 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      10694 :   if (*file)</span>
 <span class="lineNum">     580 </span>                :            :     {
-<span class="lineNum">     581 </span>                :<span class="lineCov">      20321 :       int bit_flags = (FTS_CWDFD</span>
+<span class="lineNum">     581 </span>                :<span class="lineCov">      10694 :       int bit_flags = (FTS_CWDFD</span>
 <span class="lineNum">     582 </span>                :            :                        | FTS_NOSTAT
 <span class="lineNum">     583 </span>                :            :                        | FTS_PHYSICAL);
 <span class="lineNum">     584 </span>                :            : 
-<span class="lineNum">     585 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 20315 times"> + </span>]:<span class="lineCov">      20321 :       if (x-&gt;one_file_system)</span>
-<span class="lineNum">     586 </span>                :<span class="lineCov">          6 :         bit_flags |= FTS_XDEV;</span>
+<span class="lineNum">     585 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 10690 times"> + </span>]:<span class="lineCov">      10694 :       if (x-&gt;one_file_system)</span>
+<span class="lineNum">     586 </span>                :<span class="lineCov">          4 :         bit_flags |= FTS_XDEV;</span>
 <span class="lineNum">     587 </span>                :            : 
-<span class="lineNum">     588 </span>                :<span class="lineCov">      20321 :       FTS *fts = xfts_open (file, bit_flags, NULL);</span>
+<span class="lineNum">     588 </span>                :<span class="lineCov">      10694 :       FTS *fts = xfts_open (file, bit_flags, NULL);</span>
 <span class="lineNum">     589 </span>                :            : 
 <span class="lineNum">     590 </span>                :            :       while (1)
 <span class="lineNum">     591 </span>                :            :         {
 <span class="lineNum">     592 </span>                :            :           FTSENT *ent;
 <span class="lineNum">     593 </span>                :            : 
-<span class="lineNum">     594 </span>                :<span class="lineCov">    2034384 :           ent = fts_read (fts);</span>
-<span class="lineNum">     595 </span>        [<span class="branchCov" title="Branch 0 was taken 20321 times"> + </span><span class="branchCov" title="Branch 1 was taken 2014063 times"> + </span>]:<span class="lineCov">    2034384 :           if (ent == NULL)</span>
+<span class="lineNum">     594 </span>                :<span class="lineCov">     828984 :           ent = fts_read (fts);</span>
+<span class="lineNum">     595 </span>        [<span class="branchCov" title="Branch 0 was taken 10694 times"> + </span><span class="branchCov" title="Branch 1 was taken 818290 times"> + </span>]:<span class="lineCov">     828984 :           if (ent == NULL)</span>
 <span class="lineNum">     596 </span>                :            :             {
-<span class="lineNum">     597 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 20321 times"> + </span>]:<span class="lineCov">      20321 :               if (errno != 0)</span>
+<span class="lineNum">     597 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10694 times"> + </span>]:<span class="lineCov">      10694 :               if (errno != 0)</span>
 <span class="lineNum">     598 </span>                :            :                 {
 <span class="lineNum">     599 </span>                :<span class="lineNoCov">          0 :                   error (0, errno, _(&quot;fts_read failed&quot;));</span>
 <span class="lineNum">     600 </span>                :<span class="lineNoCov">          0 :                   rm_status = RM_ERROR;</span>
 <span class="lineNum">     601 </span>                :            :                 }
-<span class="lineNum">     602 </span>                :<span class="lineCov">      20321 :               break;</span>
+<span class="lineNum">     602 </span>                :<span class="lineCov">      10694 :               break;</span>
 <span class="lineNum">     603 </span>                :            :             }
 <span class="lineNum">     604 </span>                :            : 
-<span class="lineNum">     605 </span>                :<span class="lineCov">    2014063 :           enum RM_status s = rm_fts (fts, ent, x);</span>
+<span class="lineNum">     605 </span>                :<span class="lineCov">     818290 :           enum RM_status s = rm_fts (fts, ent, x);</span>
 <span class="lineNum">     606 </span>                :            : 
-<span class="lineNum">     607 </span>[<span class="branchCov" title="Branch 0 was taken 180 times"> + </span><span class="branchCov" title="Branch 1 was taken 2013883 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 105 times"> + </span><span class="branchCov" title="Branch 3 was taken 75 times"> + </span>]:<span class="lineCov">    2014063 :           assert (VALID_STATUS (s));</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 105 times"> + </span>]
-<span class="lineNum">     608 </span>[<span class="branchCov" title="Branch 0 was taken 2013958 times"> + </span><span class="branchCov" title="Branch 1 was taken 105 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 75 times"> + </span><span class="branchCov" title="Branch 3 was taken 2013883 times"> + </span>]:<span class="lineCov">    2014063 :           UPDATE_STATUS (rm_status, s);</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 24 times"> + </span><span class="branchCov" title="Branch 5 was taken 51 times"> + </span>]
-<span class="lineNum">     609 </span>                :<span class="lineCov">    2014063 :         }</span>
+<span class="lineNum">     607 </span>[<span class="branchCov" title="Branch 0 was taken 100 times"> + </span><span class="branchCov" title="Branch 1 was taken 818190 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 59 times"> + </span><span class="branchCov" title="Branch 3 was taken 41 times"> + </span>]:<span class="lineCov">     818290 :           assert (VALID_STATUS (s));</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 59 times"> + </span>]
+<span class="lineNum">     608 </span>[<span class="branchCov" title="Branch 0 was taken 818231 times"> + </span><span class="branchCov" title="Branch 1 was taken 59 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 41 times"> + </span><span class="branchCov" title="Branch 3 was taken 818190 times"> + </span>]:<span class="lineCov">     818290 :           UPDATE_STATUS (rm_status, s);</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 14 times"> + </span><span class="branchCov" title="Branch 5 was taken 27 times"> + </span>]
+<span class="lineNum">     609 </span>                :<span class="lineCov">     818290 :         }</span>
 <span class="lineNum">     610 </span>                :            : 
-<span class="lineNum">     611 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 20321 times"> + </span>]:<span class="lineCov">      20321 :       if (fts_close (fts) != 0)</span>
+<span class="lineNum">     611 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10694 times"> + </span>]:<span class="lineCov">      10694 :       if (fts_close (fts) != 0)</span>
 <span class="lineNum">     612 </span>                :            :         {
 <span class="lineNum">     613 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;fts_close failed&quot;));</span>
 <span class="lineNum">     614 </span>                :<span class="lineNoCov">          0 :           rm_status = RM_ERROR;</span>
 <span class="lineNum">     615 </span>                :            :         }
 <span class="lineNum">     616 </span>                :            :     }
 <span class="lineNum">     617 </span>                :            : 
-<span class="lineNum">     618 </span>                :<span class="lineCov">      20321 :   return rm_status;</span>
+<span class="lineNum">     618 </span>                :<span class="lineCov">      10694 :   return rm_status;</span>
 <span class="lineNum">     619 </span>                :            : }
 </pre>
       </td>

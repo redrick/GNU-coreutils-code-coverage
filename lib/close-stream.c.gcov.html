@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/close-stream.c</title>
+  <title>LCOV - coreutils - lib/close-stream.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">8</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -124,11 +124,11 @@
 <span class="lineNum">      53 </span>                :            :    the failure.  That's what the ferror test is checking below.  */
 <a name="54"><span class="lineNum">      54 </span>                :            : </a>
 <span class="lineNum">      55 </span>                :            : int
-<span class="lineNum">      56 </span>                :<span class="lineCov">     645197 : close_stream (FILE *stream)</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">     295676 : close_stream (FILE *stream)</span>
 <span class="lineNum">      57 </span>                :            : {
-<span class="lineNum">      58 </span>                :<span class="lineCov">     645197 :   const bool some_pending = (__fpending (stream) != 0);</span>
-<span class="lineNum">      59 </span>                :<span class="lineCov">     645197 :   const bool prev_fail = (ferror (stream) != 0);</span>
-<span class="lineNum">      60 </span>                :<span class="lineCov">     645197 :   const bool fclose_fail = (fclose (stream) != 0);</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">     295676 :   const bool some_pending = (__fpending (stream) != 0);</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">     295676 :   const bool prev_fail = (ferror (stream) != 0);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">     295676 :   const bool fclose_fail = (fclose (stream) != 0);</span>
 <span class="lineNum">      61 </span>                :            : 
 <span class="lineNum">      62 </span>                :            :   /* Return an error indication if there was a previous failure or if
 <span class="lineNum">      63 </span>                :            :      fclose failed, with one exception: ignore an fclose failure if
@@ -138,15 +138,15 @@
 <span class="lineNum">      67 </span>                :            :      closed) and doesn't generate any output (hence no previous error
 <span class="lineNum">      68 </span>                :            :      and nothing to be flushed).  */
 <span class="lineNum">      69 </span>                :            : 
-<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 0 was taken 645197 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 125 times"> + </span><span class="branchCov" title="Branch 3 was taken 645072 times"> + </span>]:<span class="lineCov">     645197 :   if (prev_fail || (fclose_fail &amp;&amp; (some_pending || errno != EBADF)))</span>
-<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 105 times"> + </span><span class="branchCov" title="Branch 5 was taken 20 times"> + </span>][<span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 105 times"> + </span>]
+<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 0 was taken 295676 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 75 times"> + </span><span class="branchCov" title="Branch 3 was taken 295601 times"> + </span>]:<span class="lineCov">     295676 :   if (prev_fail || (fclose_fail &amp;&amp; (some_pending || errno != EBADF)))</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 63 times"> + </span><span class="branchCov" title="Branch 5 was taken 12 times"> + </span>][<span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 63 times"> + </span>]
 <span class="lineNum">      71 </span>                :            :     {
-<span class="lineNum">      72 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :       if (! fclose_fail)</span>
+<span class="lineNum">      72 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         12 :       if (! fclose_fail)</span>
 <span class="lineNum">      73 </span>                :<span class="lineNoCov">          0 :         errno = 0;</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">         20 :       return EOF;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">         12 :       return EOF;</span>
 <span class="lineNum">      75 </span>                :            :     }
 <span class="lineNum">      76 </span>                :            : 
-<span class="lineNum">      77 </span>                :<span class="lineCov">     645197 :   return 0;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">     295676 :   return 0;</span>
 <span class="lineNum">      78 </span>                :            : }
 </pre>
       </td>

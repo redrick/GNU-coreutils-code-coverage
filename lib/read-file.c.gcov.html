@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/read-file.c</title>
+  <title>LCOV - coreutils - lib/read-file.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">40</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -112,115 +112,115 @@
 <span class="lineNum">      41 </span>                :            :    *LENGTH.  On errors, *LENGTH is undefined, errno preserves the
 <a name="42"><span class="lineNum">      42 </span>                :            :    values set by system functions (if any), and NULL is returned.  */</a>
 <span class="lineNum">      43 </span>                :            : char *
-<span class="lineNum">      44 </span>                :<span class="lineCov">        135 : fread_file (FILE *stream, size_t *length)</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">         85 : fread_file (FILE *stream, size_t *length)</span>
 <span class="lineNum">      45 </span>                :            : {
-<span class="lineNum">      46 </span>                :<span class="lineCov">        135 :   char *buf = NULL;</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">        135 :   size_t alloc = BUFSIZ;</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">         85 :   char *buf = NULL;</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">         85 :   size_t alloc = BUFSIZ;</span>
 <span class="lineNum">      48 </span>                :            : 
 <span class="lineNum">      49 </span>                :            :   /* For a regular file, allocate a buffer that has exactly the right
 <span class="lineNum">      50 </span>                :            :      size.  This avoids the need to do dynamic reallocations later.  */
 <span class="lineNum">      51 </span>                :            :   {
 <span class="lineNum">      52 </span>                :            :     struct stat st;
 <span class="lineNum">      53 </span>                :            : 
-<span class="lineNum">      54 </span>[<span class="branchCov" title="Branch 2 was taken 135 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>][<span class="branchCov" title="Branch 4 was taken 85 times"> + </span><span class="branchCov" title="Branch 5 was taken 50 times"> + </span>]:<span class="lineCov">        135 :     if (fstat (fileno (stream), &amp;st) &gt;= 0 &amp;&amp; S_ISREG (st.st_mode))</span>
+<span class="lineNum">      54 </span>[<span class="branchCov" title="Branch 2 was taken 85 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>][<span class="branchCov" title="Branch 4 was taken 51 times"> + </span><span class="branchCov" title="Branch 5 was taken 34 times"> + </span>]:<span class="lineCov">         85 :     if (fstat (fileno (stream), &amp;st) &gt;= 0 &amp;&amp; S_ISREG (st.st_mode))</span>
 <span class="lineNum">      55 </span>                :            :       {
-<span class="lineNum">      56 </span>                :<span class="lineCov">         85 :         off_t pos = ftello (stream);</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">         51 :         off_t pos = ftello (stream);</span>
 <span class="lineNum">      57 </span>                :            : 
-<span class="lineNum">      58 </span>[<span class="branchCov" title="Branch 0 was taken 85 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 70 times"> + </span><span class="branchCov" title="Branch 3 was taken 15 times"> + </span>]:<span class="lineCov">         85 :         if (pos &gt;= 0 &amp;&amp; pos &lt; st.st_size)</span>
+<span class="lineNum">      58 </span>[<span class="branchCov" title="Branch 0 was taken 51 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 42 times"> + </span><span class="branchCov" title="Branch 3 was taken 9 times"> + </span>]:<span class="lineCov">         51 :         if (pos &gt;= 0 &amp;&amp; pos &lt; st.st_size)</span>
 <span class="lineNum">      59 </span>                :            :           {
-<span class="lineNum">      60 </span>                :<span class="lineCov">         70 :             off_t alloc_off = st.st_size - pos;</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">         42 :             off_t alloc_off = st.st_size - pos;</span>
 <span class="lineNum">      61 </span>                :            : 
 <span class="lineNum">      62 </span>                :            :             /* '1' below, accounts for the trailing NUL.  */
-<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 70 times"> + </span>]:<span class="lineCov">         70 :             if (SIZE_MAX - 1 &lt; alloc_off)</span>
+<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">         42 :             if (SIZE_MAX - 1 &lt; alloc_off)</span>
 <span class="lineNum">      64 </span>                :            :               {
 <span class="lineNum">      65 </span>                :<span class="lineNoCov">          0 :                 errno = ENOMEM;</span>
 <span class="lineNum">      66 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
 <span class="lineNum">      67 </span>                :            :               }
 <span class="lineNum">      68 </span>                :            : 
-<span class="lineNum">      69 </span>                :<span class="lineCov">         70 :             alloc = alloc_off + 1;</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">         42 :             alloc = alloc_off + 1;</span>
 <span class="lineNum">      70 </span>                :            :           }
 <span class="lineNum">      71 </span>                :            :       }
 <span class="lineNum">      72 </span>                :            :   }
 <span class="lineNum">      73 </span>                :            : 
-<span class="lineNum">      74 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 135 times"> + </span>]:<span class="lineCov">        135 :   if (!(buf = malloc (alloc)))</span>
+<span class="lineNum">      74 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 85 times"> + </span>]:<span class="lineCov">         85 :   if (!(buf = malloc (alloc)))</span>
 <span class="lineNum">      75 </span>                :<span class="lineNoCov">          0 :     return NULL; /* errno is ENOMEM.  */</span>
 <span class="lineNum">      76 </span>                :            : 
 <span class="lineNum">      77 </span>                :            :   {
-<span class="lineNum">      78 </span>                :<span class="lineCov">        135 :     size_t size = 0; /* number of bytes read so far */</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">         85 :     size_t size = 0; /* number of bytes read so far */</span>
 <span class="lineNum">      79 </span>                :            :     int save_errno;
 <span class="lineNum">      80 </span>                :            : 
 <span class="lineNum">      81 </span>                :            :     for (;;)
 <span class="lineNum">      82 </span>                :            :       {
 <span class="lineNum">      83 </span>                :            :         /* This reads 1 more than the size of a regular file
 <span class="lineNum">      84 </span>                :            :            so that we get eof immediately.  */
-<span class="lineNum">      85 </span>                :<span class="lineCov">        152 :         size_t requested = alloc - size;</span>
-<span class="lineNum">      86 </span>                :<span class="lineCov">        152 :         size_t count = fread (buf + size, 1, requested, stream);</span>
-<span class="lineNum">      87 </span>                :<span class="lineCov">        152 :         size += count;</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">        100 :         size_t requested = alloc - size;</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">        100 :         size_t count = fread (buf + size, 1, requested, stream);</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">        100 :         size += count;</span>
 <span class="lineNum">      88 </span>                :            : 
-<span class="lineNum">      89 </span>        [<span class="branchCov" title="Branch 0 was taken 135 times"> + </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">        152 :         if (count != requested)</span>
+<span class="lineNum">      89 </span>        [<span class="branchCov" title="Branch 0 was taken 85 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">        100 :         if (count != requested)</span>
 <span class="lineNum">      90 </span>                :            :           {
-<span class="lineNum">      91 </span>                :<span class="lineCov">        135 :             save_errno = errno;</span>
-<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 135 times"> + </span>]:<span class="lineCov">        135 :             if (ferror (stream))</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">         85 :             save_errno = errno;</span>
+<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 85 times"> + </span>]:<span class="lineCov">         85 :             if (ferror (stream))</span>
 <span class="lineNum">      93 </span>                :<span class="lineNoCov">          0 :               break;</span>
 <span class="lineNum">      94 </span>                :            : 
 <span class="lineNum">      95 </span>                :            :             /* Shrink the allocated memory if possible.  */
-<span class="lineNum">      96 </span>        [<span class="branchCov" title="Branch 0 was taken 65 times"> + </span><span class="branchCov" title="Branch 1 was taken 70 times"> + </span>]:<span class="lineCov">        135 :             if (size &lt; alloc - 1)</span>
+<span class="lineNum">      96 </span>        [<span class="branchCov" title="Branch 0 was taken 43 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">         85 :             if (size &lt; alloc - 1)</span>
 <span class="lineNum">      97 </span>                :            :               {
-<span class="lineNum">      98 </span>                :<span class="lineCov">         65 :                 char *smaller_buf = realloc (buf, size + 1);</span>
-<span class="lineNum">      99 </span>        [<span class="branchCov" title="Branch 0 was taken 65 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         65 :                 if (smaller_buf != NULL)</span>
-<span class="lineNum">     100 </span>                :<span class="lineCov">         65 :                   buf = smaller_buf;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">         43 :                 char *smaller_buf = realloc (buf, size + 1);</span>
+<span class="lineNum">      99 </span>        [<span class="branchCov" title="Branch 0 was taken 43 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         43 :                 if (smaller_buf != NULL)</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">         43 :                   buf = smaller_buf;</span>
 <span class="lineNum">     101 </span>                :            :               }
 <span class="lineNum">     102 </span>                :            : 
-<span class="lineNum">     103 </span>                :<span class="lineCov">        135 :             buf[size] = '\0';</span>
-<span class="lineNum">     104 </span>                :<span class="lineCov">        135 :             *length = size;</span>
-<span class="lineNum">     105 </span>                :<span class="lineCov">        135 :             return buf;</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">         85 :             buf[size] = '\0';</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">         85 :             *length = size;</span>
+<span class="lineNum">     105 </span>                :<span class="lineCov">         85 :             return buf;</span>
 <span class="lineNum">     106 </span>                :            :           }
 <span class="lineNum">     107 </span>                :            : 
 <span class="lineNum">     108 </span>                :            :         {
 <span class="lineNum">     109 </span>                :            :           char *new_buf;
 <span class="lineNum">     110 </span>                :            : 
-<span class="lineNum">     111 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :           if (alloc == SIZE_MAX)</span>
+<span class="lineNum">     111 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :           if (alloc == SIZE_MAX)</span>
 <span class="lineNum">     112 </span>                :            :             {
 <span class="lineNum">     113 </span>                :<span class="lineNoCov">          0 :               save_errno = ENOMEM;</span>
 <span class="lineNum">     114 </span>                :<span class="lineNoCov">          0 :               break;</span>
 <span class="lineNum">     115 </span>                :            :             }
 <span class="lineNum">     116 </span>                :            : 
-<span class="lineNum">     117 </span>        [<span class="branchCov" title="Branch 0 was taken 17 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         17 :           if (alloc &lt; SIZE_MAX - alloc / 2)</span>
-<span class="lineNum">     118 </span>                :<span class="lineCov">         17 :             alloc = alloc + alloc / 2;</span>
+<span class="lineNum">     117 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         15 :           if (alloc &lt; SIZE_MAX - alloc / 2)</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">         15 :             alloc = alloc + alloc / 2;</span>
 <span class="lineNum">     119 </span>                :            :           else
 <span class="lineNum">     120 </span>                :<span class="lineNoCov">          0 :             alloc = SIZE_MAX;</span>
 <span class="lineNum">     121 </span>                :            : 
-<span class="lineNum">     122 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :           if (!(new_buf = realloc (buf, alloc)))</span>
+<span class="lineNum">     122 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :           if (!(new_buf = realloc (buf, alloc)))</span>
 <span class="lineNum">     123 </span>                :            :             {
 <span class="lineNum">     124 </span>                :<span class="lineNoCov">          0 :               save_errno = errno;</span>
 <span class="lineNum">     125 </span>                :<span class="lineNoCov">          0 :               break;</span>
 <span class="lineNum">     126 </span>                :            :             }
 <span class="lineNum">     127 </span>                :            : 
-<span class="lineNum">     128 </span>                :<span class="lineCov">         17 :           buf = new_buf;</span>
+<span class="lineNum">     128 </span>                :<span class="lineCov">         15 :           buf = new_buf;</span>
 <span class="lineNum">     129 </span>                :            :         }
-<span class="lineNum">     130 </span>                :<span class="lineCov">         17 :       }</span>
+<span class="lineNum">     130 </span>                :<span class="lineCov">         15 :       }</span>
 <span class="lineNum">     131 </span>                :            : 
 <span class="lineNum">     132 </span>                :<span class="lineNoCov">          0 :     free (buf);</span>
 <span class="lineNum">     133 </span>                :<span class="lineNoCov">          0 :     errno = save_errno;</span>
-<span class="lineNum">     134 </span>                :<span class="lineCov">        135 :     return NULL;</span>
+<span class="lineNum">     134 </span>                :<span class="lineCov">         85 :     return NULL;</span>
 <span class="lineNum">     135 </span>                :            :   }
 <span class="lineNum">     136 </span>                :            : }
 <a name="137"><span class="lineNum">     137 </span>                :            : </a>
 <span class="lineNum">     138 </span>                :            : static char *
-<span class="lineNum">     139 </span>                :<span class="lineCov">         55 : internal_read_file (const char *filename, size_t *length, const char *mode)</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">         33 : internal_read_file (const char *filename, size_t *length, const char *mode)</span>
 <span class="lineNum">     140 </span>                :            : {
-<span class="lineNum">     141 </span>                :<span class="lineCov">         55 :   FILE *stream = fopen (filename, mode);</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">         33 :   FILE *stream = fopen (filename, mode);</span>
 <span class="lineNum">     142 </span>                :            :   char *out;
 <span class="lineNum">     143 </span>                :            :   int save_errno;
 <span class="lineNum">     144 </span>                :            : 
-<span class="lineNum">     145 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55 times"> + </span>]:<span class="lineCov">         55 :   if (!stream)</span>
+<span class="lineNum">     145 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 33 times"> + </span>]:<span class="lineCov">         33 :   if (!stream)</span>
 <span class="lineNum">     146 </span>                :<span class="lineNoCov">          0 :     return NULL;</span>
 <span class="lineNum">     147 </span>                :            : 
-<span class="lineNum">     148 </span>                :<span class="lineCov">         55 :   out = fread_file (stream, length);</span>
+<span class="lineNum">     148 </span>                :<span class="lineCov">         33 :   out = fread_file (stream, length);</span>
 <span class="lineNum">     149 </span>                :            : 
-<span class="lineNum">     150 </span>                :<span class="lineCov">         55 :   save_errno = errno;</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">         33 :   save_errno = errno;</span>
 <span class="lineNum">     151 </span>                :            : 
-<span class="lineNum">     152 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55 times"> + </span>]:<span class="lineCov">         55 :   if (fclose (stream) != 0)</span>
+<span class="lineNum">     152 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 33 times"> + </span>]:<span class="lineCov">         33 :   if (fclose (stream) != 0)</span>
 <span class="lineNum">     153 </span>                :            :     {
 <span class="lineNum">     154 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (out)</span>
 <span class="lineNum">     155 </span>                :            :         {
@@ -231,7 +231,7 @@
 <span class="lineNum">     160 </span>                :<span class="lineNoCov">          0 :       return NULL;</span>
 <span class="lineNum">     161 </span>                :            :     }
 <span class="lineNum">     162 </span>                :            : 
-<span class="lineNum">     163 </span>                :<span class="lineCov">         55 :   return out;</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">         33 :   return out;</span>
 <span class="lineNum">     164 </span>                :            : }
 <span class="lineNum">     165 </span>                :            : 
 <span class="lineNum">     166 </span>                :            : /* Open and read the contents of FILENAME, and return a newly
@@ -241,9 +241,9 @@
 <span class="lineNum">     170 </span>                :            :    undefined, errno preserves the values set by system functions (if
 <a name="171"><span class="lineNum">     171 </span>                :            :    any), and NULL is returned.  */</a>
 <span class="lineNum">     172 </span>                :            : char *
-<span class="lineNum">     173 </span>                :<span class="lineCov">         55 : read_file (const char *filename, size_t *length)</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">         33 : read_file (const char *filename, size_t *length)</span>
 <span class="lineNum">     174 </span>                :            : {
-<span class="lineNum">     175 </span>                :<span class="lineCov">         55 :   return internal_read_file (filename, length, &quot;r&quot;);</span>
+<span class="lineNum">     175 </span>                :<span class="lineCov">         33 :   return internal_read_file (filename, length, &quot;r&quot;);</span>
 <span class="lineNum">     176 </span>                :            : }
 <span class="lineNum">     177 </span>                :            : 
 <span class="lineNum">     178 </span>                :            : /* Open (on non-POSIX systems, in binary mode) and read the contents

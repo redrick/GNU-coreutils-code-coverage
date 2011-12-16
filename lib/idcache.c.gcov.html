@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/idcache.c</title>
+  <title>LCOV - coreutils - lib/idcache.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">30</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -136,34 +136,34 @@
 <span class="lineNum">      65 </span>                :            : /* Translate UID to a login name, with cache, or NULL if unresolved.  */
 <a name="66"><span class="lineNum">      66 </span>                :            : </a>
 <span class="lineNum">      67 </span>                :            : char *
-<span class="lineNum">      68 </span>                :<span class="lineCov">       2024 : getuser (uid_t uid)</span>
+<span class="lineNum">      68 </span>                :<span class="lineCov">       1222 : getuser (uid_t uid)</span>
 <span class="lineNum">      69 </span>                :            : {
 <span class="lineNum">      70 </span>                :            :   struct userid *tail;
-<span class="lineNum">      71 </span>                :<span class="lineCov">       2024 :   struct userid *match = NULL;</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">       1222 :   struct userid *match = NULL;</span>
 <span class="lineNum">      72 </span>                :            : 
-<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 0 was taken 1517 times"> + </span><span class="branchCov" title="Branch 1 was taken 507 times"> + </span>]:<span class="lineCov">       2024 :   for (tail = user_alist; tail; tail = tail-&gt;next)</span>
+<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 0 was taken 915 times"> + </span><span class="branchCov" title="Branch 1 was taken 307 times"> + </span>]:<span class="lineCov">       1222 :   for (tail = user_alist; tail; tail = tail-&gt;next)</span>
 <span class="lineNum">      74 </span>                :            :     {
-<span class="lineNum">      75 </span>        [<span class="branchCov" title="Branch 0 was taken 1517 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1517 :       if (tail-&gt;id.u == uid)</span>
+<span class="lineNum">      75 </span>        [<span class="branchCov" title="Branch 0 was taken 915 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        915 :       if (tail-&gt;id.u == uid)</span>
 <span class="lineNum">      76 </span>                :            :         {
-<span class="lineNum">      77 </span>                :<span class="lineCov">       1517 :           match = tail;</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">       1517 :           break;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">        915 :           match = tail;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">        915 :           break;</span>
 <span class="lineNum">      79 </span>                :            :         }
 <span class="lineNum">      80 </span>                :            :     }
 <span class="lineNum">      81 </span>                :            : 
-<span class="lineNum">      82 </span>        [<span class="branchCov" title="Branch 0 was taken 507 times"> + </span><span class="branchCov" title="Branch 1 was taken 1517 times"> + </span>]:<span class="lineCov">       2024 :   if (match == NULL)</span>
+<span class="lineNum">      82 </span>        [<span class="branchCov" title="Branch 0 was taken 307 times"> + </span><span class="branchCov" title="Branch 1 was taken 915 times"> + </span>]:<span class="lineCov">       1222 :   if (match == NULL)</span>
 <span class="lineNum">      83 </span>                :            :     {
-<span class="lineNum">      84 </span>                :<span class="lineCov">        507 :       struct passwd *pwent = getpwuid (uid);</span>
-<span class="lineNum">      85 </span>        [<span class="branchCov" title="Branch 0 was taken 506 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">        507 :       char const *name = pwent ? pwent-&gt;pw_name : &quot;&quot;;</span>
-<span class="lineNum">      86 </span>                :<span class="lineCov">        507 :       match = xmalloc (offsetof (struct userid, name) + strlen (name) + 1);</span>
-<span class="lineNum">      87 </span>                :<span class="lineCov">        507 :       match-&gt;id.u = uid;</span>
-<span class="lineNum">      88 </span>                :<span class="lineCov">        507 :       strcpy (match-&gt;name, name);</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">        307 :       struct passwd *pwent = getpwuid (uid);</span>
+<span class="lineNum">      85 </span>        [<span class="branchCov" title="Branch 0 was taken 306 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">        307 :       char const *name = pwent ? pwent-&gt;pw_name : &quot;&quot;;</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">        307 :       match = xmalloc (offsetof (struct userid, name) + strlen (name) + 1);</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">        307 :       match-&gt;id.u = uid;</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">        307 :       strcpy (match-&gt;name, name);</span>
 <span class="lineNum">      89 </span>                :            : 
 <span class="lineNum">      90 </span>                :            :       /* Add to the head of the list, so most recently used is first.  */
-<span class="lineNum">      91 </span>                :<span class="lineCov">        507 :       match-&gt;next = user_alist;</span>
-<span class="lineNum">      92 </span>                :<span class="lineCov">        507 :       user_alist = match;</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">        307 :       match-&gt;next = user_alist;</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">        307 :       user_alist = match;</span>
 <span class="lineNum">      93 </span>                :            :     }
 <span class="lineNum">      94 </span>                :            : 
-<span class="lineNum">      95 </span>        [<span class="branchCov" title="Branch 0 was taken 2022 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">       2024 :   return match-&gt;name[0] ? match-&gt;name : NULL;</span>
+<span class="lineNum">      95 </span>        [<span class="branchCov" title="Branch 0 was taken 1220 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">       1222 :   return match-&gt;name[0] ? match-&gt;name : NULL;</span>
 <span class="lineNum">      96 </span>                :            : }
 <span class="lineNum">      97 </span>                :            : 
 <span class="lineNum">      98 </span>                :            : /* Translate USER to a UID, with cache.
@@ -218,34 +218,34 @@
 <span class="lineNum">     147 </span>                :            : /* Translate GID to a group name, with cache, or NULL if unresolved.  */
 <a name="148"><span class="lineNum">     148 </span>                :            : </a>
 <span class="lineNum">     149 </span>                :            : char *
-<span class="lineNum">     150 </span>                :<span class="lineCov">       1912 : getgroup (gid_t gid)</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">       1154 : getgroup (gid_t gid)</span>
 <span class="lineNum">     151 </span>                :            : {
 <span class="lineNum">     152 </span>                :            :   struct userid *tail;
-<span class="lineNum">     153 </span>                :<span class="lineCov">       1912 :   struct userid *match = NULL;</span>
+<span class="lineNum">     153 </span>                :<span class="lineCov">       1154 :   struct userid *match = NULL;</span>
 <span class="lineNum">     154 </span>                :            : 
-<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 0 was taken 1461 times"> + </span><span class="branchCov" title="Branch 1 was taken 451 times"> + </span>]:<span class="lineCov">       1912 :   for (tail = group_alist; tail; tail = tail-&gt;next)</span>
+<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 0 was taken 881 times"> + </span><span class="branchCov" title="Branch 1 was taken 273 times"> + </span>]:<span class="lineCov">       1154 :   for (tail = group_alist; tail; tail = tail-&gt;next)</span>
 <span class="lineNum">     156 </span>                :            :     {
-<span class="lineNum">     157 </span>        [<span class="branchCov" title="Branch 0 was taken 1461 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1461 :       if (tail-&gt;id.g == gid)</span>
+<span class="lineNum">     157 </span>        [<span class="branchCov" title="Branch 0 was taken 881 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        881 :       if (tail-&gt;id.g == gid)</span>
 <span class="lineNum">     158 </span>                :            :         {
-<span class="lineNum">     159 </span>                :<span class="lineCov">       1461 :           match = tail;</span>
-<span class="lineNum">     160 </span>                :<span class="lineCov">       1461 :           break;</span>
+<span class="lineNum">     159 </span>                :<span class="lineCov">        881 :           match = tail;</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">        881 :           break;</span>
 <span class="lineNum">     161 </span>                :            :         }
 <span class="lineNum">     162 </span>                :            :     }
 <span class="lineNum">     163 </span>                :            : 
-<span class="lineNum">     164 </span>        [<span class="branchCov" title="Branch 0 was taken 451 times"> + </span><span class="branchCov" title="Branch 1 was taken 1461 times"> + </span>]:<span class="lineCov">       1912 :   if (match == NULL)</span>
+<span class="lineNum">     164 </span>        [<span class="branchCov" title="Branch 0 was taken 273 times"> + </span><span class="branchCov" title="Branch 1 was taken 881 times"> + </span>]:<span class="lineCov">       1154 :   if (match == NULL)</span>
 <span class="lineNum">     165 </span>                :            :     {
-<span class="lineNum">     166 </span>                :<span class="lineCov">        451 :       struct group *grent = getgrgid (gid);</span>
-<span class="lineNum">     167 </span>        [<span class="branchCov" title="Branch 0 was taken 451 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        451 :       char const *name = grent ? grent-&gt;gr_name : &quot;&quot;;</span>
-<span class="lineNum">     168 </span>                :<span class="lineCov">        451 :       match = xmalloc (offsetof (struct userid, name) + strlen (name) + 1);</span>
-<span class="lineNum">     169 </span>                :<span class="lineCov">        451 :       match-&gt;id.g = gid;</span>
-<span class="lineNum">     170 </span>                :<span class="lineCov">        451 :       strcpy (match-&gt;name, name);</span>
+<span class="lineNum">     166 </span>                :<span class="lineCov">        273 :       struct group *grent = getgrgid (gid);</span>
+<span class="lineNum">     167 </span>        [<span class="branchCov" title="Branch 0 was taken 273 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        273 :       char const *name = grent ? grent-&gt;gr_name : &quot;&quot;;</span>
+<span class="lineNum">     168 </span>                :<span class="lineCov">        273 :       match = xmalloc (offsetof (struct userid, name) + strlen (name) + 1);</span>
+<span class="lineNum">     169 </span>                :<span class="lineCov">        273 :       match-&gt;id.g = gid;</span>
+<span class="lineNum">     170 </span>                :<span class="lineCov">        273 :       strcpy (match-&gt;name, name);</span>
 <span class="lineNum">     171 </span>                :            : 
 <span class="lineNum">     172 </span>                :            :       /* Add to the head of the list, so most recently used is first.  */
-<span class="lineNum">     173 </span>                :<span class="lineCov">        451 :       match-&gt;next = group_alist;</span>
-<span class="lineNum">     174 </span>                :<span class="lineCov">        451 :       group_alist = match;</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">        273 :       match-&gt;next = group_alist;</span>
+<span class="lineNum">     174 </span>                :<span class="lineCov">        273 :       group_alist = match;</span>
 <span class="lineNum">     175 </span>                :            :     }
 <span class="lineNum">     176 </span>                :            : 
-<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 1912 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1912 :   return match-&gt;name[0] ? match-&gt;name : NULL;</span>
+<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 1154 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1154 :   return match-&gt;name[0] ? match-&gt;name : NULL;</span>
 <span class="lineNum">     178 </span>                :            : }
 <span class="lineNum">     179 </span>                :            : 
 <span class="lineNum">     180 </span>                :            : /* Translate GROUP to a GID, with cache.

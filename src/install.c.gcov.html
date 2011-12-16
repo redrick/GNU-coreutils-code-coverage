@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - src/install.c</title>
+  <title>LCOV - coreutils - src/install.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">306</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">18</td>
@@ -213,187 +213,187 @@
 <span class="lineNum">     142 </span>                :            : /* Compare content of opened files using file descriptors A_FD and B_FD. Return
 <a name="143"><span class="lineNum">     143 </span>                :            :    true if files are equal. */</a>
 <span class="lineNum">     144 </span>                :            : static bool
-<span class="lineNum">     145 </span>                :<span class="lineCov">         45 : have_same_content (int a_fd, int b_fd)</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">         29 : have_same_content (int a_fd, int b_fd)</span>
 <span class="lineNum">     146 </span>                :            : {
 <span class="lineNum">     147 </span>                :            :   enum { CMP_BLOCK_SIZE = 4096 };
 <span class="lineNum">     148 </span>                :            :   static char a_buff[CMP_BLOCK_SIZE];
 <span class="lineNum">     149 </span>                :            :   static char b_buff[CMP_BLOCK_SIZE];
 <span class="lineNum">     150 </span>                :            : 
 <span class="lineNum">     151 </span>                :            :   size_t size;
-<span class="lineNum">     152 </span>        [<span class="branchCov" title="Branch 1 was taken 45 times"> + </span><span class="branchCov" title="Branch 2 was taken 40 times"> + </span>]:<span class="lineCov">         85 :   while (0 &lt; (size = full_read (a_fd, a_buff, sizeof a_buff))) {</span>
-<span class="lineNum">     153 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 45 times"> + </span>]:<span class="lineCov">         45 :     if (size != full_read (b_fd, b_buff, sizeof b_buff))</span>
+<span class="lineNum">     152 </span>        [<span class="branchCov" title="Branch 1 was taken 29 times"> + </span><span class="branchCov" title="Branch 2 was taken 26 times"> + </span>]:<span class="lineCov">         55 :   while (0 &lt; (size = full_read (a_fd, a_buff, sizeof a_buff))) {</span>
+<span class="lineNum">     153 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     if (size != full_read (b_fd, b_buff, sizeof b_buff))</span>
 <span class="lineNum">     154 </span>                :<span class="lineNoCov">          0 :       return false;</span>
 <span class="lineNum">     155 </span>                :            : 
-<span class="lineNum">     156 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 40 times"> + </span>]:<span class="lineCov">         45 :     if (memcmp (a_buff, b_buff, size) != 0)</span>
-<span class="lineNum">     157 </span>                :<span class="lineCov">          5 :       return false;</span>
+<span class="lineNum">     156 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 26 times"> + </span>]:<span class="lineCov">         29 :     if (memcmp (a_buff, b_buff, size) != 0)</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">          3 :       return false;</span>
 <span class="lineNum">     158 </span>                :            :   }
 <span class="lineNum">     159 </span>                :            : 
-<span class="lineNum">     160 </span>                :<span class="lineCov">         45 :   return size == 0;</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">         29 :   return size == 0;</span>
 <span class="lineNum">     161 </span>                :            : }
 <span class="lineNum">     162 </span>                :            : 
 <a name="163"><span class="lineNum">     163 </span>                :            : /* Return true for mode with non-permission bits. */</a>
 <span class="lineNum">     164 </span>                :            : static bool
-<span class="lineNum">     165 </span>                :<span class="lineCov">        316 : extra_mode (mode_t input)</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">        208 : extra_mode (mode_t input)</span>
 <span class="lineNum">     166 </span>                :            : {
-<span class="lineNum">     167 </span>                :<span class="lineCov">        316 :   mode_t mask = S_IRWXUGO | S_IFMT;</span>
-<span class="lineNum">     168 </span>                :<span class="lineCov">        316 :   return !! (input &amp; ~ mask);</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">        208 :   mode_t mask = S_IRWXUGO | S_IFMT;</span>
+<span class="lineNum">     168 </span>                :<span class="lineCov">        208 :   return !! (input &amp; ~ mask);</span>
 <span class="lineNum">     169 </span>                :            : }
 <span class="lineNum">     170 </span>                :            : 
 <a name="171"><span class="lineNum">     171 </span>                :            : /* Return true if copy of file SRC_NAME to file DEST_NAME is necessary. */</a>
 <span class="lineNum">     172 </span>                :            : static bool
-<span class="lineNum">     173 </span>                :<span class="lineCov">         92 : need_copy (const char *src_name, const char *dest_name,</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">         60 : need_copy (const char *src_name, const char *dest_name,</span>
 <span class="lineNum">     174 </span>                :            :            const struct cp_options *x)
 <span class="lineNum">     175 </span>                :            : {
 <span class="lineNum">     176 </span>                :            :   struct stat src_sb, dest_sb;
 <span class="lineNum">     177 </span>                :            :   int src_fd, dest_fd;
 <span class="lineNum">     178 </span>                :            :   bool content_match;
 <span class="lineNum">     179 </span>                :            : 
-<span class="lineNum">     180 </span>        [<span class="branchCov" title="Branch 1 was taken 10 times"> + </span><span class="branchCov" title="Branch 2 was taken 82 times"> + </span>]:<span class="lineCov">         92 :   if (extra_mode (mode))</span>
-<span class="lineNum">     181 </span>                :<span class="lineCov">         10 :     return true;</span>
+<span class="lineNum">     180 </span>        [<span class="branchCov" title="Branch 1 was taken 6 times"> + </span><span class="branchCov" title="Branch 2 was taken 54 times"> + </span>]:<span class="lineCov">         60 :   if (extra_mode (mode))</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">          6 :     return true;</span>
 <span class="lineNum">     182 </span>                :            : 
 <span class="lineNum">     183 </span>                :            :   /* compare files using stat */
-<span class="lineNum">     184 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 82 times"> + </span>]:<span class="lineCov">         82 :   if (lstat (src_name, &amp;src_sb) != 0)</span>
+<span class="lineNum">     184 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54 times"> + </span>]:<span class="lineCov">         54 :   if (lstat (src_name, &amp;src_sb) != 0)</span>
 <span class="lineNum">     185 </span>                :<span class="lineNoCov">          0 :     return true;</span>
 <span class="lineNum">     186 </span>                :            : 
-<span class="lineNum">     187 </span>        [<span class="branchCov" title="Branch 1 was taken 11 times"> + </span><span class="branchCov" title="Branch 2 was taken 71 times"> + </span>]:<span class="lineCov">         82 :   if (lstat (dest_name, &amp;dest_sb) != 0)</span>
-<span class="lineNum">     188 </span>                :<span class="lineCov">         11 :     return true;</span>
+<span class="lineNum">     187 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchCov" title="Branch 2 was taken 47 times"> + </span>]:<span class="lineCov">         54 :   if (lstat (dest_name, &amp;dest_sb) != 0)</span>
+<span class="lineNum">     188 </span>                :<span class="lineCov">          7 :     return true;</span>
 <span class="lineNum">     189 </span>                :            : 
-<span class="lineNum">     190 </span>[<span class="branchCov" title="Branch 0 was taken 66 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 66 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         71 :   if (!S_ISREG (src_sb.st_mode) || !S_ISREG (dest_sb.st_mode)</span>
-<span class="lineNum">     191 </span>[<span class="branchCov" title="Branch 1 was taken 66 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 4 was taken 5 times"> + </span><span class="branchCov" title="Branch 5 was taken 61 times"> + </span>]:<span class="lineCov">         66 :       || extra_mode (src_sb.st_mode) || extra_mode (dest_sb.st_mode))</span>
-<span class="lineNum">     192 </span>                :<span class="lineCov">         10 :     return true;</span>
+<span class="lineNum">     190 </span>[<span class="branchCov" title="Branch 0 was taken 44 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 44 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         47 :   if (!S_ISREG (src_sb.st_mode) || !S_ISREG (dest_sb.st_mode)</span>
+<span class="lineNum">     191 </span>[<span class="branchCov" title="Branch 1 was taken 44 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 4 was taken 3 times"> + </span><span class="branchCov" title="Branch 5 was taken 41 times"> + </span>]:<span class="lineCov">         44 :       || extra_mode (src_sb.st_mode) || extra_mode (dest_sb.st_mode))</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">          6 :     return true;</span>
 <span class="lineNum">     193 </span>                :            : 
-<span class="lineNum">     194 </span>        [<span class="branchCov" title="Branch 0 was taken 61 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         61 :   if (src_sb.st_size != dest_sb.st_size</span>
-<span class="lineNum">     195 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 56 times"> + </span>]:<span class="lineCov">         61 :       || (dest_sb.st_mode &amp; CHMOD_MODE_BITS) != mode)</span>
-<span class="lineNum">     196 </span>                :<span class="lineCov">          5 :     return true;</span>
+<span class="lineNum">     194 </span>        [<span class="branchCov" title="Branch 0 was taken 41 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         41 :   if (src_sb.st_size != dest_sb.st_size</span>
+<span class="lineNum">     195 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span>]:<span class="lineCov">         41 :       || (dest_sb.st_mode &amp; CHMOD_MODE_BITS) != mode)</span>
+<span class="lineNum">     196 </span>                :<span class="lineCov">          3 :     return true;</span>
 <span class="lineNum">     197 </span>                :            : 
-<span class="lineNum">     198 </span>        [<span class="branchCov" title="Branch 0 was taken 50 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         56 :   if (owner_id == (uid_t) -1)</span>
+<span class="lineNum">     198 </span>        [<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         38 :   if (owner_id == (uid_t) -1)</span>
 <span class="lineNum">     199 </span>                :            :     {
-<span class="lineNum">     200 </span>                :<span class="lineCov">         50 :       errno = 0;</span>
-<span class="lineNum">     201 </span>                :<span class="lineCov">         50 :       uid_t ruid = getuid ();</span>
-<span class="lineNum">     202 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 50 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         50 :       if ((ruid == (uid_t) -1 &amp;&amp; errno) || dest_sb.st_uid != ruid)</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 1 time"> + </span><span class="branchCov" title="Branch 6 was taken 49 times"> + </span>]
+<span class="lineNum">     200 </span>                :<span class="lineCov">         32 :       errno = 0;</span>
+<span class="lineNum">     201 </span>                :<span class="lineCov">         32 :       uid_t ruid = getuid ();</span>
+<span class="lineNum">     202 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         32 :       if ((ruid == (uid_t) -1 &amp;&amp; errno) || dest_sb.st_uid != ruid)</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 1 time"> + </span><span class="branchCov" title="Branch 6 was taken 31 times"> + </span>]
 <span class="lineNum">     203 </span>                :<span class="lineCov">          1 :         return true;</span>
 <span class="lineNum">     204 </span>                :            :     }
 <span class="lineNum">     205 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          6 :   else if (dest_sb.st_uid != owner_id)</span>
 <span class="lineNum">     206 </span>                :<span class="lineCov">          1 :     return true;</span>
 <span class="lineNum">     207 </span>                :            : 
-<span class="lineNum">     208 </span>        [<span class="branchCov" title="Branch 0 was taken 49 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">         54 :   if (group_id == (uid_t) -1)</span>
+<span class="lineNum">     208 </span>        [<span class="branchCov" title="Branch 0 was taken 31 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">         36 :   if (group_id == (uid_t) -1)</span>
 <span class="lineNum">     209 </span>                :            :     {
-<span class="lineNum">     210 </span>                :<span class="lineCov">         49 :       errno = 0;</span>
-<span class="lineNum">     211 </span>                :<span class="lineCov">         49 :       gid_t rgid = getgid ();</span>
-<span class="lineNum">     212 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 49 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         49 :       if ((rgid == (uid_t) -1 &amp;&amp; errno) || dest_sb.st_gid != rgid)</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 2 times"> + </span><span class="branchCov" title="Branch 6 was taken 47 times"> + </span>]
+<span class="lineNum">     210 </span>                :<span class="lineCov">         31 :       errno = 0;</span>
+<span class="lineNum">     211 </span>                :<span class="lineCov">         31 :       gid_t rgid = getgid ();</span>
+<span class="lineNum">     212 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 31 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         31 :       if ((rgid == (uid_t) -1 &amp;&amp; errno) || dest_sb.st_gid != rgid)</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 2 times"> + </span><span class="branchCov" title="Branch 6 was taken 29 times"> + </span>]
 <span class="lineNum">     213 </span>                :<span class="lineCov">          2 :         return true;</span>
 <span class="lineNum">     214 </span>                :            :     }
 <span class="lineNum">     215 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          5 :   else if (dest_sb.st_gid != group_id)</span>
 <span class="lineNum">     216 </span>                :<span class="lineCov">          2 :     return true;</span>
 <span class="lineNum">     217 </span>                :            : 
 <span class="lineNum">     218 </span>                :            :   /* compare SELinux context if preserving */
-<span class="lineNum">     219 </span>[<span class="branchCov" title="Branch 0 was taken 50 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 15 times"> + </span><span class="branchCov" title="Branch 3 was taken 35 times"> + </span>]:<span class="lineCov">         50 :   if (selinux_enabled &amp;&amp; x-&gt;preserve_security_context)</span>
+<span class="lineNum">     219 </span>[<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 9 times"> + </span><span class="branchCov" title="Branch 3 was taken 23 times"> + </span>]:<span class="lineCov">         32 :   if (selinux_enabled &amp;&amp; x-&gt;preserve_security_context)</span>
 <span class="lineNum">     220 </span>                :            :     {
-<span class="lineNum">     221 </span>                :<span class="lineCov">         15 :       security_context_t file_scontext = NULL;</span>
-<span class="lineNum">     222 </span>                :<span class="lineCov">         15 :       security_context_t to_scontext = NULL;</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">          9 :       security_context_t file_scontext = NULL;</span>
+<span class="lineNum">     222 </span>                :<span class="lineCov">          9 :       security_context_t to_scontext = NULL;</span>
 <span class="lineNum">     223 </span>                :            :       bool scontext_match;
 <span class="lineNum">     224 </span>                :            : 
-<span class="lineNum">     225 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 15 times"> + </span>]:<span class="lineCov">         15 :       if (getfilecon (src_name, &amp;file_scontext) == -1)</span>
+<span class="lineNum">     225 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">          9 :       if (getfilecon (src_name, &amp;file_scontext) == -1)</span>
 <span class="lineNum">     226 </span>                :<span class="lineNoCov">          0 :         return true;</span>
 <span class="lineNum">     227 </span>                :            : 
-<span class="lineNum">     228 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 15 times"> + </span>]:<span class="lineCov">         15 :       if (getfilecon (dest_name, &amp;to_scontext) == -1)</span>
+<span class="lineNum">     228 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">          9 :       if (getfilecon (dest_name, &amp;to_scontext) == -1)</span>
 <span class="lineNum">     229 </span>                :            :         {
 <span class="lineNum">     230 </span>                :<span class="lineNoCov">          0 :           freecon (file_scontext);</span>
 <span class="lineNum">     231 </span>                :<span class="lineNoCov">          0 :           return true;</span>
 <span class="lineNum">     232 </span>                :            :         }
 <span class="lineNum">     233 </span>                :            : 
-<span class="lineNum">     234 </span>                :<span class="lineCov">         15 :       scontext_match = STREQ (file_scontext, to_scontext);</span>
+<span class="lineNum">     234 </span>                :<span class="lineCov">          9 :       scontext_match = STREQ (file_scontext, to_scontext);</span>
 <span class="lineNum">     235 </span>                :            : 
-<span class="lineNum">     236 </span>                :<span class="lineCov">         15 :       freecon (file_scontext);</span>
-<span class="lineNum">     237 </span>                :<span class="lineCov">         15 :       freecon (to_scontext);</span>
-<span class="lineNum">     238 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         15 :       if (!scontext_match)</span>
-<span class="lineNum">     239 </span>                :<span class="lineCov">          5 :         return true;</span>
+<span class="lineNum">     236 </span>                :<span class="lineCov">          9 :       freecon (file_scontext);</span>
+<span class="lineNum">     237 </span>                :<span class="lineCov">          9 :       freecon (to_scontext);</span>
+<span class="lineNum">     238 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          9 :       if (!scontext_match)</span>
+<span class="lineNum">     239 </span>                :<span class="lineCov">          3 :         return true;</span>
 <span class="lineNum">     240 </span>                :            :     }
 <span class="lineNum">     241 </span>                :            : 
 <span class="lineNum">     242 </span>                :            :   /* compare files content */
-<span class="lineNum">     243 </span>                :<span class="lineCov">         45 :   src_fd = open (src_name, O_RDONLY | O_BINARY);</span>
-<span class="lineNum">     244 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 45 times"> + </span>]:<span class="lineCov">         45 :   if (src_fd &lt; 0)</span>
+<span class="lineNum">     243 </span>                :<span class="lineCov">         29 :   src_fd = open (src_name, O_RDONLY | O_BINARY);</span>
+<span class="lineNum">     244 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :   if (src_fd &lt; 0)</span>
 <span class="lineNum">     245 </span>                :<span class="lineNoCov">          0 :     return true;</span>
 <span class="lineNum">     246 </span>                :            : 
-<span class="lineNum">     247 </span>                :<span class="lineCov">         45 :   dest_fd = open (dest_name, O_RDONLY | O_BINARY);</span>
-<span class="lineNum">     248 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 45 times"> + </span>]:<span class="lineCov">         45 :   if (dest_fd &lt; 0)</span>
+<span class="lineNum">     247 </span>                :<span class="lineCov">         29 :   dest_fd = open (dest_name, O_RDONLY | O_BINARY);</span>
+<span class="lineNum">     248 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :   if (dest_fd &lt; 0)</span>
 <span class="lineNum">     249 </span>                :            :     {
 <span class="lineNum">     250 </span>                :<span class="lineNoCov">          0 :       close (src_fd);</span>
 <span class="lineNum">     251 </span>                :<span class="lineNoCov">          0 :       return true;</span>
 <span class="lineNum">     252 </span>                :            :     }
 <span class="lineNum">     253 </span>                :            : 
-<span class="lineNum">     254 </span>                :<span class="lineCov">         45 :   content_match = have_same_content (src_fd, dest_fd);</span>
+<span class="lineNum">     254 </span>                :<span class="lineCov">         29 :   content_match = have_same_content (src_fd, dest_fd);</span>
 <span class="lineNum">     255 </span>                :            : 
-<span class="lineNum">     256 </span>                :<span class="lineCov">         45 :   close (src_fd);</span>
-<span class="lineNum">     257 </span>                :<span class="lineCov">         45 :   close (dest_fd);</span>
-<span class="lineNum">     258 </span>                :<span class="lineCov">         92 :   return !content_match;</span>
+<span class="lineNum">     256 </span>                :<span class="lineCov">         29 :   close (src_fd);</span>
+<span class="lineNum">     257 </span>                :<span class="lineCov">         29 :   close (dest_fd);</span>
+<span class="lineNum">     258 </span>                :<span class="lineCov">         60 :   return !content_match;</span>
 <span class="lineNum">     259 </span>                :            : }
 <a name="260"><span class="lineNum">     260 </span>                :            : </a>
 <span class="lineNum">     261 </span>                :            : static void
-<span class="lineNum">     262 </span>                :<span class="lineCov">        260 : cp_option_init (struct cp_options *x)</span>
+<span class="lineNum">     262 </span>                :<span class="lineCov">        158 : cp_option_init (struct cp_options *x)</span>
 <span class="lineNum">     263 </span>                :            : {
-<span class="lineNum">     264 </span>                :<span class="lineCov">        260 :   cp_options_default (x);</span>
-<span class="lineNum">     265 </span>                :<span class="lineCov">        260 :   x-&gt;copy_as_regular = true;</span>
-<span class="lineNum">     266 </span>                :<span class="lineCov">        260 :   x-&gt;reflink_mode = REFLINK_NEVER;</span>
-<span class="lineNum">     267 </span>                :<span class="lineCov">        260 :   x-&gt;dereference = DEREF_ALWAYS;</span>
-<span class="lineNum">     268 </span>                :<span class="lineCov">        260 :   x-&gt;unlink_dest_before_opening = true;</span>
-<span class="lineNum">     269 </span>                :<span class="lineCov">        260 :   x-&gt;unlink_dest_after_failed_open = false;</span>
-<span class="lineNum">     270 </span>                :<span class="lineCov">        260 :   x-&gt;hard_link = false;</span>
-<span class="lineNum">     271 </span>                :<span class="lineCov">        260 :   x-&gt;interactive = I_UNSPECIFIED;</span>
-<span class="lineNum">     272 </span>                :<span class="lineCov">        260 :   x-&gt;move_mode = false;</span>
-<span class="lineNum">     273 </span>                :<span class="lineCov">        260 :   x-&gt;one_file_system = false;</span>
-<span class="lineNum">     274 </span>                :<span class="lineCov">        260 :   x-&gt;preserve_ownership = false;</span>
-<span class="lineNum">     275 </span>                :<span class="lineCov">        260 :   x-&gt;preserve_links = false;</span>
-<span class="lineNum">     276 </span>                :<span class="lineCov">        260 :   x-&gt;preserve_mode = false;</span>
-<span class="lineNum">     277 </span>                :<span class="lineCov">        260 :   x-&gt;preserve_timestamps = false;</span>
-<span class="lineNum">     278 </span>                :<span class="lineCov">        260 :   x-&gt;reduce_diagnostics=false;</span>
-<span class="lineNum">     279 </span>                :<span class="lineCov">        260 :   x-&gt;data_copy_required = true;</span>
-<span class="lineNum">     280 </span>                :<span class="lineCov">        260 :   x-&gt;require_preserve = false;</span>
-<span class="lineNum">     281 </span>                :<span class="lineCov">        260 :   x-&gt;require_preserve_context = false;</span>
-<span class="lineNum">     282 </span>                :<span class="lineCov">        260 :   x-&gt;require_preserve_xattr = false;</span>
-<span class="lineNum">     283 </span>                :<span class="lineCov">        260 :   x-&gt;recursive = false;</span>
-<span class="lineNum">     284 </span>                :<span class="lineCov">        260 :   x-&gt;sparse_mode = SPARSE_AUTO;</span>
-<span class="lineNum">     285 </span>                :<span class="lineCov">        260 :   x-&gt;symbolic_link = false;</span>
-<span class="lineNum">     286 </span>                :<span class="lineCov">        260 :   x-&gt;backup_type = no_backups;</span>
+<span class="lineNum">     264 </span>                :<span class="lineCov">        158 :   cp_options_default (x);</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">        158 :   x-&gt;copy_as_regular = true;</span>
+<span class="lineNum">     266 </span>                :<span class="lineCov">        158 :   x-&gt;reflink_mode = REFLINK_NEVER;</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">        158 :   x-&gt;dereference = DEREF_ALWAYS;</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">        158 :   x-&gt;unlink_dest_before_opening = true;</span>
+<span class="lineNum">     269 </span>                :<span class="lineCov">        158 :   x-&gt;unlink_dest_after_failed_open = false;</span>
+<span class="lineNum">     270 </span>                :<span class="lineCov">        158 :   x-&gt;hard_link = false;</span>
+<span class="lineNum">     271 </span>                :<span class="lineCov">        158 :   x-&gt;interactive = I_UNSPECIFIED;</span>
+<span class="lineNum">     272 </span>                :<span class="lineCov">        158 :   x-&gt;move_mode = false;</span>
+<span class="lineNum">     273 </span>                :<span class="lineCov">        158 :   x-&gt;one_file_system = false;</span>
+<span class="lineNum">     274 </span>                :<span class="lineCov">        158 :   x-&gt;preserve_ownership = false;</span>
+<span class="lineNum">     275 </span>                :<span class="lineCov">        158 :   x-&gt;preserve_links = false;</span>
+<span class="lineNum">     276 </span>                :<span class="lineCov">        158 :   x-&gt;preserve_mode = false;</span>
+<span class="lineNum">     277 </span>                :<span class="lineCov">        158 :   x-&gt;preserve_timestamps = false;</span>
+<span class="lineNum">     278 </span>                :<span class="lineCov">        158 :   x-&gt;reduce_diagnostics=false;</span>
+<span class="lineNum">     279 </span>                :<span class="lineCov">        158 :   x-&gt;data_copy_required = true;</span>
+<span class="lineNum">     280 </span>                :<span class="lineCov">        158 :   x-&gt;require_preserve = false;</span>
+<span class="lineNum">     281 </span>                :<span class="lineCov">        158 :   x-&gt;require_preserve_context = false;</span>
+<span class="lineNum">     282 </span>                :<span class="lineCov">        158 :   x-&gt;require_preserve_xattr = false;</span>
+<span class="lineNum">     283 </span>                :<span class="lineCov">        158 :   x-&gt;recursive = false;</span>
+<span class="lineNum">     284 </span>                :<span class="lineCov">        158 :   x-&gt;sparse_mode = SPARSE_AUTO;</span>
+<span class="lineNum">     285 </span>                :<span class="lineCov">        158 :   x-&gt;symbolic_link = false;</span>
+<span class="lineNum">     286 </span>                :<span class="lineCov">        158 :   x-&gt;backup_type = no_backups;</span>
 <span class="lineNum">     287 </span>                :            : 
 <span class="lineNum">     288 </span>                :            :   /* Create destination files initially writable so we can run strip on them.
 <span class="lineNum">     289 </span>                :            :      Although GNU strip works fine on read-only files, some others
 <span class="lineNum">     290 </span>                :            :      would fail.  */
-<span class="lineNum">     291 </span>                :<span class="lineCov">        260 :   x-&gt;set_mode = true;</span>
-<span class="lineNum">     292 </span>                :<span class="lineCov">        260 :   x-&gt;mode = S_IRUSR | S_IWUSR;</span>
-<span class="lineNum">     293 </span>                :<span class="lineCov">        260 :   x-&gt;stdin_tty = false;</span>
+<span class="lineNum">     291 </span>                :<span class="lineCov">        158 :   x-&gt;set_mode = true;</span>
+<span class="lineNum">     292 </span>                :<span class="lineCov">        158 :   x-&gt;mode = S_IRUSR | S_IWUSR;</span>
+<span class="lineNum">     293 </span>                :<span class="lineCov">        158 :   x-&gt;stdin_tty = false;</span>
 <span class="lineNum">     294 </span>                :            : 
-<span class="lineNum">     295 </span>                :<span class="lineCov">        260 :   x-&gt;open_dangling_dest_symlink = false;</span>
-<span class="lineNum">     296 </span>                :<span class="lineCov">        260 :   x-&gt;update = false;</span>
-<span class="lineNum">     297 </span>                :<span class="lineCov">        260 :   x-&gt;preserve_security_context = false;</span>
-<span class="lineNum">     298 </span>                :<span class="lineCov">        260 :   x-&gt;preserve_xattr = false;</span>
-<span class="lineNum">     299 </span>                :<span class="lineCov">        260 :   x-&gt;verbose = false;</span>
-<span class="lineNum">     300 </span>                :<span class="lineCov">        260 :   x-&gt;dest_info = NULL;</span>
-<span class="lineNum">     301 </span>                :<span class="lineCov">        260 :   x-&gt;src_info = NULL;</span>
-<span class="lineNum">     302 </span>                :<span class="lineCov">        260 : }</span>
+<span class="lineNum">     295 </span>                :<span class="lineCov">        158 :   x-&gt;open_dangling_dest_symlink = false;</span>
+<span class="lineNum">     296 </span>                :<span class="lineCov">        158 :   x-&gt;update = false;</span>
+<span class="lineNum">     297 </span>                :<span class="lineCov">        158 :   x-&gt;preserve_security_context = false;</span>
+<span class="lineNum">     298 </span>                :<span class="lineCov">        158 :   x-&gt;preserve_xattr = false;</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">        158 :   x-&gt;verbose = false;</span>
+<span class="lineNum">     300 </span>                :<span class="lineCov">        158 :   x-&gt;dest_info = NULL;</span>
+<span class="lineNum">     301 </span>                :<span class="lineCov">        158 :   x-&gt;src_info = NULL;</span>
+<span class="lineNum">     302 </span>                :<span class="lineCov">        158 : }</span>
 <span class="lineNum">     303 </span>                :            : 
 <span class="lineNum">     304 </span>                :            : #ifdef ENABLE_MATCHPATHCON
 <span class="lineNum">     305 </span>                :            : /* Modify file context to match the specified policy.
 <span class="lineNum">     306 </span>                :            :    If an error occurs the file will remain with the default directory
 <a name="307"><span class="lineNum">     307 </span>                :            :    context.  */</a>
 <span class="lineNum">     308 </span>                :            : static void
-<span class="lineNum">     309 </span>                :<span class="lineCov">        115 : setdefaultfilecon (char const *file)</span>
+<span class="lineNum">     309 </span>                :<span class="lineCov">         73 : setdefaultfilecon (char const *file)</span>
 <span class="lineNum">     310 </span>                :            : {
 <span class="lineNum">     311 </span>                :            :   struct stat st;
-<span class="lineNum">     312 </span>                :<span class="lineCov">        115 :   security_context_t scontext = NULL;</span>
+<span class="lineNum">     312 </span>                :<span class="lineCov">         73 :   security_context_t scontext = NULL;</span>
 <span class="lineNum">     313 </span>                :            :   static bool first_call = true;
 <span class="lineNum">     314 </span>                :            : 
-<span class="lineNum">     315 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 115 times"> + </span>]:<span class="lineCov">        115 :   if (selinux_enabled != 1)</span>
+<span class="lineNum">     315 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 73 times"> + </span>]:<span class="lineCov">         73 :   if (selinux_enabled != 1)</span>
 <span class="lineNum">     316 </span>                :            :     {
 <span class="lineNum">     317 </span>                :            :       /* Indicate no context found. */
 <span class="lineNum">     318 </span>                :<span class="lineNoCov">          0 :       return;</span>
 <span class="lineNum">     319 </span>                :            :     }
-<span class="lineNum">     320 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 115 times"> + </span>]:<span class="lineCov">        115 :   if (lstat (file, &amp;st) != 0)</span>
+<span class="lineNum">     320 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 73 times"> + </span>]:<span class="lineCov">         73 :   if (lstat (file, &amp;st) != 0)</span>
 <span class="lineNum">     321 </span>                :<span class="lineNoCov">          0 :     return;</span>
 <span class="lineNum">     322 </span>                :            : 
-<span class="lineNum">     323 </span>[<span class="branchCov" title="Branch 0 was taken 115 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 115 times"> + </span>]:<span class="lineCov">        115 :   if (first_call &amp;&amp; IS_ABSOLUTE_FILE_NAME (file))</span>
+<span class="lineNum">     323 </span>[<span class="branchCov" title="Branch 0 was taken 73 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 73 times"> + </span>]:<span class="lineCov">         73 :   if (first_call &amp;&amp; IS_ABSOLUTE_FILE_NAME (file))</span>
 <span class="lineNum">     324 </span>                :            :     {
 <span class="lineNum">     325 </span>                :            :       /* Calling matchpathcon_init_prefix (NULL, &quot;/first_component/&quot;)
 <span class="lineNum">     326 </span>                :            :          is an optimization to minimize the expense of the following
@@ -428,16 +428,16 @@
 <span class="lineNum">     355 </span>                :            :             }
 <span class="lineNum">     356 </span>                :            :         }
 <span class="lineNum">     357 </span>                :            :     }
-<span class="lineNum">     358 </span>                :<span class="lineCov">        115 :   first_call = false;</span>
+<span class="lineNum">     358 </span>                :<span class="lineCov">         73 :   first_call = false;</span>
 <span class="lineNum">     359 </span>                :            : 
 <span class="lineNum">     360 </span>                :            :   /* If there's an error determining the context, or it has none,
 <span class="lineNum">     361 </span>                :            :      return to allow default context */
-<span class="lineNum">     362 </span>[<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 115 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">        115 :   if ((matchpathcon (file, st.st_mode, &amp;scontext) != 0) ||</span>
+<span class="lineNum">     362 </span>[<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 73 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         73 :   if ((matchpathcon (file, st.st_mode, &amp;scontext) != 0) ||</span>
 <span class="lineNum">     363 </span>                :<span class="lineNoCov">          0 :       STREQ (scontext, &quot;&lt;&lt;none&gt;&gt;&quot;))</span>
 <span class="lineNum">     364 </span>                :            :     {
-<span class="lineNum">     365 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 115 times"> + </span>]:<span class="lineCov">        115 :       if (scontext != NULL)</span>
+<span class="lineNum">     365 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 73 times"> + </span>]:<span class="lineCov">         73 :       if (scontext != NULL)</span>
 <span class="lineNum">     366 </span>                :<span class="lineNoCov">          0 :         freecon (scontext);</span>
-<span class="lineNum">     367 </span>                :<span class="lineCov">        115 :       return;</span>
+<span class="lineNum">     367 </span>                :<span class="lineCov">         73 :       return;</span>
 <span class="lineNum">     368 </span>                :            :     }
 <span class="lineNum">     369 </span>                :            : 
 <span class="lineNum">     370 </span>[<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>][<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (lsetfilecon (file, scontext) &lt; 0 &amp;&amp; errno != ENOTSUP)</span>
@@ -446,7 +446,7 @@
 <span class="lineNum">     373 </span>                :            :            quotearg_colon (file), scontext);
 <span class="lineNum">     374 </span>                :            : 
 <span class="lineNum">     375 </span>                :<span class="lineNoCov">          0 :   freecon (scontext);</span>
-<span class="lineNum">     376 </span>                :<span class="lineCov">        115 :   return;</span>
+<span class="lineNum">     376 </span>                :<span class="lineCov">         73 :   return;</span>
 <span class="lineNum">     377 </span>                :            : }
 <span class="lineNum">     378 </span>                :            : #else
 <span class="lineNum">     379 </span>                :            : static void
@@ -462,64 +462,64 @@
 <span class="lineNum">     389 </span>                :            :    directory if it referred to anything at all.  */
 <a name="390"><span class="lineNum">     390 </span>                :            : </a>
 <span class="lineNum">     391 </span>                :            : static bool
-<span class="lineNum">     392 </span>                :<span class="lineCov">        150 : target_directory_operand (char const *file)</span>
+<span class="lineNum">     392 </span>                :<span class="lineCov">         94 : target_directory_operand (char const *file)</span>
 <span class="lineNum">     393 </span>                :            : {
-<span class="lineNum">     394 </span>                :<span class="lineCov">        150 :   char const *b = last_component (file);</span>
-<span class="lineNum">     395 </span>                :<span class="lineCov">        150 :   size_t blen = strlen (b);</span>
-<span class="lineNum">     396 </span>[<span class="branchCov" title="Branch 0 was taken 150 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 150 times"> + </span>]:<span class="lineCov">        150 :   bool looks_like_a_dir = (blen == 0 || ISSLASH (b[blen - 1]));</span>
+<span class="lineNum">     394 </span>                :<span class="lineCov">         94 :   char const *b = last_component (file);</span>
+<span class="lineNum">     395 </span>                :<span class="lineCov">         94 :   size_t blen = strlen (b);</span>
+<span class="lineNum">     396 </span>[<span class="branchCov" title="Branch 0 was taken 94 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 94 times"> + </span>]:<span class="lineCov">         94 :   bool looks_like_a_dir = (blen == 0 || ISSLASH (b[blen - 1]));</span>
 <span class="lineNum">     397 </span>                :            :   struct stat st;
-<span class="lineNum">     398 </span>        [<span class="branchCov" title="Branch 1 was taken 25 times"> + </span><span class="branchCov" title="Branch 2 was taken 125 times"> + </span>]:<span class="lineCov">        150 :   int err = (stat (file, &amp;st) == 0 ? 0 : errno);</span>
-<span class="lineNum">     399 </span>[<span class="branchCov" title="Branch 0 was taken 125 times"> + </span><span class="branchCov" title="Branch 1 was taken 25 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 13 times"> + </span><span class="branchCov" title="Branch 3 was taken 112 times"> + </span>]:<span class="lineCov">        150 :   bool is_a_dir = !err &amp;&amp; S_ISDIR (st.st_mode);</span>
-<span class="lineNum">     400 </span>[<span class="branchCov" title="Branch 0 was taken 25 times"> + </span><span class="branchCov" title="Branch 1 was taken 125 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 25 times"> + </span>]:<span class="lineCov">        150 :   if (err &amp;&amp; err != ENOENT)</span>
+<span class="lineNum">     398 </span>        [<span class="branchCov" title="Branch 1 was taken 15 times"> + </span><span class="branchCov" title="Branch 2 was taken 79 times"> + </span>]:<span class="lineCov">         94 :   int err = (stat (file, &amp;st) == 0 ? 0 : errno);</span>
+<span class="lineNum">     399 </span>[<span class="branchCov" title="Branch 0 was taken 79 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 7 times"> + </span><span class="branchCov" title="Branch 3 was taken 72 times"> + </span>]:<span class="lineCov">         94 :   bool is_a_dir = !err &amp;&amp; S_ISDIR (st.st_mode);</span>
+<span class="lineNum">     400 </span>[<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 79 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 15 times"> + </span>]:<span class="lineCov">         94 :   if (err &amp;&amp; err != ENOENT)</span>
 <span class="lineNum">     401 </span>                :<span class="lineNoCov">          0 :     error (EXIT_FAILURE, err, _(&quot;accessing %s&quot;), quote (file));</span>
-<span class="lineNum">     402 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 150 times"> + </span>]:<span class="lineCov">        150 :   if (is_a_dir &lt; looks_like_a_dir)</span>
+<span class="lineNum">     402 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 94 times"> + </span>]:<span class="lineCov">         94 :   if (is_a_dir &lt; looks_like_a_dir)</span>
 <span class="lineNum">     403 </span>                :<span class="lineNoCov">          0 :     error (EXIT_FAILURE, err, _(&quot;target %s is not a directory&quot;), quote (file));</span>
-<span class="lineNum">     404 </span>                :<span class="lineCov">        150 :   return is_a_dir;</span>
+<span class="lineNum">     404 </span>                :<span class="lineCov">         94 :   return is_a_dir;</span>
 <span class="lineNum">     405 </span>                :            : }
 <span class="lineNum">     406 </span>                :            : 
 <a name="407"><span class="lineNum">     407 </span>                :            : /* Report that directory DIR was made, if OPTIONS requests this.  */</a>
 <span class="lineNum">     408 </span>                :            : static void
-<span class="lineNum">     409 </span>                :<span class="lineCov">         60 : announce_mkdir (char const *dir, void *options)</span>
+<span class="lineNum">     409 </span>                :<span class="lineCov">         32 : announce_mkdir (char const *dir, void *options)</span>
 <span class="lineNum">     410 </span>                :            : {
-<span class="lineNum">     411 </span>                :<span class="lineCov">         60 :   struct cp_options const *x = options;</span>
-<span class="lineNum">     412 </span>        [<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>]:<span class="lineCov">         60 :   if (x-&gt;verbose)</span>
-<span class="lineNum">     413 </span>                :<span class="lineCov">         16 :     prog_fprintf (stdout, _(&quot;creating directory %s&quot;), quote (dir));</span>
-<span class="lineNum">     414 </span>                :<span class="lineCov">         60 : }</span>
+<span class="lineNum">     411 </span>                :<span class="lineCov">         32 :   struct cp_options const *x = options;</span>
+<span class="lineNum">     412 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         32 :   if (x-&gt;verbose)</span>
+<span class="lineNum">     413 </span>                :<span class="lineCov">          8 :     prog_fprintf (stdout, _(&quot;creating directory %s&quot;), quote (dir));</span>
+<span class="lineNum">     414 </span>                :<span class="lineCov">         32 : }</span>
 <span class="lineNum">     415 </span>                :            : 
 <span class="lineNum">     416 </span>                :            : /* Make ancestor directory DIR, whose last file name component is
 <span class="lineNum">     417 </span>                :            :    COMPONENT, with options OPTIONS.  Assume the working directory is
 <a name="418"><span class="lineNum">     418 </span>                :            :    COMPONENT's parent.  */</a>
 <span class="lineNum">     419 </span>                :            : static int
-<span class="lineNum">     420 </span>                :<span class="lineCov">         60 : make_ancestor (char const *dir, char const *component, void *options)</span>
+<span class="lineNum">     420 </span>                :<span class="lineCov">         32 : make_ancestor (char const *dir, char const *component, void *options)</span>
 <span class="lineNum">     421 </span>                :            : {
-<span class="lineNum">     422 </span>                :<span class="lineCov">         60 :   int r = mkdir (component, DEFAULT_MODE);</span>
-<span class="lineNum">     423 </span>        [<span class="branchCov" title="Branch 0 was taken 40 times"> + </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         60 :   if (r == 0)</span>
-<span class="lineNum">     424 </span>                :<span class="lineCov">         40 :     announce_mkdir (dir, options);</span>
-<span class="lineNum">     425 </span>                :<span class="lineCov">         60 :   return r;</span>
+<span class="lineNum">     422 </span>                :<span class="lineCov">         32 :   int r = mkdir (component, DEFAULT_MODE);</span>
+<span class="lineNum">     423 </span>        [<span class="branchCov" title="Branch 0 was taken 22 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         32 :   if (r == 0)</span>
+<span class="lineNum">     424 </span>                :<span class="lineCov">         22 :     announce_mkdir (dir, options);</span>
+<span class="lineNum">     425 </span>                :<span class="lineCov">         32 :   return r;</span>
 <span class="lineNum">     426 </span>                :            : }
 <span class="lineNum">     427 </span>                :            : 
 <a name="428"><span class="lineNum">     428 </span>                :            : /* Process a command-line file name, for the -d option.  */</a>
 <span class="lineNum">     429 </span>                :            : static int
-<span class="lineNum">     430 </span>                :<span class="lineCov">         54 : process_dir (char *dir, struct savewd *wd, void *options)</span>
+<span class="lineNum">     430 </span>                :<span class="lineCov">         28 : process_dir (char *dir, struct savewd *wd, void *options)</span>
 <span class="lineNum">     431 </span>                :            : {
-<span class="lineNum">     432 </span>                :<span class="lineCov">        108 :   return (make_dir_parents (dir, wd,</span>
+<span class="lineNum">     432 </span>                :<span class="lineCov">         56 :   return (make_dir_parents (dir, wd,</span>
 <span class="lineNum">     433 </span>                :            :                             make_ancestor, options,
 <span class="lineNum">     434 </span>                :            :                             dir_mode, announce_mkdir,
 <span class="lineNum">     435 </span>                :            :                             dir_mode_bits, owner_id, group_id, false)
 <span class="lineNum">     436 </span>                :            :           ? EXIT_SUCCESS
-<span class="lineNum">     437 </span>        [<span class="branchCov" title="Branch 0 was taken 50 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">         54 :           : EXIT_FAILURE);</span>
+<span class="lineNum">     437 </span>        [<span class="branchCov" title="Branch 0 was taken 26 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">         28 :           : EXIT_FAILURE);</span>
 <span class="lineNum">     438 </span>                :            : }
 <span class="lineNum">     439 </span>                :            : 
 <span class="lineNum">     440 </span>                :            : /* Copy file FROM onto file TO, creating TO if necessary.
 <span class="lineNum">     441 </span>                :            :    Return true if successful.  */
 <a name="442"><span class="lineNum">     442 </span>                :            : </a>
 <span class="lineNum">     443 </span>                :            : static bool
-<span class="lineNum">     444 </span>                :<span class="lineCov">        140 : copy_file (const char *from, const char *to, const struct cp_options *x)</span>
+<span class="lineNum">     444 </span>                :<span class="lineCov">         88 : copy_file (const char *from, const char *to, const struct cp_options *x)</span>
 <span class="lineNum">     445 </span>                :            : {
 <span class="lineNum">     446 </span>                :            :   bool copy_into_self;
 <span class="lineNum">     447 </span>                :            : 
-<span class="lineNum">     448 </span>[<span class="branchCov" title="Branch 0 was taken 92 times"> + </span><span class="branchCov" title="Branch 1 was taken 48 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 40 times"> + </span><span class="branchCov" title="Branch 4 was taken 52 times"> + </span>]:<span class="lineCov">        140 :   if (copy_only_if_needed &amp;&amp; !need_copy (from, to, x))</span>
-<span class="lineNum">     449 </span>                :<span class="lineCov">         40 :     return true;</span>
+<span class="lineNum">     448 </span>[<span class="branchCov" title="Branch 0 was taken 60 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 26 times"> + </span><span class="branchCov" title="Branch 4 was taken 34 times"> + </span>]:<span class="lineCov">         88 :   if (copy_only_if_needed &amp;&amp; !need_copy (from, to, x))</span>
+<span class="lineNum">     449 </span>                :<span class="lineCov">         26 :     return true;</span>
 <span class="lineNum">     450 </span>                :            : 
 <span class="lineNum">     451 </span>                :            :   /* Allow installing from non-regular files like /dev/null.
 <span class="lineNum">     452 </span>                :            :      Charles Karney reported that some Sun version of install allows that
@@ -527,16 +527,16 @@
 <span class="lineNum">     454 </span>                :            :      However, since !x-&gt;recursive, the call to &quot;copy&quot; will fail if FROM
 <span class="lineNum">     455 </span>                :            :      is a directory.  */
 <span class="lineNum">     456 </span>                :            : 
-<span class="lineNum">     457 </span>                :<span class="lineCov">        140 :   return copy (from, to, false, x, &amp;copy_into_self, NULL);</span>
+<span class="lineNum">     457 </span>                :<span class="lineCov">         88 :   return copy (from, to, false, x, &amp;copy_into_self, NULL);</span>
 <span class="lineNum">     458 </span>                :            : }
 <span class="lineNum">     459 </span>                :            : 
 <span class="lineNum">     460 </span>                :            : /* Set the attributes of file or directory NAME.
 <span class="lineNum">     461 </span>                :            :    Return true if successful.  */
 <a name="462"><span class="lineNum">     462 </span>                :            : </a>
 <span class="lineNum">     463 </span>                :            : static bool
-<span class="lineNum">     464 </span>                :<span class="lineCov">        140 : change_attributes (char const *name)</span>
+<span class="lineNum">     464 </span>                :<span class="lineCov">         88 : change_attributes (char const *name)</span>
 <span class="lineNum">     465 </span>                :            : {
-<span class="lineNum">     466 </span>                :<span class="lineCov">        140 :   bool ok = false;</span>
+<span class="lineNum">     466 </span>                :<span class="lineCov">         88 :   bool ok = false;</span>
 <span class="lineNum">     467 </span>                :            :   /* chown must precede chmod because on some systems,
 <span class="lineNum">     468 </span>                :            :      chown clears the set[ug]id bits for non-superusers,
 <span class="lineNum">     469 </span>                :            :      resulting in incorrect permissions.
@@ -549,18 +549,18 @@
 <span class="lineNum">     476 </span>                :            :      If the file doesn't end up with the group they asked for, they'll
 <span class="lineNum">     477 </span>                :            :      want to know.  */
 <span class="lineNum">     478 </span>                :            : 
-<span class="lineNum">     479 </span>[<span class="branchCov" title="Branch 0 was taken 132 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchCov" title="Branch 3 was taken 131 times"> + </span>]:<span class="lineCov">        140 :   if (! (owner_id == (uid_t) -1 &amp;&amp; group_id == (gid_t) -1)</span>
+<span class="lineNum">     479 </span>[<span class="branchCov" title="Branch 0 was taken 80 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchCov" title="Branch 3 was taken 79 times"> + </span>]:<span class="lineCov">         88 :   if (! (owner_id == (uid_t) -1 &amp;&amp; group_id == (gid_t) -1)</span>
 <span class="lineNum">     480 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">          9 :       &amp;&amp; lchown (name, owner_id, group_id) != 0)</span>
 <span class="lineNum">     481 </span>                :<span class="lineNoCov">          0 :     error (0, errno, _(&quot;cannot change ownership of %s&quot;), quote (name));</span>
-<span class="lineNum">     482 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 140 times"> + </span>]:<span class="lineCov">        140 :   else if (chmod (name, mode) != 0)</span>
+<span class="lineNum">     482 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 88 times"> + </span>]:<span class="lineCov">         88 :   else if (chmod (name, mode) != 0)</span>
 <span class="lineNum">     483 </span>                :<span class="lineNoCov">          0 :     error (0, errno, _(&quot;cannot change permissions of %s&quot;), quote (name));</span>
 <span class="lineNum">     484 </span>                :            :   else
-<span class="lineNum">     485 </span>                :<span class="lineCov">        140 :     ok = true;</span>
+<span class="lineNum">     485 </span>                :<span class="lineCov">         88 :     ok = true;</span>
 <span class="lineNum">     486 </span>                :            : 
-<span class="lineNum">     487 </span>        [<span class="branchCov" title="Branch 0 was taken 115 times"> + </span><span class="branchCov" title="Branch 1 was taken 25 times"> + </span>]:<span class="lineCov">        140 :   if (use_default_selinux_context)</span>
-<span class="lineNum">     488 </span>                :<span class="lineCov">        115 :     setdefaultfilecon (name);</span>
+<span class="lineNum">     487 </span>        [<span class="branchCov" title="Branch 0 was taken 73 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         88 :   if (use_default_selinux_context)</span>
+<span class="lineNum">     488 </span>                :<span class="lineCov">         73 :     setdefaultfilecon (name);</span>
 <span class="lineNum">     489 </span>                :            : 
-<span class="lineNum">     490 </span>                :<span class="lineCov">        140 :   return ok;</span>
+<span class="lineNum">     490 </span>                :<span class="lineCov">         88 :   return ok;</span>
 <span class="lineNum">     491 </span>                :            : }
 <span class="lineNum">     492 </span>                :            : 
 <span class="lineNum">     493 </span>                :            : /* Set the timestamps of file DEST to match those of SRC_SB.
@@ -588,38 +588,38 @@
 <span class="lineNum">     515 </span>                :            :    it portable would be very difficult.  Not worth the effort. */
 <a name="516"><span class="lineNum">     516 </span>                :            : </a>
 <span class="lineNum">     517 </span>                :            : static void
-<span class="lineNum">     518 </span>                :<span class="lineCov">         14 : strip (char const *name)</span>
+<span class="lineNum">     518 </span>                :<span class="lineCov">          8 : strip (char const *name)</span>
 <span class="lineNum">     519 </span>                :            : {
 <span class="lineNum">     520 </span>                :            :   int status;
-<span class="lineNum">     521 </span>                :<span class="lineCov">         14 :   pid_t pid = fork ();</span>
+<span class="lineNum">     521 </span>                :<span class="lineCov">          8 :   pid_t pid = fork ();</span>
 <span class="lineNum">     522 </span>                :            : 
-<span class="lineNum">     523 </span>     [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span><span class="branchCov" title="Branch 2 was taken 14 times"> + </span>]:<span class="lineCov">         28 :   switch (pid)</span>
+<span class="lineNum">     523 </span>     [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">         16 :   switch (pid)</span>
 <span class="lineNum">     524 </span>                :            :     {
 <span class="lineNum">     525 </span>                :            :     case -1:
 <span class="lineNum">     526 </span>                :<span class="lineNoCov">          0 :       error (EXIT_FAILURE, errno, _(&quot;fork system call failed&quot;));</span>
 <span class="lineNum">     527 </span>                :<span class="lineNoCov">          0 :       break;</span>
 <span class="lineNum">     528 </span>                :            :     case 0:                     /* Child. */
-<span class="lineNum">     529 </span>                :<span class="lineCov">         14 :       execlp (strip_program, strip_program, name, NULL);</span>
-<span class="lineNum">     530 </span>                :<span class="lineCov">         14 :       error (EXIT_FAILURE, errno, _(&quot;cannot run %s&quot;), strip_program);</span>
+<span class="lineNum">     529 </span>                :<span class="lineCov">          8 :       execlp (strip_program, strip_program, name, NULL);</span>
+<span class="lineNum">     530 </span>                :<span class="lineCov">          8 :       error (EXIT_FAILURE, errno, _(&quot;cannot run %s&quot;), strip_program);</span>
 <span class="lineNum">     531 </span>                :<span class="lineNoCov">          0 :       break;</span>
 <span class="lineNum">     532 </span>                :            :     default:                    /* Parent. */
-<span class="lineNum">     533 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 14 times"> + </span>]:<span class="lineCov">         14 :       if (waitpid (pid, &amp;status, 0) &lt; 0)</span>
+<span class="lineNum">     533 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">          8 :       if (waitpid (pid, &amp;status, 0) &lt; 0)</span>
 <span class="lineNum">     534 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;waiting for strip&quot;));</span>
-<span class="lineNum">     535 </span>[<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 14 times"> + </span>]:<span class="lineCov">         14 :       else if (! WIFEXITED (status) || WEXITSTATUS (status))</span>
+<span class="lineNum">     535 </span>[<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 8 times"> + </span>]:<span class="lineCov">          8 :       else if (! WIFEXITED (status) || WEXITSTATUS (status))</span>
 <span class="lineNum">     536 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, 0, _(&quot;strip process terminated abnormally&quot;));</span>
-<span class="lineNum">     537 </span>                :<span class="lineCov">         14 :       break;</span>
+<span class="lineNum">     537 </span>                :<span class="lineCov">          8 :       break;</span>
 <span class="lineNum">     538 </span>                :            :     }
-<span class="lineNum">     539 </span>                :<span class="lineCov">         14 : }</span>
+<span class="lineNum">     539 </span>                :<span class="lineCov">          8 : }</span>
 <span class="lineNum">     540 </span>                :            : 
 <span class="lineNum">     541 </span>                :            : /* Initialize the user and group ownership of the files to install. */
 <a name="542"><span class="lineNum">     542 </span>                :            : </a>
 <span class="lineNum">     543 </span>                :            : static void
-<span class="lineNum">     544 </span>                :<span class="lineCov">        170 : get_ids (void)</span>
+<span class="lineNum">     544 </span>                :<span class="lineCov">        104 : get_ids (void)</span>
 <span class="lineNum">     545 </span>                :            : {
 <span class="lineNum">     546 </span>                :            :   struct passwd *pw;
 <span class="lineNum">     547 </span>                :            :   struct group *gr;
 <span class="lineNum">     548 </span>                :            : 
-<span class="lineNum">     549 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 162 times"> + </span>]:<span class="lineCov">        170 :   if (owner_name)</span>
+<span class="lineNum">     549 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 96 times"> + </span>]:<span class="lineCov">        104 :   if (owner_name)</span>
 <span class="lineNum">     550 </span>                :            :     {
 <span class="lineNum">     551 </span>                :<span class="lineCov">          8 :       pw = getpwnam (owner_name);</span>
 <span class="lineNum">     552 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :       if (pw == NULL)</span>
@@ -635,9 +635,9 @@
 <span class="lineNum">     562 </span>                :<span class="lineCov">          8 :       endpwent ();</span>
 <span class="lineNum">     563 </span>                :            :     }
 <span class="lineNum">     564 </span>                :            :   else
-<span class="lineNum">     565 </span>                :<span class="lineCov">        162 :     owner_id = (uid_t) -1;</span>
+<span class="lineNum">     565 </span>                :<span class="lineCov">         96 :     owner_id = (uid_t) -1;</span>
 <span class="lineNum">     566 </span>                :            : 
-<span class="lineNum">     567 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 162 times"> + </span>]:<span class="lineCov">        170 :   if (group_name)</span>
+<span class="lineNum">     567 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 96 times"> + </span>]:<span class="lineCov">        104 :   if (group_name)</span>
 <span class="lineNum">     568 </span>                :            :     {
 <span class="lineNum">     569 </span>                :<span class="lineCov">          8 :       gr = getgrnam (group_name);</span>
 <span class="lineNum">     570 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :       if (gr == NULL)</span>
@@ -653,25 +653,25 @@
 <span class="lineNum">     580 </span>                :<span class="lineCov">          8 :       endgrent ();</span>
 <span class="lineNum">     581 </span>                :            :     }
 <span class="lineNum">     582 </span>                :            :   else
-<span class="lineNum">     583 </span>                :<span class="lineCov">        162 :     group_id = (gid_t) -1;</span>
-<span class="lineNum">     584 </span>                :<span class="lineCov">        170 : }</span>
+<span class="lineNum">     583 </span>                :<span class="lineCov">         96 :     group_id = (gid_t) -1;</span>
+<span class="lineNum">     584 </span>                :<span class="lineCov">        104 : }</span>
 <a name="585"><span class="lineNum">     585 </span>                :            : </a>
 <span class="lineNum">     586 </span>                :            : void
-<span class="lineNum">     587 </span>                :<span class="lineCov">         30 : usage (int status)</span>
+<span class="lineNum">     587 </span>                :<span class="lineCov">         18 : usage (int status)</span>
 <span class="lineNum">     588 </span>                :            : {
-<span class="lineNum">     589 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         30 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">     590 </span>                :<span class="lineCov">         15 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
+<span class="lineNum">     589 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         18 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     590 </span>                :<span class="lineCov">          9 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
 <span class="lineNum">     591 </span>                :            :              program_name);
 <span class="lineNum">     592 </span>                :            :   else
 <span class="lineNum">     593 </span>                :            :     {
-<span class="lineNum">     594 </span>                :<span class="lineCov">         15 :       printf (_(&quot;\</span>
+<span class="lineNum">     594 </span>                :<span class="lineCov">          9 :       printf (_(&quot;\</span>
 <span class="lineNum">     595 </span>                :            : Usage: %s [OPTION]... [-T] SOURCE DEST\n\
 <span class="lineNum">     596 </span>                :            :   or:  %s [OPTION]... SOURCE... DIRECTORY\n\
 <span class="lineNum">     597 </span>                :            :   or:  %s [OPTION]... -t DIRECTORY SOURCE...\n\
 <span class="lineNum">     598 </span>                :            :   or:  %s [OPTION]... -d DIRECTORY...\n\
 <span class="lineNum">     599 </span>                :            : &quot;),
 <span class="lineNum">     600 </span>                :            :               program_name, program_name, program_name, program_name);
-<span class="lineNum">     601 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     601 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     602 </span>                :            : \n\
 <span class="lineNum">     603 </span>                :            : This install program copies files (often just compiled) into destination\n\
 <span class="lineNum">     604 </span>                :            : locations you choose.  If you want to download and install a ready-to-use\n\
@@ -683,10 +683,10 @@
 <span class="lineNum">     610 </span>                :            : In the 4th form, create all components of the given DIRECTORY(ies).\n\
 <span class="lineNum">     611 </span>                :            : \n\
 <span class="lineNum">     612 </span>                :            : &quot;), stdout);
-<span class="lineNum">     613 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     613 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     614 </span>                :            : Mandatory arguments to long options are mandatory for short options too.\n\
 <span class="lineNum">     615 </span>                :            : &quot;), stdout);
-<span class="lineNum">     616 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     616 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     617 </span>                :            :       --backup[=CONTROL]  make a backup of each existing destination file\n\
 <span class="lineNum">     618 </span>                :            :   -b                  like --backup but does not accept an argument\n\
 <span class="lineNum">     619 </span>                :            :   -c                  (ignored)\n\
@@ -695,14 +695,14 @@
 <span class="lineNum">     622 </span>                :            :   -d, --directory     treat all arguments as directory names; create all\n\
 <span class="lineNum">     623 </span>                :            :                         components of the specified directories\n\
 <span class="lineNum">     624 </span>                :            : &quot;), stdout);
-<span class="lineNum">     625 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     625 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     626 </span>                :            :   -D                  create all leading components of DEST except the last,\n\
 <span class="lineNum">     627 </span>                :            :                         then copy SOURCE to DEST\n\
 <span class="lineNum">     628 </span>                :            :   -g, --group=GROUP   set group ownership, instead of process' current group\n\
 <span class="lineNum">     629 </span>                :            :   -m, --mode=MODE     set permission mode (as in chmod), instead of rwxr-xr-x\n\
 <span class="lineNum">     630 </span>                :            :   -o, --owner=OWNER   set ownership (super-user only)\n\
 <span class="lineNum">     631 </span>                :            : &quot;), stdout);
-<span class="lineNum">     632 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     632 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     633 </span>                :            :   -p, --preserve-timestamps   apply access/modification times of SOURCE files\n\
 <span class="lineNum">     634 </span>                :            :                         to corresponding destination files\n\
 <span class="lineNum">     635 </span>                :            :   -s, --strip         strip symbol tables\n\
@@ -712,30 +712,30 @@
 <span class="lineNum">     639 </span>                :            :   -T, --no-target-directory  treat DEST as a normal file\n\
 <span class="lineNum">     640 </span>                :            :   -v, --verbose       print the name of each directory as it is created\n\
 <span class="lineNum">     641 </span>                :            : &quot;), stdout);
-<span class="lineNum">     642 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     642 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     643 </span>                :            :       --preserve-context  preserve SELinux security context\n\
 <span class="lineNum">     644 </span>                :            :   -Z, --context=CONTEXT  set SELinux security context of files and directories\
 <span class="lineNum">     645 </span>                :            : \n\
 <span class="lineNum">     646 </span>                :            : &quot;), stdout);
 <span class="lineNum">     647 </span>                :            : 
-<span class="lineNum">     648 </span>                :<span class="lineCov">         15 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     649 </span>                :<span class="lineCov">         15 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     650 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     648 </span>                :<span class="lineCov">          9 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     649 </span>                :<span class="lineCov">          9 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     650 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     651 </span>                :            : \n\
 <span class="lineNum">     652 </span>                :            : The backup suffix is `~', unless set with --suffix or SIMPLE_BACKUP_SUFFIX.\n\
 <span class="lineNum">     653 </span>                :            : The version control method may be selected via the --backup option or through\n\
 <span class="lineNum">     654 </span>                :            : the VERSION_CONTROL environment variable.  Here are the values:\n\
 <span class="lineNum">     655 </span>                :            : \n\
 <span class="lineNum">     656 </span>                :            : &quot;), stdout);
-<span class="lineNum">     657 </span>                :<span class="lineCov">         15 :       fputs (_(&quot;\</span>
+<span class="lineNum">     657 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
 <span class="lineNum">     658 </span>                :            :   none, off       never make backups (even if --backup is given)\n\
 <span class="lineNum">     659 </span>                :            :   numbered, t     make numbered backups\n\
 <span class="lineNum">     660 </span>                :            :   existing, nil   numbered if numbered backups exist, simple otherwise\n\
 <span class="lineNum">     661 </span>                :            :   simple, never   always make simple backups\n\
 <span class="lineNum">     662 </span>                :            : &quot;), stdout);
-<span class="lineNum">     663 </span>                :<span class="lineCov">         15 :       emit_ancillary_info ();</span>
+<span class="lineNum">     663 </span>                :<span class="lineCov">          9 :       emit_ancillary_info ();</span>
 <span class="lineNum">     664 </span>                :            :     }
-<span class="lineNum">     665 </span>                :<span class="lineCov">         30 :   exit (status);</span>
+<span class="lineNum">     665 </span>                :<span class="lineCov">         18 :   exit (status);</span>
 <span class="lineNum">     666 </span>                :            : }
 <span class="lineNum">     667 </span>                :            : 
 <span class="lineNum">     668 </span>                :            : /* Copy file FROM onto file TO and give TO the appropriate
@@ -743,63 +743,63 @@
 <span class="lineNum">     670 </span>                :            :    Return true if successful.  */
 <a name="671"><span class="lineNum">     671 </span>                :            : </a>
 <span class="lineNum">     672 </span>                :            : static bool
-<span class="lineNum">     673 </span>                :<span class="lineCov">        140 : install_file_in_file (const char *from, const char *to,</span>
+<span class="lineNum">     673 </span>                :<span class="lineCov">         88 : install_file_in_file (const char *from, const char *to,</span>
 <span class="lineNum">     674 </span>                :            :                       const struct cp_options *x)
 <span class="lineNum">     675 </span>                :            : {
 <span class="lineNum">     676 </span>                :            :   struct stat from_sb;
-<span class="lineNum">     677 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 140 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">        140 :   if (x-&gt;preserve_timestamps &amp;&amp; stat (from, &amp;from_sb) != 0)</span>
+<span class="lineNum">     677 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 88 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         88 :   if (x-&gt;preserve_timestamps &amp;&amp; stat (from, &amp;from_sb) != 0)</span>
 <span class="lineNum">     678 </span>                :            :     {
 <span class="lineNum">     679 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;cannot stat %s&quot;), quote (from));</span>
 <span class="lineNum">     680 </span>                :<span class="lineNoCov">          0 :       return false;</span>
 <span class="lineNum">     681 </span>                :            :     }
-<span class="lineNum">     682 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 140 times"> + </span>]:<span class="lineCov">        140 :   if (! copy_file (from, to, x))</span>
+<span class="lineNum">     682 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 88 times"> + </span>]:<span class="lineCov">         88 :   if (! copy_file (from, to, x))</span>
 <span class="lineNum">     683 </span>                :<span class="lineNoCov">          0 :     return false;</span>
-<span class="lineNum">     684 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 126 times"> + </span>]:<span class="lineCov">        140 :   if (strip_files)</span>
-<span class="lineNum">     685 </span>                :<span class="lineCov">         14 :     strip (to);</span>
-<span class="lineNum">     686 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 140 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">        140 :   if (x-&gt;preserve_timestamps &amp;&amp; (strip_files || ! S_ISREG (from_sb.st_mode))</span>
+<span class="lineNum">     684 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 80 times"> + </span>]:<span class="lineCov">         88 :   if (strip_files)</span>
+<span class="lineNum">     685 </span>                :<span class="lineCov">          8 :     strip (to);</span>
+<span class="lineNum">     686 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 88 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         88 :   if (x-&gt;preserve_timestamps &amp;&amp; (strip_files || ! S_ISREG (from_sb.st_mode))</span>
 <span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
 <span class="lineNum">     687 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :       &amp;&amp; ! change_timestamps (&amp;from_sb, to))</span>
 <span class="lineNum">     688 </span>                :<span class="lineNoCov">          0 :     return false;</span>
-<span class="lineNum">     689 </span>                :<span class="lineCov">        140 :   return change_attributes (to);</span>
+<span class="lineNum">     689 </span>                :<span class="lineCov">         88 :   return change_attributes (to);</span>
 <span class="lineNum">     690 </span>                :            : }
 <span class="lineNum">     691 </span>                :            : 
 <span class="lineNum">     692 </span>                :            : /* Copy file FROM onto file TO, creating any missing parent directories of TO.
 <span class="lineNum">     693 </span>                :            :    Return true if successful.  */
 <a name="694"><span class="lineNum">     694 </span>                :            : </a>
 <span class="lineNum">     695 </span>                :            : static bool
-<span class="lineNum">     696 </span>                :<span class="lineCov">          9 : install_file_in_file_parents (char const *from, char *to,</span>
+<span class="lineNum">     696 </span>                :<span class="lineCov">          5 : install_file_in_file_parents (char const *from, char *to,</span>
 <span class="lineNum">     697 </span>                :            :                               struct cp_options *x)
 <span class="lineNum">     698 </span>                :            : {
-<span class="lineNum">     699 </span>                :<span class="lineCov">          9 :   bool save_working_directory =</span>
-<span class="lineNum">     700 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          9 :     ! (IS_ABSOLUTE_FILE_NAME (from) &amp;&amp; IS_ABSOLUTE_FILE_NAME (to));</span>
-<span class="lineNum">     701 </span>                :<span class="lineCov">          9 :   int status = EXIT_SUCCESS;</span>
+<span class="lineNum">     699 </span>                :<span class="lineCov">          5 :   bool save_working_directory =</span>
+<span class="lineNum">     700 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          5 :     ! (IS_ABSOLUTE_FILE_NAME (from) &amp;&amp; IS_ABSOLUTE_FILE_NAME (to));</span>
+<span class="lineNum">     701 </span>                :<span class="lineCov">          5 :   int status = EXIT_SUCCESS;</span>
 <span class="lineNum">     702 </span>                :            : 
 <span class="lineNum">     703 </span>                :            :   struct savewd wd;
-<span class="lineNum">     704 </span>                :<span class="lineCov">          9 :   savewd_init (&amp;wd);</span>
-<span class="lineNum">     705 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :   if (! save_working_directory)</span>
+<span class="lineNum">     704 </span>                :<span class="lineCov">          5 :   savewd_init (&amp;wd);</span>
+<span class="lineNum">     705 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :   if (! save_working_directory)</span>
 <span class="lineNum">     706 </span>                :<span class="lineNoCov">          0 :     savewd_finish (&amp;wd);</span>
 <span class="lineNum">     707 </span>                :            : 
-<span class="lineNum">     708 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">          9 :   if (mkancesdirs (to, &amp;wd, make_ancestor, x) == -1)</span>
+<span class="lineNum">     708 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 5 times"> + </span>]:<span class="lineCov">          5 :   if (mkancesdirs (to, &amp;wd, make_ancestor, x) == -1)</span>
 <span class="lineNum">     709 </span>                :            :     {
 <span class="lineNum">     710 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;cannot create directory %s&quot;), to);</span>
 <span class="lineNum">     711 </span>                :<span class="lineNoCov">          0 :       status = EXIT_FAILURE;</span>
 <span class="lineNum">     712 </span>                :            :     }
 <span class="lineNum">     713 </span>                :            : 
-<span class="lineNum">     714 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          9 :   if (save_working_directory)</span>
+<span class="lineNum">     714 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          5 :   if (save_working_directory)</span>
 <span class="lineNum">     715 </span>                :            :     {
-<span class="lineNum">     716 </span>                :<span class="lineCov">          9 :       int restore_result = savewd_restore (&amp;wd, status);</span>
-<span class="lineNum">     717 </span>                :<span class="lineCov">          9 :       int restore_errno = errno;</span>
-<span class="lineNum">     718 </span>                :<span class="lineCov">          9 :       savewd_finish (&amp;wd);</span>
-<span class="lineNum">     719 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :       if (EXIT_SUCCESS &lt; restore_result)</span>
+<span class="lineNum">     716 </span>                :<span class="lineCov">          5 :       int restore_result = savewd_restore (&amp;wd, status);</span>
+<span class="lineNum">     717 </span>                :<span class="lineCov">          5 :       int restore_errno = errno;</span>
+<span class="lineNum">     718 </span>                :<span class="lineCov">          5 :       savewd_finish (&amp;wd);</span>
+<span class="lineNum">     719 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :       if (EXIT_SUCCESS &lt; restore_result)</span>
 <span class="lineNum">     720 </span>                :<span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     721 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          9 :       if (restore_result &lt; 0 &amp;&amp; status == EXIT_SUCCESS)</span>
+<span class="lineNum">     721 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          5 :       if (restore_result &lt; 0 &amp;&amp; status == EXIT_SUCCESS)</span>
 <span class="lineNum">     722 </span>                :            :         {
 <span class="lineNum">     723 </span>                :<span class="lineNoCov">          0 :           error (0, restore_errno, _(&quot;cannot create directory %s&quot;), to);</span>
 <span class="lineNum">     724 </span>                :<span class="lineNoCov">          0 :           return false;</span>
 <span class="lineNum">     725 </span>                :            :         }
 <span class="lineNum">     726 </span>                :            :     }
 <span class="lineNum">     727 </span>                :            : 
-<span class="lineNum">     728 </span>[<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">          9 :   return (status == EXIT_SUCCESS &amp;&amp; install_file_in_file (from, to, x));</span>
+<span class="lineNum">     728 </span>[<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">          5 :   return (status == EXIT_SUCCESS &amp;&amp; install_file_in_file (from, to, x));</span>
 <span class="lineNum">     729 </span>                :            : }
 <span class="lineNum">     730 </span>                :            : 
 <span class="lineNum">     731 </span>                :            : /* Copy file FROM into directory TO_DIR, keeping its same name,
@@ -807,111 +807,111 @@
 <span class="lineNum">     733 </span>                :            :    Return true if successful.  */
 <a name="734"><span class="lineNum">     734 </span>                :            : </a>
 <span class="lineNum">     735 </span>                :            : static bool
-<span class="lineNum">     736 </span>                :<span class="lineCov">         13 : install_file_in_dir (const char *from, const char *to_dir,</span>
+<span class="lineNum">     736 </span>                :<span class="lineCov">          7 : install_file_in_dir (const char *from, const char *to_dir,</span>
 <span class="lineNum">     737 </span>                :            :                      const struct cp_options *x)
 <span class="lineNum">     738 </span>                :            : {
-<span class="lineNum">     739 </span>                :<span class="lineCov">         13 :   const char *from_base = last_component (from);</span>
-<span class="lineNum">     740 </span>                :<span class="lineCov">         13 :   char *to = file_name_concat (to_dir, from_base, NULL);</span>
-<span class="lineNum">     741 </span>                :<span class="lineCov">         13 :   bool ret = install_file_in_file (from, to, x);</span>
-<span class="lineNum">     742 </span>                :<span class="lineCov">         13 :   free (to);</span>
-<span class="lineNum">     743 </span>                :<span class="lineCov">         13 :   return ret;</span>
+<span class="lineNum">     739 </span>                :<span class="lineCov">          7 :   const char *from_base = last_component (from);</span>
+<span class="lineNum">     740 </span>                :<span class="lineCov">          7 :   char *to = file_name_concat (to_dir, from_base, NULL);</span>
+<span class="lineNum">     741 </span>                :<span class="lineCov">          7 :   bool ret = install_file_in_file (from, to, x);</span>
+<span class="lineNum">     742 </span>                :<span class="lineCov">          7 :   free (to);</span>
+<span class="lineNum">     743 </span>                :<span class="lineCov">          7 :   return ret;</span>
 <span class="lineNum">     744 </span>                :            : }
 <a name="745"><span class="lineNum">     745 </span>                :            : </a>
 <span class="lineNum">     746 </span>                :            : int
-<span class="lineNum">     747 </span>                :<span class="lineCov">        260 : main (int argc, char **argv)</span>
+<span class="lineNum">     747 </span>                :<span class="lineCov">        158 : main (int argc, char **argv)</span>
 <span class="lineNum">     748 </span>                :            : {
 <span class="lineNum">     749 </span>                :            :   int optc;
-<span class="lineNum">     750 </span>                :<span class="lineCov">        260 :   int exit_status = EXIT_SUCCESS;</span>
-<span class="lineNum">     751 </span>                :<span class="lineCov">        260 :   const char *specified_mode = NULL;</span>
-<span class="lineNum">     752 </span>                :<span class="lineCov">        260 :   bool make_backups = false;</span>
+<span class="lineNum">     750 </span>                :<span class="lineCov">        158 :   int exit_status = EXIT_SUCCESS;</span>
+<span class="lineNum">     751 </span>                :<span class="lineCov">        158 :   const char *specified_mode = NULL;</span>
+<span class="lineNum">     752 </span>                :<span class="lineCov">        158 :   bool make_backups = false;</span>
 <span class="lineNum">     753 </span>                :            :   char *backup_suffix_string;
-<span class="lineNum">     754 </span>                :<span class="lineCov">        260 :   char *version_control_string = NULL;</span>
-<span class="lineNum">     755 </span>                :<span class="lineCov">        260 :   bool mkdir_and_install = false;</span>
+<span class="lineNum">     754 </span>                :<span class="lineCov">        158 :   char *version_control_string = NULL;</span>
+<span class="lineNum">     755 </span>                :<span class="lineCov">        158 :   bool mkdir_and_install = false;</span>
 <span class="lineNum">     756 </span>                :            :   struct cp_options x;
-<span class="lineNum">     757 </span>                :<span class="lineCov">        260 :   char const *target_directory = NULL;</span>
-<span class="lineNum">     758 </span>                :<span class="lineCov">        260 :   bool no_target_directory = false;</span>
+<span class="lineNum">     757 </span>                :<span class="lineCov">        158 :   char const *target_directory = NULL;</span>
+<span class="lineNum">     758 </span>                :<span class="lineCov">        158 :   bool no_target_directory = false;</span>
 <span class="lineNum">     759 </span>                :            :   int n_files;
 <span class="lineNum">     760 </span>                :            :   char **file;
-<span class="lineNum">     761 </span>                :<span class="lineCov">        260 :   bool strip_program_specified = false;</span>
-<span class="lineNum">     762 </span>                :<span class="lineCov">        260 :   security_context_t scontext = NULL;</span>
+<span class="lineNum">     761 </span>                :<span class="lineCov">        158 :   bool strip_program_specified = false;</span>
+<span class="lineNum">     762 </span>                :<span class="lineCov">        158 :   security_context_t scontext = NULL;</span>
 <span class="lineNum">     763 </span>                :            :   /* set iff kernel has extra selinux system calls */
-<span class="lineNum">     764 </span>                :<span class="lineCov">        260 :   selinux_enabled = (0 &lt; is_selinux_enabled ());</span>
+<span class="lineNum">     764 </span>                :<span class="lineCov">        158 :   selinux_enabled = (0 &lt; is_selinux_enabled ());</span>
 <span class="lineNum">     765 </span>                :            : 
 <span class="lineNum">     766 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">     767 </span>                :<span class="lineCov">        260 :   set_program_name (argv[0]);</span>
-<span class="lineNum">     768 </span>                :<span class="lineCov">        260 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     769 </span>                :<span class="lineCov">        260 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     770 </span>                :<span class="lineCov">        260 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     767 </span>                :<span class="lineCov">        158 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     768 </span>                :<span class="lineCov">        158 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     769 </span>                :<span class="lineCov">        158 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     770 </span>                :<span class="lineCov">        158 :   textdomain (PACKAGE);</span>
 <span class="lineNum">     771 </span>                :            : 
-<span class="lineNum">     772 </span>                :<span class="lineCov">        260 :   atexit (close_stdin);</span>
+<span class="lineNum">     772 </span>                :<span class="lineCov">        158 :   atexit (close_stdin);</span>
 <span class="lineNum">     773 </span>                :            : 
-<span class="lineNum">     774 </span>                :<span class="lineCov">        260 :   cp_option_init (&amp;x);</span>
+<span class="lineNum">     774 </span>                :<span class="lineCov">        158 :   cp_option_init (&amp;x);</span>
 <span class="lineNum">     775 </span>                :            : 
-<span class="lineNum">     776 </span>                :<span class="lineCov">        260 :   owner_name = NULL;</span>
-<span class="lineNum">     777 </span>                :<span class="lineCov">        260 :   group_name = NULL;</span>
-<span class="lineNum">     778 </span>                :<span class="lineCov">        260 :   strip_files = false;</span>
-<span class="lineNum">     779 </span>                :<span class="lineCov">        260 :   dir_arg = false;</span>
-<span class="lineNum">     780 </span>                :<span class="lineCov">        260 :   umask (0);</span>
+<span class="lineNum">     776 </span>                :<span class="lineCov">        158 :   owner_name = NULL;</span>
+<span class="lineNum">     777 </span>                :<span class="lineCov">        158 :   group_name = NULL;</span>
+<span class="lineNum">     778 </span>                :<span class="lineCov">        158 :   strip_files = false;</span>
+<span class="lineNum">     779 </span>                :<span class="lineCov">        158 :   dir_arg = false;</span>
+<span class="lineNum">     780 </span>                :<span class="lineCov">        158 :   umask (0);</span>
 <span class="lineNum">     781 </span>                :            : 
 <span class="lineNum">     782 </span>                :            :   /* FIXME: consider not calling getenv for SIMPLE_BACKUP_SUFFIX unless
 <span class="lineNum">     783 </span>                :            :      we'll actually use backup_suffix_string.  */
-<span class="lineNum">     784 </span>                :<span class="lineCov">        260 :   backup_suffix_string = getenv (&quot;SIMPLE_BACKUP_SUFFIX&quot;);</span>
+<span class="lineNum">     784 </span>                :<span class="lineCov">        158 :   backup_suffix_string = getenv (&quot;SIMPLE_BACKUP_SUFFIX&quot;);</span>
 <span class="lineNum">     785 </span>                :            : 
-<span class="lineNum">     786 </span>        [<span class="branchCov" title="Branch 1 was taken 486 times"> + </span><span class="branchCov" title="Branch 2 was taken 180 times"> + </span>]:<span class="lineCov">        666 :   while ((optc = getopt_long (argc, argv, &quot;bcCsDdg:m:o:pt:TvS:Z:&quot;, long_options,</span>
+<span class="lineNum">     786 </span>        [<span class="branchCov" title="Branch 1 was taken 304 times"> + </span><span class="branchCov" title="Branch 2 was taken 110 times"> + </span>]:<span class="lineCov">        414 :   while ((optc = getopt_long (argc, argv, &quot;bcCsDdg:m:o:pt:TvS:Z:&quot;, long_options,</span>
 <span class="lineNum">     787 </span>                :            :                               NULL)) != -1)
 <span class="lineNum">     788 </span>                :            :     {
-<span class="lineNum">     789 </span>  [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span><span class="branchCov" title="Branch 2 was taken 102 times"> + </span><span class="branchCov" title="Branch 3 was taken 19 times"> + </span> :<span class="lineCov">        486 :       switch (optc)</span>
-<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 10 times"> + </span><span class="branchCov" title="Branch 5 was taken 30 times"> + </span><span class="branchCov" title="Branch 6 was taken 9 times"> + </span><span class="branchCov" title="Branch 7 was taken 107 times"> + </span><span class="branchCov" title="Branch 8 was taken 8 times"> + </span> 
-<span class="lineNum">         </span><span class="branchCov" title="Branch 9 was taken 69 times"> + </span><span class="branchCov" title="Branch 10 was taken 8 times"> + </span><span class="branchCov" title="Branch 11 was taken 5 times"> + </span><span class="branchCov" title="Branch 12 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span> 
-<span class="lineNum">         </span><span class="branchNoCov" title="Branch 14 was not taken"> - </span><span class="branchCov" title="Branch 15 was taken 25 times"> + </span><span class="branchNoCov" title="Branch 16 was not taken"> - </span><span class="branchCov" title="Branch 17 was taken 15 times"> + </span><span class="branchCov" title="Branch 18 was taken 60 times"> + </span> 
-<span class="lineNum">         </span>            <span class="branchCov" title="Branch 19 was taken 5 times"> + </span>]
+<span class="lineNum">     789 </span>  [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 66 times"> + </span><span class="branchCov" title="Branch 3 was taken 11 times"> + </span> :<span class="lineCov">        304 :       switch (optc)</span>
+<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 6 times"> + </span><span class="branchCov" title="Branch 5 was taken 16 times"> + </span><span class="branchCov" title="Branch 6 was taken 5 times"> + </span><span class="branchCov" title="Branch 7 was taken 69 times"> + </span><span class="branchCov" title="Branch 8 was taken 8 times"> + </span> 
+<span class="lineNum">         </span><span class="branchCov" title="Branch 9 was taken 41 times"> + </span><span class="branchCov" title="Branch 10 was taken 8 times"> + </span><span class="branchCov" title="Branch 11 was taken 3 times"> + </span><span class="branchCov" title="Branch 12 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 14 was not taken"> - </span><span class="branchCov" title="Branch 15 was taken 15 times"> + </span><span class="branchNoCov" title="Branch 16 was not taken"> - </span><span class="branchCov" title="Branch 17 was taken 9 times"> + </span><span class="branchCov" title="Branch 18 was taken 36 times"> + </span> 
+<span class="lineNum">         </span>            <span class="branchCov" title="Branch 19 was taken 3 times"> + </span>]
 <span class="lineNum">     790 </span>                :            :         {
 <span class="lineNum">     791 </span>                :            :         case 'b':
-<span class="lineNum">     792 </span>                :<span class="lineCov">          5 :           make_backups = true;</span>
-<span class="lineNum">     793 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          5 :           if (optarg)</span>
-<span class="lineNum">     794 </span>                :<span class="lineCov">          5 :             version_control_string = optarg;</span>
-<span class="lineNum">     795 </span>                :<span class="lineCov">          5 :           break;</span>
+<span class="lineNum">     792 </span>                :<span class="lineCov">          3 :           make_backups = true;</span>
+<span class="lineNum">     793 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          3 :           if (optarg)</span>
+<span class="lineNum">     794 </span>                :<span class="lineCov">          3 :             version_control_string = optarg;</span>
+<span class="lineNum">     795 </span>                :<span class="lineCov">          3 :           break;</span>
 <span class="lineNum">     796 </span>                :            :         case 'c':
-<span class="lineNum">     797 </span>                :<span class="lineCov">          4 :           break;</span>
+<span class="lineNum">     797 </span>                :<span class="lineCov">          2 :           break;</span>
 <span class="lineNum">     798 </span>                :            :         case 'C':
-<span class="lineNum">     799 </span>                :<span class="lineCov">        102 :           copy_only_if_needed = true;</span>
-<span class="lineNum">     800 </span>                :<span class="lineCov">        102 :           break;</span>
+<span class="lineNum">     799 </span>                :<span class="lineCov">         66 :           copy_only_if_needed = true;</span>
+<span class="lineNum">     800 </span>                :<span class="lineCov">         66 :           break;</span>
 <span class="lineNum">     801 </span>                :            :         case 's':
-<span class="lineNum">     802 </span>                :<span class="lineCov">         19 :           strip_files = true;</span>
+<span class="lineNum">     802 </span>                :<span class="lineCov">         11 :           strip_files = true;</span>
 <span class="lineNum">     803 </span>                :            : #ifdef SIGCHLD
 <span class="lineNum">     804 </span>                :            :           /* System V fork+wait does not work if SIGCHLD is ignored.  */
-<span class="lineNum">     805 </span>                :<span class="lineCov">         19 :           signal (SIGCHLD, SIG_DFL);</span>
+<span class="lineNum">     805 </span>                :<span class="lineCov">         11 :           signal (SIGCHLD, SIG_DFL);</span>
 <span class="lineNum">     806 </span>                :            : #endif
-<span class="lineNum">     807 </span>                :<span class="lineCov">         19 :           break;</span>
+<span class="lineNum">     807 </span>                :<span class="lineCov">         11 :           break;</span>
 <span class="lineNum">     808 </span>                :            :         case STRIP_PROGRAM_OPTION:
-<span class="lineNum">     809 </span>                :<span class="lineCov">         10 :           strip_program = xstrdup (optarg);</span>
-<span class="lineNum">     810 </span>                :<span class="lineCov">         10 :           strip_program_specified = true;</span>
-<span class="lineNum">     811 </span>                :<span class="lineCov">         10 :           break;</span>
+<span class="lineNum">     809 </span>                :<span class="lineCov">          6 :           strip_program = xstrdup (optarg);</span>
+<span class="lineNum">     810 </span>                :<span class="lineCov">          6 :           strip_program_specified = true;</span>
+<span class="lineNum">     811 </span>                :<span class="lineCov">          6 :           break;</span>
 <span class="lineNum">     812 </span>                :            :         case 'd':
-<span class="lineNum">     813 </span>                :<span class="lineCov">         30 :           dir_arg = true;</span>
-<span class="lineNum">     814 </span>                :<span class="lineCov">         30 :           break;</span>
+<span class="lineNum">     813 </span>                :<span class="lineCov">         16 :           dir_arg = true;</span>
+<span class="lineNum">     814 </span>                :<span class="lineCov">         16 :           break;</span>
 <span class="lineNum">     815 </span>                :            :         case 'D':
-<span class="lineNum">     816 </span>                :<span class="lineCov">          9 :           mkdir_and_install = true;</span>
-<span class="lineNum">     817 </span>                :<span class="lineCov">          9 :           break;</span>
+<span class="lineNum">     816 </span>                :<span class="lineCov">          5 :           mkdir_and_install = true;</span>
+<span class="lineNum">     817 </span>                :<span class="lineCov">          5 :           break;</span>
 <span class="lineNum">     818 </span>                :            :         case 'v':
-<span class="lineNum">     819 </span>                :<span class="lineCov">        107 :           x.verbose = true;</span>
-<span class="lineNum">     820 </span>                :<span class="lineCov">        107 :           break;</span>
+<span class="lineNum">     819 </span>                :<span class="lineCov">         69 :           x.verbose = true;</span>
+<span class="lineNum">     820 </span>                :<span class="lineCov">         69 :           break;</span>
 <span class="lineNum">     821 </span>                :            :         case 'g':
 <span class="lineNum">     822 </span>                :<span class="lineCov">          8 :           group_name = optarg;</span>
 <span class="lineNum">     823 </span>                :<span class="lineCov">          8 :           break;</span>
 <span class="lineNum">     824 </span>                :            :         case 'm':
-<span class="lineNum">     825 </span>                :<span class="lineCov">         69 :           specified_mode = optarg;</span>
-<span class="lineNum">     826 </span>                :<span class="lineCov">         69 :           break;</span>
+<span class="lineNum">     825 </span>                :<span class="lineCov">         41 :           specified_mode = optarg;</span>
+<span class="lineNum">     826 </span>                :<span class="lineCov">         41 :           break;</span>
 <span class="lineNum">     827 </span>                :            :         case 'o':
 <span class="lineNum">     828 </span>                :<span class="lineCov">          8 :           owner_name = optarg;</span>
 <span class="lineNum">     829 </span>                :<span class="lineCov">          8 :           break;</span>
 <span class="lineNum">     830 </span>                :            :         case 'p':
-<span class="lineNum">     831 </span>                :<span class="lineCov">          5 :           x.preserve_timestamps = true;</span>
-<span class="lineNum">     832 </span>                :<span class="lineCov">          5 :           break;</span>
+<span class="lineNum">     831 </span>                :<span class="lineCov">          3 :           x.preserve_timestamps = true;</span>
+<span class="lineNum">     832 </span>                :<span class="lineCov">          3 :           break;</span>
 <span class="lineNum">     833 </span>                :            :         case 'S':
-<span class="lineNum">     834 </span>                :<span class="lineCov">          5 :           make_backups = true;</span>
-<span class="lineNum">     835 </span>                :<span class="lineCov">          5 :           backup_suffix_string = optarg;</span>
-<span class="lineNum">     836 </span>                :<span class="lineCov">          5 :           break;</span>
+<span class="lineNum">     834 </span>                :<span class="lineCov">          3 :           make_backups = true;</span>
+<span class="lineNum">     835 </span>                :<span class="lineCov">          3 :           backup_suffix_string = optarg;</span>
+<span class="lineNum">     836 </span>                :<span class="lineCov">          3 :           break;</span>
 <span class="lineNum">     837 </span>                :            :         case 't':
 <span class="lineNum">     838 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (target_directory)</span>
 <span class="lineNum">     839 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0,</span>
@@ -932,15 +932,15 @@
 <span class="lineNum">     854 </span>                :<span class="lineNoCov">          0 :           break;</span>
 <span class="lineNum">     855 </span>                :            : 
 <span class="lineNum">     856 </span>                :            :         case PRESERVE_CONTEXT_OPTION:
-<span class="lineNum">     857 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 25 times"> + </span>]:<span class="lineCov">         25 :           if ( ! selinux_enabled)</span>
+<span class="lineNum">     857 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :           if ( ! selinux_enabled)</span>
 <span class="lineNum">     858 </span>                :            :             {
 <span class="lineNum">     859 </span>                :<span class="lineNoCov">          0 :               error (0, 0, _(&quot;WARNING: ignoring --preserve-context; &quot;</span>
 <span class="lineNum">     860 </span>                :            :                              &quot;this kernel is not SELinux-enabled&quot;));
 <span class="lineNum">     861 </span>                :<span class="lineNoCov">          0 :               break;</span>
 <span class="lineNum">     862 </span>                :            :             }
-<span class="lineNum">     863 </span>                :<span class="lineCov">         25 :           x.preserve_security_context = true;</span>
-<span class="lineNum">     864 </span>                :<span class="lineCov">         25 :           use_default_selinux_context = false;</span>
-<span class="lineNum">     865 </span>                :<span class="lineCov">         25 :           break;</span>
+<span class="lineNum">     863 </span>                :<span class="lineCov">         15 :           x.preserve_security_context = true;</span>
+<span class="lineNum">     864 </span>                :<span class="lineCov">         15 :           use_default_selinux_context = false;</span>
+<span class="lineNum">     865 </span>                :<span class="lineCov">         15 :           break;</span>
 <span class="lineNum">     866 </span>                :            :         case 'Z':
 <span class="lineNum">     867 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if ( ! selinux_enabled)</span>
 <span class="lineNum">     868 </span>                :            :             {
@@ -951,44 +951,44 @@
 <span class="lineNum">     873 </span>                :<span class="lineNoCov">          0 :           scontext = optarg;</span>
 <span class="lineNum">     874 </span>                :<span class="lineNoCov">          0 :           use_default_selinux_context = false;</span>
 <span class="lineNum">     875 </span>                :<span class="lineNoCov">          0 :           break;</span>
-<span class="lineNum">     876 </span>                :<span class="lineCov">         15 :         case_GETOPT_HELP_CHAR;</span>
-<span class="lineNum">     877 </span>                :<span class="lineCov">         60 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     876 </span>                :<span class="lineCov">          9 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     877 </span>                :<span class="lineCov">         36 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
 <span class="lineNum">     878 </span>                :            :         default:
-<span class="lineNum">     879 </span>                :<span class="lineCov">          5 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     879 </span>                :<span class="lineCov">          3 :           usage (EXIT_FAILURE);</span>
 <span class="lineNum">     880 </span>                :            :         }
 <span class="lineNum">     881 </span>                :            :     }
 <span class="lineNum">     882 </span>                :            : 
 <span class="lineNum">     883 </span>                :            :   /* Check for invalid combinations of arguments. */
-<span class="lineNum">     884 </span>[<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 150 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 30 times"> + </span>]:<span class="lineCov">        180 :   if (dir_arg &amp;&amp; strip_files)</span>
+<span class="lineNum">     884 </span>[<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 94 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 16 times"> + </span>]:<span class="lineCov">        110 :   if (dir_arg &amp;&amp; strip_files)</span>
 <span class="lineNum">     885 </span>                :<span class="lineNoCov">          0 :     error (EXIT_FAILURE, 0,</span>
 <span class="lineNum">     886 </span>                :<span class="lineNoCov">          0 :            _(&quot;the strip option may not be used when installing a directory&quot;));</span>
-<span class="lineNum">     887 </span>[<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 150 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 30 times"> + </span>]:<span class="lineCov">        180 :   if (dir_arg &amp;&amp; target_directory)</span>
+<span class="lineNum">     887 </span>[<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 94 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 16 times"> + </span>]:<span class="lineCov">        110 :   if (dir_arg &amp;&amp; target_directory)</span>
 <span class="lineNum">     888 </span>                :<span class="lineNoCov">          0 :     error (EXIT_FAILURE, 0,</span>
 <span class="lineNum">     889 </span>                :<span class="lineNoCov">          0 :            _(&quot;target directory not allowed when installing a directory&quot;));</span>
 <span class="lineNum">     890 </span>                :            : 
-<span class="lineNum">     891 </span>[<span class="branchCov" title="Branch 0 was taken 25 times"> + </span><span class="branchCov" title="Branch 1 was taken 155 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 25 times"> + </span>]:<span class="lineCov">        180 :   if (x.preserve_security_context &amp;&amp; scontext != NULL)</span>
+<span class="lineNum">     891 </span>[<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 95 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 15 times"> + </span>]:<span class="lineCov">        110 :   if (x.preserve_security_context &amp;&amp; scontext != NULL)</span>
 <span class="lineNum">     892 </span>                :<span class="lineNoCov">          0 :     error (EXIT_FAILURE, 0,</span>
 <span class="lineNum">     893 </span>                :<span class="lineNoCov">          0 :            _(&quot;cannot force target context to %s and preserve it&quot;),</span>
 <span class="lineNum">     894 </span>                :            :            quote (scontext));
 <span class="lineNum">     895 </span>                :            : 
-<span class="lineNum">     896 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 175 times"> + </span>]:<span class="lineCov">        180 :   if (backup_suffix_string)</span>
-<span class="lineNum">     897 </span>                :<span class="lineCov">          5 :     simple_backup_suffix = xstrdup (backup_suffix_string);</span>
+<span class="lineNum">     896 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 107 times"> + </span>]:<span class="lineCov">        110 :   if (backup_suffix_string)</span>
+<span class="lineNum">     897 </span>                :<span class="lineCov">          3 :     simple_backup_suffix = xstrdup (backup_suffix_string);</span>
 <span class="lineNum">     898 </span>                :            : 
-<span class="lineNum">     899 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 175 times"> + </span>]:<span class="lineCov">        180 :   x.backup_type = (make_backups</span>
-<span class="lineNum">     900 </span>                :<span class="lineCov">          5 :                    ? xget_version (_(&quot;backup type&quot;),</span>
+<span class="lineNum">     899 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 107 times"> + </span>]:<span class="lineCov">        110 :   x.backup_type = (make_backups</span>
+<span class="lineNum">     900 </span>                :<span class="lineCov">          3 :                    ? xget_version (_(&quot;backup type&quot;),</span>
 <span class="lineNum">     901 </span>                :            :                                    version_control_string)
 <span class="lineNum">     902 </span>                :            :                    : no_backups);
 <span class="lineNum">     903 </span>                :            : 
-<span class="lineNum">     904 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 180 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">        180 :   if (scontext &amp;&amp; setfscreatecon (scontext) &lt; 0)</span>
+<span class="lineNum">     904 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 110 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">        110 :   if (scontext &amp;&amp; setfscreatecon (scontext) &lt; 0)</span>
 <span class="lineNum">     905 </span>                :<span class="lineNoCov">          0 :     error (EXIT_FAILURE, errno,</span>
 <span class="lineNum">     906 </span>                :<span class="lineNoCov">          0 :            _(&quot;failed to set default file creation context to %s&quot;),</span>
 <span class="lineNum">     907 </span>                :            :            quote (scontext));
 <span class="lineNum">     908 </span>                :            : 
-<span class="lineNum">     909 </span>                :<span class="lineCov">        180 :   n_files = argc - optind;</span>
-<span class="lineNum">     910 </span>                :<span class="lineCov">        180 :   file = argv + optind;</span>
+<span class="lineNum">     909 </span>                :<span class="lineCov">        110 :   n_files = argc - optind;</span>
+<span class="lineNum">     910 </span>                :<span class="lineCov">        110 :   file = argv + optind;</span>
 <span class="lineNum">     911 </span>                :            : 
-<span class="lineNum">     912 </span>[<span class="branchCov" title="Branch 0 was taken 150 times"> + </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 150 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        180 :   if (n_files &lt;= ! (dir_arg || target_directory))</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 180 times"> + </span>]
+<span class="lineNum">     912 </span>[<span class="branchCov" title="Branch 0 was taken 94 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 94 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        110 :   if (n_files &lt;= ! (dir_arg || target_directory))</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 110 times"> + </span>]
 <span class="lineNum">     913 </span>                :            :     {
 <span class="lineNum">     914 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (n_files &lt;= 0)</span>
 <span class="lineNum">     915 </span>                :<span class="lineNoCov">          0 :         error (0, 0, _(&quot;missing file operand&quot;));</span>
@@ -998,7 +998,7 @@
 <span class="lineNum">     919 </span>                :<span class="lineNoCov">          0 :       usage (EXIT_FAILURE);</span>
 <span class="lineNum">     920 </span>                :            :     }
 <span class="lineNum">     921 </span>                :            : 
-<span class="lineNum">     922 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 180 times"> + </span>]:<span class="lineCov">        180 :   if (no_target_directory)</span>
+<span class="lineNum">     922 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 110 times"> + </span>]:<span class="lineCov">        110 :   if (no_target_directory)</span>
 <span class="lineNum">     923 </span>                :            :     {
 <span class="lineNum">     924 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (target_directory)</span>
 <span class="lineNum">     925 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, 0,</span>
@@ -1010,75 +1010,75 @@
 <span class="lineNum">     931 </span>                :<span class="lineNoCov">          0 :           usage (EXIT_FAILURE);</span>
 <span class="lineNum">     932 </span>                :            :         }
 <span class="lineNum">     933 </span>                :            :     }
-<span class="lineNum">     934 </span>[<span class="branchCov" title="Branch 0 was taken 150 times"> + </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 150 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        180 :   else if (! (dir_arg || target_directory))</span>
+<span class="lineNum">     934 </span>[<span class="branchCov" title="Branch 0 was taken 94 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 94 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        110 :   else if (! (dir_arg || target_directory))</span>
 <span class="lineNum">     935 </span>                :            :     {
-<span class="lineNum">     936 </span>[<span class="branchCov" title="Branch 0 was taken 150 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 13 times"> + </span><span class="branchCov" title="Branch 4 was taken 137 times"> + </span>]:<span class="lineCov">        150 :       if (2 &lt;= n_files &amp;&amp; target_directory_operand (file[n_files - 1]))</span>
-<span class="lineNum">     937 </span>                :<span class="lineCov">         13 :         target_directory = file[--n_files];</span>
-<span class="lineNum">     938 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 137 times"> + </span>]:<span class="lineCov">        137 :       else if (2 &lt; n_files)</span>
+<span class="lineNum">     936 </span>[<span class="branchCov" title="Branch 0 was taken 94 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 7 times"> + </span><span class="branchCov" title="Branch 4 was taken 87 times"> + </span>]:<span class="lineCov">         94 :       if (2 &lt;= n_files &amp;&amp; target_directory_operand (file[n_files - 1]))</span>
+<span class="lineNum">     937 </span>                :<span class="lineCov">          7 :         target_directory = file[--n_files];</span>
+<span class="lineNum">     938 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 87 times"> + </span>]:<span class="lineCov">         87 :       else if (2 &lt; n_files)</span>
 <span class="lineNum">     939 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, 0, _(&quot;target %s is not a directory&quot;),</span>
 <span class="lineNum">     940 </span>                :<span class="lineNoCov">          0 :                quote (file[n_files - 1]));</span>
 <span class="lineNum">     941 </span>                :            :     }
 <span class="lineNum">     942 </span>                :            : 
-<span class="lineNum">     943 </span>        [<span class="branchCov" title="Branch 0 was taken 69 times"> + </span><span class="branchCov" title="Branch 1 was taken 111 times"> + </span>]:<span class="lineCov">        180 :   if (specified_mode)</span>
+<span class="lineNum">     943 </span>        [<span class="branchCov" title="Branch 0 was taken 41 times"> + </span><span class="branchCov" title="Branch 1 was taken 69 times"> + </span>]:<span class="lineCov">        110 :   if (specified_mode)</span>
 <span class="lineNum">     944 </span>                :            :     {
-<span class="lineNum">     945 </span>                :<span class="lineCov">         69 :       struct mode_change *change = mode_compile (specified_mode);</span>
-<span class="lineNum">     946 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 69 times"> + </span>]:<span class="lineCov">         69 :       if (!change)</span>
+<span class="lineNum">     945 </span>                :<span class="lineCov">         41 :       struct mode_change *change = mode_compile (specified_mode);</span>
+<span class="lineNum">     946 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 41 times"> + </span>]:<span class="lineCov">         41 :       if (!change)</span>
 <span class="lineNum">     947 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, 0, _(&quot;invalid mode %s&quot;), quote (specified_mode));</span>
-<span class="lineNum">     948 </span>                :<span class="lineCov">         69 :       mode = mode_adjust (0, false, 0, change, NULL);</span>
-<span class="lineNum">     949 </span>                :<span class="lineCov">         69 :       dir_mode = mode_adjust (0, true, 0, change, &amp;dir_mode_bits);</span>
-<span class="lineNum">     950 </span>                :<span class="lineCov">         69 :       free (change);</span>
+<span class="lineNum">     948 </span>                :<span class="lineCov">         41 :       mode = mode_adjust (0, false, 0, change, NULL);</span>
+<span class="lineNum">     949 </span>                :<span class="lineCov">         41 :       dir_mode = mode_adjust (0, true, 0, change, &amp;dir_mode_bits);</span>
+<span class="lineNum">     950 </span>                :<span class="lineCov">         41 :       free (change);</span>
 <span class="lineNum">     951 </span>                :            :     }
 <span class="lineNum">     952 </span>                :            : 
-<span class="lineNum">     953 </span>[<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 170 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 10 times"> + </span>]:<span class="lineCov">        180 :   if (strip_program_specified &amp;&amp; !strip_files)</span>
+<span class="lineNum">     953 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 104 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 6 times"> + </span>]:<span class="lineCov">        110 :   if (strip_program_specified &amp;&amp; !strip_files)</span>
 <span class="lineNum">     954 </span>                :<span class="lineNoCov">          0 :     error (0, 0, _(&quot;WARNING: ignoring --strip-program option as -s option was &quot;</span>
 <span class="lineNum">     955 </span>                :            :                    &quot;not specified&quot;));
 <span class="lineNum">     956 </span>                :            : 
-<span class="lineNum">     957 </span>[<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchCov" title="Branch 1 was taken 78 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 5 times"> + </span><span class="branchCov" title="Branch 3 was taken 97 times"> + </span>]:<span class="lineCov">        180 :   if (copy_only_if_needed &amp;&amp; x.preserve_timestamps)</span>
+<span class="lineNum">     957 </span>[<span class="branchCov" title="Branch 0 was taken 66 times"> + </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 63 times"> + </span>]:<span class="lineCov">        110 :   if (copy_only_if_needed &amp;&amp; x.preserve_timestamps)</span>
 <span class="lineNum">     958 </span>                :            :     {
-<span class="lineNum">     959 </span>                :<span class="lineCov">          5 :       error (0, 0, _(&quot;options --compare (-C) and --preserve-timestamps are &quot;</span>
+<span class="lineNum">     959 </span>                :<span class="lineCov">          3 :       error (0, 0, _(&quot;options --compare (-C) and --preserve-timestamps are &quot;</span>
 <span class="lineNum">     960 </span>                :            :                      &quot;mutually exclusive&quot;));
-<span class="lineNum">     961 </span>                :<span class="lineCov">          5 :       usage (EXIT_FAILURE);</span>
+<span class="lineNum">     961 </span>                :<span class="lineCov">          3 :       usage (EXIT_FAILURE);</span>
 <span class="lineNum">     962 </span>                :            :     }
 <span class="lineNum">     963 </span>                :            : 
-<span class="lineNum">     964 </span>[<span class="branchCov" title="Branch 0 was taken 97 times"> + </span><span class="branchCov" title="Branch 1 was taken 78 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 5 times"> + </span><span class="branchCov" title="Branch 3 was taken 92 times"> + </span>]:<span class="lineCov">        175 :   if (copy_only_if_needed &amp;&amp; strip_files)</span>
+<span class="lineNum">     964 </span>[<span class="branchCov" title="Branch 0 was taken 63 times"> + </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 60 times"> + </span>]:<span class="lineCov">        107 :   if (copy_only_if_needed &amp;&amp; strip_files)</span>
 <span class="lineNum">     965 </span>                :            :     {
-<span class="lineNum">     966 </span>                :<span class="lineCov">          5 :       error (0, 0, _(&quot;options --compare (-C) and --strip are mutually &quot;</span>
+<span class="lineNum">     966 </span>                :<span class="lineCov">          3 :       error (0, 0, _(&quot;options --compare (-C) and --strip are mutually &quot;</span>
 <span class="lineNum">     967 </span>                :            :                      &quot;exclusive&quot;));
-<span class="lineNum">     968 </span>                :<span class="lineCov">          5 :       usage (EXIT_FAILURE);</span>
+<span class="lineNum">     968 </span>                :<span class="lineCov">          3 :       usage (EXIT_FAILURE);</span>
 <span class="lineNum">     969 </span>                :            :     }
 <span class="lineNum">     970 </span>                :            : 
-<span class="lineNum">     971 </span>[<span class="branchCov" title="Branch 0 was taken 92 times"> + </span><span class="branchCov" title="Branch 1 was taken 78 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 10 times"> + </span><span class="branchCov" title="Branch 4 was taken 82 times"> + </span>]:<span class="lineCov">        170 :   if (copy_only_if_needed &amp;&amp; extra_mode (mode))</span>
-<span class="lineNum">     972 </span>                :<span class="lineCov">         10 :     error (0, 0, _(&quot;the --compare (-C) option is ignored when you&quot;</span>
+<span class="lineNum">     971 </span>[<span class="branchCov" title="Branch 0 was taken 60 times"> + </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 6 times"> + </span><span class="branchCov" title="Branch 4 was taken 54 times"> + </span>]:<span class="lineCov">        104 :   if (copy_only_if_needed &amp;&amp; extra_mode (mode))</span>
+<span class="lineNum">     972 </span>                :<span class="lineCov">          6 :     error (0, 0, _(&quot;the --compare (-C) option is ignored when you&quot;</span>
 <span class="lineNum">     973 </span>                :            :                    &quot; specify a mode with non-permission bits&quot;));
 <span class="lineNum">     974 </span>                :            : 
-<span class="lineNum">     975 </span>                :<span class="lineCov">        170 :   get_ids ();</span>
+<span class="lineNum">     975 </span>                :<span class="lineCov">        104 :   get_ids ();</span>
 <span class="lineNum">     976 </span>                :            : 
-<span class="lineNum">     977 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 140 times"> + </span>]:<span class="lineCov">        170 :   if (dir_arg)</span>
-<span class="lineNum">     978 </span>                :<span class="lineCov">         30 :     exit_status = savewd_process_files (n_files, file, process_dir, &amp;x);</span>
+<span class="lineNum">     977 </span>        [<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 88 times"> + </span>]:<span class="lineCov">        104 :   if (dir_arg)</span>
+<span class="lineNum">     978 </span>                :<span class="lineCov">         16 :     exit_status = savewd_process_files (n_files, file, process_dir, &amp;x);</span>
 <span class="lineNum">     979 </span>                :            :   else
 <span class="lineNum">     980 </span>                :            :     {
 <span class="lineNum">     981 </span>                :            :       /* FIXME: it's a little gross that this initialization is
 <span class="lineNum">     982 </span>                :            :          required by copy.c::copy. */
-<span class="lineNum">     983 </span>                :<span class="lineCov">        140 :       hash_init ();</span>
+<span class="lineNum">     983 </span>                :<span class="lineCov">         88 :       hash_init ();</span>
 <span class="lineNum">     984 </span>                :            : 
-<span class="lineNum">     985 </span>        [<span class="branchCov" title="Branch 0 was taken 127 times"> + </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">        140 :       if (!target_directory)</span>
+<span class="lineNum">     985 </span>        [<span class="branchCov" title="Branch 0 was taken 81 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">         88 :       if (!target_directory)</span>
 <span class="lineNum">     986 </span>                :            :         {
-<span class="lineNum">     987 </span>[<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 118 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 127 times"> + </span>]:<span class="lineCov">        254 :           if (! (mkdir_and_install</span>
-<span class="lineNum">     988 </span>                :<span class="lineCov">          9 :                  ? install_file_in_file_parents (file[0], file[1], &amp;x)</span>
-<span class="lineNum">     989 </span>                :<span class="lineCov">        118 :                  : install_file_in_file (file[0], file[1], &amp;x)))</span>
+<span class="lineNum">     987 </span>[<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 76 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 81 times"> + </span>]:<span class="lineCov">        162 :           if (! (mkdir_and_install</span>
+<span class="lineNum">     988 </span>                :<span class="lineCov">          5 :                  ? install_file_in_file_parents (file[0], file[1], &amp;x)</span>
+<span class="lineNum">     989 </span>                :<span class="lineCov">         76 :                  : install_file_in_file (file[0], file[1], &amp;x)))</span>
 <span class="lineNum">     990 </span>                :<span class="lineNoCov">          0 :             exit_status = EXIT_FAILURE;</span>
 <span class="lineNum">     991 </span>                :            :         }
 <span class="lineNum">     992 </span>                :            :       else
 <span class="lineNum">     993 </span>                :            :         {
 <span class="lineNum">     994 </span>                :            :           int i;
-<span class="lineNum">     995 </span>                :<span class="lineCov">         13 :           dest_info_init (&amp;x);</span>
-<span class="lineNum">     996 </span>        [<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">         26 :           for (i = 0; i &lt; n_files; i++)</span>
-<span class="lineNum">     997 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13 times"> + </span>]:<span class="lineCov">         13 :             if (! install_file_in_dir (file[i], target_directory, &amp;x))</span>
+<span class="lineNum">     995 </span>                :<span class="lineCov">          7 :           dest_info_init (&amp;x);</span>
+<span class="lineNum">     996 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">         14 :           for (i = 0; i &lt; n_files; i++)</span>
+<span class="lineNum">     997 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 7 times"> + </span>]:<span class="lineCov">          7 :             if (! install_file_in_dir (file[i], target_directory, &amp;x))</span>
 <span class="lineNum">     998 </span>                :<span class="lineNoCov">          0 :               exit_status = EXIT_FAILURE;</span>
 <span class="lineNum">     999 </span>                :            :         }
 <span class="lineNum">    1000 </span>                :            :     }
 <span class="lineNum">    1001 </span>                :            : 
-<span class="lineNum">    1002 </span>                :<span class="lineCov">        170 :   exit (exit_status);</span>
+<span class="lineNum">    1002 </span>                :<span class="lineCov">        104 :   exit (exit_status);</span>
 <span class="lineNum">    1003 </span>                :            : }
 </pre>
       </td>

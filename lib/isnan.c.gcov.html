@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - unnamed - lib/isnan.c</title>
+  <title>LCOV - coreutils - lib/isnan.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">unnamed</td>
+            <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">8</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-11</td>
+            <td class="headerValue">2011-12-16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -151,7 +151,7 @@
 <span class="lineNum">      80 </span>                :            : typedef union { DOUBLE value; unsigned int word[NWORDS]; } memory_double;
 <a name="81"><span class="lineNum">      81 </span>                :            : </a>
 <span class="lineNum">      82 </span>                :            : int
-<span class="lineNum">      83 </span>                :<span class="lineCov">       5421 : FUNC (DOUBLE x)</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">       3220 : FUNC (DOUBLE x)</span>
 <span class="lineNum">      84 </span>                :            : {
 <span class="lineNum">      85 </span>                :            : #ifdef KNOWN_EXPBIT0_LOCATION
 <span class="lineNum">      86 </span>                :            : # if defined USE_LONG_DOUBLE &amp;&amp; ((defined __ia64 &amp;&amp; LDBL_MANT_DIG == 64) || (defined __x86_64__ || defined __amd64__) || (defined __i386 || defined __i386__ || defined _I386 || defined _M_IX86 || defined _X86_)) &amp;&amp; !HAVE_SAME_LONG_DOUBLE_AS_DOUBLE
@@ -166,8 +166,8 @@
 <span class="lineNum">      95 </span>                :            :   memory_double m;
 <span class="lineNum">      96 </span>                :            :   unsigned int exponent;
 <span class="lineNum">      97 </span>                :            : 
-<span class="lineNum">      98 </span>                :<span class="lineCov">       5421 :   m.value = x;</span>
-<span class="lineNum">      99 </span>                :<span class="lineCov">       5421 :   exponent = (m.word[EXPBIT0_WORD] &gt;&gt; EXPBIT0_BIT) &amp; EXP_MASK;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">       3220 :   m.value = x;</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">       3220 :   exponent = (m.word[EXPBIT0_WORD] &gt;&gt; EXPBIT0_BIT) &amp; EXP_MASK;</span>
 <span class="lineNum">     100 </span>                :            : #  ifdef WORDS_BIGENDIAN
 <span class="lineNum">     101 </span>                :            :   /* Big endian: EXPBIT0_WORD = 0, EXPBIT0_BIT = 16.  */
 <span class="lineNum">     102 </span>                :            :   if (exponent == 0)
@@ -178,12 +178,12 @@
 <span class="lineNum">     107 </span>                :            :     return 1 &amp; ~(m.word[0] &gt;&gt; 15);
 <span class="lineNum">     108 </span>                :            : #  else
 <span class="lineNum">     109 </span>                :            :   /* Little endian: EXPBIT0_WORD = 2, EXPBIT0_BIT = 0.  */
-<span class="lineNum">     110 </span>        [<span class="branchCov" title="Branch 0 was taken 375 times"> + </span><span class="branchCov" title="Branch 1 was taken 5046 times"> + </span>]:<span class="lineCov">       5421 :   if (exponent == 0)</span>
-<span class="lineNum">     111 </span>                :<span class="lineCov">        375 :     return (m.word[1] &gt;&gt; 31);</span>
-<span class="lineNum">     112 </span>        [<span class="branchCov" title="Branch 0 was taken 845 times"> + </span><span class="branchCov" title="Branch 1 was taken 4201 times"> + </span>]:<span class="lineCov">       5046 :   else if (exponent == EXP_MASK)</span>
-<span class="lineNum">     113 </span>                :<span class="lineCov">        845 :     return ((m.word[1] ^ 0x80000000U) | m.word[0]) != 0;</span>
+<span class="lineNum">     110 </span>        [<span class="branchCov" title="Branch 0 was taken 225 times"> + </span><span class="branchCov" title="Branch 1 was taken 2995 times"> + </span>]:<span class="lineCov">       3220 :   if (exponent == 0)</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">        225 :     return (m.word[1] &gt;&gt; 31);</span>
+<span class="lineNum">     112 </span>        [<span class="branchCov" title="Branch 0 was taken 507 times"> + </span><span class="branchCov" title="Branch 1 was taken 2488 times"> + </span>]:<span class="lineCov">       2995 :   else if (exponent == EXP_MASK)</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">        507 :     return ((m.word[1] ^ 0x80000000U) | m.word[0]) != 0;</span>
 <span class="lineNum">     114 </span>                :            :   else
-<span class="lineNum">     115 </span>                :<span class="lineCov">       5421 :     return (m.word[1] &gt;&gt; 31) ^ 1;</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">       3220 :     return (m.word[1] &gt;&gt; 31) ^ 1;</span>
 <span class="lineNum">     116 </span>                :            : #  endif
 <span class="lineNum">     117 </span>                :            : # else
 <span class="lineNum">     118 </span>                :            :   /* Be careful to not do any floating-point operation on x, such as x == x,
