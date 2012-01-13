@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* yes - output a string repeatedly until killed</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 1991-1997, 1999-2004, 2007-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1991-1997, 1999-2004, 2007-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -97,67 +97,66 @@
 <span class="lineNum">      26 </span>                :            : #include &quot;error.h&quot;
 <span class="lineNum">      27 </span>                :            : #include &quot;long-options.h&quot;
 <span class="lineNum">      28 </span>                :            : 
-<span class="lineNum">      29 </span>                :            : /* The official name of this program (e.g., no `g' prefix).  */
+<span class="lineNum">      29 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
 <span class="lineNum">      30 </span>                :            : #define PROGRAM_NAME &quot;yes&quot;
 <span class="lineNum">      31 </span>                :            : 
 <span class="lineNum">      32 </span>                :            : #define AUTHORS proper_name (&quot;David MacKenzie&quot;)
 <a name="33"><span class="lineNum">      33 </span>                :            : </a>
 <span class="lineNum">      34 </span>                :            : void
-<span class="lineNum">      35 </span>                :<span class="lineCov">         12 : usage (int status)</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">          8 : usage (int status)</span>
 <span class="lineNum">      36 </span>                :            : {
-<span class="lineNum">      37 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         12 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">          3 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
-<span class="lineNum">      39 </span>                :            :              program_name);
-<span class="lineNum">      40 </span>                :            :   else
-<span class="lineNum">      41 </span>                :            :     {
-<span class="lineNum">      42 </span>                :<span class="lineCov">          9 :       printf (_(&quot;\</span>
-<span class="lineNum">      43 </span>                :            : Usage: %s [STRING]...\n\
-<span class="lineNum">      44 </span>                :            :   or:  %s OPTION\n\
-<span class="lineNum">      45 </span>                :            : &quot;),
-<span class="lineNum">      46 </span>                :            :               program_name, program_name);
-<span class="lineNum">      47 </span>                :            : 
-<span class="lineNum">      48 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">      49 </span>                :            : Repeatedly output a line with all specified STRING(s), or `y'.\n\
-<span class="lineNum">      50 </span>                :            : \n\
-<span class="lineNum">      51 </span>                :            : &quot;), stdout);
-<span class="lineNum">      52 </span>                :<span class="lineCov">          9 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">      53 </span>                :<span class="lineCov">          9 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">      54 </span>                :<span class="lineCov">          9 :       emit_ancillary_info ();</span>
-<span class="lineNum">      55 </span>                :            :     }
-<span class="lineNum">      56 </span>                :<span class="lineCov">         12 :   exit (status);</span>
-<span class="lineNum">      57 </span>                :            : }
-<a name="58"><span class="lineNum">      58 </span>                :            : </a>
-<span class="lineNum">      59 </span>                :            : int
-<span class="lineNum">      60 </span>                :<span class="lineCov">         27 : main (int argc, char **argv)</span>
-<span class="lineNum">      61 </span>                :            : {
-<span class="lineNum">      62 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">      63 </span>                :<span class="lineCov">         27 :   set_program_name (argv[0]);</span>
-<span class="lineNum">      64 </span>                :<span class="lineCov">         27 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">         27 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">         27 :   textdomain (PACKAGE);</span>
-<span class="lineNum">      67 </span>                :            : 
-<span class="lineNum">      68 </span>                :<span class="lineCov">         27 :   atexit (close_stdout);</span>
-<span class="lineNum">      69 </span>                :            : 
-<span class="lineNum">      70 </span>                :<span class="lineCov">         27 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, Version,</span>
-<span class="lineNum">      71 </span>                :            :                       usage, AUTHORS, (char const *) NULL);
-<span class="lineNum">      72 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          3 :   if (getopt_long (argc, argv, &quot;+&quot;, NULL, NULL) != -1)</span>
-<span class="lineNum">      73 </span>                :<span class="lineCov">          3 :     usage (EXIT_FAILURE);</span>
-<span class="lineNum">      74 </span>                :            : 
-<span class="lineNum">      75 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (argc &lt;= optind)</span>
-<span class="lineNum">      76 </span>                :            :     {
-<span class="lineNum">      77 </span>                :<span class="lineNoCov">          0 :       optind = argc;</span>
-<span class="lineNum">      78 </span>                :<span class="lineNoCov">          0 :       argv[argc++] = bad_cast (&quot;y&quot;);</span>
-<span class="lineNum">      79 </span>                :            :     }
-<span class="lineNum">      80 </span>                :            : 
-<span class="lineNum">      81 </span>                :            :   while (true)
-<span class="lineNum">      82 </span>                :            :     {
-<span class="lineNum">      83 </span>                :            :       int i;
-<span class="lineNum">      84 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       for (i = optind; i &lt; argc; i++)</span>
-<span class="lineNum">      85 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if (fputs (argv[i], stdout) == EOF</span>
-<span class="lineNum">      86 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineNoCov">          0 :             || putchar (i == argc - 1 ? '\n' : ' ') == EOF)</span>
-<span class="lineNum">      87 </span>                :<span class="lineNoCov">          0 :           error (EXIT_FAILURE, errno, _(&quot;standard output&quot;));</span>
-<span class="lineNum">      88 </span>                :<span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">      89 </span>                :            : }
+<span class="lineNum">      37 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">          2 :     emit_try_help ();</span>
+<span class="lineNum">      39 </span>                :            :   else
+<span class="lineNum">      40 </span>                :            :     {
+<span class="lineNum">      41 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">      42 </span>                :            : Usage: %s [STRING]...\n\
+<span class="lineNum">      43 </span>                :            :   or:  %s OPTION\n\
+<span class="lineNum">      44 </span>                :            : &quot;),
+<span class="lineNum">      45 </span>                :            :               program_name, program_name);
+<span class="lineNum">      46 </span>                :            : 
+<span class="lineNum">      47 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">      48 </span>                :            : Repeatedly output a line with all specified STRING(s), or 'y'.\n\
+<span class="lineNum">      49 </span>                :            : \n\
+<span class="lineNum">      50 </span>                :            : &quot;), stdout);
+<span class="lineNum">      51 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">      54 </span>                :            :     }
+<span class="lineNum">      55 </span>                :<span class="lineCov">          8 :   exit (status);</span>
+<span class="lineNum">      56 </span>                :            : }
+<a name="57"><span class="lineNum">      57 </span>                :            : </a>
+<span class="lineNum">      58 </span>                :            : int
+<span class="lineNum">      59 </span>                :<span class="lineCov">         18 : main (int argc, char **argv)</span>
+<span class="lineNum">      60 </span>                :            : {
+<span class="lineNum">      61 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">      62 </span>                :<span class="lineCov">         18 :   set_program_name (argv[0]);</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">         18 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">         18 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">         18 :   textdomain (PACKAGE);</span>
+<span class="lineNum">      66 </span>                :            : 
+<span class="lineNum">      67 </span>                :<span class="lineCov">         18 :   atexit (close_stdout);</span>
+<span class="lineNum">      68 </span>                :            : 
+<span class="lineNum">      69 </span>                :<span class="lineCov">         18 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, Version,</span>
+<span class="lineNum">      70 </span>                :            :                       usage, AUTHORS, (char const *) NULL);
+<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          2 :   if (getopt_long (argc, argv, &quot;+&quot;, NULL, NULL) != -1)</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">          2 :     usage (EXIT_FAILURE);</span>
+<span class="lineNum">      73 </span>                :            : 
+<span class="lineNum">      74 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (argc &lt;= optind)</span>
+<span class="lineNum">      75 </span>                :            :     {
+<span class="lineNum">      76 </span>                :<span class="lineNoCov">          0 :       optind = argc;</span>
+<span class="lineNum">      77 </span>                :<span class="lineNoCov">          0 :       argv[argc++] = bad_cast (&quot;y&quot;);</span>
+<span class="lineNum">      78 </span>                :            :     }
+<span class="lineNum">      79 </span>                :            : 
+<span class="lineNum">      80 </span>                :            :   while (true)
+<span class="lineNum">      81 </span>                :            :     {
+<span class="lineNum">      82 </span>                :            :       int i;
+<span class="lineNum">      83 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       for (i = optind; i &lt; argc; i++)</span>
+<span class="lineNum">      84 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if (fputs (argv[i], stdout) == EOF</span>
+<span class="lineNum">      85 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineNoCov">          0 :             || putchar (i == argc - 1 ? '\n' : ' ') == EOF)</span>
+<span class="lineNum">      86 </span>                :<span class="lineNoCov">          0 :           error (EXIT_FAILURE, errno, _(&quot;standard output&quot;));</span>
+<span class="lineNum">      87 </span>                :<span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">      88 </span>                :            : }
 </pre>
       </td>
     </tr>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* tac - concatenate and print files in reverse</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 1988-1991, 1995-2006, 2008-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1988-1991, 1995-2006, 2008-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -122,7 +122,7 @@
 <span class="lineNum">      51 </span>                :            : #include &quot;stdlib--.h&quot;
 <span class="lineNum">      52 </span>                :            : #include &quot;xfreopen.h&quot;
 <span class="lineNum">      53 </span>                :            : 
-<span class="lineNum">      54 </span>                :            : /* The official name of this program (e.g., no `g' prefix).  */
+<span class="lineNum">      54 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
 <span class="lineNum">      55 </span>                :            : #define PROGRAM_NAME &quot;tac&quot;
 <span class="lineNum">      56 </span>                :            : 
 <span class="lineNum">      57 </span>                :            : #define AUTHORS \
@@ -154,32 +154,32 @@
 <span class="lineNum">      83 </span>                :            : /* True if we have ever read standard input.  */
 <span class="lineNum">      84 </span>                :            : static bool have_read_stdin = false;
 <span class="lineNum">      85 </span>                :            : 
-<span class="lineNum">      86 </span>                :            : /* If true, print `separator' along with the record preceding it
+<span class="lineNum">      86 </span>                :            : /* If true, print 'separator' along with the record preceding it
 <span class="lineNum">      87 </span>                :            :    in the file; otherwise with the record following it. */
 <span class="lineNum">      88 </span>                :            : static bool separator_ends_record;
 <span class="lineNum">      89 </span>                :            : 
-<span class="lineNum">      90 </span>                :            : /* 0 if `separator' is to be matched as a regular expression;
-<span class="lineNum">      91 </span>                :            :    otherwise, the length of `separator', used as a sentinel to
+<span class="lineNum">      90 </span>                :            : /* 0 if 'separator' is to be matched as a regular expression;
+<span class="lineNum">      91 </span>                :            :    otherwise, the length of 'separator', used as a sentinel to
 <span class="lineNum">      92 </span>                :            :    stop the search. */
 <span class="lineNum">      93 </span>                :            : static size_t sentinel_length;
 <span class="lineNum">      94 </span>                :            : 
-<span class="lineNum">      95 </span>                :            : /* The length of a match with `separator'.  If `sentinel_length' is 0,
-<span class="lineNum">      96 </span>                :            :    `match_length' is computed every time a match succeeds;
-<span class="lineNum">      97 </span>                :            :    otherwise, it is simply the length of `separator'. */
+<span class="lineNum">      95 </span>                :            : /* The length of a match with 'separator'.  If 'sentinel_length' is 0,
+<span class="lineNum">      96 </span>                :            :    'match_length' is computed every time a match succeeds;
+<span class="lineNum">      97 </span>                :            :    otherwise, it is simply the length of 'separator'. */
 <span class="lineNum">      98 </span>                :            : static size_t match_length;
 <span class="lineNum">      99 </span>                :            : 
 <span class="lineNum">     100 </span>                :            : /* The input buffer. */
 <span class="lineNum">     101 </span>                :            : static char *G_buffer;
 <span class="lineNum">     102 </span>                :            : 
-<span class="lineNum">     103 </span>                :            : /* The number of bytes to read at once into `buffer'. */
+<span class="lineNum">     103 </span>                :            : /* The number of bytes to read at once into 'buffer'. */
 <span class="lineNum">     104 </span>                :            : static size_t read_size;
 <span class="lineNum">     105 </span>                :            : 
-<span class="lineNum">     106 </span>                :            : /* The size of `buffer'.  This is read_size * 2 + sentinel_length + 2.
-<span class="lineNum">     107 </span>                :            :    The extra 2 bytes allow `past_end' to have a value beyond the
-<span class="lineNum">     108 </span>                :            :    end of `G_buffer' and `match_start' to run off the front of `G_buffer'. */
+<span class="lineNum">     106 </span>                :            : /* The size of 'buffer'.  This is read_size * 2 + sentinel_length + 2.
+<span class="lineNum">     107 </span>                :            :    The extra 2 bytes allow 'past_end' to have a value beyond the
+<span class="lineNum">     108 </span>                :            :    end of 'G_buffer' and 'match_start' to run off the front of 'G_buffer'. */
 <span class="lineNum">     109 </span>                :            : static size_t G_buffer_size;
 <span class="lineNum">     110 </span>                :            : 
-<span class="lineNum">     111 </span>                :            : /* The compiled regular expression representing `separator'. */
+<span class="lineNum">     111 </span>                :            : /* The compiled regular expression representing 'separator'. */
 <span class="lineNum">     112 </span>                :            : static struct re_pattern_buffer compiled_separator;
 <span class="lineNum">     113 </span>                :            : static char compiled_separator_fastmap[UCHAR_MAX + 1];
 <span class="lineNum">     114 </span>                :            : static struct re_registers regs;
@@ -195,586 +195,585 @@
 <span class="lineNum">     124 </span>                :            : };
 <a name="125"><span class="lineNum">     125 </span>                :            : </a>
 <span class="lineNum">     126 </span>                :            : void
-<span class="lineNum">     127 </span>                :<span class="lineCov">         12 : usage (int status)</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">          8 : usage (int status)</span>
 <span class="lineNum">     128 </span>                :            : {
-<span class="lineNum">     129 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         12 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">     130 </span>                :<span class="lineCov">          3 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
-<span class="lineNum">     131 </span>                :            :              program_name);
-<span class="lineNum">     132 </span>                :            :   else
-<span class="lineNum">     133 </span>                :            :     {
-<span class="lineNum">     134 </span>                :<span class="lineCov">          9 :       printf (_(&quot;\</span>
-<span class="lineNum">     135 </span>                :            : Usage: %s [OPTION]... [FILE]...\n\
-<span class="lineNum">     136 </span>                :            : &quot;),
-<span class="lineNum">     137 </span>                :            :               program_name);
-<span class="lineNum">     138 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     139 </span>                :            : Write each FILE to standard output, last line first.\n\
-<span class="lineNum">     140 </span>                :            : With no FILE, or when FILE is -, read standard input.\n\
-<span class="lineNum">     141 </span>                :            : \n\
-<span class="lineNum">     142 </span>                :            : &quot;), stdout);
-<span class="lineNum">     143 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     144 </span>                :            : Mandatory arguments to long options are mandatory for short options too.\n\
-<span class="lineNum">     145 </span>                :            : &quot;), stdout);
-<span class="lineNum">     146 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     147 </span>                :            :   -b, --before             attach the separator before instead of after\n\
-<span class="lineNum">     148 </span>                :            :   -r, --regex              interpret the separator as a regular expression\n\
-<span class="lineNum">     149 </span>                :            :   -s, --separator=STRING   use STRING as the separator instead of newline\n\
-<span class="lineNum">     150 </span>                :            : &quot;), stdout);
-<span class="lineNum">     151 </span>                :<span class="lineCov">          9 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     152 </span>                :<span class="lineCov">          9 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     153 </span>                :<span class="lineCov">          9 :       emit_ancillary_info ();</span>
-<span class="lineNum">     154 </span>                :            :     }
-<span class="lineNum">     155 </span>                :<span class="lineCov">         12 :   exit (status);</span>
-<span class="lineNum">     156 </span>                :            : }
-<span class="lineNum">     157 </span>                :            : 
-<span class="lineNum">     158 </span>                :            : /* Print the characters from START to PAST_END - 1.
-<span class="lineNum">     159 </span>                :            :    If START is NULL, just flush the buffer. */
-<a name="160"><span class="lineNum">     160 </span>                :            : </a>
-<span class="lineNum">     161 </span>                :            : static void
-<span class="lineNum">     162 </span>                :<span class="lineCov">     208800 : output (const char *start, const char *past_end)</span>
-<span class="lineNum">     163 </span>                :            : {
-<span class="lineNum">     164 </span>                :            :   static char buffer[WRITESIZE];
-<span class="lineNum">     165 </span>                :            :   static size_t bytes_in_buffer = 0;
-<span class="lineNum">     166 </span>                :<span class="lineCov">     208800 :   size_t bytes_to_add = past_end - start;</span>
-<span class="lineNum">     167 </span>                :<span class="lineCov">     208800 :   size_t bytes_available = WRITESIZE - bytes_in_buffer;</span>
-<span class="lineNum">     168 </span>                :            : 
-<span class="lineNum">     169 </span>        [<span class="branchCov" title="Branch 0 was taken 209 times"> + </span><span class="branchCov" title="Branch 1 was taken 208591 times"> + </span>]:<span class="lineCov">     208800 :   if (start == 0)</span>
-<span class="lineNum">     170 </span>                :            :     {
-<span class="lineNum">     171 </span>                :<span class="lineCov">        209 :       fwrite (buffer, 1, bytes_in_buffer, stdout);</span>
-<span class="lineNum">     172 </span>                :<span class="lineCov">        209 :       bytes_in_buffer = 0;</span>
-<span class="lineNum">     173 </span>                :<span class="lineCov">     208800 :       return;</span>
-<span class="lineNum">     174 </span>                :            :     }
-<span class="lineNum">     175 </span>                :            : 
-<span class="lineNum">     176 </span>                :            :   /* Write out as many full buffers as possible. */
-<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 192 times"> + </span><span class="branchCov" title="Branch 1 was taken 208591 times"> + </span>]:<span class="lineCov">     208783 :   while (bytes_to_add &gt;= bytes_available)</span>
-<span class="lineNum">     178 </span>                :            :     {
-<span class="lineNum">     179 </span>                :<span class="lineCov">        192 :       memcpy (buffer + bytes_in_buffer, start, bytes_available);</span>
-<span class="lineNum">     180 </span>                :<span class="lineCov">        192 :       bytes_to_add -= bytes_available;</span>
-<span class="lineNum">     181 </span>                :<span class="lineCov">        192 :       start += bytes_available;</span>
-<span class="lineNum">     182 </span>                :<span class="lineCov">        192 :       fwrite (buffer, 1, WRITESIZE, stdout);</span>
-<span class="lineNum">     183 </span>                :<span class="lineCov">        192 :       bytes_in_buffer = 0;</span>
-<span class="lineNum">     184 </span>                :<span class="lineCov">        192 :       bytes_available = WRITESIZE;</span>
-<span class="lineNum">     185 </span>                :            :     }
-<span class="lineNum">     186 </span>                :            : 
-<span class="lineNum">     187 </span>                :<span class="lineCov">     208591 :   memcpy (buffer + bytes_in_buffer, start, bytes_to_add);</span>
-<span class="lineNum">     188 </span>                :<span class="lineCov">     208591 :   bytes_in_buffer += bytes_to_add;</span>
-<span class="lineNum">     189 </span>                :            : }
-<span class="lineNum">     190 </span>                :            : 
-<span class="lineNum">     191 </span>                :            : /* Print in reverse the file open on descriptor FD for reading FILE.
-<span class="lineNum">     192 </span>                :            :    Return true if successful.  */
-<a name="193"><span class="lineNum">     193 </span>                :            : </a>
-<span class="lineNum">     194 </span>                :            : static bool
-<span class="lineNum">     195 </span>                :<span class="lineCov">        215 : tac_seekable (int input_fd, const char *file)</span>
-<span class="lineNum">     196 </span>                :            : {
-<span class="lineNum">     197 </span>                :            :   /* Pointer to the location in `G_buffer' where the search for
-<span class="lineNum">     198 </span>                :            :      the next separator will begin. */
-<span class="lineNum">     199 </span>                :            :   char *match_start;
-<span class="lineNum">     200 </span>                :            : 
-<span class="lineNum">     201 </span>                :            :   /* Pointer to one past the rightmost character in `G_buffer' that
-<span class="lineNum">     202 </span>                :            :      has not been printed yet. */
-<span class="lineNum">     203 </span>                :            :   char *past_end;
-<span class="lineNum">     204 </span>                :            : 
-<span class="lineNum">     205 </span>                :            :   /* Length of the record growing in `G_buffer'. */
-<span class="lineNum">     206 </span>                :            :   size_t saved_record_size;
-<span class="lineNum">     207 </span>                :            : 
-<span class="lineNum">     208 </span>                :            :   /* Offset in the file of the next read. */
-<span class="lineNum">     209 </span>                :            :   off_t file_pos;
-<span class="lineNum">     210 </span>                :            : 
-<span class="lineNum">     211 </span>                :            :   /* True if `output' has not been called yet for any file.
-<span class="lineNum">     212 </span>                :            :      Only used when the separator is attached to the preceding record. */
-<span class="lineNum">     213 </span>                :<span class="lineCov">        215 :   bool first_time = true;</span>
-<span class="lineNum">     214 </span>                :<span class="lineCov">        215 :   char first_char = *separator; /* Speed optimization, non-regexp. */</span>
-<span class="lineNum">     215 </span>                :<span class="lineCov">        215 :   char const *separator1 = separator + 1; /* Speed optimization, non-regexp. */</span>
-<span class="lineNum">     216 </span>                :<span class="lineCov">        215 :   size_t match_length1 = match_length - 1; /* Speed optimization, non-regexp. */</span>
-<span class="lineNum">     217 </span>                :            : 
-<span class="lineNum">     218 </span>                :            :   /* Find the size of the input file. */
-<span class="lineNum">     219 </span>                :<span class="lineCov">        215 :   file_pos = lseek (input_fd, 0, SEEK_END);</span>
-<span class="lineNum">     220 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 203 times"> + </span>]:<span class="lineCov">        215 :   if (file_pos &lt; 1)</span>
-<span class="lineNum">     221 </span>                :<span class="lineCov">         12 :     return true;                        /* It's an empty file. */</span>
-<span class="lineNum">     222 </span>                :            : 
-<span class="lineNum">     223 </span>                :            :   /* Arrange for the first read to lop off enough to leave the rest of the
-<span class="lineNum">     224 </span>                :            :      file a multiple of `read_size'.  Since `read_size' can change, this may
-<span class="lineNum">     225 </span>                :            :      not always hold during the program run, but since it usually will, leave
-<span class="lineNum">     226 </span>                :            :      it here for i/o efficiency (page/sector boundaries and all that).
-<span class="lineNum">     227 </span>                :            :      Note: the efficiency gain has not been verified. */
-<span class="lineNum">     228 </span>                :<span class="lineCov">        203 :   saved_record_size = file_pos % read_size;</span>
-<span class="lineNum">     229 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 203 times"> + </span>]:<span class="lineCov">        203 :   if (saved_record_size == 0)</span>
-<span class="lineNum">     230 </span>                :<span class="lineNoCov">          0 :     saved_record_size = read_size;</span>
-<span class="lineNum">     231 </span>                :<span class="lineCov">        203 :   file_pos -= saved_record_size;</span>
-<span class="lineNum">     232 </span>                :            :   /* `file_pos' now points to the start of the last (probably partial) block
-<span class="lineNum">     233 </span>                :            :      in the input file. */
-<span class="lineNum">     234 </span>                :            : 
-<span class="lineNum">     235 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 203 times"> + </span>]:<span class="lineCov">        203 :   if (lseek (input_fd, file_pos, SEEK_SET) &lt; 0)</span>
-<span class="lineNum">     236 </span>                :<span class="lineNoCov">          0 :     error (0, errno, _(&quot;%s: seek failed&quot;), quotearg_colon (file));</span>
-<span class="lineNum">     237 </span>                :            : 
-<span class="lineNum">     238 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 203 times"> + </span>]:<span class="lineCov">        203 :   if (safe_read (input_fd, G_buffer, saved_record_size) != saved_record_size)</span>
-<span class="lineNum">     239 </span>                :            :     {
-<span class="lineNum">     240 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;%s: read error&quot;), quotearg_colon (file));</span>
-<span class="lineNum">     241 </span>                :<span class="lineNoCov">          0 :       return false;</span>
-<span class="lineNum">     242 </span>                :            :     }
-<span class="lineNum">     243 </span>                :            : 
-<span class="lineNum">     244 </span>                :<span class="lineCov">        203 :   match_start = past_end = G_buffer + saved_record_size;</span>
-<span class="lineNum">     245 </span>                :            :   /* For non-regexp search, move past impossible positions for a match. */
-<span class="lineNum">     246 </span>        [<span class="branchCov" title="Branch 0 was taken 155 times"> + </span><span class="branchCov" title="Branch 1 was taken 48 times"> + </span>]:<span class="lineCov">        203 :   if (sentinel_length)</span>
-<span class="lineNum">     247 </span>                :<span class="lineCov">        155 :     match_start -= match_length1;</span>
-<span class="lineNum">     248 </span>                :            : 
-<span class="lineNum">     249 </span>                :            :   while (true)
-<span class="lineNum">     250 </span>                :            :     {
-<span class="lineNum">     251 </span>                :            :       /* Search backward from `match_start' - 1 to `G_buffer' for a match
-<span class="lineNum">     252 </span>                :            :          with `separator'; for speed, use strncmp if `separator' contains no
-<span class="lineNum">     253 </span>                :            :          metacharacters.
-<span class="lineNum">     254 </span>                :            :          If the match succeeds, set `match_start' to point to the start of
-<span class="lineNum">     255 </span>                :            :          the match and `match_length' to the length of the match.
-<span class="lineNum">     256 </span>                :            :          Otherwise, make `match_start' &lt; `G_buffer'. */
-<span class="lineNum">     257 </span>        [<span class="branchCov" title="Branch 0 was taken 255 times"> + </span><span class="branchCov" title="Branch 1 was taken 208668 times"> + </span>]:<span class="lineCov">     208923 :       if (sentinel_length == 0)</span>
-<span class="lineNum">     258 </span>                :            :         {
-<span class="lineNum">     259 </span>                :<span class="lineCov">        255 :           size_t i = match_start - G_buffer;</span>
-<span class="lineNum">     260 </span>                :<span class="lineCov">        255 :           regoff_t ri = i;</span>
-<span class="lineNum">     261 </span>                :<span class="lineCov">        255 :           regoff_t range = 1 - ri;</span>
-<span class="lineNum">     262 </span>                :            :           regoff_t ret;
-<span class="lineNum">     263 </span>                :            : 
-<span class="lineNum">     264 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 255 times"> + </span>]:<span class="lineCov">        255 :           if (1 &lt; range)</span>
-<span class="lineNum">     265 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0, _(&quot;record too large&quot;));</span>
-<span class="lineNum">     266 </span>                :            : 
-<span class="lineNum">     267 </span>        [<span class="branchCov" title="Branch 0 was taken 237 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">        255 :           if (range == 1</span>
-<span class="lineNum">     268 </span>        [<span class="branchCov" title="Branch 1 was taken 30 times"> + </span><span class="branchCov" title="Branch 2 was taken 207 times"> + </span>]:<span class="lineCov">        237 :               || ((ret = re_search (&amp;compiled_separator, G_buffer,</span>
-<span class="lineNum">     269 </span>                :<span class="lineCov">        237 :                                     i, i - 1, range, &amp;regs))</span>
-<span class="lineNum">     270 </span>                :            :                   == -1))
-<span class="lineNum">     271 </span>                :<span class="lineCov">         48 :             match_start = G_buffer - 1;</span>
-<span class="lineNum">     272 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 207 times"> + </span>]:<span class="lineCov">        207 :           else if (ret == -2)</span>
-<span class="lineNum">     273 </span>                :            :             {
-<span class="lineNum">     274 </span>                :<span class="lineNoCov">          0 :               error (EXIT_FAILURE, 0,</span>
-<span class="lineNum">     275 </span>                :<span class="lineNoCov">          0 :                      _(&quot;error in regular expression search&quot;));</span>
-<span class="lineNum">     276 </span>                :            :             }
-<span class="lineNum">     277 </span>                :            :           else
-<span class="lineNum">     278 </span>                :            :             {
-<span class="lineNum">     279 </span>                :<span class="lineCov">        207 :               match_start = G_buffer + regs.start[0];</span>
-<span class="lineNum">     280 </span>                :<span class="lineCov">        255 :               match_length = regs.end[0] - regs.start[0];</span>
-<span class="lineNum">     281 </span>                :            :             }
-<span class="lineNum">     282 </span>                :            :         }
-<span class="lineNum">     283 </span>                :            :       else
-<span class="lineNum">     284 </span>                :            :         {
-<span class="lineNum">     285 </span>                :            :           /* `match_length' is constant for non-regexp boundaries. */
-<span class="lineNum">     286 </span>        [<span class="branchCov" title="Branch 0 was taken 1380977 times"> + </span><span class="branchCov" title="Branch 1 was taken 208668 times"> + </span>]:<span class="lineCov">    1589645 :           while (*--match_start != first_char</span>
-<span class="lineNum">     287 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 208668 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">     208668 :                  || (match_length1 &amp;&amp; strncmp (match_start + 1, separator1,</span>
-<span class="lineNum">     288 </span>                :            :                                                match_length1)))
-<span class="lineNum">     289 </span>                :            :             /* Do nothing. */ ;
-<span class="lineNum">     290 </span>                :            :         }
-<span class="lineNum">     291 </span>                :            : 
-<span class="lineNum">     292 </span>                :            :       /* Check whether we backed off the front of `G_buffer' without finding
-<span class="lineNum">     293 </span>                :            :          a match for `separator'. */
-<span class="lineNum">     294 </span>        [<span class="branchCov" title="Branch 0 was taken 395 times"> + </span><span class="branchCov" title="Branch 1 was taken 208528 times"> + </span>]:<span class="lineCov">     208923 :       if (match_start &lt; G_buffer)</span>
-<span class="lineNum">     295 </span>                :            :         {
-<span class="lineNum">     296 </span>        [<span class="branchCov" title="Branch 0 was taken 203 times"> + </span><span class="branchCov" title="Branch 1 was taken 192 times"> + </span>]:<span class="lineCov">        395 :           if (file_pos == 0)</span>
-<span class="lineNum">     297 </span>                :            :             {
-<span class="lineNum">     298 </span>                :            :               /* Hit the beginning of the file; print the remaining record. */
-<span class="lineNum">     299 </span>                :<span class="lineCov">        203 :               output (G_buffer, past_end);</span>
-<span class="lineNum">     300 </span>                :<span class="lineCov">        203 :               return true;</span>
-<span class="lineNum">     301 </span>                :            :             }
-<span class="lineNum">     302 </span>                :            : 
-<span class="lineNum">     303 </span>                :<span class="lineCov">        192 :           saved_record_size = past_end - G_buffer;</span>
-<span class="lineNum">     304 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 183 times"> + </span>]:<span class="lineCov">        192 :           if (saved_record_size &gt; read_size)</span>
-<span class="lineNum">     305 </span>                :            :             {
-<span class="lineNum">     306 </span>                :            :               /* `G_buffer_size' is about twice `read_size', so since
-<span class="lineNum">     307 </span>                :            :                  we want to read in another `read_size' bytes before
-<span class="lineNum">     308 </span>                :            :                  the data already in `G_buffer', we need to increase
-<span class="lineNum">     309 </span>                :            :                  `G_buffer_size'. */
-<span class="lineNum">     310 </span>                :            :               char *newbuffer;
-<span class="lineNum">     311 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          9 :               size_t offset = sentinel_length ? sentinel_length : 1;</span>
-<span class="lineNum">     312 </span>                :<span class="lineCov">          9 :               ptrdiff_t match_start_offset = match_start - G_buffer;</span>
-<span class="lineNum">     313 </span>                :<span class="lineCov">          9 :               ptrdiff_t past_end_offset = past_end - G_buffer;</span>
-<span class="lineNum">     314 </span>                :<span class="lineCov">          9 :               size_t old_G_buffer_size = G_buffer_size;</span>
-<span class="lineNum">     315 </span>                :            : 
-<span class="lineNum">     316 </span>                :<span class="lineCov">          9 :               read_size *= 2;</span>
-<span class="lineNum">     317 </span>                :<span class="lineCov">          9 :               G_buffer_size = read_size * 2 + sentinel_length + 2;</span>
-<span class="lineNum">     318 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :               if (G_buffer_size &lt; old_G_buffer_size)</span>
-<span class="lineNum">     319 </span>                :<span class="lineNoCov">          0 :                 xalloc_die ();</span>
-<span class="lineNum">     320 </span>                :<span class="lineCov">          9 :               newbuffer = xrealloc (G_buffer - offset, G_buffer_size);</span>
-<span class="lineNum">     321 </span>                :<span class="lineCov">          9 :               newbuffer += offset;</span>
-<span class="lineNum">     322 </span>                :            :               /* Adjust the pointers for the new buffer location.  */
-<span class="lineNum">     323 </span>                :<span class="lineCov">          9 :               match_start = newbuffer + match_start_offset;</span>
-<span class="lineNum">     324 </span>                :<span class="lineCov">          9 :               past_end = newbuffer + past_end_offset;</span>
-<span class="lineNum">     325 </span>                :<span class="lineCov">          9 :               G_buffer = newbuffer;</span>
-<span class="lineNum">     326 </span>                :            :             }
-<span class="lineNum">     327 </span>                :            : 
-<span class="lineNum">     328 </span>                :            :           /* Back up to the start of the next bufferfull of the file.  */
-<span class="lineNum">     329 </span>        [<span class="branchCov" title="Branch 0 was taken 183 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">        192 :           if (file_pos &gt;= read_size)</span>
-<span class="lineNum">     330 </span>                :<span class="lineCov">        183 :             file_pos -= read_size;</span>
-<span class="lineNum">     331 </span>                :            :           else
-<span class="lineNum">     332 </span>                :            :             {
-<span class="lineNum">     333 </span>                :<span class="lineCov">          9 :               read_size = file_pos;</span>
-<span class="lineNum">     334 </span>                :<span class="lineCov">          9 :               file_pos = 0;</span>
-<span class="lineNum">     335 </span>                :            :             }
-<span class="lineNum">     336 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 192 times"> + </span>]:<span class="lineCov">        192 :           if (lseek (input_fd, file_pos, SEEK_SET) &lt; 0)</span>
-<span class="lineNum">     337 </span>                :<span class="lineNoCov">          0 :             error (0, errno, _(&quot;%s: seek failed&quot;), quotearg_colon (file));</span>
-<span class="lineNum">     338 </span>                :            : 
-<span class="lineNum">     339 </span>                :            :           /* Shift the pending record data right to make room for the new.
-<span class="lineNum">     340 </span>                :            :              The source and destination regions probably overlap.  */
-<span class="lineNum">     341 </span>                :<span class="lineCov">        192 :           memmove (G_buffer + read_size, G_buffer, saved_record_size);</span>
-<span class="lineNum">     342 </span>                :<span class="lineCov">        192 :           past_end = G_buffer + read_size + saved_record_size;</span>
-<span class="lineNum">     343 </span>                :            :           /* For non-regexp searches, avoid unneccessary scanning. */
-<span class="lineNum">     344 </span>        [<span class="branchCov" title="Branch 0 was taken 192 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        192 :           if (sentinel_length)</span>
-<span class="lineNum">     345 </span>                :<span class="lineCov">        192 :             match_start = G_buffer + read_size;</span>
-<span class="lineNum">     346 </span>                :            :           else
-<span class="lineNum">     347 </span>                :<span class="lineNoCov">          0 :             match_start = past_end;</span>
-<span class="lineNum">     348 </span>                :            : 
-<span class="lineNum">     349 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 192 times"> + </span>]:<span class="lineCov">        192 :           if (safe_read (input_fd, G_buffer, read_size) != read_size)</span>
-<span class="lineNum">     350 </span>                :            :             {
-<span class="lineNum">     351 </span>                :<span class="lineNoCov">          0 :               error (0, errno, _(&quot;%s: read error&quot;), quotearg_colon (file));</span>
-<span class="lineNum">     352 </span>                :<span class="lineNoCov">          0 :               return false;</span>
-<span class="lineNum">     353 </span>                :            :             }
-<span class="lineNum">     354 </span>                :            :         }
-<span class="lineNum">     355 </span>                :            :       else
-<span class="lineNum">     356 </span>                :            :         {
-<span class="lineNum">     357 </span>                :            :           /* Found a match of `separator'. */
-<span class="lineNum">     358 </span>        [<span class="branchCov" title="Branch 0 was taken 208375 times"> + </span><span class="branchCov" title="Branch 1 was taken 153 times"> + </span>]:<span class="lineCov">     208528 :           if (separator_ends_record)</span>
-<span class="lineNum">     359 </span>                :            :             {
-<span class="lineNum">     360 </span>                :<span class="lineCov">     208375 :               char *match_end = match_start + match_length;</span>
-<span class="lineNum">     361 </span>                :            : 
-<span class="lineNum">     362 </span>                :            :               /* If this match of `separator' isn't at the end of the
-<span class="lineNum">     363 </span>                :            :                  file, print the record. */
-<span class="lineNum">     364 </span>[<span class="branchCov" title="Branch 0 was taken 149 times"> + </span><span class="branchCov" title="Branch 1 was taken 208226 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 9 times"> + </span><span class="branchCov" title="Branch 3 was taken 140 times"> + </span>]:<span class="lineCov">     208375 :               if (!first_time || match_end != past_end)</span>
-<span class="lineNum">     365 </span>                :<span class="lineCov">     208235 :                 output (match_end, past_end);</span>
-<span class="lineNum">     366 </span>                :<span class="lineCov">     208375 :               past_end = match_end;</span>
-<span class="lineNum">     367 </span>                :<span class="lineCov">     208375 :               first_time = false;</span>
-<span class="lineNum">     368 </span>                :            :             }
-<span class="lineNum">     369 </span>                :            :           else
-<span class="lineNum">     370 </span>                :            :             {
-<span class="lineNum">     371 </span>                :<span class="lineCov">        153 :               output (match_start, past_end);</span>
-<span class="lineNum">     372 </span>                :<span class="lineCov">        153 :               past_end = match_start;</span>
-<span class="lineNum">     373 </span>                :            :             }
-<span class="lineNum">     374 </span>                :            : 
-<span class="lineNum">     375 </span>                :            :           /* For non-regex matching, we can back up.  */
-<span class="lineNum">     376 </span>        [<span class="branchCov" title="Branch 0 was taken 208321 times"> + </span><span class="branchCov" title="Branch 1 was taken 207 times"> + </span>]:<span class="lineCov">     208528 :           if (sentinel_length &gt; 0)</span>
-<span class="lineNum">     377 </span>                :<span class="lineCov">     208321 :             match_start -= match_length - 1;</span>
-<span class="lineNum">     378 </span>                :            :         }
-<span class="lineNum">     379 </span>                :<span class="lineCov">     208935 :     }</span>
-<span class="lineNum">     380 </span>                :            : }
-<span class="lineNum">     381 </span>                :            : 
-<span class="lineNum">     382 </span>                :            : #if DONT_UNLINK_WHILE_OPEN
-<span class="lineNum">     383 </span>                :            : 
-<span class="lineNum">     384 </span>                :            : /* FIXME-someday: remove all of this DONT_UNLINK_WHILE_OPEN junk.
-<span class="lineNum">     385 </span>                :            :    Using atexit like this is wrong, since it can fail
-<span class="lineNum">     386 </span>                :            :    when called e.g. 32 or more times.
-<span class="lineNum">     387 </span>                :            :    But this isn't a big deal, since the code is used only on WOE/DOS
-<span class="lineNum">     388 </span>                :            :    systems, and few people invoke tac on that many nonseekable files.  */
-<span class="lineNum">     389 </span>                :            : 
-<span class="lineNum">     390 </span>                :            : static const char *file_to_remove;
-<span class="lineNum">     391 </span>                :            : static FILE *fp_to_close;
-<span class="lineNum">     392 </span>                :            : 
-<span class="lineNum">     393 </span>                :            : static void
-<span class="lineNum">     394 </span>                :            : unlink_tempfile (void)
-<span class="lineNum">     395 </span>                :            : {
-<span class="lineNum">     396 </span>                :            :   fclose (fp_to_close);
-<span class="lineNum">     397 </span>                :            :   unlink (file_to_remove);
-<span class="lineNum">     398 </span>                :            : }
-<span class="lineNum">     399 </span>                :            : 
-<span class="lineNum">     400 </span>                :            : static void
-<span class="lineNum">     401 </span>                :            : record_or_unlink_tempfile (char const *fn, FILE *fp)
-<span class="lineNum">     402 </span>                :            : {
-<span class="lineNum">     403 </span>                :            :   if (!file_to_remove)
-<span class="lineNum">     404 </span>                :            :     {
-<span class="lineNum">     405 </span>                :            :       file_to_remove = fn;
-<span class="lineNum">     406 </span>                :            :       fp_to_close = fp;
-<span class="lineNum">     407 </span>                :            :       atexit (unlink_tempfile);
-<span class="lineNum">     408 </span>                :            :     }
-<span class="lineNum">     409 </span>                :            : }
-<span class="lineNum">     410 </span>                :            : 
-<span class="lineNum">     411 </span>                :            : #else
-<a name="412"><span class="lineNum">     412 </span>                :            : </a>
-<span class="lineNum">     413 </span>                :            : static void
-<span class="lineNum">     414 </span>                :<span class="lineCov">         66 : record_or_unlink_tempfile (char const *fn, FILE *fp ATTRIBUTE_UNUSED)</span>
-<span class="lineNum">     415 </span>                :            : {
-<span class="lineNum">     416 </span>                :<span class="lineCov">         66 :   unlink (fn);</span>
-<span class="lineNum">     417 </span>                :<span class="lineCov">         66 : }</span>
-<span class="lineNum">     418 </span>                :            : 
-<span class="lineNum">     419 </span>                :            : #endif
-<span class="lineNum">     420 </span>                :            : 
-<span class="lineNum">     421 </span>                :            : /* A wrapper around mkstemp that gives us both an open stream pointer,
-<span class="lineNum">     422 </span>                :            :    FP, and the corresponding FILE_NAME.  Always return the same FP/name
-<a name="423"><span class="lineNum">     423 </span>                :            :    pair, rewinding/truncating it upon each reuse.  */</a>
-<span class="lineNum">     424 </span>                :            : static bool
-<span class="lineNum">     425 </span>                :<span class="lineCov">         72 : temp_stream (FILE **fp, char **file_name)</span>
-<span class="lineNum">     426 </span>                :            : {
-<span class="lineNum">     427 </span>                :            :   static char *tempfile = NULL;
-<span class="lineNum">     428 </span>                :            :   static FILE *tmp_fp;
-<span class="lineNum">     429 </span>        [<span class="branchCov" title="Branch 0 was taken 69 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">         72 :   if (tempfile == NULL)</span>
-<span class="lineNum">     430 </span>                :            :     {
-<span class="lineNum">     431 </span>                :<span class="lineCov">         69 :       char const *t = getenv (&quot;TMPDIR&quot;);</span>
-<span class="lineNum">     432 </span>        [<span class="branchCov" title="Branch 0 was taken 69 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         69 :       char const *tempdir = t ? t : DEFAULT_TMPDIR;</span>
-<span class="lineNum">     433 </span>                :<span class="lineCov">         69 :       tempfile = mfile_name_concat (tempdir, &quot;tacXXXXXX&quot;, NULL);</span>
-<span class="lineNum">     434 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 69 times"> + </span>]:<span class="lineCov">         69 :       if (tempdir == NULL)</span>
-<span class="lineNum">     435 </span>                :            :         {
-<span class="lineNum">     436 </span>                :<span class="lineNoCov">          0 :           error (0, 0, _(&quot;memory exhausted&quot;));</span>
-<span class="lineNum">     437 </span>                :<span class="lineNoCov">          0 :           return false;</span>
-<span class="lineNum">     438 </span>                :            :         }
-<span class="lineNum">     439 </span>                :            : 
-<span class="lineNum">     440 </span>                :            :       /* FIXME: there's a small window between a successful mkstemp call
-<span class="lineNum">     441 </span>                :            :          and the unlink that's performed by record_or_unlink_tempfile.
-<span class="lineNum">     442 </span>                :            :          If we're interrupted in that interval, this code fails to remove
-<span class="lineNum">     443 </span>                :            :          the temporary file.  On systems that define DONT_UNLINK_WHILE_OPEN,
-<span class="lineNum">     444 </span>                :            :          the window is much larger -- it extends to the atexit-called
-<span class="lineNum">     445 </span>                :            :          unlink_tempfile.
-<span class="lineNum">     446 </span>                :            :          FIXME: clean up upon fatal signal.  Don't block them, in case
-<span class="lineNum">     447 </span>                :            :          $TMPFILE is a remote file system.  */
-<span class="lineNum">     448 </span>                :            : 
-<span class="lineNum">     449 </span>                :<span class="lineCov">         69 :       int fd = mkstemp (tempfile);</span>
-<span class="lineNum">     450 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>]:<span class="lineCov">         69 :       if (fd &lt; 0)</span>
-<span class="lineNum">     451 </span>                :            :         {
-<span class="lineNum">     452 </span>                :<span class="lineCov">          3 :           error (0, errno, _(&quot;failed to create temporary file in %s&quot;),</span>
-<span class="lineNum">     453 </span>                :            :                  quote (tempdir));
-<span class="lineNum">     454 </span>                :<span class="lineCov">          3 :           goto Reset;</span>
-<span class="lineNum">     455 </span>                :            :         }
-<span class="lineNum">     456 </span>                :            : 
-<span class="lineNum">     457 </span>                :<span class="lineCov">         66 :       tmp_fp = fdopen (fd, (O_BINARY ? &quot;w+b&quot; : &quot;w+&quot;));</span>
-<span class="lineNum">     458 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>]:<span class="lineCov">         66 :       if (! tmp_fp)</span>
-<span class="lineNum">     459 </span>                :            :         {
-<span class="lineNum">     460 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;failed to open %s for writing&quot;),</span>
-<span class="lineNum">     461 </span>                :            :                  quote (tempfile));
-<span class="lineNum">     462 </span>                :<span class="lineNoCov">          0 :           close (fd);</span>
-<span class="lineNum">     463 </span>                :<span class="lineNoCov">          0 :           unlink (tempfile);</span>
-<span class="lineNum">     464 </span>                :            :         Reset:
-<span class="lineNum">     465 </span>                :<span class="lineCov">          3 :           free (tempfile);</span>
-<span class="lineNum">     466 </span>                :<span class="lineCov">          3 :           tempfile = NULL;</span>
-<span class="lineNum">     467 </span>                :<span class="lineCov">          3 :           return false;</span>
-<span class="lineNum">     468 </span>                :            :         }
-<span class="lineNum">     469 </span>                :            : 
-<span class="lineNum">     470 </span>                :<span class="lineCov">         66 :       record_or_unlink_tempfile (tempfile, tmp_fp);</span>
-<span class="lineNum">     471 </span>                :            :     }
-<span class="lineNum">     472 </span>                :            :   else
-<span class="lineNum">     473 </span>                :            :     {
-<span class="lineNum">     474 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          3 :       if (fseek (tmp_fp, 0, SEEK_SET) &lt; 0</span>
-<span class="lineNum">     475 </span>        [<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 3 times"> + </span>]:<span class="lineCov">          3 :           || ftruncate (fileno (tmp_fp), 0) &lt; 0)</span>
-<span class="lineNum">     476 </span>                :            :         {
-<span class="lineNum">     477 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;failed to rewind stream for %s&quot;),</span>
-<span class="lineNum">     478 </span>                :            :                  quote (tempfile));
-<span class="lineNum">     479 </span>                :<span class="lineNoCov">          0 :           return false;</span>
-<span class="lineNum">     480 </span>                :            :         }
-<span class="lineNum">     481 </span>                :            :     }
-<span class="lineNum">     482 </span>                :            : 
-<span class="lineNum">     483 </span>                :<span class="lineCov">         69 :   *fp = tmp_fp;</span>
-<span class="lineNum">     484 </span>                :<span class="lineCov">         69 :   *file_name = tempfile;</span>
-<span class="lineNum">     485 </span>                :<span class="lineCov">         72 :   return true;</span>
-<span class="lineNum">     486 </span>                :            : }
-<span class="lineNum">     487 </span>                :            : 
-<span class="lineNum">     488 </span>                :            : /* Copy from file descriptor INPUT_FD (corresponding to the named FILE) to
-<span class="lineNum">     489 </span>                :            :    a temporary file, and set *G_TMP and *G_TEMPFILE to the resulting stream
-<span class="lineNum">     490 </span>                :            :    and file name.  Return true if successful.  */
-<a name="491"><span class="lineNum">     491 </span>                :            : </a>
-<span class="lineNum">     492 </span>                :            : static bool
-<span class="lineNum">     493 </span>                :<span class="lineCov">         72 : copy_to_temp (FILE **g_tmp, char **g_tempfile, int input_fd, char const *file)</span>
-<span class="lineNum">     494 </span>                :            : {
-<span class="lineNum">     495 </span>                :            :   FILE *fp;
-<span class="lineNum">     496 </span>                :            :   char *file_name;
-<span class="lineNum">     497 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchCov" title="Branch 2 was taken 69 times"> + </span>]:<span class="lineCov">         72 :   if (!temp_stream (&amp;fp, &amp;file_name))</span>
-<span class="lineNum">     498 </span>                :<span class="lineCov">          3 :     return false;</span>
-<span class="lineNum">     499 </span>                :            : 
-<span class="lineNum">     500 </span>                :            :   while (1)
-<span class="lineNum">     501 </span>                :            :     {
-<span class="lineNum">     502 </span>                :<span class="lineCov">        138 :       size_t bytes_read = safe_read (input_fd, G_buffer, read_size);</span>
-<span class="lineNum">     503 </span>        [<span class="branchCov" title="Branch 0 was taken 69 times"> + </span><span class="branchCov" title="Branch 1 was taken 69 times"> + </span>]:<span class="lineCov">        138 :       if (bytes_read == 0)</span>
-<span class="lineNum">     504 </span>                :<span class="lineCov">         69 :         break;</span>
-<span class="lineNum">     505 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 69 times"> + </span>]:<span class="lineCov">         69 :       if (bytes_read == SAFE_READ_ERROR)</span>
-<span class="lineNum">     506 </span>                :            :         {
-<span class="lineNum">     507 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;%s: read error&quot;), quotearg_colon (file));</span>
-<span class="lineNum">     508 </span>                :<span class="lineNoCov">          0 :           goto Fail;</span>
-<span class="lineNum">     509 </span>                :            :         }
-<span class="lineNum">     510 </span>                :            : 
-<span class="lineNum">     511 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 69 times"> + </span>]:<span class="lineCov">         69 :       if (fwrite (G_buffer, 1, bytes_read, fp) != bytes_read)</span>
-<span class="lineNum">     512 </span>                :            :         {
-<span class="lineNum">     513 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;%s: write error&quot;), quotearg_colon (file_name));</span>
-<span class="lineNum">     514 </span>                :<span class="lineNoCov">          0 :           goto Fail;</span>
-<span class="lineNum">     515 </span>                :            :         }
-<span class="lineNum">     516 </span>                :<span class="lineCov">         69 :     }</span>
-<span class="lineNum">     517 </span>                :            : 
-<span class="lineNum">     518 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 69 times"> + </span>]:<span class="lineCov">         69 :   if (fflush (fp) != 0)</span>
-<span class="lineNum">     519 </span>                :            :     {
-<span class="lineNum">     520 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;%s: write error&quot;), quotearg_colon (file_name));</span>
-<span class="lineNum">     521 </span>                :<span class="lineNoCov">          0 :       goto Fail;</span>
-<span class="lineNum">     522 </span>                :            :     }
-<span class="lineNum">     523 </span>                :            : 
-<span class="lineNum">     524 </span>                :<span class="lineCov">         69 :   *g_tmp = fp;</span>
-<span class="lineNum">     525 </span>                :<span class="lineCov">         69 :   *g_tempfile = file_name;</span>
-<span class="lineNum">     526 </span>                :<span class="lineCov">         69 :   return true;</span>
-<span class="lineNum">     527 </span>                :            : 
-<span class="lineNum">     528 </span>                :            :  Fail:
-<span class="lineNum">     529 </span>                :<span class="lineNoCov">          0 :   fclose (fp);</span>
-<span class="lineNum">     530 </span>                :<span class="lineCov">         72 :   return false;</span>
-<span class="lineNum">     531 </span>                :            : }
-<span class="lineNum">     532 </span>                :            : 
-<span class="lineNum">     533 </span>                :            : /* Copy INPUT_FD to a temporary, then tac that file.
-<span class="lineNum">     534 </span>                :            :    Return true if successful.  */
-<a name="535"><span class="lineNum">     535 </span>                :            : </a>
-<span class="lineNum">     536 </span>                :            : static bool
-<span class="lineNum">     537 </span>                :<span class="lineCov">         72 : tac_nonseekable (int input_fd, const char *file)</span>
-<span class="lineNum">     538 </span>                :            : {
-<span class="lineNum">     539 </span>                :            :   FILE *tmp_stream;
-<span class="lineNum">     540 </span>                :            :   char *tmp_file;
-<span class="lineNum">     541 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchCov" title="Branch 2 was taken 69 times"> + </span>]:<span class="lineCov">         72 :   if (!copy_to_temp (&amp;tmp_stream, &amp;tmp_file, input_fd, file))</span>
-<span class="lineNum">     542 </span>                :<span class="lineCov">          3 :     return false;</span>
-<span class="lineNum">     543 </span>                :            : 
-<span class="lineNum">     544 </span>                :<span class="lineCov">         69 :   bool ok = tac_seekable (fileno (tmp_stream), tmp_file);</span>
-<span class="lineNum">     545 </span>                :<span class="lineCov">         72 :   return ok;</span>
-<span class="lineNum">     546 </span>                :            : }
-<span class="lineNum">     547 </span>                :            : 
-<span class="lineNum">     548 </span>                :            : /* Print FILE in reverse, copying it to a temporary
-<span class="lineNum">     549 </span>                :            :    file first if it is not seekable.
-<span class="lineNum">     550 </span>                :            :    Return true if successful.  */
-<a name="551"><span class="lineNum">     551 </span>                :            : </a>
-<span class="lineNum">     552 </span>                :            : static bool
-<span class="lineNum">     553 </span>                :<span class="lineCov">        218 : tac_file (const char *filename)</span>
-<span class="lineNum">     554 </span>                :            : {
-<span class="lineNum">     555 </span>                :            :   bool ok;
-<span class="lineNum">     556 </span>                :            :   off_t file_size;
-<span class="lineNum">     557 </span>                :            :   int fd;
-<span class="lineNum">     558 </span>                :<span class="lineCov">        218 :   bool is_stdin = STREQ (filename, &quot;-&quot;);</span>
-<span class="lineNum">     559 </span>                :            : 
-<span class="lineNum">     560 </span>        [<span class="branchCov" title="Branch 0 was taken 135 times"> + </span><span class="branchCov" title="Branch 1 was taken 83 times"> + </span>]:<span class="lineCov">        218 :   if (is_stdin)</span>
-<span class="lineNum">     561 </span>                :            :     {
-<span class="lineNum">     562 </span>                :<span class="lineCov">        135 :       have_read_stdin = true;</span>
-<span class="lineNum">     563 </span>                :<span class="lineCov">        135 :       fd = STDIN_FILENO;</span>
-<span class="lineNum">     564 </span>                :<span class="lineCov">        135 :       filename = _(&quot;standard input&quot;);</span>
-<span class="lineNum">     565 </span>                :            :       if (O_BINARY &amp;&amp; ! isatty (STDIN_FILENO))
-<span class="lineNum">     566 </span>                :            :         xfreopen (NULL, &quot;rb&quot;, stdin);
-<span class="lineNum">     567 </span>                :            :     }
-<span class="lineNum">     568 </span>                :            :   else
-<span class="lineNum">     569 </span>                :            :     {
-<span class="lineNum">     570 </span>                :<span class="lineCov">         83 :       fd = open (filename, O_RDONLY | O_BINARY);</span>
-<span class="lineNum">     571 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 83 times"> + </span>]:<span class="lineCov">         83 :       if (fd &lt; 0)</span>
-<span class="lineNum">     572 </span>                :            :         {
-<span class="lineNum">     573 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;failed to open %s for reading&quot;),</span>
-<span class="lineNum">     574 </span>                :            :                  quote (filename));
-<span class="lineNum">     575 </span>                :<span class="lineNoCov">          0 :           return false;</span>
-<span class="lineNum">     576 </span>                :            :         }
-<span class="lineNum">     577 </span>                :            :     }
-<span class="lineNum">     578 </span>                :            : 
-<span class="lineNum">     579 </span>                :<span class="lineCov">        218 :   file_size = lseek (fd, 0, SEEK_END);</span>
-<span class="lineNum">     580 </span>                :            : 
-<span class="lineNum">     581 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 146 times"> + </span>]:<span class="lineCov">        146 :   ok = (file_size &lt; 0 || isatty (fd)</span>
-<span class="lineNum">     582 </span>                :<span class="lineCov">         72 :         ? tac_nonseekable (fd, filename)</span>
-<span class="lineNum">     583 </span>        [<span class="branchCov" title="Branch 0 was taken 146 times"> + </span><span class="branchCov" title="Branch 1 was taken 72 times"> + </span>]:<span class="lineCov">        436 :         : tac_seekable (fd, filename));</span>
-<span class="lineNum">     584 </span>                :            : 
-<span class="lineNum">     585 </span>[<span class="branchCov" title="Branch 0 was taken 83 times"> + </span><span class="branchCov" title="Branch 1 was taken 135 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 83 times"> + </span>]:<span class="lineCov">        218 :   if (!is_stdin &amp;&amp; close (fd) != 0)</span>
-<span class="lineNum">     586 </span>                :            :     {
-<span class="lineNum">     587 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;%s: read error&quot;), quotearg_colon (filename));</span>
-<span class="lineNum">     588 </span>                :<span class="lineNoCov">          0 :       ok = false;</span>
-<span class="lineNum">     589 </span>                :            :     }
-<span class="lineNum">     590 </span>                :<span class="lineCov">        218 :   return ok;</span>
-<span class="lineNum">     591 </span>                :            : }
-<a name="592"><span class="lineNum">     592 </span>                :            : </a>
-<span class="lineNum">     593 </span>                :            : int
-<span class="lineNum">     594 </span>                :<span class="lineCov">        242 : main (int argc, char **argv)</span>
-<span class="lineNum">     595 </span>                :            : {
-<span class="lineNum">     596 </span>                :            :   const char *error_message;    /* Return value from re_compile_pattern. */
-<span class="lineNum">     597 </span>                :            :   int optc;
-<span class="lineNum">     598 </span>                :            :   bool ok;
-<span class="lineNum">     599 </span>                :            :   size_t half_buffer_size;
-<span class="lineNum">     600 </span>                :            : 
-<span class="lineNum">     601 </span>                :            :   /* Initializer for file_list if no file-arguments
-<span class="lineNum">     602 </span>                :            :      were specified on the command line.  */
-<span class="lineNum">     603 </span>                :            :   static char const *const default_file_list[] = {&quot;-&quot;, NULL};
-<span class="lineNum">     604 </span>                :            :   char const *const *file;
-<span class="lineNum">     605 </span>                :            : 
-<span class="lineNum">     606 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">     607 </span>                :<span class="lineCov">        242 :   set_program_name (argv[0]);</span>
-<span class="lineNum">     608 </span>                :<span class="lineCov">        242 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     609 </span>                :<span class="lineCov">        242 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     610 </span>                :<span class="lineCov">        242 :   textdomain (PACKAGE);</span>
-<span class="lineNum">     611 </span>                :            : 
-<span class="lineNum">     612 </span>                :<span class="lineCov">        242 :   atexit (close_stdout);</span>
-<span class="lineNum">     613 </span>                :            : 
-<span class="lineNum">     614 </span>                :<span class="lineCov">        242 :   separator = &quot;\n&quot;;</span>
-<span class="lineNum">     615 </span>                :<span class="lineCov">        242 :   sentinel_length = 1;</span>
-<span class="lineNum">     616 </span>                :<span class="lineCov">        242 :   separator_ends_record = true;</span>
-<span class="lineNum">     617 </span>                :            : 
-<span class="lineNum">     618 </span>        [<span class="branchCov" title="Branch 1 was taken 165 times"> + </span><span class="branchCov" title="Branch 2 was taken 209 times"> + </span>]:<span class="lineCov">        374 :   while ((optc = getopt_long (argc, argv, &quot;brs:&quot;, longopts, NULL)) != -1)</span>
-<span class="lineNum">     619 </span>                :            :     {
-<span class="lineNum">     620 </span>  [<span class="branchCov" title="Branch 0 was taken 36 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span><span class="branchCov" title="Branch 2 was taken 54 times"> + </span><span class="branchCov" title="Branch 3 was taken 9 times"> + </span> :<span class="lineCov">        165 :       switch (optc)</span>
-<span class="lineNum">         </span>         <span class="branchCov" title="Branch 4 was taken 21 times"> + </span><span class="branchCov" title="Branch 5 was taken 3 times"> + </span>]
-<span class="lineNum">     621 </span>                :            :         {
-<span class="lineNum">     622 </span>                :            :         case 'b':
-<span class="lineNum">     623 </span>                :<span class="lineCov">         36 :           separator_ends_record = false;</span>
-<span class="lineNum">     624 </span>                :<span class="lineCov">         36 :           break;</span>
-<span class="lineNum">     625 </span>                :            :         case 'r':
-<span class="lineNum">     626 </span>                :<span class="lineCov">         42 :           sentinel_length = 0;</span>
-<span class="lineNum">     627 </span>                :<span class="lineCov">         42 :           break;</span>
-<span class="lineNum">     628 </span>                :            :         case 's':
-<span class="lineNum">     629 </span>                :<span class="lineCov">         54 :           separator = optarg;</span>
-<span class="lineNum">     630 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>]:<span class="lineCov">         54 :           if (*separator == 0)</span>
-<span class="lineNum">     631 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0, _(&quot;separator cannot be empty&quot;));</span>
-<span class="lineNum">     632 </span>                :<span class="lineCov">         54 :           break;</span>
-<span class="lineNum">     633 </span>                :<span class="lineCov">          9 :         case_GETOPT_HELP_CHAR;</span>
-<span class="lineNum">     634 </span>                :<span class="lineCov">         21 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
-<span class="lineNum">     635 </span>                :            :         default:
-<span class="lineNum">     636 </span>                :<span class="lineCov">          3 :           usage (EXIT_FAILURE);</span>
-<span class="lineNum">     637 </span>                :            :         }
-<span class="lineNum">     638 </span>                :            :     }
-<span class="lineNum">     639 </span>                :            : 
-<span class="lineNum">     640 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 167 times"> + </span>]:<span class="lineCov">        209 :   if (sentinel_length == 0)</span>
-<span class="lineNum">     641 </span>                :            :     {
-<span class="lineNum">     642 </span>                :<span class="lineCov">         42 :       compiled_separator.buffer = NULL;</span>
-<span class="lineNum">     643 </span>                :<span class="lineCov">         42 :       compiled_separator.allocated = 0;</span>
-<span class="lineNum">     644 </span>                :<span class="lineCov">         42 :       compiled_separator.fastmap = compiled_separator_fastmap;</span>
-<span class="lineNum">     645 </span>                :<span class="lineCov">         42 :       compiled_separator.translate = NULL;</span>
-<span class="lineNum">     646 </span>                :<span class="lineCov">         42 :       error_message = re_compile_pattern (separator, strlen (separator),</span>
-<span class="lineNum">     647 </span>                :            :                                           &amp;compiled_separator);
-<span class="lineNum">     648 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">         42 :       if (error_message)</span>
-<span class="lineNum">     649 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, 0, &quot;%s&quot;, error_message);</span>
-<span class="lineNum">     650 </span>                :            :     }
-<span class="lineNum">     651 </span>                :            :   else
-<span class="lineNum">     652 </span>                :<span class="lineCov">        167 :     match_length = sentinel_length = strlen (separator);</span>
-<span class="lineNum">     653 </span>                :            : 
-<span class="lineNum">     654 </span>                :<span class="lineCov">        209 :   read_size = INITIAL_READSIZE;</span>
-<span class="lineNum">     655 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 209 times"> + </span>]:<span class="lineCov">        209 :   while (sentinel_length &gt;= read_size / 2)</span>
-<span class="lineNum">     656 </span>                :            :     {
-<span class="lineNum">     657 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (SIZE_MAX / 2 &lt; read_size)</span>
-<span class="lineNum">     658 </span>                :<span class="lineNoCov">          0 :         xalloc_die ();</span>
-<span class="lineNum">     659 </span>                :<span class="lineNoCov">          0 :       read_size *= 2;</span>
-<span class="lineNum">     660 </span>                :            :     }
-<span class="lineNum">     661 </span>                :<span class="lineCov">        209 :   half_buffer_size = read_size + sentinel_length + 1;</span>
-<span class="lineNum">     662 </span>                :<span class="lineCov">        209 :   G_buffer_size = 2 * half_buffer_size;</span>
-<span class="lineNum">     663 </span>[<span class="branchCov" title="Branch 0 was taken 209 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 209 times"> + </span>]:<span class="lineCov">        209 :   if (! (read_size &lt; half_buffer_size &amp;&amp; half_buffer_size &lt; G_buffer_size))</span>
-<span class="lineNum">     664 </span>                :<span class="lineNoCov">          0 :     xalloc_die ();</span>
-<span class="lineNum">     665 </span>                :<span class="lineCov">        209 :   G_buffer = xmalloc (G_buffer_size);</span>
-<span class="lineNum">     666 </span>        [<span class="branchCov" title="Branch 0 was taken 167 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">        209 :   if (sentinel_length)</span>
-<span class="lineNum">     667 </span>                :            :     {
-<span class="lineNum">     668 </span>                :<span class="lineCov">        167 :       strcpy (G_buffer, separator);</span>
-<span class="lineNum">     669 </span>                :<span class="lineCov">        167 :       G_buffer += sentinel_length;</span>
-<span class="lineNum">     670 </span>                :            :     }
-<span class="lineNum">     671 </span>                :            :   else
-<span class="lineNum">     672 </span>                :            :     {
-<span class="lineNum">     673 </span>                :<span class="lineCov">         42 :       ++G_buffer;</span>
-<span class="lineNum">     674 </span>                :            :     }
-<span class="lineNum">     675 </span>                :            : 
-<span class="lineNum">     676 </span>                :<span class="lineCov">        418 :   file = (optind &lt; argc</span>
-<span class="lineNum">     677 </span>                :<span class="lineCov">         80 :           ? (char const *const *) &amp;argv[optind]</span>
-<span class="lineNum">     678 </span>        [<span class="branchCov" title="Branch 0 was taken 80 times"> + </span><span class="branchCov" title="Branch 1 was taken 129 times"> + </span>]:<span class="lineCov">        209 :           : default_file_list);</span>
-<span class="lineNum">     679 </span>                :            : 
-<span class="lineNum">     680 </span>                :            :   if (O_BINARY &amp;&amp; ! isatty (STDOUT_FILENO))
-<span class="lineNum">     681 </span>                :            :     xfreopen (NULL, &quot;wb&quot;, stdout);
-<span class="lineNum">     682 </span>                :            : 
-<span class="lineNum">     683 </span>                :            :   {
-<span class="lineNum">     684 </span>                :            :     size_t i;
-<span class="lineNum">     685 </span>                :<span class="lineCov">        209 :     ok = true;</span>
-<span class="lineNum">     686 </span>        [<span class="branchCov" title="Branch 0 was taken 218 times"> + </span><span class="branchCov" title="Branch 1 was taken 209 times"> + </span>]:<span class="lineCov">        427 :     for (i = 0; file[i]; ++i)</span>
-<span class="lineNum">     687 </span>                :<span class="lineCov">        218 :       ok &amp;= tac_file (file[i]);</span>
-<span class="lineNum">     688 </span>                :            :   }
-<span class="lineNum">     689 </span>                :            : 
-<span class="lineNum">     690 </span>                :            :   /* Flush the output buffer. */
-<span class="lineNum">     691 </span>                :<span class="lineCov">        209 :   output ((char *) NULL, (char *) NULL);</span>
-<span class="lineNum">     692 </span>                :            : 
-<span class="lineNum">     693 </span>[<span class="branchCov" title="Branch 0 was taken 132 times"> + </span><span class="branchCov" title="Branch 1 was taken 77 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 132 times"> + </span>]:<span class="lineCov">        209 :   if (have_read_stdin &amp;&amp; close (STDIN_FILENO) &lt; 0)</span>
-<span class="lineNum">     694 </span>                :            :     {
-<span class="lineNum">     695 </span>                :<span class="lineNoCov">          0 :       error (0, errno, &quot;-&quot;);</span>
-<span class="lineNum">     696 </span>                :<span class="lineNoCov">          0 :       ok = false;</span>
-<span class="lineNum">     697 </span>                :            :     }
-<span class="lineNum">     698 </span>                :            : 
-<span class="lineNum">     699 </span>                :            : #ifdef lint
-<span class="lineNum">     700 </span>                :            :   size_t offset = sentinel_length ? sentinel_length : 1;
-<span class="lineNum">     701 </span>                :            :   free (G_buffer - offset);
-<span class="lineNum">     702 </span>                :            : #endif
-<span class="lineNum">     703 </span>                :            : 
-<span class="lineNum">     704 </span>        [<span class="branchCov" title="Branch 0 was taken 206 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">        209 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
-<span class="lineNum">     705 </span>                :            : }
+<span class="lineNum">     129 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     130 </span>                :<span class="lineCov">          2 :     emit_try_help ();</span>
+<span class="lineNum">     131 </span>                :            :   else
+<span class="lineNum">     132 </span>                :            :     {
+<span class="lineNum">     133 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     134 </span>                :            : Usage: %s [OPTION]... [FILE]...\n\
+<span class="lineNum">     135 </span>                :            : &quot;),
+<span class="lineNum">     136 </span>                :            :               program_name);
+<span class="lineNum">     137 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     138 </span>                :            : Write each FILE to standard output, last line first.\n\
+<span class="lineNum">     139 </span>                :            : With no FILE, or when FILE is -, read standard input.\n\
+<span class="lineNum">     140 </span>                :            : \n\
+<span class="lineNum">     141 </span>                :            : &quot;), stdout);
+<span class="lineNum">     142 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     143 </span>                :            : Mandatory arguments to long options are mandatory for short options too.\n\
+<span class="lineNum">     144 </span>                :            : &quot;), stdout);
+<span class="lineNum">     145 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     146 </span>                :            :   -b, --before             attach the separator before instead of after\n\
+<span class="lineNum">     147 </span>                :            :   -r, --regex              interpret the separator as a regular expression\n\
+<span class="lineNum">     148 </span>                :            :   -s, --separator=STRING   use STRING as the separator instead of newline\n\
+<span class="lineNum">     149 </span>                :            : &quot;), stdout);
+<span class="lineNum">     150 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     152 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">     153 </span>                :            :     }
+<span class="lineNum">     154 </span>                :<span class="lineCov">          8 :   exit (status);</span>
+<span class="lineNum">     155 </span>                :            : }
+<span class="lineNum">     156 </span>                :            : 
+<span class="lineNum">     157 </span>                :            : /* Print the characters from START to PAST_END - 1.
+<span class="lineNum">     158 </span>                :            :    If START is NULL, just flush the buffer. */
+<a name="159"><span class="lineNum">     159 </span>                :            : </a>
+<span class="lineNum">     160 </span>                :            : static void
+<span class="lineNum">     161 </span>                :<span class="lineCov">     206534 : output (const char *start, const char *past_end)</span>
+<span class="lineNum">     162 </span>                :            : {
+<span class="lineNum">     163 </span>                :            :   static char buffer[WRITESIZE];
+<span class="lineNum">     164 </span>                :            :   static size_t bytes_in_buffer = 0;
+<span class="lineNum">     165 </span>                :<span class="lineCov">     206534 :   size_t bytes_to_add = past_end - start;</span>
+<span class="lineNum">     166 </span>                :<span class="lineCov">     206534 :   size_t bytes_available = WRITESIZE - bytes_in_buffer;</span>
+<span class="lineNum">     167 </span>                :            : 
+<span class="lineNum">     168 </span>        [<span class="branchCov" title="Branch 0 was taken 140 times"> + </span><span class="branchCov" title="Branch 1 was taken 206394 times"> + </span>]:<span class="lineCov">     206534 :   if (start == 0)</span>
+<span class="lineNum">     169 </span>                :            :     {
+<span class="lineNum">     170 </span>                :<span class="lineCov">        140 :       fwrite (buffer, 1, bytes_in_buffer, stdout);</span>
+<span class="lineNum">     171 </span>                :<span class="lineCov">        140 :       bytes_in_buffer = 0;</span>
+<span class="lineNum">     172 </span>                :<span class="lineCov">     206534 :       return;</span>
+<span class="lineNum">     173 </span>                :            :     }
+<span class="lineNum">     174 </span>                :            : 
+<span class="lineNum">     175 </span>                :            :   /* Write out as many full buffers as possible. */
+<span class="lineNum">     176 </span>        [<span class="branchCov" title="Branch 0 was taken 185 times"> + </span><span class="branchCov" title="Branch 1 was taken 206394 times"> + </span>]:<span class="lineCov">     206579 :   while (bytes_to_add &gt;= bytes_available)</span>
+<span class="lineNum">     177 </span>                :            :     {
+<span class="lineNum">     178 </span>                :<span class="lineCov">        185 :       memcpy (buffer + bytes_in_buffer, start, bytes_available);</span>
+<span class="lineNum">     179 </span>                :<span class="lineCov">        185 :       bytes_to_add -= bytes_available;</span>
+<span class="lineNum">     180 </span>                :<span class="lineCov">        185 :       start += bytes_available;</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">        185 :       fwrite (buffer, 1, WRITESIZE, stdout);</span>
+<span class="lineNum">     182 </span>                :<span class="lineCov">        185 :       bytes_in_buffer = 0;</span>
+<span class="lineNum">     183 </span>                :<span class="lineCov">        185 :       bytes_available = WRITESIZE;</span>
+<span class="lineNum">     184 </span>                :            :     }
+<span class="lineNum">     185 </span>                :            : 
+<span class="lineNum">     186 </span>                :<span class="lineCov">     206394 :   memcpy (buffer + bytes_in_buffer, start, bytes_to_add);</span>
+<span class="lineNum">     187 </span>                :<span class="lineCov">     206394 :   bytes_in_buffer += bytes_to_add;</span>
+<span class="lineNum">     188 </span>                :            : }
+<span class="lineNum">     189 </span>                :            : 
+<span class="lineNum">     190 </span>                :            : /* Print in reverse the file open on descriptor FD for reading FILE.
+<span class="lineNum">     191 </span>                :            :    Return true if successful.  */
+<a name="192"><span class="lineNum">     192 </span>                :            : </a>
+<span class="lineNum">     193 </span>                :            : static bool
+<span class="lineNum">     194 </span>                :<span class="lineCov">        144 : tac_seekable (int input_fd, const char *file)</span>
+<span class="lineNum">     195 </span>                :            : {
+<span class="lineNum">     196 </span>                :            :   /* Pointer to the location in 'G_buffer' where the search for
+<span class="lineNum">     197 </span>                :            :      the next separator will begin. */
+<span class="lineNum">     198 </span>                :            :   char *match_start;
+<span class="lineNum">     199 </span>                :            : 
+<span class="lineNum">     200 </span>                :            :   /* Pointer to one past the rightmost character in 'G_buffer' that
+<span class="lineNum">     201 </span>                :            :      has not been printed yet. */
+<span class="lineNum">     202 </span>                :            :   char *past_end;
+<span class="lineNum">     203 </span>                :            : 
+<span class="lineNum">     204 </span>                :            :   /* Length of the record growing in 'G_buffer'. */
+<span class="lineNum">     205 </span>                :            :   size_t saved_record_size;
+<span class="lineNum">     206 </span>                :            : 
+<span class="lineNum">     207 </span>                :            :   /* Offset in the file of the next read. */
+<span class="lineNum">     208 </span>                :            :   off_t file_pos;
+<span class="lineNum">     209 </span>                :            : 
+<span class="lineNum">     210 </span>                :            :   /* True if 'output' has not been called yet for any file.
+<span class="lineNum">     211 </span>                :            :      Only used when the separator is attached to the preceding record. */
+<span class="lineNum">     212 </span>                :<span class="lineCov">        144 :   bool first_time = true;</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">        144 :   char first_char = *separator; /* Speed optimization, non-regexp. */</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">        144 :   char const *separator1 = separator + 1; /* Speed optimization, non-regexp. */</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">        144 :   size_t match_length1 = match_length - 1; /* Speed optimization, non-regexp. */</span>
+<span class="lineNum">     216 </span>                :            : 
+<span class="lineNum">     217 </span>                :            :   /* Find the size of the input file. */
+<span class="lineNum">     218 </span>                :<span class="lineCov">        144 :   file_pos = lseek (input_fd, 0, SEEK_END);</span>
+<span class="lineNum">     219 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 136 times"> + </span>]:<span class="lineCov">        144 :   if (file_pos &lt; 1)</span>
+<span class="lineNum">     220 </span>                :<span class="lineCov">          8 :     return true;                        /* It's an empty file. */</span>
+<span class="lineNum">     221 </span>                :            : 
+<span class="lineNum">     222 </span>                :            :   /* Arrange for the first read to lop off enough to leave the rest of the
+<span class="lineNum">     223 </span>                :            :      file a multiple of 'read_size'.  Since 'read_size' can change, this may
+<span class="lineNum">     224 </span>                :            :      not always hold during the program run, but since it usually will, leave
+<span class="lineNum">     225 </span>                :            :      it here for i/o efficiency (page/sector boundaries and all that).
+<span class="lineNum">     226 </span>                :            :      Note: the efficiency gain has not been verified. */
+<span class="lineNum">     227 </span>                :<span class="lineCov">        136 :   saved_record_size = file_pos % read_size;</span>
+<span class="lineNum">     228 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 136 times"> + </span>]:<span class="lineCov">        136 :   if (saved_record_size == 0)</span>
+<span class="lineNum">     229 </span>                :<span class="lineNoCov">          0 :     saved_record_size = read_size;</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">        136 :   file_pos -= saved_record_size;</span>
+<span class="lineNum">     231 </span>                :            :   /* 'file_pos' now points to the start of the last (probably partial) block
+<span class="lineNum">     232 </span>                :            :      in the input file. */
+<span class="lineNum">     233 </span>                :            : 
+<span class="lineNum">     234 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 136 times"> + </span>]:<span class="lineCov">        136 :   if (lseek (input_fd, file_pos, SEEK_SET) &lt; 0)</span>
+<span class="lineNum">     235 </span>                :<span class="lineNoCov">          0 :     error (0, errno, _(&quot;%s: seek failed&quot;), quotearg_colon (file));</span>
+<span class="lineNum">     236 </span>                :            : 
+<span class="lineNum">     237 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 136 times"> + </span>]:<span class="lineCov">        136 :   if (safe_read (input_fd, G_buffer, saved_record_size) != saved_record_size)</span>
+<span class="lineNum">     238 </span>                :            :     {
+<span class="lineNum">     239 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;%s: read error&quot;), quotearg_colon (file));</span>
+<span class="lineNum">     240 </span>                :<span class="lineNoCov">          0 :       return false;</span>
+<span class="lineNum">     241 </span>                :            :     }
+<span class="lineNum">     242 </span>                :            : 
+<span class="lineNum">     243 </span>                :<span class="lineCov">        136 :   match_start = past_end = G_buffer + saved_record_size;</span>
+<span class="lineNum">     244 </span>                :            :   /* For non-regexp search, move past impossible positions for a match. */
+<span class="lineNum">     245 </span>        [<span class="branchCov" title="Branch 0 was taken 104 times"> + </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>]:<span class="lineCov">        136 :   if (sentinel_length)</span>
+<span class="lineNum">     246 </span>                :<span class="lineCov">        104 :     match_start -= match_length1;</span>
+<span class="lineNum">     247 </span>                :            : 
+<span class="lineNum">     248 </span>                :            :   while (true)
+<span class="lineNum">     249 </span>                :            :     {
+<span class="lineNum">     250 </span>                :            :       /* Search backward from 'match_start' - 1 to 'G_buffer' for a match
+<span class="lineNum">     251 </span>                :            :          with 'separator'; for speed, use strncmp if 'separator' contains no
+<span class="lineNum">     252 </span>                :            :          metacharacters.
+<span class="lineNum">     253 </span>                :            :          If the match succeeds, set 'match_start' to point to the start of
+<span class="lineNum">     254 </span>                :            :          the match and 'match_length' to the length of the match.
+<span class="lineNum">     255 </span>                :            :          Otherwise, make 'match_start' &lt; 'G_buffer'. */
+<span class="lineNum">     256 </span>        [<span class="branchCov" title="Branch 0 was taken 170 times"> + </span><span class="branchCov" title="Branch 1 was taken 206503 times"> + </span>]:<span class="lineCov">     206673 :       if (sentinel_length == 0)</span>
+<span class="lineNum">     257 </span>                :            :         {
+<span class="lineNum">     258 </span>                :<span class="lineCov">        170 :           size_t i = match_start - G_buffer;</span>
+<span class="lineNum">     259 </span>                :<span class="lineCov">        170 :           regoff_t ri = i;</span>
+<span class="lineNum">     260 </span>                :<span class="lineCov">        170 :           regoff_t range = 1 - ri;</span>
+<span class="lineNum">     261 </span>                :            :           regoff_t ret;
+<span class="lineNum">     262 </span>                :            : 
+<span class="lineNum">     263 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 170 times"> + </span>]:<span class="lineCov">        170 :           if (1 &lt; range)</span>
+<span class="lineNum">     264 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0, _(&quot;record too large&quot;));</span>
+<span class="lineNum">     265 </span>                :            : 
+<span class="lineNum">     266 </span>        [<span class="branchCov" title="Branch 0 was taken 158 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">        170 :           if (range == 1</span>
+<span class="lineNum">     267 </span>        [<span class="branchCov" title="Branch 1 was taken 20 times"> + </span><span class="branchCov" title="Branch 2 was taken 138 times"> + </span>]:<span class="lineCov">        158 :               || ((ret = re_search (&amp;compiled_separator, G_buffer,</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">        158 :                                     i, i - 1, range, &amp;regs))</span>
+<span class="lineNum">     269 </span>                :            :                   == -1))
+<span class="lineNum">     270 </span>                :<span class="lineCov">         32 :             match_start = G_buffer - 1;</span>
+<span class="lineNum">     271 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 138 times"> + </span>]:<span class="lineCov">        138 :           else if (ret == -2)</span>
+<span class="lineNum">     272 </span>                :            :             {
+<span class="lineNum">     273 </span>                :<span class="lineNoCov">          0 :               error (EXIT_FAILURE, 0,</span>
+<span class="lineNum">     274 </span>                :<span class="lineNoCov">          0 :                      _(&quot;error in regular expression search&quot;));</span>
+<span class="lineNum">     275 </span>                :            :             }
+<span class="lineNum">     276 </span>                :            :           else
+<span class="lineNum">     277 </span>                :            :             {
+<span class="lineNum">     278 </span>                :<span class="lineCov">        138 :               match_start = G_buffer + regs.start[0];</span>
+<span class="lineNum">     279 </span>                :<span class="lineCov">        170 :               match_length = regs.end[0] - regs.start[0];</span>
+<span class="lineNum">     280 </span>                :            :             }
+<span class="lineNum">     281 </span>                :            :         }
+<span class="lineNum">     282 </span>                :            :       else
+<span class="lineNum">     283 </span>                :            :         {
+<span class="lineNum">     284 </span>                :            :           /* 'match_length' is constant for non-regexp boundaries. */
+<span class="lineNum">     285 </span>        [<span class="branchCov" title="Branch 0 was taken 1323318 times"> + </span><span class="branchCov" title="Branch 1 was taken 206503 times"> + </span>]:<span class="lineCov">    1529821 :           while (*--match_start != first_char</span>
+<span class="lineNum">     286 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 206503 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">     206503 :                  || (match_length1 &amp;&amp; strncmp (match_start + 1, separator1,</span>
+<span class="lineNum">     287 </span>                :            :                                                match_length1)))
+<span class="lineNum">     288 </span>                :            :             /* Do nothing. */ ;
+<span class="lineNum">     289 </span>                :            :         }
+<span class="lineNum">     290 </span>                :            : 
+<span class="lineNum">     291 </span>                :            :       /* Check whether we backed off the front of 'G_buffer' without finding
+<span class="lineNum">     292 </span>                :            :          a match for 'separator'. */
+<span class="lineNum">     293 </span>        [<span class="branchCov" title="Branch 0 was taken 321 times"> + </span><span class="branchCov" title="Branch 1 was taken 206352 times"> + </span>]:<span class="lineCov">     206673 :       if (match_start &lt; G_buffer)</span>
+<span class="lineNum">     294 </span>                :            :         {
+<span class="lineNum">     295 </span>        [<span class="branchCov" title="Branch 0 was taken 136 times"> + </span><span class="branchCov" title="Branch 1 was taken 185 times"> + </span>]:<span class="lineCov">        321 :           if (file_pos == 0)</span>
+<span class="lineNum">     296 </span>                :            :             {
+<span class="lineNum">     297 </span>                :            :               /* Hit the beginning of the file; print the remaining record. */
+<span class="lineNum">     298 </span>                :<span class="lineCov">        136 :               output (G_buffer, past_end);</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">        136 :               return true;</span>
+<span class="lineNum">     300 </span>                :            :             }
+<span class="lineNum">     301 </span>                :            : 
+<span class="lineNum">     302 </span>                :<span class="lineCov">        185 :           saved_record_size = past_end - G_buffer;</span>
+<span class="lineNum">     303 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 179 times"> + </span>]:<span class="lineCov">        185 :           if (saved_record_size &gt; read_size)</span>
+<span class="lineNum">     304 </span>                :            :             {
+<span class="lineNum">     305 </span>                :            :               /* 'G_buffer_size' is about twice 'read_size', so since
+<span class="lineNum">     306 </span>                :            :                  we want to read in another 'read_size' bytes before
+<span class="lineNum">     307 </span>                :            :                  the data already in 'G_buffer', we need to increase
+<span class="lineNum">     308 </span>                :            :                  'G_buffer_size'. */
+<span class="lineNum">     309 </span>                :            :               char *newbuffer;
+<span class="lineNum">     310 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          6 :               size_t offset = sentinel_length ? sentinel_length : 1;</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">          6 :               ptrdiff_t match_start_offset = match_start - G_buffer;</span>
+<span class="lineNum">     312 </span>                :<span class="lineCov">          6 :               ptrdiff_t past_end_offset = past_end - G_buffer;</span>
+<span class="lineNum">     313 </span>                :<span class="lineCov">          6 :               size_t old_G_buffer_size = G_buffer_size;</span>
+<span class="lineNum">     314 </span>                :            : 
+<span class="lineNum">     315 </span>                :<span class="lineCov">          6 :               read_size *= 2;</span>
+<span class="lineNum">     316 </span>                :<span class="lineCov">          6 :               G_buffer_size = read_size * 2 + sentinel_length + 2;</span>
+<span class="lineNum">     317 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :               if (G_buffer_size &lt; old_G_buffer_size)</span>
+<span class="lineNum">     318 </span>                :<span class="lineNoCov">          0 :                 xalloc_die ();</span>
+<span class="lineNum">     319 </span>                :<span class="lineCov">          6 :               newbuffer = xrealloc (G_buffer - offset, G_buffer_size);</span>
+<span class="lineNum">     320 </span>                :<span class="lineCov">          6 :               newbuffer += offset;</span>
+<span class="lineNum">     321 </span>                :            :               /* Adjust the pointers for the new buffer location.  */
+<span class="lineNum">     322 </span>                :<span class="lineCov">          6 :               match_start = newbuffer + match_start_offset;</span>
+<span class="lineNum">     323 </span>                :<span class="lineCov">          6 :               past_end = newbuffer + past_end_offset;</span>
+<span class="lineNum">     324 </span>                :<span class="lineCov">          6 :               G_buffer = newbuffer;</span>
+<span class="lineNum">     325 </span>                :            :             }
+<span class="lineNum">     326 </span>                :            : 
+<span class="lineNum">     327 </span>                :            :           /* Back up to the start of the next bufferfull of the file.  */
+<span class="lineNum">     328 </span>        [<span class="branchCov" title="Branch 0 was taken 179 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">        185 :           if (file_pos &gt;= read_size)</span>
+<span class="lineNum">     329 </span>                :<span class="lineCov">        179 :             file_pos -= read_size;</span>
+<span class="lineNum">     330 </span>                :            :           else
+<span class="lineNum">     331 </span>                :            :             {
+<span class="lineNum">     332 </span>                :<span class="lineCov">          6 :               read_size = file_pos;</span>
+<span class="lineNum">     333 </span>                :<span class="lineCov">          6 :               file_pos = 0;</span>
+<span class="lineNum">     334 </span>                :            :             }
+<span class="lineNum">     335 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 185 times"> + </span>]:<span class="lineCov">        185 :           if (lseek (input_fd, file_pos, SEEK_SET) &lt; 0)</span>
+<span class="lineNum">     336 </span>                :<span class="lineNoCov">          0 :             error (0, errno, _(&quot;%s: seek failed&quot;), quotearg_colon (file));</span>
+<span class="lineNum">     337 </span>                :            : 
+<span class="lineNum">     338 </span>                :            :           /* Shift the pending record data right to make room for the new.
+<span class="lineNum">     339 </span>                :            :              The source and destination regions probably overlap.  */
+<span class="lineNum">     340 </span>                :<span class="lineCov">        185 :           memmove (G_buffer + read_size, G_buffer, saved_record_size);</span>
+<span class="lineNum">     341 </span>                :<span class="lineCov">        185 :           past_end = G_buffer + read_size + saved_record_size;</span>
+<span class="lineNum">     342 </span>                :            :           /* For non-regexp searches, avoid unneccessary scanning. */
+<span class="lineNum">     343 </span>        [<span class="branchCov" title="Branch 0 was taken 185 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        185 :           if (sentinel_length)</span>
+<span class="lineNum">     344 </span>                :<span class="lineCov">        185 :             match_start = G_buffer + read_size;</span>
+<span class="lineNum">     345 </span>                :            :           else
+<span class="lineNum">     346 </span>                :<span class="lineNoCov">          0 :             match_start = past_end;</span>
+<span class="lineNum">     347 </span>                :            : 
+<span class="lineNum">     348 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 185 times"> + </span>]:<span class="lineCov">        185 :           if (safe_read (input_fd, G_buffer, read_size) != read_size)</span>
+<span class="lineNum">     349 </span>                :            :             {
+<span class="lineNum">     350 </span>                :<span class="lineNoCov">          0 :               error (0, errno, _(&quot;%s: read error&quot;), quotearg_colon (file));</span>
+<span class="lineNum">     351 </span>                :<span class="lineNoCov">          0 :               return false;</span>
+<span class="lineNum">     352 </span>                :            :             }
+<span class="lineNum">     353 </span>                :            :         }
+<span class="lineNum">     354 </span>                :            :       else
+<span class="lineNum">     355 </span>                :            :         {
+<span class="lineNum">     356 </span>                :            :           /* Found a match of 'separator'. */
+<span class="lineNum">     357 </span>        [<span class="branchCov" title="Branch 0 was taken 206250 times"> + </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">     206352 :           if (separator_ends_record)</span>
+<span class="lineNum">     358 </span>                :            :             {
+<span class="lineNum">     359 </span>                :<span class="lineCov">     206250 :               char *match_end = match_start + match_length;</span>
+<span class="lineNum">     360 </span>                :            : 
+<span class="lineNum">     361 </span>                :            :               /* If this match of 'separator' isn't at the end of the
+<span class="lineNum">     362 </span>                :            :                  file, print the record. */
+<span class="lineNum">     363 </span>[<span class="branchCov" title="Branch 0 was taken 100 times"> + </span><span class="branchCov" title="Branch 1 was taken 206150 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 6 times"> + </span><span class="branchCov" title="Branch 3 was taken 94 times"> + </span>]:<span class="lineCov">     206250 :               if (!first_time || match_end != past_end)</span>
+<span class="lineNum">     364 </span>                :<span class="lineCov">     206156 :                 output (match_end, past_end);</span>
+<span class="lineNum">     365 </span>                :<span class="lineCov">     206250 :               past_end = match_end;</span>
+<span class="lineNum">     366 </span>                :<span class="lineCov">     206250 :               first_time = false;</span>
+<span class="lineNum">     367 </span>                :            :             }
+<span class="lineNum">     368 </span>                :            :           else
+<span class="lineNum">     369 </span>                :            :             {
+<span class="lineNum">     370 </span>                :<span class="lineCov">        102 :               output (match_start, past_end);</span>
+<span class="lineNum">     371 </span>                :<span class="lineCov">        102 :               past_end = match_start;</span>
+<span class="lineNum">     372 </span>                :            :             }
+<span class="lineNum">     373 </span>                :            : 
+<span class="lineNum">     374 </span>                :            :           /* For non-regex matching, we can back up.  */
+<span class="lineNum">     375 </span>        [<span class="branchCov" title="Branch 0 was taken 206214 times"> + </span><span class="branchCov" title="Branch 1 was taken 138 times"> + </span>]:<span class="lineCov">     206352 :           if (sentinel_length &gt; 0)</span>
+<span class="lineNum">     376 </span>                :<span class="lineCov">     206214 :             match_start -= match_length - 1;</span>
+<span class="lineNum">     377 </span>                :            :         }
+<span class="lineNum">     378 </span>                :<span class="lineCov">     206681 :     }</span>
+<span class="lineNum">     379 </span>                :            : }
+<span class="lineNum">     380 </span>                :            : 
+<span class="lineNum">     381 </span>                :            : #if DONT_UNLINK_WHILE_OPEN
+<span class="lineNum">     382 </span>                :            : 
+<span class="lineNum">     383 </span>                :            : /* FIXME-someday: remove all of this DONT_UNLINK_WHILE_OPEN junk.
+<span class="lineNum">     384 </span>                :            :    Using atexit like this is wrong, since it can fail
+<span class="lineNum">     385 </span>                :            :    when called e.g. 32 or more times.
+<span class="lineNum">     386 </span>                :            :    But this isn't a big deal, since the code is used only on WOE/DOS
+<span class="lineNum">     387 </span>                :            :    systems, and few people invoke tac on that many nonseekable files.  */
+<span class="lineNum">     388 </span>                :            : 
+<span class="lineNum">     389 </span>                :            : static const char *file_to_remove;
+<span class="lineNum">     390 </span>                :            : static FILE *fp_to_close;
+<span class="lineNum">     391 </span>                :            : 
+<span class="lineNum">     392 </span>                :            : static void
+<span class="lineNum">     393 </span>                :            : unlink_tempfile (void)
+<span class="lineNum">     394 </span>                :            : {
+<span class="lineNum">     395 </span>                :            :   fclose (fp_to_close);
+<span class="lineNum">     396 </span>                :            :   unlink (file_to_remove);
+<span class="lineNum">     397 </span>                :            : }
+<span class="lineNum">     398 </span>                :            : 
+<span class="lineNum">     399 </span>                :            : static void
+<span class="lineNum">     400 </span>                :            : record_or_unlink_tempfile (char const *fn, FILE *fp)
+<span class="lineNum">     401 </span>                :            : {
+<span class="lineNum">     402 </span>                :            :   if (!file_to_remove)
+<span class="lineNum">     403 </span>                :            :     {
+<span class="lineNum">     404 </span>                :            :       file_to_remove = fn;
+<span class="lineNum">     405 </span>                :            :       fp_to_close = fp;
+<span class="lineNum">     406 </span>                :            :       atexit (unlink_tempfile);
+<span class="lineNum">     407 </span>                :            :     }
+<span class="lineNum">     408 </span>                :            : }
+<span class="lineNum">     409 </span>                :            : 
+<span class="lineNum">     410 </span>                :            : #else
+<a name="411"><span class="lineNum">     411 </span>                :            : </a>
+<span class="lineNum">     412 </span>                :            : static void
+<span class="lineNum">     413 </span>                :<span class="lineCov">         44 : record_or_unlink_tempfile (char const *fn, FILE *fp ATTRIBUTE_UNUSED)</span>
+<span class="lineNum">     414 </span>                :            : {
+<span class="lineNum">     415 </span>                :<span class="lineCov">         44 :   unlink (fn);</span>
+<span class="lineNum">     416 </span>                :<span class="lineCov">         44 : }</span>
+<span class="lineNum">     417 </span>                :            : 
+<span class="lineNum">     418 </span>                :            : #endif
+<span class="lineNum">     419 </span>                :            : 
+<span class="lineNum">     420 </span>                :            : /* A wrapper around mkstemp that gives us both an open stream pointer,
+<span class="lineNum">     421 </span>                :            :    FP, and the corresponding FILE_NAME.  Always return the same FP/name
+<a name="422"><span class="lineNum">     422 </span>                :            :    pair, rewinding/truncating it upon each reuse.  */</a>
+<span class="lineNum">     423 </span>                :            : static bool
+<span class="lineNum">     424 </span>                :<span class="lineCov">         48 : temp_stream (FILE **fp, char **file_name)</span>
+<span class="lineNum">     425 </span>                :            : {
+<span class="lineNum">     426 </span>                :            :   static char *tempfile = NULL;
+<span class="lineNum">     427 </span>                :            :   static FILE *tmp_fp;
+<span class="lineNum">     428 </span>        [<span class="branchCov" title="Branch 0 was taken 46 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">         48 :   if (tempfile == NULL)</span>
+<span class="lineNum">     429 </span>                :            :     {
+<span class="lineNum">     430 </span>                :<span class="lineCov">         46 :       char const *t = getenv (&quot;TMPDIR&quot;);</span>
+<span class="lineNum">     431 </span>        [<span class="branchCov" title="Branch 0 was taken 46 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         46 :       char const *tempdir = t ? t : DEFAULT_TMPDIR;</span>
+<span class="lineNum">     432 </span>                :<span class="lineCov">         46 :       tempfile = mfile_name_concat (tempdir, &quot;tacXXXXXX&quot;, NULL);</span>
+<span class="lineNum">     433 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 46 times"> + </span>]:<span class="lineCov">         46 :       if (tempdir == NULL)</span>
+<span class="lineNum">     434 </span>                :            :         {
+<span class="lineNum">     435 </span>                :<span class="lineNoCov">          0 :           error (0, 0, _(&quot;memory exhausted&quot;));</span>
+<span class="lineNum">     436 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     437 </span>                :            :         }
+<span class="lineNum">     438 </span>                :            : 
+<span class="lineNum">     439 </span>                :            :       /* FIXME: there's a small window between a successful mkstemp call
+<span class="lineNum">     440 </span>                :            :          and the unlink that's performed by record_or_unlink_tempfile.
+<span class="lineNum">     441 </span>                :            :          If we're interrupted in that interval, this code fails to remove
+<span class="lineNum">     442 </span>                :            :          the temporary file.  On systems that define DONT_UNLINK_WHILE_OPEN,
+<span class="lineNum">     443 </span>                :            :          the window is much larger -- it extends to the atexit-called
+<span class="lineNum">     444 </span>                :            :          unlink_tempfile.
+<span class="lineNum">     445 </span>                :            :          FIXME: clean up upon fatal signal.  Don't block them, in case
+<span class="lineNum">     446 </span>                :            :          $TMPFILE is a remote file system.  */
+<span class="lineNum">     447 </span>                :            : 
+<span class="lineNum">     448 </span>                :<span class="lineCov">         46 :       int fd = mkstemp (tempfile);</span>
+<span class="lineNum">     449 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>]:<span class="lineCov">         46 :       if (fd &lt; 0)</span>
+<span class="lineNum">     450 </span>                :            :         {
+<span class="lineNum">     451 </span>                :<span class="lineCov">          2 :           error (0, errno, _(&quot;failed to create temporary file in %s&quot;),</span>
+<span class="lineNum">     452 </span>                :            :                  quote (tempdir));
+<span class="lineNum">     453 </span>                :<span class="lineCov">          2 :           goto Reset;</span>
+<span class="lineNum">     454 </span>                :            :         }
+<span class="lineNum">     455 </span>                :            : 
+<span class="lineNum">     456 </span>                :<span class="lineCov">         44 :       tmp_fp = fdopen (fd, (O_BINARY ? &quot;w+b&quot; : &quot;w+&quot;));</span>
+<span class="lineNum">     457 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>]:<span class="lineCov">         44 :       if (! tmp_fp)</span>
+<span class="lineNum">     458 </span>                :            :         {
+<span class="lineNum">     459 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;failed to open %s for writing&quot;),</span>
+<span class="lineNum">     460 </span>                :            :                  quote (tempfile));
+<span class="lineNum">     461 </span>                :<span class="lineNoCov">          0 :           close (fd);</span>
+<span class="lineNum">     462 </span>                :<span class="lineNoCov">          0 :           unlink (tempfile);</span>
+<span class="lineNum">     463 </span>                :            :         Reset:
+<span class="lineNum">     464 </span>                :<span class="lineCov">          2 :           free (tempfile);</span>
+<span class="lineNum">     465 </span>                :<span class="lineCov">          2 :           tempfile = NULL;</span>
+<span class="lineNum">     466 </span>                :<span class="lineCov">          2 :           return false;</span>
+<span class="lineNum">     467 </span>                :            :         }
+<span class="lineNum">     468 </span>                :            : 
+<span class="lineNum">     469 </span>                :<span class="lineCov">         44 :       record_or_unlink_tempfile (tempfile, tmp_fp);</span>
+<span class="lineNum">     470 </span>                :            :     }
+<span class="lineNum">     471 </span>                :            :   else
+<span class="lineNum">     472 </span>                :            :     {
+<span class="lineNum">     473 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          2 :       if (fseek (tmp_fp, 0, SEEK_SET) &lt; 0</span>
+<span class="lineNum">     474 </span>        [<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">          2 :           || ftruncate (fileno (tmp_fp), 0) &lt; 0)</span>
+<span class="lineNum">     475 </span>                :            :         {
+<span class="lineNum">     476 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;failed to rewind stream for %s&quot;),</span>
+<span class="lineNum">     477 </span>                :            :                  quote (tempfile));
+<span class="lineNum">     478 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     479 </span>                :            :         }
+<span class="lineNum">     480 </span>                :            :     }
+<span class="lineNum">     481 </span>                :            : 
+<span class="lineNum">     482 </span>                :<span class="lineCov">         46 :   *fp = tmp_fp;</span>
+<span class="lineNum">     483 </span>                :<span class="lineCov">         46 :   *file_name = tempfile;</span>
+<span class="lineNum">     484 </span>                :<span class="lineCov">         48 :   return true;</span>
+<span class="lineNum">     485 </span>                :            : }
+<span class="lineNum">     486 </span>                :            : 
+<span class="lineNum">     487 </span>                :            : /* Copy from file descriptor INPUT_FD (corresponding to the named FILE) to
+<span class="lineNum">     488 </span>                :            :    a temporary file, and set *G_TMP and *G_TEMPFILE to the resulting stream
+<span class="lineNum">     489 </span>                :            :    and file name.  Return true if successful.  */
+<a name="490"><span class="lineNum">     490 </span>                :            : </a>
+<span class="lineNum">     491 </span>                :            : static bool
+<span class="lineNum">     492 </span>                :<span class="lineCov">         48 : copy_to_temp (FILE **g_tmp, char **g_tempfile, int input_fd, char const *file)</span>
+<span class="lineNum">     493 </span>                :            : {
+<span class="lineNum">     494 </span>                :            :   FILE *fp;
+<span class="lineNum">     495 </span>                :            :   char *file_name;
+<span class="lineNum">     496 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 46 times"> + </span>]:<span class="lineCov">         48 :   if (!temp_stream (&amp;fp, &amp;file_name))</span>
+<span class="lineNum">     497 </span>                :<span class="lineCov">          2 :     return false;</span>
+<span class="lineNum">     498 </span>                :            : 
+<span class="lineNum">     499 </span>                :            :   while (1)
+<span class="lineNum">     500 </span>                :            :     {
+<span class="lineNum">     501 </span>                :<span class="lineCov">         92 :       size_t bytes_read = safe_read (input_fd, G_buffer, read_size);</span>
+<span class="lineNum">     502 </span>        [<span class="branchCov" title="Branch 0 was taken 46 times"> + </span><span class="branchCov" title="Branch 1 was taken 46 times"> + </span>]:<span class="lineCov">         92 :       if (bytes_read == 0)</span>
+<span class="lineNum">     503 </span>                :<span class="lineCov">         46 :         break;</span>
+<span class="lineNum">     504 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 46 times"> + </span>]:<span class="lineCov">         46 :       if (bytes_read == SAFE_READ_ERROR)</span>
+<span class="lineNum">     505 </span>                :            :         {
+<span class="lineNum">     506 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;%s: read error&quot;), quotearg_colon (file));</span>
+<span class="lineNum">     507 </span>                :<span class="lineNoCov">          0 :           goto Fail;</span>
+<span class="lineNum">     508 </span>                :            :         }
+<span class="lineNum">     509 </span>                :            : 
+<span class="lineNum">     510 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 46 times"> + </span>]:<span class="lineCov">         46 :       if (fwrite (G_buffer, 1, bytes_read, fp) != bytes_read)</span>
+<span class="lineNum">     511 </span>                :            :         {
+<span class="lineNum">     512 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;%s: write error&quot;), quotearg_colon (file_name));</span>
+<span class="lineNum">     513 </span>                :<span class="lineNoCov">          0 :           goto Fail;</span>
+<span class="lineNum">     514 </span>                :            :         }
+<span class="lineNum">     515 </span>                :<span class="lineCov">         46 :     }</span>
+<span class="lineNum">     516 </span>                :            : 
+<span class="lineNum">     517 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 46 times"> + </span>]:<span class="lineCov">         46 :   if (fflush (fp) != 0)</span>
+<span class="lineNum">     518 </span>                :            :     {
+<span class="lineNum">     519 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;%s: write error&quot;), quotearg_colon (file_name));</span>
+<span class="lineNum">     520 </span>                :<span class="lineNoCov">          0 :       goto Fail;</span>
+<span class="lineNum">     521 </span>                :            :     }
+<span class="lineNum">     522 </span>                :            : 
+<span class="lineNum">     523 </span>                :<span class="lineCov">         46 :   *g_tmp = fp;</span>
+<span class="lineNum">     524 </span>                :<span class="lineCov">         46 :   *g_tempfile = file_name;</span>
+<span class="lineNum">     525 </span>                :<span class="lineCov">         46 :   return true;</span>
+<span class="lineNum">     526 </span>                :            : 
+<span class="lineNum">     527 </span>                :            :  Fail:
+<span class="lineNum">     528 </span>                :<span class="lineNoCov">          0 :   fclose (fp);</span>
+<span class="lineNum">     529 </span>                :<span class="lineCov">         48 :   return false;</span>
+<span class="lineNum">     530 </span>                :            : }
+<span class="lineNum">     531 </span>                :            : 
+<span class="lineNum">     532 </span>                :            : /* Copy INPUT_FD to a temporary, then tac that file.
+<span class="lineNum">     533 </span>                :            :    Return true if successful.  */
+<a name="534"><span class="lineNum">     534 </span>                :            : </a>
+<span class="lineNum">     535 </span>                :            : static bool
+<span class="lineNum">     536 </span>                :<span class="lineCov">         48 : tac_nonseekable (int input_fd, const char *file)</span>
+<span class="lineNum">     537 </span>                :            : {
+<span class="lineNum">     538 </span>                :            :   FILE *tmp_stream;
+<span class="lineNum">     539 </span>                :            :   char *tmp_file;
+<span class="lineNum">     540 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 46 times"> + </span>]:<span class="lineCov">         48 :   if (!copy_to_temp (&amp;tmp_stream, &amp;tmp_file, input_fd, file))</span>
+<span class="lineNum">     541 </span>                :<span class="lineCov">          2 :     return false;</span>
+<span class="lineNum">     542 </span>                :            : 
+<span class="lineNum">     543 </span>                :<span class="lineCov">         46 :   bool ok = tac_seekable (fileno (tmp_stream), tmp_file);</span>
+<span class="lineNum">     544 </span>                :<span class="lineCov">         48 :   return ok;</span>
+<span class="lineNum">     545 </span>                :            : }
+<span class="lineNum">     546 </span>                :            : 
+<span class="lineNum">     547 </span>                :            : /* Print FILE in reverse, copying it to a temporary
+<span class="lineNum">     548 </span>                :            :    file first if it is not seekable.
+<span class="lineNum">     549 </span>                :            :    Return true if successful.  */
+<a name="550"><span class="lineNum">     550 </span>                :            : </a>
+<span class="lineNum">     551 </span>                :            : static bool
+<span class="lineNum">     552 </span>                :<span class="lineCov">        146 : tac_file (const char *filename)</span>
+<span class="lineNum">     553 </span>                :            : {
+<span class="lineNum">     554 </span>                :            :   bool ok;
+<span class="lineNum">     555 </span>                :            :   off_t file_size;
+<span class="lineNum">     556 </span>                :            :   int fd;
+<span class="lineNum">     557 </span>                :<span class="lineCov">        146 :   bool is_stdin = STREQ (filename, &quot;-&quot;);</span>
+<span class="lineNum">     558 </span>                :            : 
+<span class="lineNum">     559 </span>        [<span class="branchCov" title="Branch 0 was taken 90 times"> + </span><span class="branchCov" title="Branch 1 was taken 56 times"> + </span>]:<span class="lineCov">        146 :   if (is_stdin)</span>
+<span class="lineNum">     560 </span>                :            :     {
+<span class="lineNum">     561 </span>                :<span class="lineCov">         90 :       have_read_stdin = true;</span>
+<span class="lineNum">     562 </span>                :<span class="lineCov">         90 :       fd = STDIN_FILENO;</span>
+<span class="lineNum">     563 </span>                :<span class="lineCov">         90 :       filename = _(&quot;standard input&quot;);</span>
+<span class="lineNum">     564 </span>                :            :       if (O_BINARY &amp;&amp; ! isatty (STDIN_FILENO))
+<span class="lineNum">     565 </span>                :            :         xfreopen (NULL, &quot;rb&quot;, stdin);
+<span class="lineNum">     566 </span>                :            :     }
+<span class="lineNum">     567 </span>                :            :   else
+<span class="lineNum">     568 </span>                :            :     {
+<span class="lineNum">     569 </span>                :<span class="lineCov">         56 :       fd = open (filename, O_RDONLY | O_BINARY);</span>
+<span class="lineNum">     570 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 56 times"> + </span>]:<span class="lineCov">         56 :       if (fd &lt; 0)</span>
+<span class="lineNum">     571 </span>                :            :         {
+<span class="lineNum">     572 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;failed to open %s for reading&quot;),</span>
+<span class="lineNum">     573 </span>                :            :                  quote (filename));
+<span class="lineNum">     574 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     575 </span>                :            :         }
+<span class="lineNum">     576 </span>                :            :     }
+<span class="lineNum">     577 </span>                :            : 
+<span class="lineNum">     578 </span>                :<span class="lineCov">        146 :   file_size = lseek (fd, 0, SEEK_END);</span>
+<span class="lineNum">     579 </span>                :            : 
+<span class="lineNum">     580 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 98 times"> + </span>]:<span class="lineCov">         98 :   ok = (file_size &lt; 0 || isatty (fd)</span>
+<span class="lineNum">     581 </span>                :<span class="lineCov">         48 :         ? tac_nonseekable (fd, filename)</span>
+<span class="lineNum">     582 </span>        [<span class="branchCov" title="Branch 0 was taken 98 times"> + </span><span class="branchCov" title="Branch 1 was taken 48 times"> + </span>]:<span class="lineCov">        292 :         : tac_seekable (fd, filename));</span>
+<span class="lineNum">     583 </span>                :            : 
+<span class="lineNum">     584 </span>[<span class="branchCov" title="Branch 0 was taken 56 times"> + </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 56 times"> + </span>]:<span class="lineCov">        146 :   if (!is_stdin &amp;&amp; close (fd) != 0)</span>
+<span class="lineNum">     585 </span>                :            :     {
+<span class="lineNum">     586 </span>                :<span class="lineNoCov">          0 :       error (0, errno, _(&quot;%s: read error&quot;), quotearg_colon (filename));</span>
+<span class="lineNum">     587 </span>                :<span class="lineNoCov">          0 :       ok = false;</span>
+<span class="lineNum">     588 </span>                :            :     }
+<span class="lineNum">     589 </span>                :<span class="lineCov">        146 :   return ok;</span>
+<span class="lineNum">     590 </span>                :            : }
+<a name="591"><span class="lineNum">     591 </span>                :            : </a>
+<span class="lineNum">     592 </span>                :            : int
+<span class="lineNum">     593 </span>                :<span class="lineCov">        162 : main (int argc, char **argv)</span>
+<span class="lineNum">     594 </span>                :            : {
+<span class="lineNum">     595 </span>                :            :   const char *error_message;    /* Return value from re_compile_pattern. */
+<span class="lineNum">     596 </span>                :            :   int optc;
+<span class="lineNum">     597 </span>                :            :   bool ok;
+<span class="lineNum">     598 </span>                :            :   size_t half_buffer_size;
+<span class="lineNum">     599 </span>                :            : 
+<span class="lineNum">     600 </span>                :            :   /* Initializer for file_list if no file-arguments
+<span class="lineNum">     601 </span>                :            :      were specified on the command line.  */
+<span class="lineNum">     602 </span>                :            :   static char const *const default_file_list[] = {&quot;-&quot;, NULL};
+<span class="lineNum">     603 </span>                :            :   char const *const *file;
+<span class="lineNum">     604 </span>                :            : 
+<span class="lineNum">     605 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     606 </span>                :<span class="lineCov">        162 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     607 </span>                :<span class="lineCov">        162 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     608 </span>                :<span class="lineCov">        162 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     609 </span>                :<span class="lineCov">        162 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     610 </span>                :            : 
+<span class="lineNum">     611 </span>                :<span class="lineCov">        162 :   atexit (close_stdout);</span>
+<span class="lineNum">     612 </span>                :            : 
+<span class="lineNum">     613 </span>                :<span class="lineCov">        162 :   separator = &quot;\n&quot;;</span>
+<span class="lineNum">     614 </span>                :<span class="lineCov">        162 :   sentinel_length = 1;</span>
+<span class="lineNum">     615 </span>                :<span class="lineCov">        162 :   separator_ends_record = true;</span>
+<span class="lineNum">     616 </span>                :            : 
+<span class="lineNum">     617 </span>        [<span class="branchCov" title="Branch 1 was taken 110 times"> + </span><span class="branchCov" title="Branch 2 was taken 140 times"> + </span>]:<span class="lineCov">        250 :   while ((optc = getopt_long (argc, argv, &quot;brs:&quot;, longopts, NULL)) != -1)</span>
+<span class="lineNum">     618 </span>                :            :     {
+<span class="lineNum">     619 </span>  [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span><span class="branchCov" title="Branch 2 was taken 36 times"> + </span><span class="branchCov" title="Branch 3 was taken 6 times"> + </span> :<span class="lineCov">        110 :       switch (optc)</span>
+<span class="lineNum">         </span>         <span class="branchCov" title="Branch 4 was taken 14 times"> + </span><span class="branchCov" title="Branch 5 was taken 2 times"> + </span>]
+<span class="lineNum">     620 </span>                :            :         {
+<span class="lineNum">     621 </span>                :            :         case 'b':
+<span class="lineNum">     622 </span>                :<span class="lineCov">         24 :           separator_ends_record = false;</span>
+<span class="lineNum">     623 </span>                :<span class="lineCov">         24 :           break;</span>
+<span class="lineNum">     624 </span>                :            :         case 'r':
+<span class="lineNum">     625 </span>                :<span class="lineCov">         28 :           sentinel_length = 0;</span>
+<span class="lineNum">     626 </span>                :<span class="lineCov">         28 :           break;</span>
+<span class="lineNum">     627 </span>                :            :         case 's':
+<span class="lineNum">     628 </span>                :<span class="lineCov">         36 :           separator = optarg;</span>
+<span class="lineNum">     629 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         36 :           if (*separator == 0)</span>
+<span class="lineNum">     630 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0, _(&quot;separator cannot be empty&quot;));</span>
+<span class="lineNum">     631 </span>                :<span class="lineCov">         36 :           break;</span>
+<span class="lineNum">     632 </span>                :<span class="lineCov">          6 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     633 </span>                :<span class="lineCov">         14 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     634 </span>                :            :         default:
+<span class="lineNum">     635 </span>                :<span class="lineCov">          2 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     636 </span>                :            :         }
+<span class="lineNum">     637 </span>                :            :     }
+<span class="lineNum">     638 </span>                :            : 
+<span class="lineNum">     639 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 112 times"> + </span>]:<span class="lineCov">        140 :   if (sentinel_length == 0)</span>
+<span class="lineNum">     640 </span>                :            :     {
+<span class="lineNum">     641 </span>                :<span class="lineCov">         28 :       compiled_separator.buffer = NULL;</span>
+<span class="lineNum">     642 </span>                :<span class="lineCov">         28 :       compiled_separator.allocated = 0;</span>
+<span class="lineNum">     643 </span>                :<span class="lineCov">         28 :       compiled_separator.fastmap = compiled_separator_fastmap;</span>
+<span class="lineNum">     644 </span>                :<span class="lineCov">         28 :       compiled_separator.translate = NULL;</span>
+<span class="lineNum">     645 </span>                :<span class="lineCov">         28 :       error_message = re_compile_pattern (separator, strlen (separator),</span>
+<span class="lineNum">     646 </span>                :            :                                           &amp;compiled_separator);
+<span class="lineNum">     647 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :       if (error_message)</span>
+<span class="lineNum">     648 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, 0, &quot;%s&quot;, error_message);</span>
+<span class="lineNum">     649 </span>                :            :     }
+<span class="lineNum">     650 </span>                :            :   else
+<span class="lineNum">     651 </span>                :<span class="lineCov">        112 :     match_length = sentinel_length = strlen (separator);</span>
+<span class="lineNum">     652 </span>                :            : 
+<span class="lineNum">     653 </span>                :<span class="lineCov">        140 :   read_size = INITIAL_READSIZE;</span>
+<span class="lineNum">     654 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 140 times"> + </span>]:<span class="lineCov">        140 :   while (sentinel_length &gt;= read_size / 2)</span>
+<span class="lineNum">     655 </span>                :            :     {
+<span class="lineNum">     656 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (SIZE_MAX / 2 &lt; read_size)</span>
+<span class="lineNum">     657 </span>                :<span class="lineNoCov">          0 :         xalloc_die ();</span>
+<span class="lineNum">     658 </span>                :<span class="lineNoCov">          0 :       read_size *= 2;</span>
+<span class="lineNum">     659 </span>                :            :     }
+<span class="lineNum">     660 </span>                :<span class="lineCov">        140 :   half_buffer_size = read_size + sentinel_length + 1;</span>
+<span class="lineNum">     661 </span>                :<span class="lineCov">        140 :   G_buffer_size = 2 * half_buffer_size;</span>
+<span class="lineNum">     662 </span>[<span class="branchCov" title="Branch 0 was taken 140 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 140 times"> + </span>]:<span class="lineCov">        140 :   if (! (read_size &lt; half_buffer_size &amp;&amp; half_buffer_size &lt; G_buffer_size))</span>
+<span class="lineNum">     663 </span>                :<span class="lineNoCov">          0 :     xalloc_die ();</span>
+<span class="lineNum">     664 </span>                :<span class="lineCov">        140 :   G_buffer = xmalloc (G_buffer_size);</span>
+<span class="lineNum">     665 </span>        [<span class="branchCov" title="Branch 0 was taken 112 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">        140 :   if (sentinel_length)</span>
+<span class="lineNum">     666 </span>                :            :     {
+<span class="lineNum">     667 </span>                :<span class="lineCov">        112 :       strcpy (G_buffer, separator);</span>
+<span class="lineNum">     668 </span>                :<span class="lineCov">        112 :       G_buffer += sentinel_length;</span>
+<span class="lineNum">     669 </span>                :            :     }
+<span class="lineNum">     670 </span>                :            :   else
+<span class="lineNum">     671 </span>                :            :     {
+<span class="lineNum">     672 </span>                :<span class="lineCov">         28 :       ++G_buffer;</span>
+<span class="lineNum">     673 </span>                :            :     }
+<span class="lineNum">     674 </span>                :            : 
+<span class="lineNum">     675 </span>                :<span class="lineCov">        280 :   file = (optind &lt; argc</span>
+<span class="lineNum">     676 </span>                :<span class="lineCov">         54 :           ? (char const *const *) &amp;argv[optind]</span>
+<span class="lineNum">     677 </span>        [<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchCov" title="Branch 1 was taken 86 times"> + </span>]:<span class="lineCov">        140 :           : default_file_list);</span>
+<span class="lineNum">     678 </span>                :            : 
+<span class="lineNum">     679 </span>                :            :   if (O_BINARY &amp;&amp; ! isatty (STDOUT_FILENO))
+<span class="lineNum">     680 </span>                :            :     xfreopen (NULL, &quot;wb&quot;, stdout);
+<span class="lineNum">     681 </span>                :            : 
+<span class="lineNum">     682 </span>                :            :   {
+<span class="lineNum">     683 </span>                :            :     size_t i;
+<span class="lineNum">     684 </span>                :<span class="lineCov">        140 :     ok = true;</span>
+<span class="lineNum">     685 </span>        [<span class="branchCov" title="Branch 0 was taken 146 times"> + </span><span class="branchCov" title="Branch 1 was taken 140 times"> + </span>]:<span class="lineCov">        286 :     for (i = 0; file[i]; ++i)</span>
+<span class="lineNum">     686 </span>                :<span class="lineCov">        146 :       ok &amp;= tac_file (file[i]);</span>
+<span class="lineNum">     687 </span>                :            :   }
+<span class="lineNum">     688 </span>                :            : 
+<span class="lineNum">     689 </span>                :            :   /* Flush the output buffer. */
+<span class="lineNum">     690 </span>                :<span class="lineCov">        140 :   output ((char *) NULL, (char *) NULL);</span>
+<span class="lineNum">     691 </span>                :            : 
+<span class="lineNum">     692 </span>[<span class="branchCov" title="Branch 0 was taken 88 times"> + </span><span class="branchCov" title="Branch 1 was taken 52 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 88 times"> + </span>]:<span class="lineCov">        140 :   if (have_read_stdin &amp;&amp; close (STDIN_FILENO) &lt; 0)</span>
+<span class="lineNum">     693 </span>                :            :     {
+<span class="lineNum">     694 </span>                :<span class="lineNoCov">          0 :       error (0, errno, &quot;-&quot;);</span>
+<span class="lineNum">     695 </span>                :<span class="lineNoCov">          0 :       ok = false;</span>
+<span class="lineNum">     696 </span>                :            :     }
+<span class="lineNum">     697 </span>                :            : 
+<span class="lineNum">     698 </span>                :            : #ifdef lint
+<span class="lineNum">     699 </span>                :            :   size_t offset = sentinel_length ? sentinel_length : 1;
+<span class="lineNum">     700 </span>                :            :   free (G_buffer - offset);
+<span class="lineNum">     701 </span>                :            : #endif
+<span class="lineNum">     702 </span>                :            : 
+<span class="lineNum">     703 </span>        [<span class="branchCov" title="Branch 0 was taken 138 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">        140 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
+<span class="lineNum">     704 </span>                :            : }
 </pre>
       </td>
     </tr>

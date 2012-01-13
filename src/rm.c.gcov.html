@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -69,8 +69,8 @@
       <td>
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>                :            : /* `rm' file deletion utility for GNU.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 1988, 1990-1991, 1994-2011 Free Software Foundation, Inc.
+<a name="1"><span class="lineNum">       1 </span>                :            : /* 'rm' file deletion utility for GNU.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1988, 1990-1991, 1994-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@
 <span class="lineNum">      34 </span>                :            : #include &quot;yesno.h&quot;
 <span class="lineNum">      35 </span>                :            : #include &quot;priv-set.h&quot;
 <span class="lineNum">      36 </span>                :            : 
-<span class="lineNum">      37 </span>                :            : /* The official name of this program (e.g., no `g' prefix).  */
+<span class="lineNum">      37 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
 <span class="lineNum">      38 </span>                :            : #define PROGRAM_NAME &quot;rm&quot;
 <span class="lineNum">      39 </span>                :            : 
 <span class="lineNum">      40 </span>                :            : #define AUTHORS \
@@ -169,257 +169,256 @@
 <span class="lineNum">      98 </span>                :            : ARGMATCH_VERIFY (interactive_args, interactive_types);
 <span class="lineNum">      99 </span>                :            : 
 <span class="lineNum">     100 </span>                :            : /* Advise the user about invalid usages like &quot;rm -foo&quot; if the file
-<span class="lineNum">     101 </span>                :            :    &quot;-foo&quot; exists, assuming ARGC and ARGV are as with `main'.  */
+<span class="lineNum">     101 </span>                :            :    &quot;-foo&quot; exists, assuming ARGC and ARGV are as with 'main'.  */
 <a name="102"><span class="lineNum">     102 </span>                :            : </a>
 <span class="lineNum">     103 </span>                :            : static void
-<span class="lineNum">     104 </span>                :<span class="lineCov">          3 : diagnose_leading_hyphen (int argc, char **argv)</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">          2 : diagnose_leading_hyphen (int argc, char **argv)</span>
 <span class="lineNum">     105 </span>                :            : {
 <span class="lineNum">     106 </span>                :            :   /* OPTIND is unreliable, so iterate through the arguments looking
 <span class="lineNum">     107 </span>                :            :      for a file name that looks like an option.  */
 <span class="lineNum">     108 </span>                :            :   int i;
 <span class="lineNum">     109 </span>                :            : 
-<span class="lineNum">     110 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          6 :   for (i = 1; i &lt; argc; i++)</span>
+<span class="lineNum">     110 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          4 :   for (i = 1; i &lt; argc; i++)</span>
 <span class="lineNum">     111 </span>                :            :     {
-<span class="lineNum">     112 </span>                :<span class="lineCov">          3 :       char const *arg = argv[i];</span>
+<span class="lineNum">     112 </span>                :<span class="lineCov">          2 :       char const *arg = argv[i];</span>
 <span class="lineNum">     113 </span>                :            :       struct stat st;
 <span class="lineNum">     114 </span>                :            : 
-<span class="lineNum">     115 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">          3 :       if (arg[0] == '-' &amp;&amp; arg[1] &amp;&amp; lstat (arg, &amp;st) == 0)</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 3 times"> + </span>]
+<span class="lineNum">     115 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">          2 :       if (arg[0] == '-' &amp;&amp; arg[1] &amp;&amp; lstat (arg, &amp;st) == 0)</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 2 times"> + </span>]
 <span class="lineNum">     116 </span>                :            :         {
 <span class="lineNum">     117 </span>                :<span class="lineNoCov">          0 :           fprintf (stderr,</span>
-<span class="lineNum">     118 </span>                :<span class="lineNoCov">          0 :                    _(&quot;Try `%s ./%s' to remove the file %s.\n&quot;),</span>
+<span class="lineNum">     118 </span>                :<span class="lineNoCov">          0 :                    _(&quot;Try '%s ./%s' to remove the file %s.\n&quot;),</span>
 <span class="lineNum">     119 </span>                :            :                    argv[0],
 <span class="lineNum">     120 </span>                :            :                    quotearg_n_style (1, shell_quoting_style, arg),
 <span class="lineNum">     121 </span>                :            :                    quote (arg));
 <span class="lineNum">     122 </span>                :<span class="lineNoCov">          0 :           break;</span>
 <span class="lineNum">     123 </span>                :            :         }
 <span class="lineNum">     124 </span>                :            :     }
-<span class="lineNum">     125 </span>                :<span class="lineCov">          3 : }</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">          2 : }</span>
 <a name="126"><span class="lineNum">     126 </span>                :            : </a>
 <span class="lineNum">     127 </span>                :            : void
-<span class="lineNum">     128 </span>                :<span class="lineCov">         12 : usage (int status)</span>
+<span class="lineNum">     128 </span>                :<span class="lineCov">          8 : usage (int status)</span>
 <span class="lineNum">     129 </span>                :            : {
-<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         12 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">     131 </span>                :<span class="lineCov">          3 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
-<span class="lineNum">     132 </span>                :            :              program_name);
-<span class="lineNum">     133 </span>                :            :   else
-<span class="lineNum">     134 </span>                :            :     {
-<span class="lineNum">     135 </span>                :<span class="lineCov">          9 :       printf (_(&quot;Usage: %s [OPTION]... FILE...\n&quot;), program_name);</span>
-<span class="lineNum">     136 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     137 </span>                :            : Remove (unlink) the FILE(s).\n\
-<span class="lineNum">     138 </span>                :            : \n\
-<span class="lineNum">     139 </span>                :            :   -f, --force           ignore nonexistent files, never prompt\n\
-<span class="lineNum">     140 </span>                :            :   -i                    prompt before every removal\n\
-<span class="lineNum">     141 </span>                :            : &quot;), stdout);
-<span class="lineNum">     142 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     143 </span>                :            :   -I                    prompt once before removing more than three files, or\n\
-<span class="lineNum">     144 </span>                :            :                           when removing recursively.  Less intrusive than -i,\n\
-<span class="lineNum">     145 </span>                :            :                           while still giving protection against most mistakes\n\
-<span class="lineNum">     146 </span>                :            :       --interactive[=WHEN]  prompt according to WHEN: never, once (-I), or\n\
-<span class="lineNum">     147 </span>                :            :                           always (-i).  Without WHEN, prompt always\n\
-<span class="lineNum">     148 </span>                :            : &quot;), stdout);
-<span class="lineNum">     149 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     150 </span>                :            :       --one-file-system  when removing a hierarchy recursively, skip any\n\
-<span class="lineNum">     151 </span>                :            :                           directory that is on a file system different from\n\
-<span class="lineNum">     152 </span>                :            :                           that of the corresponding command line argument\n\
-<span class="lineNum">     153 </span>                :            : &quot;), stdout);
-<span class="lineNum">     154 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     155 </span>                :            :       --no-preserve-root  do not treat `/' specially\n\
-<span class="lineNum">     156 </span>                :            :       --preserve-root   do not remove `/' (default)\n\
-<span class="lineNum">     157 </span>                :            :   -r, -R, --recursive   remove directories and their contents recursively\n\
-<span class="lineNum">     158 </span>                :            :   -v, --verbose         explain what is being done\n\
-<span class="lineNum">     159 </span>                :            : &quot;), stdout);
-<span class="lineNum">     160 </span>                :<span class="lineCov">          9 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     161 </span>                :<span class="lineCov">          9 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     162 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     163 </span>                :            : \n\
-<span class="lineNum">     164 </span>                :            : By default, rm does not remove directories.  Use the --recursive (-r or -R)\n\
-<span class="lineNum">     165 </span>                :            : option to remove each listed directory, too, along with all of its contents.\n\
-<span class="lineNum">     166 </span>                :            : &quot;), stdout);
-<span class="lineNum">     167 </span>                :<span class="lineCov">          9 :       printf (_(&quot;\</span>
-<span class="lineNum">     168 </span>                :            : \n\
-<span class="lineNum">     169 </span>                :            : To remove a file whose name starts with a `-', for example `-foo',\n\
-<span class="lineNum">     170 </span>                :            : use one of these commands:\n\
-<span class="lineNum">     171 </span>                :            :   %s -- -foo\n\
-<span class="lineNum">     172 </span>                :            : \n\
-<span class="lineNum">     173 </span>                :            :   %s ./-foo\n\
-<span class="lineNum">     174 </span>                :            : &quot;),
-<span class="lineNum">     175 </span>                :            :               program_name, program_name);
-<span class="lineNum">     176 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">     177 </span>                :            : \n\
-<span class="lineNum">     178 </span>                :            : Note that if you use rm to remove a file, it might be possible to recover\n\
-<span class="lineNum">     179 </span>                :            : some of its contents, given sufficient expertise and/or time.  For greater\n\
-<span class="lineNum">     180 </span>                :            : assurance that the contents are truly unrecoverable, consider using shred.\n\
-<span class="lineNum">     181 </span>                :            : &quot;), stdout);
-<span class="lineNum">     182 </span>                :<span class="lineCov">          9 :       emit_ancillary_info ();</span>
-<span class="lineNum">     183 </span>                :            :     }
-<span class="lineNum">     184 </span>                :<span class="lineCov">         12 :   exit (status);</span>
-<span class="lineNum">     185 </span>                :            : }
-<a name="186"><span class="lineNum">     186 </span>                :            : </a>
-<span class="lineNum">     187 </span>                :            : static void
-<span class="lineNum">     188 </span>                :<span class="lineCov">       6901 : rm_option_init (struct rm_options *x)</span>
-<span class="lineNum">     189 </span>                :            : {
-<span class="lineNum">     190 </span>                :<span class="lineCov">       6901 :   x-&gt;ignore_missing_files = false;</span>
-<span class="lineNum">     191 </span>                :<span class="lineCov">       6901 :   x-&gt;interactive = RMI_SOMETIMES;</span>
-<span class="lineNum">     192 </span>                :<span class="lineCov">       6901 :   x-&gt;one_file_system = false;</span>
-<span class="lineNum">     193 </span>                :<span class="lineCov">       6901 :   x-&gt;recursive = false;</span>
-<span class="lineNum">     194 </span>                :<span class="lineCov">       6901 :   x-&gt;root_dev_ino = NULL;</span>
-<span class="lineNum">     195 </span>                :<span class="lineCov">       6901 :   x-&gt;stdin_tty = isatty (STDIN_FILENO);</span>
-<span class="lineNum">     196 </span>                :<span class="lineCov">       6901 :   x-&gt;verbose = false;</span>
-<span class="lineNum">     197 </span>                :            : 
-<span class="lineNum">     198 </span>                :            :   /* Since this program exits immediately after calling `rm', rm need not
-<span class="lineNum">     199 </span>                :            :      expend unnecessary effort to preserve the initial working directory.  */
-<span class="lineNum">     200 </span>                :<span class="lineCov">       6901 :   x-&gt;require_restore_cwd = false;</span>
-<span class="lineNum">     201 </span>                :<span class="lineCov">       6901 : }</span>
-<a name="202"><span class="lineNum">     202 </span>                :            : </a>
-<span class="lineNum">     203 </span>                :            : int
-<span class="lineNum">     204 </span>                :<span class="lineCov">       6901 : main (int argc, char **argv)</span>
-<span class="lineNum">     205 </span>                :            : {
-<span class="lineNum">     206 </span>                :<span class="lineCov">       6901 :   bool preserve_root = true;</span>
-<span class="lineNum">     207 </span>                :            :   struct rm_options x;
-<span class="lineNum">     208 </span>                :<span class="lineCov">       6901 :   bool prompt_once = false;</span>
-<span class="lineNum">     209 </span>                :            :   int c;
-<span class="lineNum">     210 </span>                :            : 
-<span class="lineNum">     211 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">     212 </span>                :<span class="lineCov">       6901 :   set_program_name (argv[0]);</span>
-<span class="lineNum">     213 </span>                :<span class="lineCov">       6901 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     214 </span>                :<span class="lineCov">       6901 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     215 </span>                :<span class="lineCov">       6901 :   textdomain (PACKAGE);</span>
-<span class="lineNum">     216 </span>                :            : 
-<span class="lineNum">     217 </span>                :<span class="lineCov">       6901 :   atexit (close_stdin);</span>
-<span class="lineNum">     218 </span>                :            : 
-<span class="lineNum">     219 </span>                :<span class="lineCov">       6901 :   rm_option_init (&amp;x);</span>
-<span class="lineNum">     220 </span>                :            : 
-<span class="lineNum">     221 </span>                :            :   /* Try to disable the ability to unlink a directory.  */
-<span class="lineNum">     222 </span>                :<span class="lineCov">       6901 :   priv_set_remove_linkdir ();</span>
-<span class="lineNum">     223 </span>                :            : 
-<span class="lineNum">     224 </span>        [<span class="branchCov" title="Branch 1 was taken 9314 times"> + </span><span class="branchCov" title="Branch 2 was taken 6745 times"> + </span>]:<span class="lineCov">      16059 :   while ((c = getopt_long (argc, argv, &quot;firvIR&quot;, long_opts, NULL)) != -1)</span>
-<span class="lineNum">     225 </span>                :            :     {
-<span class="lineNum">     226 </span>  [<span class="branchCov" title="Branch 0 was taken 6548 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span><span class="branchCov" title="Branch 2 was taken 24 times"> + </span><span class="branchCov" title="Branch 3 was taken 2524 times"> + </span> :<span class="lineCov">       9314 :       switch (c)</span>
-<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 20 times"> + </span><span class="branchCov" title="Branch 5 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 10 times"> + </span> 
-<span class="lineNum">         </span>   <span class="branchCov" title="Branch 9 was taken 12 times"> + </span><span class="branchCov" title="Branch 10 was taken 9 times"> + </span><span class="branchCov" title="Branch 11 was taken 144 times"> + </span><span class="branchCov" title="Branch 12 was taken 3 times"> + </span>]
-<span class="lineNum">     227 </span>                :            :         {
-<span class="lineNum">     228 </span>                :            :         case 'f':
-<span class="lineNum">     229 </span>                :<span class="lineCov">       6548 :           x.interactive = RMI_NEVER;</span>
-<span class="lineNum">     230 </span>                :<span class="lineCov">       6548 :           x.ignore_missing_files = true;</span>
-<span class="lineNum">     231 </span>                :<span class="lineCov">       6548 :           prompt_once = false;</span>
-<span class="lineNum">     232 </span>                :<span class="lineCov">       6548 :           break;</span>
-<span class="lineNum">     233 </span>                :            : 
-<span class="lineNum">     234 </span>                :            :         case 'i':
-<span class="lineNum">     235 </span>                :<span class="lineCov">         16 :           x.interactive = RMI_ALWAYS;</span>
-<span class="lineNum">     236 </span>                :<span class="lineCov">         16 :           x.ignore_missing_files = false;</span>
-<span class="lineNum">     237 </span>                :<span class="lineCov">         16 :           prompt_once = false;</span>
-<span class="lineNum">     238 </span>                :<span class="lineCov">         16 :           break;</span>
-<span class="lineNum">     239 </span>                :            : 
-<span class="lineNum">     240 </span>                :            :         case 'I':
-<span class="lineNum">     241 </span>                :<span class="lineCov">         24 :           x.interactive = RMI_NEVER;</span>
-<span class="lineNum">     242 </span>                :<span class="lineCov">         24 :           x.ignore_missing_files = false;</span>
-<span class="lineNum">     243 </span>                :<span class="lineCov">         24 :           prompt_once = true;</span>
-<span class="lineNum">     244 </span>                :<span class="lineCov">         24 :           break;</span>
-<span class="lineNum">     245 </span>                :            : 
-<span class="lineNum">     246 </span>                :            :         case 'r':
-<span class="lineNum">     247 </span>                :            :         case 'R':
-<span class="lineNum">     248 </span>                :<span class="lineCov">       2524 :           x.recursive = true;</span>
-<span class="lineNum">     249 </span>                :<span class="lineCov">       2524 :           break;</span>
-<span class="lineNum">     250 </span>                :            : 
-<span class="lineNum">     251 </span>                :            :         case INTERACTIVE_OPTION:
-<span class="lineNum">     252 </span>                :            :           {
-<span class="lineNum">     253 </span>                :            :             int i;
-<span class="lineNum">     254 </span>        [<span class="branchCov" title="Branch 0 was taken 17 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">         20 :             if (optarg)</span>
-<span class="lineNum">     255 </span>                :<span class="lineCov">         17 :               i = XARGMATCH (&quot;--interactive&quot;, optarg, interactive_args,</span>
-<span class="lineNum">     256 </span>                :            :                              interactive_types);
-<span class="lineNum">     257 </span>                :            :             else
-<span class="lineNum">     258 </span>                :<span class="lineCov">          3 :               i = interactive_always;</span>
-<span class="lineNum">     259 </span>  [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         20 :             switch (i)</span>
-<span class="lineNum">     260 </span>                :            :               {
-<span class="lineNum">     261 </span>                :            :               case interactive_never:
-<span class="lineNum">     262 </span>                :<span class="lineCov">          5 :                 x.interactive = RMI_NEVER;</span>
-<span class="lineNum">     263 </span>                :<span class="lineCov">          5 :                 prompt_once = false;</span>
-<span class="lineNum">     264 </span>                :<span class="lineCov">          5 :                 break;</span>
-<span class="lineNum">     265 </span>                :            : 
-<span class="lineNum">     266 </span>                :            :               case interactive_once:
-<span class="lineNum">     267 </span>                :<span class="lineCov">          9 :                 x.interactive = RMI_SOMETIMES;</span>
-<span class="lineNum">     268 </span>                :<span class="lineCov">          9 :                 x.ignore_missing_files = false;</span>
-<span class="lineNum">     269 </span>                :<span class="lineCov">          9 :                 prompt_once = true;</span>
-<span class="lineNum">     270 </span>                :<span class="lineCov">          9 :                 break;</span>
-<span class="lineNum">     271 </span>                :            : 
-<span class="lineNum">     272 </span>                :            :               case interactive_always:
-<span class="lineNum">     273 </span>                :<span class="lineCov">          6 :                 x.interactive = RMI_ALWAYS;</span>
-<span class="lineNum">     274 </span>                :<span class="lineCov">          6 :                 x.ignore_missing_files = false;</span>
-<span class="lineNum">     275 </span>                :<span class="lineCov">          6 :                 prompt_once = false;</span>
-<span class="lineNum">     276 </span>                :<span class="lineCov">          6 :                 break;</span>
-<span class="lineNum">     277 </span>                :            :               }
-<span class="lineNum">     278 </span>                :<span class="lineCov">         20 :             break;</span>
-<span class="lineNum">     279 </span>                :            :           }
-<span class="lineNum">     280 </span>                :            : 
-<span class="lineNum">     281 </span>                :            :         case ONE_FILE_SYSTEM:
-<span class="lineNum">     282 </span>                :<span class="lineCov">          4 :           x.one_file_system = true;</span>
-<span class="lineNum">     283 </span>                :<span class="lineCov">          4 :           break;</span>
-<span class="lineNum">     284 </span>                :            : 
-<span class="lineNum">     285 </span>                :            :         case NO_PRESERVE_ROOT:
-<span class="lineNum">     286 </span>                :<span class="lineNoCov">          0 :           preserve_root = false;</span>
-<span class="lineNum">     287 </span>                :<span class="lineNoCov">          0 :           break;</span>
-<span class="lineNum">     288 </span>                :            : 
-<span class="lineNum">     289 </span>                :            :         case PRESERVE_ROOT:
-<span class="lineNum">     290 </span>                :<span class="lineNoCov">          0 :           preserve_root = true;</span>
-<span class="lineNum">     291 </span>                :<span class="lineNoCov">          0 :           break;</span>
-<span class="lineNum">     292 </span>                :            : 
-<span class="lineNum">     293 </span>                :            :         case PRESUME_INPUT_TTY_OPTION:
-<span class="lineNum">     294 </span>                :<span class="lineCov">         10 :           x.stdin_tty = true;</span>
-<span class="lineNum">     295 </span>                :<span class="lineCov">         10 :           break;</span>
-<span class="lineNum">     296 </span>                :            : 
-<span class="lineNum">     297 </span>                :            :         case 'v':
-<span class="lineNum">     298 </span>                :<span class="lineCov">         12 :           x.verbose = true;</span>
-<span class="lineNum">     299 </span>                :<span class="lineCov">         12 :           break;</span>
-<span class="lineNum">     300 </span>                :            : 
-<span class="lineNum">     301 </span>                :<span class="lineCov">          9 :         case_GETOPT_HELP_CHAR;</span>
-<span class="lineNum">     302 </span>                :<span class="lineCov">        144 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
-<span class="lineNum">     303 </span>                :            :         default:
-<span class="lineNum">     304 </span>                :<span class="lineCov">          3 :           diagnose_leading_hyphen (argc, argv);</span>
-<span class="lineNum">     305 </span>                :<span class="lineCov">          3 :           usage (EXIT_FAILURE);</span>
-<span class="lineNum">     306 </span>                :            :         }
-<span class="lineNum">     307 </span>                :            :     }
-<span class="lineNum">     308 </span>                :            : 
-<span class="lineNum">     309 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 6742 times"> + </span>]:<span class="lineCov">       6745 :   if (argc &lt;= optind)</span>
-<span class="lineNum">     310 </span>                :            :     {
-<span class="lineNum">     311 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          3 :       if (x.ignore_missing_files)</span>
-<span class="lineNum">     312 </span>                :<span class="lineCov">          3 :         exit (EXIT_SUCCESS);</span>
-<span class="lineNum">     313 </span>                :            :       else
-<span class="lineNum">     314 </span>                :            :         {
-<span class="lineNum">     315 </span>                :<span class="lineNoCov">          0 :           error (0, 0, _(&quot;missing operand&quot;));</span>
-<span class="lineNum">     316 </span>                :<span class="lineNoCov">          0 :           usage (EXIT_FAILURE);</span>
-<span class="lineNum">     317 </span>                :            :         }
-<span class="lineNum">     318 </span>                :            :     }
-<span class="lineNum">     319 </span>                :            : 
-<span class="lineNum">     320 </span>[<span class="branchCov" title="Branch 0 was taken 2524 times"> + </span><span class="branchCov" title="Branch 1 was taken 4218 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 2524 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       6742 :   if (x.recursive &amp;&amp; preserve_root)</span>
-<span class="lineNum">     321 </span>                :            :     {
-<span class="lineNum">     322 </span>                :            :       static struct dev_ino dev_ino_buf;
-<span class="lineNum">     323 </span>                :<span class="lineCov">       2524 :       x.root_dev_ino = get_root_dev_ino (&amp;dev_ino_buf);</span>
-<span class="lineNum">     324 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2524 times"> + </span>]:<span class="lineCov">       2524 :       if (x.root_dev_ino == NULL)</span>
-<span class="lineNum">     325 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;failed to get attributes of %s&quot;),</span>
-<span class="lineNum">     326 </span>                :            :                quote (&quot;/&quot;));
-<span class="lineNum">     327 </span>                :            :     }
-<span class="lineNum">     328 </span>                :            : 
-<span class="lineNum">     329 </span>                :<span class="lineCov">       6742 :   size_t n_files = argc - optind;</span>
-<span class="lineNum">     330 </span>                :<span class="lineCov">       6742 :   char **file =  argv + optind;</span>
-<span class="lineNum">     331 </span>                :            : 
-<span class="lineNum">     332 </span>[<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 6712 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 12 times"> + </span><span class="branchCov" title="Branch 3 was taken 18 times"> + </span>]:<span class="lineCov">       6742 :   if (prompt_once &amp;&amp; (x.recursive || 3 &lt; n_files))</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 6 times"> + </span><span class="branchCov" title="Branch 5 was taken 6 times"> + </span>]
-<span class="lineNum">     333 </span>                :            :     {
-<span class="lineNum">     334 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         24 :       fprintf (stderr,</span>
-<span class="lineNum">     335 </span>                :<span class="lineCov">         24 :                (x.recursive</span>
-<span class="lineNum">     336 </span>                :            :                 ? _(&quot;%s: remove all arguments recursively? &quot;)
-<span class="lineNum">     337 </span>                :            :                 : _(&quot;%s: remove all arguments? &quot;)),
-<span class="lineNum">     338 </span>                :            :                program_name);
-<span class="lineNum">     339 </span>        [<span class="branchCov" title="Branch 1 was taken 15 times"> + </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">         24 :       if (!yesno ())</span>
-<span class="lineNum">     340 </span>                :<span class="lineCov">         15 :         exit (EXIT_SUCCESS);</span>
-<span class="lineNum">     341 </span>                :            :     }
-<span class="lineNum">     342 </span>                :            : 
-<span class="lineNum">     343 </span>                :<span class="lineCov">       6727 :   enum RM_status status = rm (file, &amp;x);</span>
-<span class="lineNum">     344 </span>[<span class="branchCov" title="Branch 0 was taken 69 times"> + </span><span class="branchCov" title="Branch 1 was taken 6658 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 55 times"> + </span><span class="branchCov" title="Branch 3 was taken 14 times"> + </span>]:<span class="lineCov">       6727 :   assert (VALID_STATUS (status));</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 55 times"> + </span>]
-<span class="lineNum">     345 </span>                :<span class="lineCov">       6727 :   exit (status == RM_ERROR ? EXIT_FAILURE : EXIT_SUCCESS);</span>
-<span class="lineNum">     346 </span>                :            : }
+<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">          2 :     emit_try_help ();</span>
+<span class="lineNum">     132 </span>                :            :   else
+<span class="lineNum">     133 </span>                :            :     {
+<span class="lineNum">     134 </span>                :<span class="lineCov">          6 :       printf (_(&quot;Usage: %s [OPTION]... FILE...\n&quot;), program_name);</span>
+<span class="lineNum">     135 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     136 </span>                :            : Remove (unlink) the FILE(s).\n\
+<span class="lineNum">     137 </span>                :            : \n\
+<span class="lineNum">     138 </span>                :            :   -f, --force           ignore nonexistent files, never prompt\n\
+<span class="lineNum">     139 </span>                :            :   -i                    prompt before every removal\n\
+<span class="lineNum">     140 </span>                :            : &quot;), stdout);
+<span class="lineNum">     141 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     142 </span>                :            :   -I                    prompt once before removing more than three files, or\n\
+<span class="lineNum">     143 </span>                :            :                           when removing recursively.  Less intrusive than -i,\n\
+<span class="lineNum">     144 </span>                :            :                           while still giving protection against most mistakes\n\
+<span class="lineNum">     145 </span>                :            :       --interactive[=WHEN]  prompt according to WHEN: never, once (-I), or\n\
+<span class="lineNum">     146 </span>                :            :                           always (-i).  Without WHEN, prompt always\n\
+<span class="lineNum">     147 </span>                :            : &quot;), stdout);
+<span class="lineNum">     148 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     149 </span>                :            :       --one-file-system  when removing a hierarchy recursively, skip any\n\
+<span class="lineNum">     150 </span>                :            :                           directory that is on a file system different from\n\
+<span class="lineNum">     151 </span>                :            :                           that of the corresponding command line argument\n\
+<span class="lineNum">     152 </span>                :            : &quot;), stdout);
+<span class="lineNum">     153 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     154 </span>                :            :       --no-preserve-root  do not treat '/' specially\n\
+<span class="lineNum">     155 </span>                :            :       --preserve-root   do not remove '/' (default)\n\
+<span class="lineNum">     156 </span>                :            :   -r, -R, --recursive   remove directories and their contents recursively\n\
+<span class="lineNum">     157 </span>                :            :   -v, --verbose         explain what is being done\n\
+<span class="lineNum">     158 </span>                :            : &quot;), stdout);
+<span class="lineNum">     159 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     162 </span>                :            : \n\
+<span class="lineNum">     163 </span>                :            : By default, rm does not remove directories.  Use the --recursive (-r or -R)\n\
+<span class="lineNum">     164 </span>                :            : option to remove each listed directory, too, along with all of its contents.\n\
+<span class="lineNum">     165 </span>                :            : &quot;), stdout);
+<span class="lineNum">     166 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     167 </span>                :            : \n\
+<span class="lineNum">     168 </span>                :            : To remove a file whose name starts with a '-', for example '-foo',\n\
+<span class="lineNum">     169 </span>                :            : use one of these commands:\n\
+<span class="lineNum">     170 </span>                :            :   %s -- -foo\n\
+<span class="lineNum">     171 </span>                :            : \n\
+<span class="lineNum">     172 </span>                :            :   %s ./-foo\n\
+<span class="lineNum">     173 </span>                :            : &quot;),
+<span class="lineNum">     174 </span>                :            :               program_name, program_name);
+<span class="lineNum">     175 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     176 </span>                :            : \n\
+<span class="lineNum">     177 </span>                :            : Note that if you use rm to remove a file, it might be possible to recover\n\
+<span class="lineNum">     178 </span>                :            : some of its contents, given sufficient expertise and/or time.  For greater\n\
+<span class="lineNum">     179 </span>                :            : assurance that the contents are truly unrecoverable, consider using shred.\n\
+<span class="lineNum">     180 </span>                :            : &quot;), stdout);
+<span class="lineNum">     181 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">     182 </span>                :            :     }
+<span class="lineNum">     183 </span>                :<span class="lineCov">          8 :   exit (status);</span>
+<span class="lineNum">     184 </span>                :            : }
+<a name="185"><span class="lineNum">     185 </span>                :            : </a>
+<span class="lineNum">     186 </span>                :            : static void
+<span class="lineNum">     187 </span>                :<span class="lineCov">       4935 : rm_option_init (struct rm_options *x)</span>
+<span class="lineNum">     188 </span>                :            : {
+<span class="lineNum">     189 </span>                :<span class="lineCov">       4935 :   x-&gt;ignore_missing_files = false;</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">       4935 :   x-&gt;interactive = RMI_SOMETIMES;</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">       4935 :   x-&gt;one_file_system = false;</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">       4935 :   x-&gt;recursive = false;</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">       4935 :   x-&gt;root_dev_ino = NULL;</span>
+<span class="lineNum">     194 </span>                :<span class="lineCov">       4935 :   x-&gt;stdin_tty = isatty (STDIN_FILENO);</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">       4935 :   x-&gt;verbose = false;</span>
+<span class="lineNum">     196 </span>                :            : 
+<span class="lineNum">     197 </span>                :            :   /* Since this program exits immediately after calling 'rm', rm need not
+<span class="lineNum">     198 </span>                :            :      expend unnecessary effort to preserve the initial working directory.  */
+<span class="lineNum">     199 </span>                :<span class="lineCov">       4935 :   x-&gt;require_restore_cwd = false;</span>
+<span class="lineNum">     200 </span>                :<span class="lineCov">       4935 : }</span>
+<a name="201"><span class="lineNum">     201 </span>                :            : </a>
+<span class="lineNum">     202 </span>                :            : int
+<span class="lineNum">     203 </span>                :<span class="lineCov">       4935 : main (int argc, char **argv)</span>
+<span class="lineNum">     204 </span>                :            : {
+<span class="lineNum">     205 </span>                :<span class="lineCov">       4935 :   bool preserve_root = true;</span>
+<span class="lineNum">     206 </span>                :            :   struct rm_options x;
+<span class="lineNum">     207 </span>                :<span class="lineCov">       4935 :   bool prompt_once = false;</span>
+<span class="lineNum">     208 </span>                :            :   int c;
+<span class="lineNum">     209 </span>                :            : 
+<span class="lineNum">     210 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     211 </span>                :<span class="lineCov">       4935 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     212 </span>                :<span class="lineCov">       4935 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">       4935 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">       4935 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     215 </span>                :            : 
+<span class="lineNum">     216 </span>                :<span class="lineCov">       4935 :   atexit (close_stdin);</span>
+<span class="lineNum">     217 </span>                :            : 
+<span class="lineNum">     218 </span>                :<span class="lineCov">       4935 :   rm_option_init (&amp;x);</span>
+<span class="lineNum">     219 </span>                :            : 
+<span class="lineNum">     220 </span>                :            :   /* Try to disable the ability to unlink a directory.  */
+<span class="lineNum">     221 </span>                :<span class="lineCov">       4935 :   priv_set_remove_linkdir ();</span>
+<span class="lineNum">     222 </span>                :            : 
+<span class="lineNum">     223 </span>        [<span class="branchCov" title="Branch 1 was taken 6562 times"> + </span><span class="branchCov" title="Branch 2 was taken 4831 times"> + </span>]:<span class="lineCov">      11393 :   while ((c = getopt_long (argc, argv, &quot;firvIR&quot;, long_opts, NULL)) != -1)</span>
+<span class="lineNum">     224 </span>                :            :     {
+<span class="lineNum">     225 </span>  [<span class="branchCov" title="Branch 0 was taken 4702 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span><span class="branchCov" title="Branch 2 was taken 16 times"> + </span><span class="branchCov" title="Branch 3 was taken 1700 times"> + </span> :<span class="lineCov">       6562 :       switch (c)</span>
+<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 13 times"> + </span><span class="branchCov" title="Branch 5 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 6 times"> + </span> 
+<span class="lineNum">         </span>   <span class="branchCov" title="Branch 9 was taken 8 times"> + </span><span class="branchCov" title="Branch 10 was taken 6 times"> + </span><span class="branchCov" title="Branch 11 was taken 96 times"> + </span><span class="branchCov" title="Branch 12 was taken 2 times"> + </span>]
+<span class="lineNum">     226 </span>                :            :         {
+<span class="lineNum">     227 </span>                :            :         case 'f':
+<span class="lineNum">     228 </span>                :<span class="lineCov">       4702 :           x.interactive = RMI_NEVER;</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">       4702 :           x.ignore_missing_files = true;</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">       4702 :           prompt_once = false;</span>
+<span class="lineNum">     231 </span>                :<span class="lineCov">       4702 :           break;</span>
+<span class="lineNum">     232 </span>                :            : 
+<span class="lineNum">     233 </span>                :            :         case 'i':
+<span class="lineNum">     234 </span>                :<span class="lineCov">         10 :           x.interactive = RMI_ALWAYS;</span>
+<span class="lineNum">     235 </span>                :<span class="lineCov">         10 :           x.ignore_missing_files = false;</span>
+<span class="lineNum">     236 </span>                :<span class="lineCov">         10 :           prompt_once = false;</span>
+<span class="lineNum">     237 </span>                :<span class="lineCov">         10 :           break;</span>
+<span class="lineNum">     238 </span>                :            : 
+<span class="lineNum">     239 </span>                :            :         case 'I':
+<span class="lineNum">     240 </span>                :<span class="lineCov">         16 :           x.interactive = RMI_NEVER;</span>
+<span class="lineNum">     241 </span>                :<span class="lineCov">         16 :           x.ignore_missing_files = false;</span>
+<span class="lineNum">     242 </span>                :<span class="lineCov">         16 :           prompt_once = true;</span>
+<span class="lineNum">     243 </span>                :<span class="lineCov">         16 :           break;</span>
+<span class="lineNum">     244 </span>                :            : 
+<span class="lineNum">     245 </span>                :            :         case 'r':
+<span class="lineNum">     246 </span>                :            :         case 'R':
+<span class="lineNum">     247 </span>                :<span class="lineCov">       1700 :           x.recursive = true;</span>
+<span class="lineNum">     248 </span>                :<span class="lineCov">       1700 :           break;</span>
+<span class="lineNum">     249 </span>                :            : 
+<span class="lineNum">     250 </span>                :            :         case INTERACTIVE_OPTION:
+<span class="lineNum">     251 </span>                :            :           {
+<span class="lineNum">     252 </span>                :            :             int i;
+<span class="lineNum">     253 </span>        [<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">         13 :             if (optarg)</span>
+<span class="lineNum">     254 </span>                :<span class="lineCov">         11 :               i = XARGMATCH (&quot;--interactive&quot;, optarg, interactive_args,</span>
+<span class="lineNum">     255 </span>                :            :                              interactive_types);
+<span class="lineNum">     256 </span>                :            :             else
+<span class="lineNum">     257 </span>                :<span class="lineCov">          2 :               i = interactive_always;</span>
+<span class="lineNum">     258 </span>  [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span><span class="branchCov" title="Branch 2 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         13 :             switch (i)</span>
+<span class="lineNum">     259 </span>                :            :               {
+<span class="lineNum">     260 </span>                :            :               case interactive_never:
+<span class="lineNum">     261 </span>                :<span class="lineCov">          3 :                 x.interactive = RMI_NEVER;</span>
+<span class="lineNum">     262 </span>                :<span class="lineCov">          3 :                 prompt_once = false;</span>
+<span class="lineNum">     263 </span>                :<span class="lineCov">          3 :                 break;</span>
+<span class="lineNum">     264 </span>                :            : 
+<span class="lineNum">     265 </span>                :            :               case interactive_once:
+<span class="lineNum">     266 </span>                :<span class="lineCov">          6 :                 x.interactive = RMI_SOMETIMES;</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">          6 :                 x.ignore_missing_files = false;</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">          6 :                 prompt_once = true;</span>
+<span class="lineNum">     269 </span>                :<span class="lineCov">          6 :                 break;</span>
+<span class="lineNum">     270 </span>                :            : 
+<span class="lineNum">     271 </span>                :            :               case interactive_always:
+<span class="lineNum">     272 </span>                :<span class="lineCov">          4 :                 x.interactive = RMI_ALWAYS;</span>
+<span class="lineNum">     273 </span>                :<span class="lineCov">          4 :                 x.ignore_missing_files = false;</span>
+<span class="lineNum">     274 </span>                :<span class="lineCov">          4 :                 prompt_once = false;</span>
+<span class="lineNum">     275 </span>                :<span class="lineCov">          4 :                 break;</span>
+<span class="lineNum">     276 </span>                :            :               }
+<span class="lineNum">     277 </span>                :<span class="lineCov">         13 :             break;</span>
+<span class="lineNum">     278 </span>                :            :           }
+<span class="lineNum">     279 </span>                :            : 
+<span class="lineNum">     280 </span>                :            :         case ONE_FILE_SYSTEM:
+<span class="lineNum">     281 </span>                :<span class="lineCov">          3 :           x.one_file_system = true;</span>
+<span class="lineNum">     282 </span>                :<span class="lineCov">          3 :           break;</span>
+<span class="lineNum">     283 </span>                :            : 
+<span class="lineNum">     284 </span>                :            :         case NO_PRESERVE_ROOT:
+<span class="lineNum">     285 </span>                :<span class="lineNoCov">          0 :           preserve_root = false;</span>
+<span class="lineNum">     286 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     287 </span>                :            : 
+<span class="lineNum">     288 </span>                :            :         case PRESERVE_ROOT:
+<span class="lineNum">     289 </span>                :<span class="lineNoCov">          0 :           preserve_root = true;</span>
+<span class="lineNum">     290 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     291 </span>                :            : 
+<span class="lineNum">     292 </span>                :            :         case PRESUME_INPUT_TTY_OPTION:
+<span class="lineNum">     293 </span>                :<span class="lineCov">          6 :           x.stdin_tty = true;</span>
+<span class="lineNum">     294 </span>                :<span class="lineCov">          6 :           break;</span>
+<span class="lineNum">     295 </span>                :            : 
+<span class="lineNum">     296 </span>                :            :         case 'v':
+<span class="lineNum">     297 </span>                :<span class="lineCov">          8 :           x.verbose = true;</span>
+<span class="lineNum">     298 </span>                :<span class="lineCov">          8 :           break;</span>
+<span class="lineNum">     299 </span>                :            : 
+<span class="lineNum">     300 </span>                :<span class="lineCov">          6 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     301 </span>                :<span class="lineCov">         96 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     302 </span>                :            :         default:
+<span class="lineNum">     303 </span>                :<span class="lineCov">          2 :           diagnose_leading_hyphen (argc, argv);</span>
+<span class="lineNum">     304 </span>                :<span class="lineCov">          2 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     305 </span>                :            :         }
+<span class="lineNum">     306 </span>                :            :     }
+<span class="lineNum">     307 </span>                :            : 
+<span class="lineNum">     308 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 4829 times"> + </span>]:<span class="lineCov">       4831 :   if (argc &lt;= optind)</span>
+<span class="lineNum">     309 </span>                :            :     {
+<span class="lineNum">     310 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :       if (x.ignore_missing_files)</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">          2 :         exit (EXIT_SUCCESS);</span>
+<span class="lineNum">     312 </span>                :            :       else
+<span class="lineNum">     313 </span>                :            :         {
+<span class="lineNum">     314 </span>                :<span class="lineNoCov">          0 :           error (0, 0, _(&quot;missing operand&quot;));</span>
+<span class="lineNum">     315 </span>                :<span class="lineNoCov">          0 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     316 </span>                :            :         }
+<span class="lineNum">     317 </span>                :            :     }
+<span class="lineNum">     318 </span>                :            : 
+<span class="lineNum">     319 </span>[<span class="branchCov" title="Branch 0 was taken 1700 times"> + </span><span class="branchCov" title="Branch 1 was taken 3129 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 1700 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       4829 :   if (x.recursive &amp;&amp; preserve_root)</span>
+<span class="lineNum">     320 </span>                :            :     {
+<span class="lineNum">     321 </span>                :            :       static struct dev_ino dev_ino_buf;
+<span class="lineNum">     322 </span>                :<span class="lineCov">       1700 :       x.root_dev_ino = get_root_dev_ino (&amp;dev_ino_buf);</span>
+<span class="lineNum">     323 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1700 times"> + </span>]:<span class="lineCov">       1700 :       if (x.root_dev_ino == NULL)</span>
+<span class="lineNum">     324 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;failed to get attributes of %s&quot;),</span>
+<span class="lineNum">     325 </span>                :            :                quote (&quot;/&quot;));
+<span class="lineNum">     326 </span>                :            :     }
+<span class="lineNum">     327 </span>                :            : 
+<span class="lineNum">     328 </span>                :<span class="lineCov">       4829 :   size_t n_files = argc - optind;</span>
+<span class="lineNum">     329 </span>                :<span class="lineCov">       4829 :   char **file =  argv + optind;</span>
+<span class="lineNum">     330 </span>                :            : 
+<span class="lineNum">     331 </span>[<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 4809 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 8 times"> + </span><span class="branchCov" title="Branch 3 was taken 12 times"> + </span>]:<span class="lineCov">       4829 :   if (prompt_once &amp;&amp; (x.recursive || 3 &lt; n_files))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 4 times"> + </span><span class="branchCov" title="Branch 5 was taken 4 times"> + </span>]
+<span class="lineNum">     332 </span>                :            :     {
+<span class="lineNum">     333 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">         16 :       fprintf (stderr,</span>
+<span class="lineNum">     334 </span>                :<span class="lineCov">         16 :                (x.recursive</span>
+<span class="lineNum">     335 </span>                :            :                 ? _(&quot;%s: remove all arguments recursively? &quot;)
+<span class="lineNum">     336 </span>                :            :                 : _(&quot;%s: remove all arguments? &quot;)),
+<span class="lineNum">     337 </span>                :            :                program_name);
+<span class="lineNum">     338 </span>        [<span class="branchCov" title="Branch 1 was taken 10 times"> + </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">         16 :       if (!yesno ())</span>
+<span class="lineNum">     339 </span>                :<span class="lineCov">         10 :         exit (EXIT_SUCCESS);</span>
+<span class="lineNum">     340 </span>                :            :     }
+<span class="lineNum">     341 </span>                :            : 
+<span class="lineNum">     342 </span>                :<span class="lineCov">       4819 :   enum RM_status status = rm (file, &amp;x);</span>
+<span class="lineNum">     343 </span>[<span class="branchCov" title="Branch 0 was taken 43 times"> + </span><span class="branchCov" title="Branch 1 was taken 4776 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 34 times"> + </span><span class="branchCov" title="Branch 3 was taken 9 times"> + </span>]:<span class="lineCov">       4819 :   assert (VALID_STATUS (status));</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 34 times"> + </span>]
+<span class="lineNum">     344 </span>                :<span class="lineCov">       4819 :   exit (status == RM_ERROR ? EXIT_FAILURE : EXIT_SUCCESS);</span>
+<span class="lineNum">     345 </span>                :            : }
 </pre>
       </td>
     </tr>

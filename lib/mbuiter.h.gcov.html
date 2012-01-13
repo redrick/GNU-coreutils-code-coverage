@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Iterating through multibyte strings: macros for multi-byte encodings.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2001, 2005, 2007, 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2001, 2005, 2007, 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -192,39 +192,39 @@
 <span class="lineNum">     121 </span>                :            : };
 <a name="122"><span class="lineNum">     122 </span>                :            : </a>
 <span class="lineNum">     123 </span>                :            : static inline void
-<span class="lineNum">     124 </span>                :<span class="lineCov">  324601293 : mbuiter_multi_next (struct mbuiter_multi *iter)</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">  216400862 : mbuiter_multi_next (struct mbuiter_multi *iter)</span>
 <span class="lineNum">     125 </span>                :            : {
-<span class="lineNum">     126 </span>        [<span class="branchCov" title="Branch 0 was taken 6750027 times"> + </span><span class="branchCov" title="Branch 1 was taken 317851266 times"> + </span>]:<span class="lineCov">  324601293 :   if (iter-&gt;next_done)</span>
-<span class="lineNum">     127 </span>                :<span class="lineCov">  324601293 :     return;</span>
-<span class="lineNum">     128 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 317851266 times"> + </span>]:<span class="lineCov">  317851266 :   if (iter-&gt;in_shift)</span>
+<span class="lineNum">     126 </span>        [<span class="branchCov" title="Branch 0 was taken 4500018 times"> + </span><span class="branchCov" title="Branch 1 was taken 211900844 times"> + </span>]:<span class="lineCov">  216400862 :   if (iter-&gt;next_done)</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">  216400862 :     return;</span>
+<span class="lineNum">     128 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 211900844 times"> + </span>]:<span class="lineCov">  211900844 :   if (iter-&gt;in_shift)</span>
 <span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 :     goto with_shift;</span>
 <span class="lineNum">     130 </span>                :            :   /* Handle most ASCII characters quickly, without calling mbrtowc().  */
-<span class="lineNum">     131 </span>        [<span class="branchCov" title="Branch 1 was taken 313680879 times"> + </span><span class="branchCov" title="Branch 2 was taken 4170387 times"> + </span>]:<span class="lineCov">  317851266 :   if (is_basic (*iter-&gt;cur.ptr))</span>
+<span class="lineNum">     131 </span>        [<span class="branchCov" title="Branch 1 was taken 209120586 times"> + </span><span class="branchCov" title="Branch 2 was taken 2780258 times"> + </span>]:<span class="lineCov">  211900844 :   if (is_basic (*iter-&gt;cur.ptr))</span>
 <span class="lineNum">     132 </span>                :            :     {
 <span class="lineNum">     133 </span>                :            :       /* These characters are part of the basic character set.  ISO C 99
 <span class="lineNum">     134 </span>                :            :          guarantees that their wide character code is identical to their
 <span class="lineNum">     135 </span>                :            :          char code.  */
-<span class="lineNum">     136 </span>                :<span class="lineCov">  313680879 :       iter-&gt;cur.bytes = 1;</span>
-<span class="lineNum">     137 </span>                :<span class="lineCov">  313680879 :       iter-&gt;cur.wc = *iter-&gt;cur.ptr;</span>
-<span class="lineNum">     138 </span>                :<span class="lineCov">  313680879 :       iter-&gt;cur.wc_valid = true;</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">  209120586 :       iter-&gt;cur.bytes = 1;</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">  209120586 :       iter-&gt;cur.wc = *iter-&gt;cur.ptr;</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">  209120586 :       iter-&gt;cur.wc_valid = true;</span>
 <span class="lineNum">     139 </span>                :            :     }
 <span class="lineNum">     140 </span>                :            :   else
 <span class="lineNum">     141 </span>                :            :     {
-<span class="lineNum">     142 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 4170387 times"> + </span>]:<span class="lineCov">    4170387 :       assert (mbsinit (&amp;iter-&gt;state));</span>
-<span class="lineNum">     143 </span>                :<span class="lineCov">    4170387 :       iter-&gt;in_shift = true;</span>
+<span class="lineNum">     142 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2780258 times"> + </span>]:<span class="lineCov">    2780258 :       assert (mbsinit (&amp;iter-&gt;state));</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">    2780258 :       iter-&gt;in_shift = true;</span>
 <span class="lineNum">     144 </span>                :            :     with_shift:
-<span class="lineNum">     145 </span>                :<span class="lineCov">    4170387 :       iter-&gt;cur.bytes = mbrtowc (&amp;iter-&gt;cur.wc, iter-&gt;cur.ptr,</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">    2780258 :       iter-&gt;cur.bytes = mbrtowc (&amp;iter-&gt;cur.wc, iter-&gt;cur.ptr,</span>
 <span class="lineNum">     146 </span>                :            :                                  strnlen1 (iter-&gt;cur.ptr, MB_CUR_MAX),
 <span class="lineNum">     147 </span>                :            :                                  &amp;iter-&gt;state);
-<span class="lineNum">     148 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 4170381 times"> + </span>]:<span class="lineCov">    4170387 :       if (iter-&gt;cur.bytes == (size_t) -1)</span>
+<span class="lineNum">     148 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 2780254 times"> + </span>]:<span class="lineCov">    2780258 :       if (iter-&gt;cur.bytes == (size_t) -1)</span>
 <span class="lineNum">     149 </span>                :            :         {
 <span class="lineNum">     150 </span>                :            :           /* An invalid multibyte sequence was encountered.  */
-<span class="lineNum">     151 </span>                :<span class="lineCov">          6 :           iter-&gt;cur.bytes = 1;</span>
-<span class="lineNum">     152 </span>                :<span class="lineCov">          6 :           iter-&gt;cur.wc_valid = false;</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">          4 :           iter-&gt;cur.bytes = 1;</span>
+<span class="lineNum">     152 </span>                :<span class="lineCov">          4 :           iter-&gt;cur.wc_valid = false;</span>
 <span class="lineNum">     153 </span>                :            :           /* Whether to set iter-&gt;in_shift = false and reset iter-&gt;state
 <span class="lineNum">     154 </span>                :            :              or not is not very important; the string is bogus anyway.  */
 <span class="lineNum">     155 </span>                :            :         }
-<span class="lineNum">     156 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4170381 times"> + </span>]:<span class="lineCov">    4170381 :       else if (iter-&gt;cur.bytes == (size_t) -2)</span>
+<span class="lineNum">     156 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2780254 times"> + </span>]:<span class="lineCov">    2780254 :       else if (iter-&gt;cur.bytes == (size_t) -2)</span>
 <span class="lineNum">     157 </span>                :            :         {
 <span class="lineNum">     158 </span>                :            :           /* An incomplete multibyte character at the end.  */
 <span class="lineNum">     159 </span>                :<span class="lineNoCov">          0 :           iter-&gt;cur.bytes = strlen (iter-&gt;cur.ptr);</span>
@@ -234,22 +234,22 @@
 <span class="lineNum">     163 </span>                :            :         }
 <span class="lineNum">     164 </span>                :            :       else
 <span class="lineNum">     165 </span>                :            :         {
-<span class="lineNum">     166 </span>        [<span class="branchCov" title="Branch 0 was taken 60117 times"> + </span><span class="branchCov" title="Branch 1 was taken 4110264 times"> + </span>]:<span class="lineCov">    4170381 :           if (iter-&gt;cur.bytes == 0)</span>
+<span class="lineNum">     166 </span>        [<span class="branchCov" title="Branch 0 was taken 40078 times"> + </span><span class="branchCov" title="Branch 1 was taken 2740176 times"> + </span>]:<span class="lineCov">    2780254 :           if (iter-&gt;cur.bytes == 0)</span>
 <span class="lineNum">     167 </span>                :            :             {
 <span class="lineNum">     168 </span>                :            :               /* A null wide character was encountered.  */
-<span class="lineNum">     169 </span>                :<span class="lineCov">      60117 :               iter-&gt;cur.bytes = 1;</span>
-<span class="lineNum">     170 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 60117 times"> + </span>]:<span class="lineCov">      60117 :               assert (*iter-&gt;cur.ptr == '\0');</span>
-<span class="lineNum">     171 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 60117 times"> + </span>]:<span class="lineCov">      60117 :               assert (iter-&gt;cur.wc == 0);</span>
+<span class="lineNum">     169 </span>                :<span class="lineCov">      40078 :               iter-&gt;cur.bytes = 1;</span>
+<span class="lineNum">     170 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 40078 times"> + </span>]:<span class="lineCov">      40078 :               assert (*iter-&gt;cur.ptr == '\0');</span>
+<span class="lineNum">     171 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 40078 times"> + </span>]:<span class="lineCov">      40078 :               assert (iter-&gt;cur.wc == 0);</span>
 <span class="lineNum">     172 </span>                :            :             }
-<span class="lineNum">     173 </span>                :<span class="lineCov">    4170381 :           iter-&gt;cur.wc_valid = true;</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">    2780254 :           iter-&gt;cur.wc_valid = true;</span>
 <span class="lineNum">     174 </span>                :            : 
 <span class="lineNum">     175 </span>                :            :           /* When in the initial state, we can go back treating ASCII
 <span class="lineNum">     176 </span>                :            :              characters more quickly.  */
-<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 1 was taken 4170381 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">    4170381 :           if (mbsinit (&amp;iter-&gt;state))</span>
-<span class="lineNum">     178 </span>                :<span class="lineCov">    4170381 :             iter-&gt;in_shift = false;</span>
+<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 1 was taken 2780254 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">    2780254 :           if (mbsinit (&amp;iter-&gt;state))</span>
+<span class="lineNum">     178 </span>                :<span class="lineCov">    2780254 :             iter-&gt;in_shift = false;</span>
 <span class="lineNum">     179 </span>                :            :         }
 <span class="lineNum">     180 </span>                :            :     }
-<span class="lineNum">     181 </span>                :<span class="lineCov">  317851266 :   iter-&gt;next_done = true;</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">  211900844 :   iter-&gt;next_done = true;</span>
 <span class="lineNum">     182 </span>                :            : }
 <span class="lineNum">     183 </span>                :            : 
 <span class="lineNum">     184 </span>                :            : static inline void

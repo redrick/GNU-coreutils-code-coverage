@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Multibyte character data type.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2001, 2005-2007, 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2001, 2005-2007, 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -328,19 +328,19 @@
 <span class="lineNum">     257 </span>                :            : 
 <a name="258"><span class="lineNum">     258 </span>                :            : /* Copying a character.  */</a>
 <span class="lineNum">     259 </span>                :            : static inline void
-<span class="lineNum">     260 </span>                :<span class="lineCov">    3000003 : mb_copy (mbchar_t *new_mbc, const mbchar_t *old_mbc)</span>
+<span class="lineNum">     260 </span>                :<span class="lineCov">    2000002 : mb_copy (mbchar_t *new_mbc, const mbchar_t *old_mbc)</span>
 <span class="lineNum">     261 </span>                :            : {
-<span class="lineNum">     262 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3000003 times"> + </span>]:<span class="lineCov">    3000003 :   if (old_mbc-&gt;ptr == &amp;old_mbc-&gt;buf[0])</span>
+<span class="lineNum">     262 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2000002 times"> + </span>]:<span class="lineCov">    2000002 :   if (old_mbc-&gt;ptr == &amp;old_mbc-&gt;buf[0])</span>
 <span class="lineNum">     263 </span>                :            :     {
 <span class="lineNum">     264 </span>                :<span class="lineNoCov">          0 :       memcpy (&amp;new_mbc-&gt;buf[0], &amp;old_mbc-&gt;buf[0], old_mbc-&gt;bytes);</span>
 <span class="lineNum">     265 </span>                :<span class="lineNoCov">          0 :       new_mbc-&gt;ptr = &amp;new_mbc-&gt;buf[0];</span>
 <span class="lineNum">     266 </span>                :            :     }
 <span class="lineNum">     267 </span>                :            :   else
-<span class="lineNum">     268 </span>                :<span class="lineCov">    3000003 :     new_mbc-&gt;ptr = old_mbc-&gt;ptr;</span>
-<span class="lineNum">     269 </span>                :<span class="lineCov">    3000003 :   new_mbc-&gt;bytes = old_mbc-&gt;bytes;</span>
-<span class="lineNum">     270 </span>        [<span class="branchCov" title="Branch 0 was taken 3000003 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    3000003 :   if ((new_mbc-&gt;wc_valid = old_mbc-&gt;wc_valid))</span>
-<span class="lineNum">     271 </span>                :<span class="lineCov">    3000003 :     new_mbc-&gt;wc = old_mbc-&gt;wc;</span>
-<span class="lineNum">     272 </span>                :<span class="lineCov">    3000003 : }</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">    2000002 :     new_mbc-&gt;ptr = old_mbc-&gt;ptr;</span>
+<span class="lineNum">     269 </span>                :<span class="lineCov">    2000002 :   new_mbc-&gt;bytes = old_mbc-&gt;bytes;</span>
+<span class="lineNum">     270 </span>        [<span class="branchCov" title="Branch 0 was taken 2000002 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    2000002 :   if ((new_mbc-&gt;wc_valid = old_mbc-&gt;wc_valid))</span>
+<span class="lineNum">     271 </span>                :<span class="lineCov">    2000002 :     new_mbc-&gt;wc = old_mbc-&gt;wc;</span>
+<span class="lineNum">     272 </span>                :<span class="lineCov">    2000002 : }</span>
 <span class="lineNum">     273 </span>                :            : 
 <span class="lineNum">     274 </span>                :            : 
 <span class="lineNum">     275 </span>                :            : /* is_basic(c) tests whether the single-byte character c is in the
@@ -376,10 +376,10 @@
 <span class="lineNum">     305 </span>                :            : extern const unsigned int is_basic_table[];
 <a name="306"><span class="lineNum">     306 </span>                :            : </a>
 <span class="lineNum">     307 </span>                :            : static inline bool
-<span class="lineNum">     308 </span>                :<span class="lineCov">  317854434 : is_basic (char c)</span>
+<span class="lineNum">     308 </span>                :<span class="lineCov">  211902956 : is_basic (char c)</span>
 <span class="lineNum">     309 </span>                :            : {
-<span class="lineNum">     310 </span>                :<span class="lineCov">  317854434 :   return (is_basic_table [(unsigned char) c &gt;&gt; 5] &gt;&gt; ((unsigned char) c &amp; 31))</span>
-<span class="lineNum">     311 </span>                :<span class="lineCov">  317854434 :          &amp; 1;</span>
+<span class="lineNum">     310 </span>                :<span class="lineCov">  211902956 :   return (is_basic_table [(unsigned char) c &gt;&gt; 5] &gt;&gt; ((unsigned char) c &amp; 31))</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">  211902956 :          &amp; 1;</span>
 <span class="lineNum">     312 </span>                :            : }
 <span class="lineNum">     313 </span>                :            : 
 <span class="lineNum">     314 </span>                :            : #else

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* GNU's uptime.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 1992-2002, 2004-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1992-2002, 2004-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@
 <span class="lineNum">      38 </span>                :            : #include &quot;readutmp.h&quot;
 <span class="lineNum">      39 </span>                :            : #include &quot;fprintftime.h&quot;
 <span class="lineNum">      40 </span>                :            : 
-<span class="lineNum">      41 </span>                :            : /* The official name of this program (e.g., no `g' prefix).  */
+<span class="lineNum">      41 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
 <span class="lineNum">      42 </span>                :            : #define PROGRAM_NAME &quot;uptime&quot;
 <span class="lineNum">      43 </span>                :            : 
 <span class="lineNum">      44 </span>                :            : #define AUTHORS \
@@ -258,73 +258,72 @@
 <span class="lineNum">     187 </span>                :<span class="lineNoCov">          0 : }</span>
 <a name="188"><span class="lineNum">     188 </span>                :            : </a>
 <span class="lineNum">     189 </span>                :            : void
-<span class="lineNum">     190 </span>                :<span class="lineCov">         12 : usage (int status)</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">          8 : usage (int status)</span>
 <span class="lineNum">     191 </span>                :            : {
-<span class="lineNum">     192 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         12 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">     193 </span>                :<span class="lineCov">          3 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
-<span class="lineNum">     194 </span>                :            :              program_name);
-<span class="lineNum">     195 </span>                :            :   else
-<span class="lineNum">     196 </span>                :            :     {
-<span class="lineNum">     197 </span>                :<span class="lineCov">          9 :       printf (_(&quot;Usage: %s [OPTION]... [FILE]\n&quot;), program_name);</span>
-<span class="lineNum">     198 </span>                :<span class="lineCov">          9 :       printf (_(&quot;\</span>
-<span class="lineNum">     199 </span>                :            : Print the current time, the length of time the system has been up,\n\
-<span class="lineNum">     200 </span>                :            : the number of users on the system, and the average number of jobs\n\
-<span class="lineNum">     201 </span>                :            : in the run queue over the last 1, 5 and 15 minutes.&quot;));
-<span class="lineNum">     202 </span>                :            : #ifdef __linux__
-<span class="lineNum">     203 </span>                :            :       /* It would be better to introduce a configure test for this,
-<span class="lineNum">     204 </span>                :            :          but such a test is hard to write.  For the moment then, we
-<span class="lineNum">     205 </span>                :            :          have a hack which depends on the preprocessor used at compile
-<span class="lineNum">     206 </span>                :            :          time to tell us what the running kernel is.  Ugh.  */
-<span class="lineNum">     207 </span>                :<span class="lineCov">          9 :       printf (_(&quot;  \</span>
-<span class="lineNum">     208 </span>                :            : Processes in\n\
-<span class="lineNum">     209 </span>                :            : an uninterruptible sleep state also contribute to the load average.\n&quot;));
-<span class="lineNum">     210 </span>                :            : #else
-<span class="lineNum">     211 </span>                :            :       printf (_(&quot;\n&quot;));
-<span class="lineNum">     212 </span>                :            : #endif
-<span class="lineNum">     213 </span>                :<span class="lineCov">          9 :       printf (_(&quot;\</span>
-<span class="lineNum">     214 </span>                :            : If FILE is not specified, use %s.  %s as FILE is common.\n\
-<span class="lineNum">     215 </span>                :            : \n&quot;),
-<span class="lineNum">     216 </span>                :            :               UTMP_FILE, WTMP_FILE);
-<span class="lineNum">     217 </span>                :<span class="lineCov">          9 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     218 </span>                :<span class="lineCov">          9 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     219 </span>                :<span class="lineCov">          9 :       emit_ancillary_info ();</span>
-<span class="lineNum">     220 </span>                :            :     }
-<span class="lineNum">     221 </span>                :<span class="lineCov">         12 :   exit (status);</span>
-<span class="lineNum">     222 </span>                :            : }
-<a name="223"><span class="lineNum">     223 </span>                :            : </a>
-<span class="lineNum">     224 </span>                :            : int
-<span class="lineNum">     225 </span>                :<span class="lineCov">         27 : main (int argc, char **argv)</span>
-<span class="lineNum">     226 </span>                :            : {
-<span class="lineNum">     227 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">     228 </span>                :<span class="lineCov">         27 :   set_program_name (argv[0]);</span>
-<span class="lineNum">     229 </span>                :<span class="lineCov">         27 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     230 </span>                :<span class="lineCov">         27 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     231 </span>                :<span class="lineCov">         27 :   textdomain (PACKAGE);</span>
-<span class="lineNum">     232 </span>                :            : 
-<span class="lineNum">     233 </span>                :<span class="lineCov">         27 :   atexit (close_stdout);</span>
-<span class="lineNum">     234 </span>                :            : 
-<span class="lineNum">     235 </span>                :<span class="lineCov">         27 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, Version,</span>
-<span class="lineNum">     236 </span>                :            :                       usage, AUTHORS, (char const *) NULL);
-<span class="lineNum">     237 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          3 :   if (getopt_long (argc, argv, &quot;&quot;, NULL, NULL) != -1)</span>
-<span class="lineNum">     238 </span>                :<span class="lineCov">          3 :     usage (EXIT_FAILURE);</span>
-<span class="lineNum">     239 </span>                :            : 
-<span class="lineNum">     240 </span>     [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   switch (argc - optind)</span>
-<span class="lineNum">     241 </span>                :            :     {
-<span class="lineNum">     242 </span>                :            :     case 0:                     /* uptime */
-<span class="lineNum">     243 </span>                :<span class="lineNoCov">          0 :       uptime (UTMP_FILE, READ_UTMP_CHECK_PIDS);</span>
-<span class="lineNum">     244 </span>                :<span class="lineNoCov">          0 :       break;</span>
-<span class="lineNum">     245 </span>                :            : 
-<span class="lineNum">     246 </span>                :            :     case 1:                     /* uptime &lt;utmp file&gt; */
-<span class="lineNum">     247 </span>                :<span class="lineNoCov">          0 :       uptime (argv[optind], 0);</span>
-<span class="lineNum">     248 </span>                :<span class="lineNoCov">          0 :       break;</span>
-<span class="lineNum">     249 </span>                :            : 
-<span class="lineNum">     250 </span>                :            :     default:                    /* lose */
-<span class="lineNum">     251 </span>                :<span class="lineNoCov">          0 :       error (0, 0, _(&quot;extra operand %s&quot;), quote (argv[optind + 1]));</span>
-<span class="lineNum">     252 </span>                :<span class="lineNoCov">          0 :       usage (EXIT_FAILURE);</span>
-<span class="lineNum">     253 </span>                :            :     }
-<span class="lineNum">     254 </span>                :            : 
-<span class="lineNum">     255 </span>                :<span class="lineNoCov">          0 :   exit (EXIT_SUCCESS);</span>
-<span class="lineNum">     256 </span>                :            : }
+<span class="lineNum">     192 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">          2 :     emit_try_help ();</span>
+<span class="lineNum">     194 </span>                :            :   else
+<span class="lineNum">     195 </span>                :            :     {
+<span class="lineNum">     196 </span>                :<span class="lineCov">          6 :       printf (_(&quot;Usage: %s [OPTION]... [FILE]\n&quot;), program_name);</span>
+<span class="lineNum">     197 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     198 </span>                :            : Print the current time, the length of time the system has been up,\n\
+<span class="lineNum">     199 </span>                :            : the number of users on the system, and the average number of jobs\n\
+<span class="lineNum">     200 </span>                :            : in the run queue over the last 1, 5 and 15 minutes.&quot;));
+<span class="lineNum">     201 </span>                :            : #ifdef __linux__
+<span class="lineNum">     202 </span>                :            :       /* It would be better to introduce a configure test for this,
+<span class="lineNum">     203 </span>                :            :          but such a test is hard to write.  For the moment then, we
+<span class="lineNum">     204 </span>                :            :          have a hack which depends on the preprocessor used at compile
+<span class="lineNum">     205 </span>                :            :          time to tell us what the running kernel is.  Ugh.  */
+<span class="lineNum">     206 </span>                :<span class="lineCov">          6 :       printf (_(&quot;  \</span>
+<span class="lineNum">     207 </span>                :            : Processes in\n\
+<span class="lineNum">     208 </span>                :            : an uninterruptible sleep state also contribute to the load average.\n&quot;));
+<span class="lineNum">     209 </span>                :            : #else
+<span class="lineNum">     210 </span>                :            :       printf (_(&quot;\n&quot;));
+<span class="lineNum">     211 </span>                :            : #endif
+<span class="lineNum">     212 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     213 </span>                :            : If FILE is not specified, use %s.  %s as FILE is common.\n\
+<span class="lineNum">     214 </span>                :            : \n&quot;),
+<span class="lineNum">     215 </span>                :            :               UTMP_FILE, WTMP_FILE);
+<span class="lineNum">     216 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     217 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     218 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">     219 </span>                :            :     }
+<span class="lineNum">     220 </span>                :<span class="lineCov">          8 :   exit (status);</span>
+<span class="lineNum">     221 </span>                :            : }
+<a name="222"><span class="lineNum">     222 </span>                :            : </a>
+<span class="lineNum">     223 </span>                :            : int
+<span class="lineNum">     224 </span>                :<span class="lineCov">         18 : main (int argc, char **argv)</span>
+<span class="lineNum">     225 </span>                :            : {
+<span class="lineNum">     226 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     227 </span>                :<span class="lineCov">         18 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     228 </span>                :<span class="lineCov">         18 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">         18 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">         18 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     231 </span>                :            : 
+<span class="lineNum">     232 </span>                :<span class="lineCov">         18 :   atexit (close_stdout);</span>
+<span class="lineNum">     233 </span>                :            : 
+<span class="lineNum">     234 </span>                :<span class="lineCov">         18 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, Version,</span>
+<span class="lineNum">     235 </span>                :            :                       usage, AUTHORS, (char const *) NULL);
+<span class="lineNum">     236 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          2 :   if (getopt_long (argc, argv, &quot;&quot;, NULL, NULL) != -1)</span>
+<span class="lineNum">     237 </span>                :<span class="lineCov">          2 :     usage (EXIT_FAILURE);</span>
+<span class="lineNum">     238 </span>                :            : 
+<span class="lineNum">     239 </span>     [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   switch (argc - optind)</span>
+<span class="lineNum">     240 </span>                :            :     {
+<span class="lineNum">     241 </span>                :            :     case 0:                     /* uptime */
+<span class="lineNum">     242 </span>                :<span class="lineNoCov">          0 :       uptime (UTMP_FILE, READ_UTMP_CHECK_PIDS);</span>
+<span class="lineNum">     243 </span>                :<span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     244 </span>                :            : 
+<span class="lineNum">     245 </span>                :            :     case 1:                     /* uptime &lt;utmp file&gt; */
+<span class="lineNum">     246 </span>                :<span class="lineNoCov">          0 :       uptime (argv[optind], 0);</span>
+<span class="lineNum">     247 </span>                :<span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     248 </span>                :            : 
+<span class="lineNum">     249 </span>                :            :     default:                    /* lose */
+<span class="lineNum">     250 </span>                :<span class="lineNoCov">          0 :       error (0, 0, _(&quot;extra operand %s&quot;), quote (argv[optind + 1]));</span>
+<span class="lineNum">     251 </span>                :<span class="lineNoCov">          0 :       usage (EXIT_FAILURE);</span>
+<span class="lineNum">     252 </span>                :            :     }
+<span class="lineNum">     253 </span>                :            : 
+<span class="lineNum">     254 </span>                :<span class="lineNoCov">          0 :   exit (EXIT_SUCCESS);</span>
+<span class="lineNum">     255 </span>                :            : }
 </pre>
       </td>
     </tr>

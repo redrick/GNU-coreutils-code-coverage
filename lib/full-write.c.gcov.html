@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* An interface to read and write that retries (if necessary) until complete.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1993-1994, 1997-2006, 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1993-1994, 1997-2006, 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -126,27 +126,27 @@
 <span class="lineNum">      55 </span>                :            :    When reading, if fewer than COUNT bytes are read, you must examine
 <a name="56"><span class="lineNum">      56 </span>                :            :    errno to distinguish failure from EOF (errno == 0).  */</a>
 <span class="lineNum">      57 </span>                :            : size_t
-<span class="lineNum">      58 </span>                :<span class="lineCov">      38359 : full_rw (int fd, const void *buf, size_t count)</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">      25906 : full_rw (int fd, const void *buf, size_t count)</span>
 <span class="lineNum">      59 </span>                :            : {
-<span class="lineNum">      60 </span>                :<span class="lineCov">      38359 :   size_t total = 0;</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">      38359 :   const char *ptr = (const char *) buf;</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">      25906 :   size_t total = 0;</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">      25906 :   const char *ptr = (const char *) buf;</span>
 <span class="lineNum">      62 </span>                :            : 
-<span class="lineNum">      63 </span>        [<span class="branchCov" title="Branch 0 was taken 38838 times"> + </span><span class="branchCov" title="Branch 1 was taken 37647 times"> + </span>]:<span class="lineCov">      76485 :   while (count &gt; 0)</span>
+<span class="lineNum">      63 </span>        [<span class="branchCov" title="Branch 0 was taken 26335 times"> + </span><span class="branchCov" title="Branch 1 was taken 25280 times"> + </span>]:<span class="lineCov">      51615 :   while (count &gt; 0)</span>
 <span class="lineNum">      64 </span>                :            :     {
-<span class="lineNum">      65 </span>                :<span class="lineCov">      38838 :       size_t n_rw = safe_rw (fd, ptr, count);</span>
-<span class="lineNum">      66 </span>        [<span class="branchCov" title="Branch 0 was taken 39 times"> + </span><span class="branchCov" title="Branch 1 was taken 38799 times"> + </span>]:<span class="lineCov">      38838 :       if (n_rw == (size_t) -1)</span>
-<span class="lineNum">      67 </span>                :<span class="lineCov">         39 :         break;</span>
-<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 673 times"> + </span><span class="branchCov" title="Branch 1 was taken 38126 times"> + </span>]:<span class="lineCov">      38799 :       if (n_rw == 0)</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">      26335 :       size_t n_rw = safe_rw (fd, ptr, count);</span>
+<span class="lineNum">      66 </span>        [<span class="branchCov" title="Branch 0 was taken 26 times"> + </span><span class="branchCov" title="Branch 1 was taken 26309 times"> + </span>]:<span class="lineCov">      26335 :       if (n_rw == (size_t) -1)</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">         26 :         break;</span>
+<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 600 times"> + </span><span class="branchCov" title="Branch 1 was taken 25709 times"> + </span>]:<span class="lineCov">      26309 :       if (n_rw == 0)</span>
 <span class="lineNum">      69 </span>                :            :         {
-<span class="lineNum">      70 </span>                :<span class="lineCov">        673 :           errno = ZERO_BYTE_TRANSFER_ERRNO;</span>
-<span class="lineNum">      71 </span>                :<span class="lineCov">        673 :           break;</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">        600 :           errno = ZERO_BYTE_TRANSFER_ERRNO;</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">        600 :           break;</span>
 <span class="lineNum">      72 </span>                :            :         }
-<span class="lineNum">      73 </span>                :<span class="lineCov">      38126 :       total += n_rw;</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">      38126 :       ptr += n_rw;</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">      38126 :       count -= n_rw;</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">      25709 :       total += n_rw;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">      25709 :       ptr += n_rw;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">      25709 :       count -= n_rw;</span>
 <span class="lineNum">      76 </span>                :            :     }
 <span class="lineNum">      77 </span>                :            : 
-<span class="lineNum">      78 </span>                :<span class="lineCov">      38359 :   return total;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">      25906 :   return total;</span>
 <span class="lineNum">      79 </span>                :            : }
 </pre>
       </td>

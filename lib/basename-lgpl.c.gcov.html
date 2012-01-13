@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* basename.c -- return the last element in a file name</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1990, 1998-2001, 2003-2006, 2009-2011 Free Software
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1990, 1998-2001, 2003-2006, 2009-2012 Free Software
 <span class="lineNum">       4 </span>                :            :    Foundation, Inc.
 <span class="lineNum">       5 </span>                :            : 
 <span class="lineNum">       6 </span>                :            :    This program is free software: you can redistribute it and/or modify
@@ -98,27 +98,27 @@
 <span class="lineNum">      27 </span>                :            :    system root, return the empty string.  */
 <a name="28"><span class="lineNum">      28 </span>                :            : </a>
 <span class="lineNum">      29 </span>                :            : char *
-<span class="lineNum">      30 </span>                :<span class="lineCov">     162679 : last_component (char const *name)</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">     157525 : last_component (char const *name)</span>
 <span class="lineNum">      31 </span>                :            : {
-<span class="lineNum">      32 </span>                :<span class="lineCov">     162679 :   char const *base = name + FILE_SYSTEM_PREFIX_LEN (name);</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">     157525 :   char const *base = name + FILE_SYSTEM_PREFIX_LEN (name);</span>
 <span class="lineNum">      33 </span>                :            :   char const *p;
-<span class="lineNum">      34 </span>                :<span class="lineCov">     162679 :   bool saw_slash = false;</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">     157525 :   bool saw_slash = false;</span>
 <span class="lineNum">      35 </span>                :            : 
-<span class="lineNum">      36 </span>        [<span class="branchCov" title="Branch 0 was taken 16352 times"> + </span><span class="branchCov" title="Branch 1 was taken 162679 times"> + </span>]:<span class="lineCov">     179031 :   while (ISSLASH (*base))</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">      16352 :     base++;</span>
+<span class="lineNum">      36 </span>        [<span class="branchCov" title="Branch 0 was taken 14806 times"> + </span><span class="branchCov" title="Branch 1 was taken 157525 times"> + </span>]:<span class="lineCov">     172331 :   while (ISSLASH (*base))</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">      14806 :     base++;</span>
 <span class="lineNum">      38 </span>                :            : 
-<span class="lineNum">      39 </span>        [<span class="branchCov" title="Branch 0 was taken 4422417 times"> + </span><span class="branchCov" title="Branch 1 was taken 162679 times"> + </span>]:<span class="lineCov">    4585096 :   for (p = base; *p; p++)</span>
+<span class="lineNum">      39 </span>        [<span class="branchCov" title="Branch 0 was taken 4313309 times"> + </span><span class="branchCov" title="Branch 1 was taken 157525 times"> + </span>]:<span class="lineCov">    4470834 :   for (p = base; *p; p++)</span>
 <span class="lineNum">      40 </span>                :            :     {
-<span class="lineNum">      41 </span>        [<span class="branchCov" title="Branch 0 was taken 124391 times"> + </span><span class="branchCov" title="Branch 1 was taken 4298026 times"> + </span>]:<span class="lineCov">    4422417 :       if (ISSLASH (*p))</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">     124391 :         saw_slash = true;</span>
-<span class="lineNum">      43 </span>        [<span class="branchCov" title="Branch 0 was taken 123952 times"> + </span><span class="branchCov" title="Branch 1 was taken 4174074 times"> + </span>]:<span class="lineCov">    4298026 :       else if (saw_slash)</span>
+<span class="lineNum">      41 </span>        [<span class="branchCov" title="Branch 0 was taken 116073 times"> + </span><span class="branchCov" title="Branch 1 was taken 4197236 times"> + </span>]:<span class="lineCov">    4313309 :       if (ISSLASH (*p))</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">     116073 :         saw_slash = true;</span>
+<span class="lineNum">      43 </span>        [<span class="branchCov" title="Branch 0 was taken 115783 times"> + </span><span class="branchCov" title="Branch 1 was taken 4081453 times"> + </span>]:<span class="lineCov">    4197236 :       else if (saw_slash)</span>
 <span class="lineNum">      44 </span>                :            :         {
-<span class="lineNum">      45 </span>                :<span class="lineCov">     123952 :           base = p;</span>
-<span class="lineNum">      46 </span>                :<span class="lineCov">     123952 :           saw_slash = false;</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">     115783 :           base = p;</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">     115783 :           saw_slash = false;</span>
 <span class="lineNum">      47 </span>                :            :         }
 <span class="lineNum">      48 </span>                :            :     }
 <span class="lineNum">      49 </span>                :            : 
-<span class="lineNum">      50 </span>                :<span class="lineCov">     162679 :   return (char *) base;</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">     157525 :   return (char *) base;</span>
 <span class="lineNum">      51 </span>                :            : }
 <span class="lineNum">      52 </span>                :            : 
 <span class="lineNum">      53 </span>                :            : /* Return the length of the basename NAME.  Typically NAME is the
@@ -126,13 +126,13 @@
 <span class="lineNum">      55 </span>                :            :    (NAME), except omit all trailing slashes.  */
 <a name="56"><span class="lineNum">      56 </span>                :            : </a>
 <span class="lineNum">      57 </span>                :            : size_t
-<span class="lineNum">      58 </span>                :<span class="lineCov">     145399 : base_len (char const *name)</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">     143407 : base_len (char const *name)</span>
 <span class="lineNum">      59 </span>                :            : {
 <span class="lineNum">      60 </span>                :            :   size_t len;
-<span class="lineNum">      61 </span>                :<span class="lineCov">     145399 :   size_t prefix_len = FILE_SYSTEM_PREFIX_LEN (name);</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">     143407 :   size_t prefix_len = FILE_SYSTEM_PREFIX_LEN (name);</span>
 <span class="lineNum">      62 </span>                :            : 
-<span class="lineNum">      63 </span>[<span class="branchCov" title="Branch 0 was taken 144173 times"> + </span><span class="branchCov" title="Branch 1 was taken 1521 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 295 times"> + </span><span class="branchCov" title="Branch 3 was taken 143878 times"> + </span>]:<span class="lineCov">     145694 :   for (len = strlen (name);  1 &lt; len &amp;&amp; ISSLASH (name[len - 1]);  len--)</span>
-<span class="lineNum">      64 </span>                :<span class="lineCov">        295 :     continue;</span>
+<span class="lineNum">      63 </span>[<span class="branchCov" title="Branch 0 was taken 142575 times"> + </span><span class="branchCov" title="Branch 1 was taken 1026 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 194 times"> + </span><span class="branchCov" title="Branch 3 was taken 142381 times"> + </span>]:<span class="lineCov">     143601 :   for (len = strlen (name);  1 &lt; len &amp;&amp; ISSLASH (name[len - 1]);  len--)</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">        194 :     continue;</span>
 <span class="lineNum">      65 </span>                :            : 
 <span class="lineNum">      66 </span>                :            :   if (DOUBLE_SLASH_IS_DISTINCT_ROOT &amp;&amp; len == 1
 <span class="lineNum">      67 </span>                :            :       &amp;&amp; ISSLASH (name[0]) &amp;&amp; ISSLASH (name[1]) &amp;&amp; ! name[2])
@@ -142,7 +142,7 @@
 <span class="lineNum">      71 </span>                :            :       &amp;&amp; len == prefix_len &amp;&amp; ISSLASH (name[prefix_len]))
 <span class="lineNum">      72 </span>                :            :     return prefix_len + 1;
 <span class="lineNum">      73 </span>                :            : 
-<span class="lineNum">      74 </span>                :<span class="lineCov">     145399 :   return len;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">     143407 :   return len;</span>
 <span class="lineNum">      75 </span>                :            : }
 </pre>
       </td>

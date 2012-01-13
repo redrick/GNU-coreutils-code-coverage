@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Compare numeric strings.  This is an internal include file.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1988, 1991-1993, 1995-1996, 1998-2000, 2003-2006, 2009-2011
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1988, 1991-1993, 1995-1996, 1998-2000, 2003-2006, 2009-2012
 <span class="lineNum">       4 </span>                :            :    Free Software Foundation, Inc.
 <span class="lineNum">       5 </span>                :            : 
 <span class="lineNum">       6 </span>                :            :    This program is free software: you can redistribute it and/or modify
@@ -105,7 +105,7 @@
 <span class="lineNum">      34 </span>                :            :    - It's typically faster.
 <span class="lineNum">      35 </span>                :            :    POSIX says that only '0' through '9' are digits.  Prefer ISDIGIT to
 <span class="lineNum">      36 </span>                :            :    isdigit unless it's important to use the locale's definition
-<span class="lineNum">      37 </span>                :            :    of `digit' even when the host does not conform to POSIX.  */
+<span class="lineNum">      37 </span>                :            :    of 'digit' even when the host does not conform to POSIX.  */
 <span class="lineNum">      38 </span>                :            : # define ISDIGIT(c) ((unsigned int) (c) - '0' &lt;= 9)
 <span class="lineNum">      39 </span>                :            : 
 <span class="lineNum">      40 </span>                :            : 
@@ -143,36 +143,36 @@
 <span class="lineNum">      72 </span>                :            :    return 0 */
 <a name="73"><span class="lineNum">      73 </span>                :            : </a>
 <span class="lineNum">      74 </span>                :            : static inline int _GL_ATTRIBUTE_PURE
-<span class="lineNum">      75 </span>                :<span class="lineCov">        153 : fraccompare (char const *a, char const *b, char decimal_point)</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">        102 : fraccompare (char const *a, char const *b, char decimal_point)</span>
 <span class="lineNum">      76 </span>                :            : {
-<span class="lineNum">      77 </span>[<span class="branchCov" title="Branch 0 was taken 147 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 129 times"> + </span><span class="branchCov" title="Branch 3 was taken 18 times"> + </span>]:<span class="lineCov">        153 :   if (*a == decimal_point &amp;&amp; *b == decimal_point)</span>
+<span class="lineNum">      77 </span>[<span class="branchCov" title="Branch 0 was taken 98 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 86 times"> + </span><span class="branchCov" title="Branch 3 was taken 12 times"> + </span>]:<span class="lineCov">        102 :   if (*a == decimal_point &amp;&amp; *b == decimal_point)</span>
 <span class="lineNum">      78 </span>                :            :     {
-<span class="lineNum">      79 </span>        [<span class="branchCov" title="Branch 0 was taken 198 times"> + </span><span class="branchCov" title="Branch 1 was taken 129 times"> + </span>]:<span class="lineCov">        327 :       while (*++a == *++b)</span>
-<span class="lineNum">      80 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 198 times"> + </span>]:<span class="lineCov">        198 :         if (! ISDIGIT (*a))</span>
+<span class="lineNum">      79 </span>        [<span class="branchCov" title="Branch 0 was taken 132 times"> + </span><span class="branchCov" title="Branch 1 was taken 86 times"> + </span>]:<span class="lineCov">        218 :       while (*++a == *++b)</span>
+<span class="lineNum">      80 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 132 times"> + </span>]:<span class="lineCov">        132 :         if (! ISDIGIT (*a))</span>
 <span class="lineNum">      81 </span>                :<span class="lineNoCov">          0 :           return 0;</span>
-<span class="lineNum">      82 </span>[<span class="branchCov" title="Branch 0 was taken 63 times"> + </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 36 times"> + </span><span class="branchCov" title="Branch 3 was taken 27 times"> + </span>]:<span class="lineCov">        129 :       if (ISDIGIT (*a) &amp;&amp; ISDIGIT (*b))</span>
-<span class="lineNum">      83 </span>                :<span class="lineCov">         36 :         return *a - *b;</span>
-<span class="lineNum">      84 </span>        [<span class="branchCov" title="Branch 0 was taken 27 times"> + </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>]:<span class="lineCov">         93 :       if (ISDIGIT (*a))</span>
-<span class="lineNum">      85 </span>                :<span class="lineCov">         27 :         goto a_trailing_nonzero;</span>
-<span class="lineNum">      86 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         66 :       if (ISDIGIT (*b))</span>
-<span class="lineNum">      87 </span>                :<span class="lineCov">         30 :         goto b_trailing_nonzero;</span>
-<span class="lineNum">      88 </span>                :<span class="lineCov">         36 :       return 0;</span>
+<span class="lineNum">      82 </span>[<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 24 times"> + </span><span class="branchCov" title="Branch 3 was taken 18 times"> + </span>]:<span class="lineCov">         86 :       if (ISDIGIT (*a) &amp;&amp; ISDIGIT (*b))</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">         24 :         return *a - *b;</span>
+<span class="lineNum">      84 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>]:<span class="lineCov">         62 :       if (ISDIGIT (*a))</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">         18 :         goto a_trailing_nonzero;</span>
+<span class="lineNum">      86 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         44 :       if (ISDIGIT (*b))</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">         20 :         goto b_trailing_nonzero;</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">         24 :       return 0;</span>
 <span class="lineNum">      89 </span>                :            :     }
-<span class="lineNum">      90 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         24 :   else if (*a++ == decimal_point)</span>
+<span class="lineNum">      90 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">         16 :   else if (*a++ == decimal_point)</span>
 <span class="lineNum">      91 </span>                :            :     {
 <span class="lineNum">      92 </span>                :            :     a_trailing_nonzero:
-<span class="lineNum">      93 </span>        [<span class="branchCov" title="Branch 0 was taken 36 times"> + </span><span class="branchCov" title="Branch 1 was taken 45 times"> + </span>]:<span class="lineCov">         81 :       while (*a == NUMERIC_ZERO)</span>
-<span class="lineNum">      94 </span>                :<span class="lineCov">         36 :         a++;</span>
-<span class="lineNum">      95 </span>                :<span class="lineCov">         45 :       return ISDIGIT (*a);</span>
+<span class="lineNum">      93 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         54 :       while (*a == NUMERIC_ZERO)</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">         24 :         a++;</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">         30 :       return ISDIGIT (*a);</span>
 <span class="lineNum">      96 </span>                :            :     }
-<span class="lineNum">      97 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          6 :   else if (*b++ == decimal_point)</span>
+<span class="lineNum">      97 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :   else if (*b++ == decimal_point)</span>
 <span class="lineNum">      98 </span>                :            :     {
 <span class="lineNum">      99 </span>                :            :     b_trailing_nonzero:
-<span class="lineNum">     100 </span>        [<span class="branchCov" title="Branch 0 was taken 27 times"> + </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         63 :       while (*b == NUMERIC_ZERO)</span>
-<span class="lineNum">     101 </span>                :<span class="lineCov">         27 :         b++;</span>
-<span class="lineNum">     102 </span>                :<span class="lineCov">         36 :       return - ISDIGIT (*b);</span>
+<span class="lineNum">     100 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         42 :       while (*b == NUMERIC_ZERO)</span>
+<span class="lineNum">     101 </span>                :<span class="lineCov">         18 :         b++;</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">         24 :       return - ISDIGIT (*b);</span>
 <span class="lineNum">     103 </span>                :            :     }
-<span class="lineNum">     104 </span>                :<span class="lineCov">        153 :   return 0;</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">        102 :   return 0;</span>
 <span class="lineNum">     105 </span>                :            : }
 <span class="lineNum">     106 </span>                :            : 
 <span class="lineNum">     107 </span>                :            : /* Compare strings A and B as numbers without explicitly converting
@@ -183,41 +183,41 @@
 <span class="lineNum">     112 </span>                :            :    character, and likewise for THOUSANDS_SEP.  */
 <a name="113"><span class="lineNum">     113 </span>                :            : </a>
 <span class="lineNum">     114 </span>                :            : static inline int _GL_ATTRIBUTE_PURE
-<span class="lineNum">     115 </span>                :<span class="lineCov">       9348 : numcompare (char const *a, char const *b,</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">       6395 : numcompare (char const *a, char const *b,</span>
 <span class="lineNum">     116 </span>                :            :             int decimal_point, int thousands_sep)
 <span class="lineNum">     117 </span>                :            : {
-<span class="lineNum">     118 </span>                :<span class="lineCov">       9348 :   unsigned char tmpa = *a;</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">       9348 :   unsigned char tmpb = *b;</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">       6395 :   unsigned char tmpa = *a;</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">       6395 :   unsigned char tmpb = *b;</span>
 <span class="lineNum">     120 </span>                :            :   int tmp;
 <span class="lineNum">     121 </span>                :            :   size_t log_a;
 <span class="lineNum">     122 </span>                :            :   size_t log_b;
 <span class="lineNum">     123 </span>                :            : 
-<span class="lineNum">     124 </span>        [<span class="branchCov" title="Branch 0 was taken 144 times"> + </span><span class="branchCov" title="Branch 1 was taken 9204 times"> + </span>]:<span class="lineCov">       9348 :   if (tmpa == NEGATION_SIGN)</span>
+<span class="lineNum">     124 </span>        [<span class="branchCov" title="Branch 0 was taken 96 times"> + </span><span class="branchCov" title="Branch 1 was taken 6299 times"> + </span>]:<span class="lineCov">       6395 :   if (tmpa == NEGATION_SIGN)</span>
 <span class="lineNum">     125 </span>                :            :     {
 <span class="lineNum">     126 </span>                :            :       do
-<span class="lineNum">     127 </span>                :<span class="lineCov">        153 :         tmpa = *++a;</span>
-<span class="lineNum">     128 </span>[<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 144 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 144 times"> + </span>]:<span class="lineCov">        153 :       while (tmpa == NUMERIC_ZERO || tmpa == thousands_sep);</span>
-<span class="lineNum">     129 </span>        [<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>]:<span class="lineCov">        144 :       if (tmpb != NEGATION_SIGN)</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">        102 :         tmpa = *++a;</span>
+<span class="lineNum">     128 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 96 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 96 times"> + </span>]:<span class="lineCov">        102 :       while (tmpa == NUMERIC_ZERO || tmpa == thousands_sep);</span>
+<span class="lineNum">     129 </span>        [<span class="branchCov" title="Branch 0 was taken 36 times"> + </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>]:<span class="lineCov">         96 :       if (tmpb != NEGATION_SIGN)</span>
 <span class="lineNum">     130 </span>                :            :         {
-<span class="lineNum">     131 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>]:<span class="lineCov">         54 :           if (tmpa == decimal_point)</span>
+<span class="lineNum">     131 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         36 :           if (tmpa == decimal_point)</span>
 <span class="lineNum">     132 </span>                :            :             do
 <span class="lineNum">     133 </span>                :<span class="lineNoCov">          0 :               tmpa = *++a;</span>
 <span class="lineNum">     134 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :             while (tmpa == NUMERIC_ZERO);</span>
-<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         54 :           if (ISDIGIT (tmpa))</span>
-<span class="lineNum">     136 </span>                :<span class="lineCov">         42 :             return -1;</span>
-<span class="lineNum">     137 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 12 times"> + </span>]:<span class="lineCov">         12 :           while (tmpb == NUMERIC_ZERO || tmpb == thousands_sep)</span>
+<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">         36 :           if (ISDIGIT (tmpa))</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">         28 :             return -1;</span>
+<span class="lineNum">     137 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 8 times"> + </span>]:<span class="lineCov">          8 :           while (tmpb == NUMERIC_ZERO || tmpb == thousands_sep)</span>
 <span class="lineNum">     138 </span>                :<span class="lineNoCov">          0 :             tmpb = *++b;</span>
-<span class="lineNum">     139 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         12 :           if (tmpb == decimal_point)</span>
+<span class="lineNum">     139 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :           if (tmpb == decimal_point)</span>
 <span class="lineNum">     140 </span>                :            :             do
 <span class="lineNum">     141 </span>                :<span class="lineNoCov">          0 :               tmpb = *++b;</span>
 <span class="lineNum">     142 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :             while (tmpb == NUMERIC_ZERO);</span>
-<span class="lineNum">     143 </span>                :<span class="lineCov">         12 :           return - ISDIGIT (tmpb);</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">          8 :           return - ISDIGIT (tmpb);</span>
 <span class="lineNum">     144 </span>                :            :         }
 <span class="lineNum">     145 </span>                :            :       do
-<span class="lineNum">     146 </span>                :<span class="lineCov">         96 :         tmpb = *++b;</span>
-<span class="lineNum">     147 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 90 times"> + </span>]:<span class="lineCov">         96 :       while (tmpb == NUMERIC_ZERO || tmpb == thousands_sep);</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">         64 :         tmpb = *++b;</span>
+<span class="lineNum">     147 </span>[<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 60 times"> + </span>]:<span class="lineCov">         64 :       while (tmpb == NUMERIC_ZERO || tmpb == thousands_sep);</span>
 <span class="lineNum">     148 </span>                :            : 
-<span class="lineNum">     149 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         90 :       while (tmpa == tmpb &amp;&amp; ISDIGIT (tmpa))</span>
+<span class="lineNum">     149 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         60 :       while (tmpa == tmpb &amp;&amp; ISDIGIT (tmpa))</span>
 <span class="lineNum">     150 </span>                :            :         {
 <span class="lineNum">     151 </span>                :            :           do
 <span class="lineNum">     152 </span>                :<span class="lineNoCov">          0 :             tmpa = *++a;</span>
@@ -227,89 +227,89 @@
 <span class="lineNum">     156 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           while (tmpb == thousands_sep);</span>
 <span class="lineNum">     157 </span>                :            :         }
 <span class="lineNum">     158 </span>                :            : 
-<span class="lineNum">     159 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         90 :       if ((tmpa == decimal_point &amp;&amp; !ISDIGIT (tmpb))</span>
-<span class="lineNum">     160 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         90 :           || (tmpb == decimal_point &amp;&amp; !ISDIGIT (tmpa)))</span>
+<span class="lineNum">     159 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         60 :       if ((tmpa == decimal_point &amp;&amp; !ISDIGIT (tmpb))</span>
+<span class="lineNum">     160 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         60 :           || (tmpb == decimal_point &amp;&amp; !ISDIGIT (tmpa)))</span>
 <span class="lineNum">     161 </span>                :<span class="lineNoCov">          0 :         return fraccompare (b, a, decimal_point);</span>
 <span class="lineNum">     162 </span>                :            : 
-<span class="lineNum">     163 </span>                :<span class="lineCov">         90 :       tmp = tmpb - tmpa;</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">         60 :       tmp = tmpb - tmpa;</span>
 <span class="lineNum">     164 </span>                :            : 
-<span class="lineNum">     165 </span>        [<span class="branchCov" title="Branch 0 was taken 78 times"> + </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>]:<span class="lineCov">        168 :       for (log_a = 0; ISDIGIT (tmpa); ++log_a)</span>
+<span class="lineNum">     165 </span>        [<span class="branchCov" title="Branch 0 was taken 52 times"> + </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>]:<span class="lineCov">        112 :       for (log_a = 0; ISDIGIT (tmpa); ++log_a)</span>
 <span class="lineNum">     166 </span>                :            :         do
-<span class="lineNum">     167 </span>                :<span class="lineCov">         78 :           tmpa = *++a;</span>
-<span class="lineNum">     168 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 78 times"> + </span>]:<span class="lineCov">         78 :         while (tmpa == thousands_sep);</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">         52 :           tmpa = *++a;</span>
+<span class="lineNum">     168 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 52 times"> + </span>]:<span class="lineCov">         52 :         while (tmpa == thousands_sep);</span>
 <span class="lineNum">     169 </span>                :            : 
-<span class="lineNum">     170 </span>        [<span class="branchCov" title="Branch 0 was taken 78 times"> + </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>]:<span class="lineCov">        168 :       for (log_b = 0; ISDIGIT (tmpb); ++log_b)</span>
+<span class="lineNum">     170 </span>        [<span class="branchCov" title="Branch 0 was taken 52 times"> + </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>]:<span class="lineCov">        112 :       for (log_b = 0; ISDIGIT (tmpb); ++log_b)</span>
 <span class="lineNum">     171 </span>                :            :         do
-<span class="lineNum">     172 </span>                :<span class="lineCov">         78 :           tmpb = *++b;</span>
-<span class="lineNum">     173 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 78 times"> + </span>]:<span class="lineCov">         78 :         while (tmpb == thousands_sep);</span>
+<span class="lineNum">     172 </span>                :<span class="lineCov">         52 :           tmpb = *++b;</span>
+<span class="lineNum">     173 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 52 times"> + </span>]:<span class="lineCov">         52 :         while (tmpb == thousands_sep);</span>
 <span class="lineNum">     174 </span>                :            : 
-<span class="lineNum">     175 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 78 times"> + </span>]:<span class="lineCov">         90 :       if (log_a != log_b)</span>
-<span class="lineNum">     176 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         12 :         return log_a &lt; log_b ? 1 : -1;</span>
+<span class="lineNum">     175 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 52 times"> + </span>]:<span class="lineCov">         60 :       if (log_a != log_b)</span>
+<span class="lineNum">     176 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          8 :         return log_a &lt; log_b ? 1 : -1;</span>
 <span class="lineNum">     177 </span>                :            : 
-<span class="lineNum">     178 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 72 times"> + </span>]:<span class="lineCov">         78 :       if (!log_a)</span>
-<span class="lineNum">     179 </span>                :<span class="lineCov">          6 :         return 0;</span>
+<span class="lineNum">     178 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 48 times"> + </span>]:<span class="lineCov">         52 :       if (!log_a)</span>
+<span class="lineNum">     179 </span>                :<span class="lineCov">          4 :         return 0;</span>
 <span class="lineNum">     180 </span>                :            : 
-<span class="lineNum">     181 </span>                :<span class="lineCov">         72 :       return tmp;</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">         48 :       return tmp;</span>
 <span class="lineNum">     182 </span>                :            :     }
-<span class="lineNum">     183 </span>        [<span class="branchCov" title="Branch 0 was taken 57 times"> + </span><span class="branchCov" title="Branch 1 was taken 9147 times"> + </span>]:<span class="lineCov">       9204 :   else if (tmpb == NEGATION_SIGN)</span>
+<span class="lineNum">     183 </span>        [<span class="branchCov" title="Branch 0 was taken 38 times"> + </span><span class="branchCov" title="Branch 1 was taken 6261 times"> + </span>]:<span class="lineCov">       6299 :   else if (tmpb == NEGATION_SIGN)</span>
 <span class="lineNum">     184 </span>                :            :     {
 <span class="lineNum">     185 </span>                :            :       do
-<span class="lineNum">     186 </span>                :<span class="lineCov">         60 :         tmpb = *++b;</span>
-<span class="lineNum">     187 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 57 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 57 times"> + </span>]:<span class="lineCov">         60 :       while (tmpb == NUMERIC_ZERO || tmpb == thousands_sep);</span>
-<span class="lineNum">     188 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 57 times"> + </span>]:<span class="lineCov">         57 :       if (tmpb == decimal_point)</span>
+<span class="lineNum">     186 </span>                :<span class="lineCov">         40 :         tmpb = *++b;</span>
+<span class="lineNum">     187 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 38 times"> + </span>]:<span class="lineCov">         40 :       while (tmpb == NUMERIC_ZERO || tmpb == thousands_sep);</span>
+<span class="lineNum">     188 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span>]:<span class="lineCov">         38 :       if (tmpb == decimal_point)</span>
 <span class="lineNum">     189 </span>                :            :         do
 <span class="lineNum">     190 </span>                :<span class="lineNoCov">          0 :           tmpb = *++b;</span>
 <span class="lineNum">     191 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         while (tmpb == NUMERIC_ZERO);</span>
-<span class="lineNum">     192 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         57 :       if (ISDIGIT (tmpb))</span>
-<span class="lineNum">     193 </span>                :<span class="lineCov">         42 :         return 1;</span>
-<span class="lineNum">     194 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 15 times"> + </span>]:<span class="lineCov">         15 :       while (tmpa == NUMERIC_ZERO || tmpa == thousands_sep)</span>
+<span class="lineNum">     192 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         38 :       if (ISDIGIT (tmpb))</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">         28 :         return 1;</span>
+<span class="lineNum">     194 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 10 times"> + </span>]:<span class="lineCov">         10 :       while (tmpa == NUMERIC_ZERO || tmpa == thousands_sep)</span>
 <span class="lineNum">     195 </span>                :<span class="lineNoCov">          0 :         tmpa = *++a;</span>
-<span class="lineNum">     196 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :       if (tmpa == decimal_point)</span>
+<span class="lineNum">     196 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :       if (tmpa == decimal_point)</span>
 <span class="lineNum">     197 </span>                :            :         do
 <span class="lineNum">     198 </span>                :<span class="lineNoCov">          0 :           tmpa = *++a;</span>
 <span class="lineNum">     199 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         while (tmpa == NUMERIC_ZERO);</span>
-<span class="lineNum">     200 </span>                :<span class="lineCov">         15 :       return ISDIGIT (tmpa);</span>
+<span class="lineNum">     200 </span>                :<span class="lineCov">         10 :       return ISDIGIT (tmpa);</span>
 <span class="lineNum">     201 </span>                :            :     }
 <span class="lineNum">     202 </span>                :            :   else
 <span class="lineNum">     203 </span>                :            :     {
-<span class="lineNum">     204 </span>[<span class="branchCov" title="Branch 0 was taken 78 times"> + </span><span class="branchCov" title="Branch 1 was taken 9147 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 9147 times"> + </span>]:<span class="lineCov">       9225 :       while (tmpa == NUMERIC_ZERO || tmpa == thousands_sep)</span>
-<span class="lineNum">     205 </span>                :<span class="lineCov">         78 :         tmpa = *++a;</span>
-<span class="lineNum">     206 </span>[<span class="branchCov" title="Branch 0 was taken 168 times"> + </span><span class="branchCov" title="Branch 1 was taken 9147 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 9147 times"> + </span>]:<span class="lineCov">       9315 :       while (tmpb == NUMERIC_ZERO || tmpb == thousands_sep)</span>
-<span class="lineNum">     207 </span>                :<span class="lineCov">        168 :         tmpb = *++b;</span>
+<span class="lineNum">     204 </span>[<span class="branchCov" title="Branch 0 was taken 52 times"> + </span><span class="branchCov" title="Branch 1 was taken 6261 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 6261 times"> + </span>]:<span class="lineCov">       6313 :       while (tmpa == NUMERIC_ZERO || tmpa == thousands_sep)</span>
+<span class="lineNum">     205 </span>                :<span class="lineCov">         52 :         tmpa = *++a;</span>
+<span class="lineNum">     206 </span>[<span class="branchCov" title="Branch 0 was taken 112 times"> + </span><span class="branchCov" title="Branch 1 was taken 6261 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 6261 times"> + </span>]:<span class="lineCov">       6373 :       while (tmpb == NUMERIC_ZERO || tmpb == thousands_sep)</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">        112 :         tmpb = *++b;</span>
 <span class="lineNum">     208 </span>                :            : 
-<span class="lineNum">     209 </span>[<span class="branchCov" title="Branch 0 was taken 3489 times"> + </span><span class="branchCov" title="Branch 1 was taken 8757 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3099 times"> + </span><span class="branchCov" title="Branch 3 was taken 390 times"> + </span>]:<span class="lineCov">      12246 :       while (tmpa == tmpb &amp;&amp; ISDIGIT (tmpa))</span>
+<span class="lineNum">     209 </span>[<span class="branchCov" title="Branch 0 was taken 2377 times"> + </span><span class="branchCov" title="Branch 1 was taken 6001 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 2117 times"> + </span><span class="branchCov" title="Branch 3 was taken 260 times"> + </span>]:<span class="lineCov">       8378 :       while (tmpa == tmpb &amp;&amp; ISDIGIT (tmpa))</span>
 <span class="lineNum">     210 </span>                :            :         {
 <span class="lineNum">     211 </span>                :            :           do
-<span class="lineNum">     212 </span>                :<span class="lineCov">       3099 :             tmpa = *++a;</span>
-<span class="lineNum">     213 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3099 times"> + </span>]:<span class="lineCov">       3099 :           while (tmpa == thousands_sep);</span>
+<span class="lineNum">     212 </span>                :<span class="lineCov">       2117 :             tmpa = *++a;</span>
+<span class="lineNum">     213 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2117 times"> + </span>]:<span class="lineCov">       2117 :           while (tmpa == thousands_sep);</span>
 <span class="lineNum">     214 </span>                :            :           do
-<span class="lineNum">     215 </span>                :<span class="lineCov">       3099 :             tmpb = *++b;</span>
-<span class="lineNum">     216 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3099 times"> + </span>]:<span class="lineCov">       3099 :           while (tmpb == thousands_sep);</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">       2117 :             tmpb = *++b;</span>
+<span class="lineNum">     216 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2117 times"> + </span>]:<span class="lineCov">       2117 :           while (tmpb == thousands_sep);</span>
 <span class="lineNum">     217 </span>                :            :         }
 <span class="lineNum">     218 </span>                :            : 
-<span class="lineNum">     219 </span>[<span class="branchCov" title="Branch 0 was taken 147 times"> + </span><span class="branchCov" title="Branch 1 was taken 9000 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 147 times"> + </span>]:<span class="lineCov">       9147 :       if ((tmpa == decimal_point &amp;&amp; !ISDIGIT (tmpb))</span>
-<span class="lineNum">     220 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 8994 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       9000 :           || (tmpb == decimal_point &amp;&amp; !ISDIGIT (tmpa)))</span>
-<span class="lineNum">     221 </span>                :<span class="lineCov">        153 :         return fraccompare (a, b, decimal_point);</span>
+<span class="lineNum">     219 </span>[<span class="branchCov" title="Branch 0 was taken 98 times"> + </span><span class="branchCov" title="Branch 1 was taken 6163 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 98 times"> + </span>]:<span class="lineCov">       6261 :       if ((tmpa == decimal_point &amp;&amp; !ISDIGIT (tmpb))</span>
+<span class="lineNum">     220 </span>[<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 6159 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       6163 :           || (tmpb == decimal_point &amp;&amp; !ISDIGIT (tmpa)))</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">        102 :         return fraccompare (a, b, decimal_point);</span>
 <span class="lineNum">     222 </span>                :            : 
-<span class="lineNum">     223 </span>                :<span class="lineCov">       8994 :       tmp = tmpa - tmpb;</span>
+<span class="lineNum">     223 </span>                :<span class="lineCov">       6159 :       tmp = tmpa - tmpb;</span>
 <span class="lineNum">     224 </span>                :            : 
-<span class="lineNum">     225 </span>        [<span class="branchCov" title="Branch 0 was taken 14150 times"> + </span><span class="branchCov" title="Branch 1 was taken 8994 times"> + </span>]:<span class="lineCov">      23144 :       for (log_a = 0; ISDIGIT (tmpa); ++log_a)</span>
+<span class="lineNum">     225 </span>        [<span class="branchCov" title="Branch 0 was taken 9783 times"> + </span><span class="branchCov" title="Branch 1 was taken 6159 times"> + </span>]:<span class="lineCov">      15942 :       for (log_a = 0; ISDIGIT (tmpa); ++log_a)</span>
 <span class="lineNum">     226 </span>                :            :         do
-<span class="lineNum">     227 </span>                :<span class="lineCov">      14150 :           tmpa = *++a;</span>
-<span class="lineNum">     228 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14150 times"> + </span>]:<span class="lineCov">      14150 :         while (tmpa == thousands_sep);</span>
+<span class="lineNum">     227 </span>                :<span class="lineCov">       9783 :           tmpa = *++a;</span>
+<span class="lineNum">     228 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9783 times"> + </span>]:<span class="lineCov">       9783 :         while (tmpa == thousands_sep);</span>
 <span class="lineNum">     229 </span>                :            : 
-<span class="lineNum">     230 </span>        [<span class="branchCov" title="Branch 0 was taken 14045 times"> + </span><span class="branchCov" title="Branch 1 was taken 8994 times"> + </span>]:<span class="lineCov">      23039 :       for (log_b = 0; ISDIGIT (tmpb); ++log_b)</span>
+<span class="lineNum">     230 </span>        [<span class="branchCov" title="Branch 0 was taken 9954 times"> + </span><span class="branchCov" title="Branch 1 was taken 6159 times"> + </span>]:<span class="lineCov">      16113 :       for (log_b = 0; ISDIGIT (tmpb); ++log_b)</span>
 <span class="lineNum">     231 </span>                :            :         do
-<span class="lineNum">     232 </span>                :<span class="lineCov">      14045 :           tmpb = *++b;</span>
-<span class="lineNum">     233 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14045 times"> + </span>]:<span class="lineCov">      14045 :         while (tmpb == thousands_sep);</span>
+<span class="lineNum">     232 </span>                :<span class="lineCov">       9954 :           tmpb = *++b;</span>
+<span class="lineNum">     233 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9954 times"> + </span>]:<span class="lineCov">       9954 :         while (tmpb == thousands_sep);</span>
 <span class="lineNum">     234 </span>                :            : 
-<span class="lineNum">     235 </span>        [<span class="branchCov" title="Branch 0 was taken 1313 times"> + </span><span class="branchCov" title="Branch 1 was taken 7681 times"> + </span>]:<span class="lineCov">       8994 :       if (log_a != log_b)</span>
-<span class="lineNum">     236 </span>        [<span class="branchCov" title="Branch 0 was taken 783 times"> + </span><span class="branchCov" title="Branch 1 was taken 530 times"> + </span>]:<span class="lineCov">       1313 :         return log_a &lt; log_b ? -1 : 1;</span>
+<span class="lineNum">     235 </span>        [<span class="branchCov" title="Branch 0 was taken 1040 times"> + </span><span class="branchCov" title="Branch 1 was taken 5119 times"> + </span>]:<span class="lineCov">       6159 :       if (log_a != log_b)</span>
+<span class="lineNum">     236 </span>        [<span class="branchCov" title="Branch 0 was taken 690 times"> + </span><span class="branchCov" title="Branch 1 was taken 350 times"> + </span>]:<span class="lineCov">       1040 :         return log_a &lt; log_b ? -1 : 1;</span>
 <span class="lineNum">     237 </span>                :            : 
-<span class="lineNum">     238 </span>        [<span class="branchCov" title="Branch 0 was taken 261 times"> + </span><span class="branchCov" title="Branch 1 was taken 7420 times"> + </span>]:<span class="lineCov">       7681 :       if (!log_a)</span>
-<span class="lineNum">     239 </span>                :<span class="lineCov">        261 :         return 0;</span>
+<span class="lineNum">     238 </span>        [<span class="branchCov" title="Branch 0 was taken 174 times"> + </span><span class="branchCov" title="Branch 1 was taken 4945 times"> + </span>]:<span class="lineCov">       5119 :       if (!log_a)</span>
+<span class="lineNum">     239 </span>                :<span class="lineCov">        174 :         return 0;</span>
 <span class="lineNum">     240 </span>                :            : 
-<span class="lineNum">     241 </span>                :<span class="lineCov">       9348 :       return tmp;</span>
+<span class="lineNum">     241 </span>                :<span class="lineCov">       6395 :       return tmp;</span>
 <span class="lineNum">     242 </span>                :            :     }
 <span class="lineNum">     243 </span>                :            : }
 <span class="lineNum">     244 </span>                :            : 

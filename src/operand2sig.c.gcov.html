@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* operand2sig.c -- common function for parsing signal specifications</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2008-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2008-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -103,46 +103,46 @@
 <span class="lineNum">      32 </span>                :            : #include &quot;operand2sig.h&quot;
 <a name="33"><span class="lineNum">      33 </span>                :            : </a>
 <span class="lineNum">      34 </span>                :            : extern int
-<span class="lineNum">      35 </span>                :<span class="lineCov">         24 : operand2sig (char const *operand, char *signame)</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">         16 : operand2sig (char const *operand, char *signame)</span>
 <span class="lineNum">      36 </span>                :            : {
 <span class="lineNum">      37 </span>                :            :   int signum;
 <span class="lineNum">      38 </span>                :            : 
-<span class="lineNum">      39 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         24 :   if (ISDIGIT (*operand))</span>
+<span class="lineNum">      39 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         16 :   if (ISDIGIT (*operand))</span>
 <span class="lineNum">      40 </span>                :            :     {
 <span class="lineNum">      41 </span>                :            :       char *endp;
-<span class="lineNum">      42 </span>                :<span class="lineCov">          3 :       long int l = (errno = 0, strtol (operand, &amp;endp, 10));</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">          3 :       int i = l;</span>
-<span class="lineNum">      44 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">          6 :       signum = (operand == endp || *endp || errno || i != l ? -1</span>
-<span class="lineNum">      45 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">          6 :                 : WIFSIGNALED (i) ? WTERMSIG (i) : i);</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 3 times"> + </span>]
+<span class="lineNum">      42 </span>                :<span class="lineCov">          2 :       long int l = (errno = 0, strtol (operand, &amp;endp, 10));</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">          2 :       int i = l;</span>
+<span class="lineNum">      44 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">          4 :       signum = (operand == endp || *endp || errno || i != l ? -1</span>
+<span class="lineNum">      45 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">          4 :                 : WIFSIGNALED (i) ? WTERMSIG (i) : i);</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 2 times"> + </span>]
 <span class="lineNum">      46 </span>                :            :     }
 <span class="lineNum">      47 </span>                :            :   else
 <span class="lineNum">      48 </span>                :            :     {
 <span class="lineNum">      49 </span>                :            :       /* Convert signal to upper case in the C locale, not in the
 <span class="lineNum">      50 </span>                :            :          current locale.  Don't assume ASCII; it might be EBCDIC.  */
-<span class="lineNum">      51 </span>                :<span class="lineCov">         21 :       char *upcased = xstrdup (operand);</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">         14 :       char *upcased = xstrdup (operand);</span>
 <span class="lineNum">      52 </span>                :            :       char *p;
-<span class="lineNum">      53 </span>        [<span class="branchCov" title="Branch 0 was taken 87 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">        108 :       for (p = upcased; *p; p++)</span>
-<span class="lineNum">      54 </span>        [<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>]:<span class="lineCov">         87 :         if (strchr (&quot;abcdefghijklmnopqrstuvwxyz&quot;, *p))</span>
-<span class="lineNum">      55 </span>                :<span class="lineCov">         21 :           *p += 'A' - 'a';</span>
+<span class="lineNum">      53 </span>        [<span class="branchCov" title="Branch 0 was taken 58 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         72 :       for (p = upcased; *p; p++)</span>
+<span class="lineNum">      54 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 44 times"> + </span>]:<span class="lineCov">         58 :         if (strchr (&quot;abcdefghijklmnopqrstuvwxyz&quot;, *p))</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">         14 :           *p += 'A' - 'a';</span>
 <span class="lineNum">      56 </span>                :            : 
 <span class="lineNum">      57 </span>                :            :       /* Look for the signal name, possibly prefixed by &quot;SIG&quot;,
 <span class="lineNum">      58 </span>                :            :          and possibly lowercased.  */
-<span class="lineNum">      59 </span>[<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchCov" title="Branch 2 was taken 18 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 3 times"> + </span>]:<span class="lineCov">         21 :       if (!(str2sig (upcased, &amp;signum) == 0</span>
+<span class="lineNum">      59 </span>[<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 12 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 2 times"> + </span>]:<span class="lineCov">         14 :       if (!(str2sig (upcased, &amp;signum) == 0</span>
 <span class="lineNum">      60 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :             || (upcased[0] == 'S' &amp;&amp; upcased[1] == 'I' &amp;&amp; upcased[2] == 'G'</span>
 <span class="lineNum">      61 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 &amp;&amp; str2sig (upcased + 3, &amp;signum) == 0)))</span>
-<span class="lineNum">      62 </span>                :<span class="lineCov">          3 :         signum = -1;</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">          2 :         signum = -1;</span>
 <span class="lineNum">      63 </span>                :            : 
-<span class="lineNum">      64 </span>                :<span class="lineCov">         21 :       free (upcased);</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">         14 :       free (upcased);</span>
 <span class="lineNum">      65 </span>                :            :     }
 <span class="lineNum">      66 </span>                :            : 
-<span class="lineNum">      67 </span>[<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 21 times"> + </span>]:<span class="lineCov">         24 :   if (signum &lt; 0 || sig2str (signum, signame) != 0)</span>
+<span class="lineNum">      67 </span>[<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 14 times"> + </span>]:<span class="lineCov">         16 :   if (signum &lt; 0 || sig2str (signum, signame) != 0)</span>
 <span class="lineNum">      68 </span>                :            :     {
-<span class="lineNum">      69 </span>                :<span class="lineCov">          3 :       error (0, 0, _(&quot;%s: invalid signal&quot;), operand);</span>
-<span class="lineNum">      70 </span>                :<span class="lineCov">          3 :       return -1;</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">          2 :       error (0, 0, _(&quot;%s: invalid signal&quot;), operand);</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">          2 :       return -1;</span>
 <span class="lineNum">      71 </span>                :            :     }
 <span class="lineNum">      72 </span>                :            : 
-<span class="lineNum">      73 </span>                :<span class="lineCov">         24 :   return signum;</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">         16 :   return signum;</span>
 <span class="lineNum">      74 </span>                :            : }
 </pre>
       </td>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Close a stream, with nicer error checking than fclose's.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1998-2002, 2004, 2006-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1998-2002, 2004, 2006-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -124,29 +124,29 @@
 <span class="lineNum">      53 </span>                :            :    the failure.  That's what the ferror test is checking below.  */
 <a name="54"><span class="lineNum">      54 </span>                :            : </a>
 <span class="lineNum">      55 </span>                :            : int
-<span class="lineNum">      56 </span>                :<span class="lineCov">     295676 : close_stream (FILE *stream)</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">     237158 : close_stream (FILE *stream)</span>
 <span class="lineNum">      57 </span>                :            : {
-<span class="lineNum">      58 </span>                :<span class="lineCov">     295676 :   const bool some_pending = (__fpending (stream) != 0);</span>
-<span class="lineNum">      59 </span>                :<span class="lineCov">     295676 :   const bool prev_fail = (ferror (stream) != 0);</span>
-<span class="lineNum">      60 </span>                :<span class="lineCov">     295676 :   const bool fclose_fail = (fclose (stream) != 0);</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">     237158 :   const bool some_pending = (__fpending (stream) != 0);</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">     237158 :   const bool prev_fail = (ferror (stream) != 0);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">     237158 :   const bool fclose_fail = (fclose (stream) != 0);</span>
 <span class="lineNum">      61 </span>                :            : 
 <span class="lineNum">      62 </span>                :            :   /* Return an error indication if there was a previous failure or if
 <span class="lineNum">      63 </span>                :            :      fclose failed, with one exception: ignore an fclose failure if
 <span class="lineNum">      64 </span>                :            :      there was no previous error, no data remains to be flushed, and
 <span class="lineNum">      65 </span>                :            :      fclose failed with EBADF.  That can happen when a program like cp
-<span class="lineNum">      66 </span>                :            :      is invoked like this `cp a b &gt;&amp;-' (i.e., with standard output
+<span class="lineNum">      66 </span>                :            :      is invoked like this 'cp a b &gt;&amp;-' (i.e., with standard output
 <span class="lineNum">      67 </span>                :            :      closed) and doesn't generate any output (hence no previous error
 <span class="lineNum">      68 </span>                :            :      and nothing to be flushed).  */
 <span class="lineNum">      69 </span>                :            : 
-<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 0 was taken 295676 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 75 times"> + </span><span class="branchCov" title="Branch 3 was taken 295601 times"> + </span>]:<span class="lineCov">     295676 :   if (prev_fail || (fclose_fail &amp;&amp; (some_pending || errno != EBADF)))</span>
-<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 63 times"> + </span><span class="branchCov" title="Branch 5 was taken 12 times"> + </span>][<span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 63 times"> + </span>]
+<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 0 was taken 237158 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 50 times"> + </span><span class="branchCov" title="Branch 3 was taken 237108 times"> + </span>]:<span class="lineCov">     237158 :   if (prev_fail || (fclose_fail &amp;&amp; (some_pending || errno != EBADF)))</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 42 times"> + </span><span class="branchCov" title="Branch 5 was taken 8 times"> + </span>][<span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 42 times"> + </span>]
 <span class="lineNum">      71 </span>                :            :     {
-<span class="lineNum">      72 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         12 :       if (! fclose_fail)</span>
+<span class="lineNum">      72 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :       if (! fclose_fail)</span>
 <span class="lineNum">      73 </span>                :<span class="lineNoCov">          0 :         errno = 0;</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">         12 :       return EOF;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">          8 :       return EOF;</span>
 <span class="lineNum">      75 </span>                :            :     }
 <span class="lineNum">      76 </span>                :            : 
-<span class="lineNum">      77 </span>                :<span class="lineCov">     295676 :   return 0;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">     237158 :   return 0;</span>
 <span class="lineNum">      78 </span>                :            : }
 </pre>
       </td>

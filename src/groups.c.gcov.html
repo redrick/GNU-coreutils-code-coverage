@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* groups -- print the groups a user is in</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 1989-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1989-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -99,7 +99,7 @@
 <span class="lineNum">      28 </span>                :            : #include &quot;error.h&quot;
 <span class="lineNum">      29 </span>                :            : #include &quot;group-list.h&quot;
 <span class="lineNum">      30 </span>                :            : 
-<span class="lineNum">      31 </span>                :            : /* The official name of this program (e.g., no `g' prefix).  */
+<span class="lineNum">      31 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
 <span class="lineNum">      32 </span>                :            : #define PROGRAM_NAME &quot;groups&quot;
 <span class="lineNum">      33 </span>                :            : 
 <span class="lineNum">      34 </span>                :            : #define AUTHORS \
@@ -115,101 +115,100 @@
 <span class="lineNum">      44 </span>                :            : };
 <a name="45"><span class="lineNum">      45 </span>                :            : </a>
 <span class="lineNum">      46 </span>                :            : void
-<span class="lineNum">      47 </span>                :<span class="lineCov">         12 : usage (int status)</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">          8 : usage (int status)</span>
 <span class="lineNum">      48 </span>                :            : {
-<span class="lineNum">      49 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">         12 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">      50 </span>                :<span class="lineCov">          3 :     fprintf (stderr, _(&quot;Try `%s --help' for more information.\n&quot;),</span>
-<span class="lineNum">      51 </span>                :            :              program_name);
-<span class="lineNum">      52 </span>                :            :   else
-<span class="lineNum">      53 </span>                :            :     {
-<span class="lineNum">      54 </span>                :<span class="lineCov">          9 :       printf (_(&quot;Usage: %s [OPTION]... [USERNAME]...\n&quot;), program_name);</span>
-<span class="lineNum">      55 </span>                :<span class="lineCov">          9 :       fputs (_(&quot;\</span>
-<span class="lineNum">      56 </span>                :            : Print group memberships for each USERNAME or, if no USERNAME is specified, for\
-<span class="lineNum">      57 </span>                :            : \n\
-<span class="lineNum">      58 </span>                :            : the current process (which may differ if the groups database has changed).\n&quot;),
-<span class="lineNum">      59 </span>                :            :              stdout);
-<span class="lineNum">      60 </span>                :<span class="lineCov">          9 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">          9 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">      62 </span>                :<span class="lineCov">          9 :       emit_ancillary_info ();</span>
-<span class="lineNum">      63 </span>                :            :     }
-<span class="lineNum">      64 </span>                :<span class="lineCov">         12 :   exit (status);</span>
-<span class="lineNum">      65 </span>                :            : }
-<a name="66"><span class="lineNum">      66 </span>                :            : </a>
-<span class="lineNum">      67 </span>                :            : int
-<span class="lineNum">      68 </span>                :<span class="lineCov">         44 : main (int argc, char **argv)</span>
-<span class="lineNum">      69 </span>                :            : {
-<span class="lineNum">      70 </span>                :            :   int optc;
-<span class="lineNum">      71 </span>                :<span class="lineCov">         44 :   bool ok = true;</span>
-<span class="lineNum">      72 </span>                :            :   gid_t rgid, egid;
-<span class="lineNum">      73 </span>                :            :   uid_t ruid;
-<span class="lineNum">      74 </span>                :            : 
-<span class="lineNum">      75 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">      76 </span>                :<span class="lineCov">         44 :   set_program_name (argv[0]);</span>
-<span class="lineNum">      77 </span>                :<span class="lineCov">         44 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">         44 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">         44 :   textdomain (PACKAGE);</span>
-<span class="lineNum">      80 </span>                :            : 
-<span class="lineNum">      81 </span>                :<span class="lineCov">         44 :   atexit (close_stdout);</span>
-<span class="lineNum">      82 </span>                :            : 
-<span class="lineNum">      83 </span>                :            :   /* Processing the arguments this way makes groups.c behave differently to
-<span class="lineNum">      84 </span>                :            :    * groups.sh if one of the arguments is &quot;--&quot;.
-<span class="lineNum">      85 </span>                :            :    */
-<span class="lineNum">      86 </span>        [<span class="branchCov" title="Branch 1 was taken 36 times"> + </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">         44 :   while ((optc = getopt_long (argc, argv, &quot;&quot;, longopts, NULL)) != -1)</span>
-<span class="lineNum">      87 </span>                :            :     {
-<span class="lineNum">      88 </span>     [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span><span class="branchCov" title="Branch 2 was taken 3 times"> + </span>]:<span class="lineCov">         36 :       switch (optc)</span>
-<span class="lineNum">      89 </span>                :            :         {
-<span class="lineNum">      90 </span>                :<span class="lineCov">          9 :         case_GETOPT_HELP_CHAR;</span>
-<span class="lineNum">      91 </span>                :<span class="lineCov">         24 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
-<span class="lineNum">      92 </span>                :            :         default:
-<span class="lineNum">      93 </span>                :<span class="lineCov">          3 :           usage (EXIT_FAILURE);</span>
-<span class="lineNum">      94 </span>                :            :         }
-<span class="lineNum">      95 </span>                :            :     }
-<span class="lineNum">      96 </span>                :            : 
-<span class="lineNum">      97 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (optind == argc)</span>
-<span class="lineNum">      98 </span>                :            :     {
-<span class="lineNum">      99 </span>                :            :       /* No arguments.  Divulge the details of the current process. */
-<span class="lineNum">     100 </span>                :<span class="lineCov">          2 :       uid_t NO_UID = -1;</span>
-<span class="lineNum">     101 </span>                :<span class="lineCov">          2 :       gid_t NO_GID = -1;</span>
-<span class="lineNum">     102 </span>                :            : 
-<span class="lineNum">     103 </span>                :<span class="lineCov">          2 :       errno = 0;</span>
-<span class="lineNum">     104 </span>                :<span class="lineCov">          2 :       ruid = getuid ();</span>
-<span class="lineNum">     105 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">          2 :       if (ruid == NO_UID &amp;&amp; errno)</span>
-<span class="lineNum">     106 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;cannot get real UID&quot;));</span>
-<span class="lineNum">     107 </span>                :            : 
-<span class="lineNum">     108 </span>                :<span class="lineCov">          2 :       errno = 0;</span>
-<span class="lineNum">     109 </span>                :<span class="lineCov">          2 :       egid = getegid ();</span>
-<span class="lineNum">     110 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">          2 :       if (egid == NO_GID &amp;&amp; errno)</span>
-<span class="lineNum">     111 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;cannot get effective GID&quot;));</span>
-<span class="lineNum">     112 </span>                :            : 
-<span class="lineNum">     113 </span>                :<span class="lineCov">          2 :       errno = 0;</span>
-<span class="lineNum">     114 </span>                :<span class="lineCov">          2 :       rgid = getgid ();</span>
-<span class="lineNum">     115 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">          2 :       if (rgid == NO_GID &amp;&amp; errno)</span>
-<span class="lineNum">     116 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;cannot get real GID&quot;));</span>
-<span class="lineNum">     117 </span>                :            : 
-<span class="lineNum">     118 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :       if (!print_group_list (NULL, ruid, rgid, egid, true))</span>
-<span class="lineNum">     119 </span>                :<span class="lineNoCov">          0 :         ok = false;</span>
-<span class="lineNum">     120 </span>                :<span class="lineCov">          2 :       putchar ('\n');</span>
-<span class="lineNum">     121 </span>                :            :     }
-<span class="lineNum">     122 </span>                :            :   else
-<span class="lineNum">     123 </span>                :            :     {
-<span class="lineNum">     124 </span>                :            :       /* At least one argument.  Divulge the details of the specified users. */
-<span class="lineNum">     125 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          6 :       while (optind &lt; argc)</span>
-<span class="lineNum">     126 </span>                :            :         {
-<span class="lineNum">     127 </span>                :<span class="lineCov">          6 :           struct passwd *pwd = getpwnam (argv[optind]);</span>
-<span class="lineNum">     128 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          6 :           if (pwd == NULL)</span>
-<span class="lineNum">     129 </span>                :<span class="lineCov">          6 :             error (EXIT_FAILURE, 0, _(&quot;%s: no such user&quot;), argv[optind]);</span>
-<span class="lineNum">     130 </span>                :<span class="lineNoCov">          0 :           ruid = pwd-&gt;pw_uid;</span>
-<span class="lineNum">     131 </span>                :<span class="lineNoCov">          0 :           rgid = egid = pwd-&gt;pw_gid;</span>
-<span class="lineNum">     132 </span>                :            : 
-<span class="lineNum">     133 </span>                :<span class="lineNoCov">          0 :           printf (&quot;%s : &quot;, argv[optind]);</span>
-<span class="lineNum">     134 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (!print_group_list (argv[optind++], ruid, rgid, egid, true))</span>
-<span class="lineNum">     135 </span>                :<span class="lineNoCov">          0 :             ok = false;</span>
-<span class="lineNum">     136 </span>                :<span class="lineNoCov">          0 :           putchar ('\n');</span>
-<span class="lineNum">     137 </span>                :            :         }
-<span class="lineNum">     138 </span>                :            :     }
-<span class="lineNum">     139 </span>                :            : 
-<span class="lineNum">     140 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
-<span class="lineNum">     141 </span>                :            : }
+<span class="lineNum">      49 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">          2 :     emit_try_help ();</span>
+<span class="lineNum">      51 </span>                :            :   else
+<span class="lineNum">      52 </span>                :            :     {
+<span class="lineNum">      53 </span>                :<span class="lineCov">          6 :       printf (_(&quot;Usage: %s [OPTION]... [USERNAME]...\n&quot;), program_name);</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">      55 </span>                :            : Print group memberships for each USERNAME or, if no USERNAME is specified, for\
+<span class="lineNum">      56 </span>                :            : \n\
+<span class="lineNum">      57 </span>                :            : the current process (which may differ if the groups database has changed).\n&quot;),
+<span class="lineNum">      58 </span>                :            :              stdout);
+<span class="lineNum">      59 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">      62 </span>                :            :     }
+<span class="lineNum">      63 </span>                :<span class="lineCov">          8 :   exit (status);</span>
+<span class="lineNum">      64 </span>                :            : }
+<a name="65"><span class="lineNum">      65 </span>                :            : </a>
+<span class="lineNum">      66 </span>                :            : int
+<span class="lineNum">      67 </span>                :<span class="lineCov">         30 : main (int argc, char **argv)</span>
+<span class="lineNum">      68 </span>                :            : {
+<span class="lineNum">      69 </span>                :            :   int optc;
+<span class="lineNum">      70 </span>                :<span class="lineCov">         30 :   bool ok = true;</span>
+<span class="lineNum">      71 </span>                :            :   gid_t rgid, egid;
+<span class="lineNum">      72 </span>                :            :   uid_t ruid;
+<span class="lineNum">      73 </span>                :            : 
+<span class="lineNum">      74 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">      75 </span>                :<span class="lineCov">         30 :   set_program_name (argv[0]);</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">         30 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">         30 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">         30 :   textdomain (PACKAGE);</span>
+<span class="lineNum">      79 </span>                :            : 
+<span class="lineNum">      80 </span>                :<span class="lineCov">         30 :   atexit (close_stdout);</span>
+<span class="lineNum">      81 </span>                :            : 
+<span class="lineNum">      82 </span>                :            :   /* Processing the arguments this way makes groups.c behave differently to
+<span class="lineNum">      83 </span>                :            :    * groups.sh if one of the arguments is &quot;--&quot;.
+<span class="lineNum">      84 </span>                :            :    */
+<span class="lineNum">      85 </span>        [<span class="branchCov" title="Branch 1 was taken 24 times"> + </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">         30 :   while ((optc = getopt_long (argc, argv, &quot;&quot;, longopts, NULL)) != -1)</span>
+<span class="lineNum">      86 </span>                :            :     {
+<span class="lineNum">      87 </span>     [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">         24 :       switch (optc)</span>
+<span class="lineNum">      88 </span>                :            :         {
+<span class="lineNum">      89 </span>                :<span class="lineCov">          6 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">         16 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">      91 </span>                :            :         default:
+<span class="lineNum">      92 </span>                :<span class="lineCov">          2 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">      93 </span>                :            :         }
+<span class="lineNum">      94 </span>                :            :     }
+<span class="lineNum">      95 </span>                :            : 
+<span class="lineNum">      96 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          6 :   if (optind == argc)</span>
+<span class="lineNum">      97 </span>                :            :     {
+<span class="lineNum">      98 </span>                :            :       /* No arguments.  Divulge the details of the current process. */
+<span class="lineNum">      99 </span>                :<span class="lineCov">          2 :       uid_t NO_UID = -1;</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">          2 :       gid_t NO_GID = -1;</span>
+<span class="lineNum">     101 </span>                :            : 
+<span class="lineNum">     102 </span>                :<span class="lineCov">          2 :       errno = 0;</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">          2 :       ruid = getuid ();</span>
+<span class="lineNum">     104 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">          2 :       if (ruid == NO_UID &amp;&amp; errno)</span>
+<span class="lineNum">     105 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;cannot get real UID&quot;));</span>
+<span class="lineNum">     106 </span>                :            : 
+<span class="lineNum">     107 </span>                :<span class="lineCov">          2 :       errno = 0;</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">          2 :       egid = getegid ();</span>
+<span class="lineNum">     109 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">          2 :       if (egid == NO_GID &amp;&amp; errno)</span>
+<span class="lineNum">     110 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;cannot get effective GID&quot;));</span>
+<span class="lineNum">     111 </span>                :            : 
+<span class="lineNum">     112 </span>                :<span class="lineCov">          2 :       errno = 0;</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">          2 :       rgid = getgid ();</span>
+<span class="lineNum">     114 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">          2 :       if (rgid == NO_GID &amp;&amp; errno)</span>
+<span class="lineNum">     115 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;cannot get real GID&quot;));</span>
+<span class="lineNum">     116 </span>                :            : 
+<span class="lineNum">     117 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :       if (!print_group_list (NULL, ruid, rgid, egid, true))</span>
+<span class="lineNum">     118 </span>                :<span class="lineNoCov">          0 :         ok = false;</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">          2 :       putchar ('\n');</span>
+<span class="lineNum">     120 </span>                :            :     }
+<span class="lineNum">     121 </span>                :            :   else
+<span class="lineNum">     122 </span>                :            :     {
+<span class="lineNum">     123 </span>                :            :       /* At least one argument.  Divulge the details of the specified users. */
+<span class="lineNum">     124 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :       while (optind &lt; argc)</span>
+<span class="lineNum">     125 </span>                :            :         {
+<span class="lineNum">     126 </span>                :<span class="lineCov">          4 :           struct passwd *pwd = getpwnam (argv[optind]);</span>
+<span class="lineNum">     127 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :           if (pwd == NULL)</span>
+<span class="lineNum">     128 </span>                :<span class="lineCov">          4 :             error (EXIT_FAILURE, 0, _(&quot;%s: no such user&quot;), argv[optind]);</span>
+<span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 :           ruid = pwd-&gt;pw_uid;</span>
+<span class="lineNum">     130 </span>                :<span class="lineNoCov">          0 :           rgid = egid = pwd-&gt;pw_gid;</span>
+<span class="lineNum">     131 </span>                :            : 
+<span class="lineNum">     132 </span>                :<span class="lineNoCov">          0 :           printf (&quot;%s : &quot;, argv[optind]);</span>
+<span class="lineNum">     133 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (!print_group_list (argv[optind++], ruid, rgid, egid, true))</span>
+<span class="lineNum">     134 </span>                :<span class="lineNoCov">          0 :             ok = false;</span>
+<span class="lineNum">     135 </span>                :<span class="lineNoCov">          0 :           putchar ('\n');</span>
+<span class="lineNum">     136 </span>                :            :         }
+<span class="lineNum">     137 </span>                :            :     }
+<span class="lineNum">     138 </span>                :            : 
+<span class="lineNum">     139 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
+<span class="lineNum">     140 </span>                :            : }
 </pre>
       </td>
     </tr>

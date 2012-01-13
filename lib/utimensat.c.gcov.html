@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Set the access and modification time of a file relative to directory fd.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@
 <span class="lineNum">      54 </span>                :            : 
 <span class="lineNum">      55 </span>                :            :   /* See comments in utimens.c for details.  */
 <span class="lineNum">      56 </span>                :            :   static int utimensat_works_really; /* 0 = unknown, 1 = yes, -1 = no.  */
-<span class="lineNum">      57 </span>        [<span class="branchCov" title="Branch 0 was taken 1160 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1160 :   if (0 &lt;= utimensat_works_really)</span>
+<span class="lineNum">      57 </span>        [<span class="branchCov" title="Branch 0 was taken 972 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        972 :   if (0 &lt;= utimensat_works_really)</span>
 <span class="lineNum">      58 </span>                :            :     {
 <span class="lineNum">      59 </span>                :            :       int result;
 <span class="lineNum">      60 </span>                :            : # ifdef __linux__
@@ -138,22 +138,22 @@
 <span class="lineNum">      67 </span>                :            :          impact due to the extra syscall even on file systems where
 <span class="lineNum">      68 </span>                :            :          UTIME_OMIT would have worked.  FIXME: Simplify this in 2012,
 <span class="lineNum">      69 </span>                :            :          when file system bugs are no longer common.  */
-<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 0 was taken 282 times"> + </span><span class="branchCov" title="Branch 1 was taken 878 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 243 times"> + </span><span class="branchCov" title="Branch 3 was taken 39 times"> + </span>]:<span class="lineCov">       1160 :       if (times &amp;&amp; (times[0].tv_nsec == UTIME_OMIT</span>
-<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 0 was taken 36 times"> + </span><span class="branchCov" title="Branch 1 was taken 207 times"> + </span>]:<span class="lineCov">        243 :                     || times[1].tv_nsec == UTIME_OMIT))</span>
+<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 0 was taken 188 times"> + </span><span class="branchCov" title="Branch 1 was taken 784 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 162 times"> + </span><span class="branchCov" title="Branch 3 was taken 26 times"> + </span>]:<span class="lineCov">        972 :       if (times &amp;&amp; (times[0].tv_nsec == UTIME_OMIT</span>
+<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 138 times"> + </span>]:<span class="lineCov">        162 :                     || times[1].tv_nsec == UTIME_OMIT))</span>
 <span class="lineNum">      72 </span>                :            :         {
-<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 1 was taken 6 times"> + </span><span class="branchCov" title="Branch 2 was taken 69 times"> + </span>]:<span class="lineCov">         75 :           if (fstatat (fd, file, &amp;st, flag))</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">          6 :             return -1;</span>
-<span class="lineNum">      75 </span>[<span class="branchCov" title="Branch 0 was taken 36 times"> + </span><span class="branchCov" title="Branch 1 was taken 33 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 36 times"> + </span>]:<span class="lineCov">         69 :           if (times[0].tv_nsec == UTIME_OMIT &amp;&amp; times[1].tv_nsec == UTIME_OMIT)</span>
+<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 1 was taken 4 times"> + </span><span class="branchCov" title="Branch 2 was taken 46 times"> + </span>]:<span class="lineCov">         50 :           if (fstatat (fd, file, &amp;st, flag))</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">          4 :             return -1;</span>
+<span class="lineNum">      75 </span>[<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 24 times"> + </span>]:<span class="lineCov">         46 :           if (times[0].tv_nsec == UTIME_OMIT &amp;&amp; times[1].tv_nsec == UTIME_OMIT)</span>
 <span class="lineNum">      76 </span>                :<span class="lineNoCov">          0 :             return 0;</span>
-<span class="lineNum">      77 </span>        [<span class="branchCov" title="Branch 0 was taken 36 times"> + </span><span class="branchCov" title="Branch 1 was taken 33 times"> + </span>]:<span class="lineCov">         69 :           if (times[0].tv_nsec == UTIME_OMIT)</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">         36 :             ts[0] = get_stat_atime (&amp;st);</span>
+<span class="lineNum">      77 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         46 :           if (times[0].tv_nsec == UTIME_OMIT)</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">         24 :             ts[0] = get_stat_atime (&amp;st);</span>
 <span class="lineNum">      79 </span>                :            :           else
-<span class="lineNum">      80 </span>                :<span class="lineCov">         33 :             ts[0] = times[0];</span>
-<span class="lineNum">      81 </span>        [<span class="branchCov" title="Branch 0 was taken 33 times"> + </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         69 :           if (times[1].tv_nsec == UTIME_OMIT)</span>
-<span class="lineNum">      82 </span>                :<span class="lineCov">         33 :             ts[1] = get_stat_mtime (&amp;st);</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">         22 :             ts[0] = times[0];</span>
+<span class="lineNum">      81 </span>        [<span class="branchCov" title="Branch 0 was taken 22 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         46 :           if (times[1].tv_nsec == UTIME_OMIT)</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">         22 :             ts[1] = get_stat_mtime (&amp;st);</span>
 <span class="lineNum">      83 </span>                :            :           else
-<span class="lineNum">      84 </span>                :<span class="lineCov">         36 :             ts[1] = times[1];</span>
-<span class="lineNum">      85 </span>                :<span class="lineCov">         69 :           times = ts;</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">         24 :             ts[1] = times[1];</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">         46 :           times = ts;</span>
 <span class="lineNum">      86 </span>                :            :         }
 <span class="lineNum">      87 </span>                :            : #  ifdef __hppa__
 <span class="lineNum">      88 </span>                :            :       /* Linux kernel 2.6.22.19 on hppa does not reject invalid tv_nsec
@@ -171,29 +171,29 @@
 <span class="lineNum">     100 </span>                :            :         }
 <span class="lineNum">     101 </span>                :            : #  endif
 <span class="lineNum">     102 </span>                :            : # endif /* __linux__ */
-<span class="lineNum">     103 </span>                :<span class="lineCov">       1154 :       result = utimensat (fd, file, times, flag);</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">        968 :       result = utimensat (fd, file, times, flag);</span>
 <span class="lineNum">     104 </span>                :            :       /* Linux kernel 2.6.25 has a bug where it returns EINVAL for
 <span class="lineNum">     105 </span>                :            :          UTIME_NOW or UTIME_OMIT with non-zero tv_sec, which
 <span class="lineNum">     106 </span>                :            :          local_utimensat works around.  Meanwhile, EINVAL for a bad
 <span class="lineNum">     107 </span>                :            :          flag is indeterminate whether the native utimensat works, but
 <span class="lineNum">     108 </span>                :            :          local_utimensat will also reject it.  */
-<span class="lineNum">     109 </span>[<span class="branchCov" title="Branch 0 was taken 313 times"> + </span><span class="branchCov" title="Branch 1 was taken 841 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 60 times"> + </span><span class="branchCov" title="Branch 4 was taken 253 times"> + </span>]:<span class="lineCov">       1154 :       if (result == -1 &amp;&amp; errno == EINVAL &amp;&amp; (flag &amp; ~AT_SYMLINK_NOFOLLOW))</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 60 times"> + </span>]
+<span class="lineNum">     109 </span>[<span class="branchCov" title="Branch 0 was taken 208 times"> + </span><span class="branchCov" title="Branch 1 was taken 760 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 40 times"> + </span><span class="branchCov" title="Branch 4 was taken 168 times"> + </span>]:<span class="lineCov">        968 :       if (result == -1 &amp;&amp; errno == EINVAL &amp;&amp; (flag &amp; ~AT_SYMLINK_NOFOLLOW))</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 40 times"> + </span>]
 <span class="lineNum">     110 </span>                :<span class="lineNoCov">          0 :         return result;</span>
-<span class="lineNum">     111 </span>[<span class="branchCov" title="Branch 0 was taken 313 times"> + </span><span class="branchCov" title="Branch 1 was taken 841 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 313 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">       1154 :       if (result == 0 || (errno != ENOSYS &amp;&amp; errno != EINVAL))</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 6 was taken 253 times"> + </span><span class="branchCov" title="Branch 7 was taken 60 times"> + </span>]
+<span class="lineNum">     111 </span>[<span class="branchCov" title="Branch 0 was taken 208 times"> + </span><span class="branchCov" title="Branch 1 was taken 760 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 208 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">        968 :       if (result == 0 || (errno != ENOSYS &amp;&amp; errno != EINVAL))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 6 was taken 168 times"> + </span><span class="branchCov" title="Branch 7 was taken 40 times"> + </span>]
 <span class="lineNum">     112 </span>                :            :         {
-<span class="lineNum">     113 </span>                :<span class="lineCov">       1094 :           utimensat_works_really = 1;</span>
-<span class="lineNum">     114 </span>                :<span class="lineCov">       1094 :           return result;</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">        928 :           utimensat_works_really = 1;</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">        928 :           return result;</span>
 <span class="lineNum">     115 </span>                :            :         }
 <span class="lineNum">     116 </span>                :            :     }
 <span class="lineNum">     117 </span>                :            :   /* No point in trying openat/futimens, since on Linux, futimens is
 <span class="lineNum">     118 </span>                :            :      implemented with the same syscall as utimensat.  Only avoid the
 <span class="lineNum">     119 </span>                :            :      native utimensat due to an ENOSYS failure; an EINVAL error was
 <span class="lineNum">     120 </span>                :            :      data-dependent, and the next caller may pass valid data.  */
-<span class="lineNum">     121 </span>[<span class="branchCov" title="Branch 0 was taken 60 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 60 times"> + </span>]:<span class="lineCov">         60 :   if (0 &lt;= utimensat_works_really &amp;&amp; errno == ENOSYS)</span>
+<span class="lineNum">     121 </span>[<span class="branchCov" title="Branch 0 was taken 40 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 40 times"> + </span>]:<span class="lineCov">         40 :   if (0 &lt;= utimensat_works_really &amp;&amp; errno == ENOSYS)</span>
 <span class="lineNum">     122 </span>                :<span class="lineNoCov">          0 :     utimensat_works_really = -1;</span>
-<span class="lineNum">     123 </span>                :<span class="lineCov">       1160 :   return local_utimensat (fd, file, times, flag);</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">        972 :   return local_utimensat (fd, file, times, flag);</span>
 <span class="lineNum">     124 </span>                :            : }
 <span class="lineNum">     125 </span>                :            : 
 <span class="lineNum">     126 </span>                :            : #else /* !HAVE_UTIMENSAT */

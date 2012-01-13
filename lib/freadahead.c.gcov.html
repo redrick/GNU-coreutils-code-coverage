@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Retrieve information about a FILE stream.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2007-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2007-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -94,13 +94,13 @@
 <span class="lineNum">      23 </span>                :            : #include &quot;stdio-impl.h&quot;
 <a name="24"><span class="lineNum">      24 </span>                :            : </a>
 <span class="lineNum">      25 </span>                :            : size_t
-<span class="lineNum">      26 </span>                :<span class="lineCov">      13927 : freadahead (FILE *fp)</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">       9940 : freadahead (FILE *fp)</span>
 <span class="lineNum">      27 </span>                :            : {
 <span class="lineNum">      28 </span>                :            : #if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13927 times"> + </span>]:<span class="lineCov">      13927 :   if (fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span>
+<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9940 times"> + </span>]:<span class="lineCov">       9940 :   if (fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span>
 <span class="lineNum">      30 </span>                :<span class="lineNoCov">          0 :     return 0;</span>
-<span class="lineNum">      31 </span>                :<span class="lineCov">      13927 :   return (fp-&gt;_IO_read_end - fp-&gt;_IO_read_ptr)</span>
-<span class="lineNum">      32 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 13915 times"> + </span>]:<span class="lineCov">      13927 :          + (fp-&gt;_flags &amp; _IO_IN_BACKUP ? fp-&gt;_IO_save_end - fp-&gt;_IO_save_base :</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">       9940 :   return (fp-&gt;_IO_read_end - fp-&gt;_IO_read_ptr)</span>
+<span class="lineNum">      32 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 9932 times"> + </span>]:<span class="lineCov">       9940 :          + (fp-&gt;_flags &amp; _IO_IN_BACKUP ? fp-&gt;_IO_save_end - fp-&gt;_IO_save_base :</span>
 <span class="lineNum">      33 </span>                :            :             0);
 <span class="lineNum">      34 </span>                :            : #elif defined __sferror || defined __DragonFly__ /* FreeBSD, NetBSD, OpenBSD, DragonFly, MacOS X, Cygwin */
 <span class="lineNum">      35 </span>                :            :   if ((fp_-&gt;_flags &amp; __SWR) != 0 || fp_-&gt;_r &lt; 0)

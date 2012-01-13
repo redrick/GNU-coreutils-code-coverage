@@ -1,0 +1,675 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - coreutils - /home/andrej/Projects/coreutils-december/coreutils/src/ln.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../index.html">top level</a> - <a href="index.html">home/andrej/Projects/coreutils-december/coreutils/src</a> - ln.c<span style="font-size: 80%;"> (source / <a href="ln.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coreutils</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">161</td>
+            <td class="headerCovTableEntry">206</td>
+            <td class="headerCovTableEntryHi">78.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-01-13</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">144</td>
+            <td class="headerCovTableEntry">197</td>
+            <td class="headerCovTableEntryHi">73.1 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* 'ln' program to create links between files.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1986, 1989-1991, 1995-2012 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       6 </span>                :            :    the Free Software Foundation, either version 3 of the License, or
+<span class="lineNum">       7 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       8 </span>                :            : 
+<span class="lineNum">       9 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      10 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      11 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      12 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      13 </span>                :            : 
+<span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      15 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :            : /* Written by Mike Parker and David MacKenzie. */
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      20 </span>                :            : #include &lt;stdio.h&gt;
+<span class="lineNum">      21 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      22 </span>                :            : #include &lt;getopt.h&gt;
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :            : #include &quot;system.h&quot;
+<span class="lineNum">      25 </span>                :            : #include &quot;backupfile.h&quot;
+<span class="lineNum">      26 </span>                :            : #include &quot;error.h&quot;
+<span class="lineNum">      27 </span>                :            : #include &quot;filenamecat.h&quot;
+<span class="lineNum">      28 </span>                :            : #include &quot;file-set.h&quot;
+<span class="lineNum">      29 </span>                :            : #include &quot;hash.h&quot;
+<span class="lineNum">      30 </span>                :            : #include &quot;hash-triple.h&quot;
+<span class="lineNum">      31 </span>                :            : #include &quot;quote.h&quot;
+<span class="lineNum">      32 </span>                :            : #include &quot;same.h&quot;
+<span class="lineNum">      33 </span>                :            : #include &quot;yesno.h&quot;
+<span class="lineNum">      34 </span>                :            : 
+<span class="lineNum">      35 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
+<span class="lineNum">      36 </span>                :            : #define PROGRAM_NAME &quot;ln&quot;
+<span class="lineNum">      37 </span>                :            : 
+<span class="lineNum">      38 </span>                :            : #define AUTHORS \
+<span class="lineNum">      39 </span>                :            :   proper_name (&quot;Mike Parker&quot;), \
+<span class="lineNum">      40 </span>                :            :   proper_name (&quot;David MacKenzie&quot;)
+<span class="lineNum">      41 </span>                :            : 
+<span class="lineNum">      42 </span>                :            : /* FIXME: document */
+<span class="lineNum">      43 </span>                :            : static enum backup_type backup_type;
+<span class="lineNum">      44 </span>                :            : 
+<span class="lineNum">      45 </span>                :            : /* If true, make symbolic links; otherwise, make hard links.  */
+<span class="lineNum">      46 </span>                :            : static bool symbolic_link;
+<span class="lineNum">      47 </span>                :            : 
+<span class="lineNum">      48 </span>                :            : /* If true, hard links are logical rather than physical.  */
+<span class="lineNum">      49 </span>                :            : static bool logical = !!LINK_FOLLOWS_SYMLINKS;
+<span class="lineNum">      50 </span>                :            : 
+<span class="lineNum">      51 </span>                :            : /* If true, ask the user before removing existing files.  */
+<span class="lineNum">      52 </span>                :            : static bool interactive;
+<span class="lineNum">      53 </span>                :            : 
+<span class="lineNum">      54 </span>                :            : /* If true, remove existing files unconditionally.  */
+<span class="lineNum">      55 </span>                :            : static bool remove_existing_files;
+<span class="lineNum">      56 </span>                :            : 
+<span class="lineNum">      57 </span>                :            : /* If true, list each file as it is moved. */
+<span class="lineNum">      58 </span>                :            : static bool verbose;
+<span class="lineNum">      59 </span>                :            : 
+<span class="lineNum">      60 </span>                :            : /* If true, allow the superuser to *attempt* to make hard links
+<span class="lineNum">      61 </span>                :            :    to directories.  However, it appears that this option is not useful
+<span class="lineNum">      62 </span>                :            :    in practice, since even the superuser is prohibited from hard-linking
+<span class="lineNum">      63 </span>                :            :    directories on most existing systems (Solaris being an exception).  */
+<span class="lineNum">      64 </span>                :            : static bool hard_dir_link;
+<span class="lineNum">      65 </span>                :            : 
+<span class="lineNum">      66 </span>                :            : /* If nonzero, and the specified destination is a symbolic link to a
+<span class="lineNum">      67 </span>                :            :    directory, treat it just as if it were a directory.  Otherwise, the
+<span class="lineNum">      68 </span>                :            :    command 'ln --force --no-dereference file symlink-to-dir' deletes
+<span class="lineNum">      69 </span>                :            :    symlink-to-dir before creating the new link.  */
+<span class="lineNum">      70 </span>                :            : static bool dereference_dest_dir_symlinks = true;
+<span class="lineNum">      71 </span>                :            : 
+<span class="lineNum">      72 </span>                :            : /* This is a set of destination name/inode/dev triples for hard links
+<span class="lineNum">      73 </span>                :            :    created by ln.  Use this data structure to avoid data loss via a
+<span class="lineNum">      74 </span>                :            :    sequence of commands like this:
+<span class="lineNum">      75 </span>                :            :    rm -rf a b c; mkdir a b c; touch a/f b/f; ln -f a/f b/f c &amp;&amp; rm -r a b */
+<span class="lineNum">      76 </span>                :            : static Hash_table *dest_set;
+<span class="lineNum">      77 </span>                :            : 
+<span class="lineNum">      78 </span>                :            : /* Initial size of the dest_set hash table.  */
+<span class="lineNum">      79 </span>                :            : enum { DEST_INFO_INITIAL_CAPACITY = 61 };
+<span class="lineNum">      80 </span>                :            : 
+<span class="lineNum">      81 </span>                :            : static struct option const long_options[] =
+<span class="lineNum">      82 </span>                :            : {
+<span class="lineNum">      83 </span>                :            :   {&quot;backup&quot;, optional_argument, NULL, 'b'},
+<span class="lineNum">      84 </span>                :            :   {&quot;directory&quot;, no_argument, NULL, 'F'},
+<span class="lineNum">      85 </span>                :            :   {&quot;no-dereference&quot;, no_argument, NULL, 'n'},
+<span class="lineNum">      86 </span>                :            :   {&quot;no-target-directory&quot;, no_argument, NULL, 'T'},
+<span class="lineNum">      87 </span>                :            :   {&quot;force&quot;, no_argument, NULL, 'f'},
+<span class="lineNum">      88 </span>                :            :   {&quot;interactive&quot;, no_argument, NULL, 'i'},
+<span class="lineNum">      89 </span>                :            :   {&quot;suffix&quot;, required_argument, NULL, 'S'},
+<span class="lineNum">      90 </span>                :            :   {&quot;target-directory&quot;, required_argument, NULL, 't'},
+<span class="lineNum">      91 </span>                :            :   {&quot;logical&quot;, no_argument, NULL, 'L'},
+<span class="lineNum">      92 </span>                :            :   {&quot;physical&quot;, no_argument, NULL, 'P'},
+<span class="lineNum">      93 </span>                :            :   {&quot;symbolic&quot;, no_argument, NULL, 's'},
+<span class="lineNum">      94 </span>                :            :   {&quot;verbose&quot;, no_argument, NULL, 'v'},
+<span class="lineNum">      95 </span>                :            :   {GETOPT_HELP_OPTION_DECL},
+<span class="lineNum">      96 </span>                :            :   {GETOPT_VERSION_OPTION_DECL},
+<span class="lineNum">      97 </span>                :            :   {NULL, 0, NULL, 0}
+<span class="lineNum">      98 </span>                :            : };
+<span class="lineNum">      99 </span>                :            : 
+<span class="lineNum">     100 </span>                :            : /* FILE is the last operand of this command.  Return true if FILE is a
+<span class="lineNum">     101 </span>                :            :    directory.  But report an error there is a problem accessing FILE,
+<span class="lineNum">     102 </span>                :            :    or if FILE does not exist but would have to refer to an existing
+<span class="lineNum">     103 </span>                :            :    directory if it referred to anything at all.  */
+<a name="104"><span class="lineNum">     104 </span>                :            : </a>
+<span class="lineNum">     105 </span>                :            : static bool
+<span class="lineNum">     106 </span>                :<span class="lineCov">       1408 : target_directory_operand (char const *file)</span>
+<span class="lineNum">     107 </span>                :            : {
+<span class="lineNum">     108 </span>                :<span class="lineCov">       1408 :   char const *b = last_component (file);</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">       1408 :   size_t blen = strlen (b);</span>
+<span class="lineNum">     110 </span>[<span class="branchCov" title="Branch 0 was taken 1406 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 4 times"> + </span><span class="branchCov" title="Branch 3 was taken 1402 times"> + </span>]:<span class="lineCov">       1408 :   bool looks_like_a_dir = (blen == 0 || ISSLASH (b[blen - 1]));</span>
+<span class="lineNum">     111 </span>                :            :   struct stat st;
+<span class="lineNum">     112 </span>                :<span class="lineCov">       1408 :   int stat_result =</span>
+<span class="lineNum">     113 </span>        [<span class="branchCov" title="Branch 0 was taken 1322 times"> + </span><span class="branchCov" title="Branch 1 was taken 86 times"> + </span>]:<span class="lineCov">       1408 :     (dereference_dest_dir_symlinks ? stat (file, &amp;st) : lstat (file, &amp;st));</span>
+<span class="lineNum">     114 </span>        [<span class="branchCov" title="Branch 0 was taken 1369 times"> + </span><span class="branchCov" title="Branch 1 was taken 39 times"> + </span>]:<span class="lineCov">       1408 :   int err = (stat_result == 0 ? 0 : errno);</span>
+<span class="lineNum">     115 </span>[<span class="branchCov" title="Branch 0 was taken 39 times"> + </span><span class="branchCov" title="Branch 1 was taken 1369 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 21 times"> + </span><span class="branchCov" title="Branch 3 was taken 18 times"> + </span>]:<span class="lineCov">       1408 :   bool is_a_dir = !err &amp;&amp; S_ISDIR (st.st_mode);</span>
+<span class="lineNum">     116 </span>[<span class="branchCov" title="Branch 0 was taken 1369 times"> + </span><span class="branchCov" title="Branch 1 was taken 39 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 1369 times"> + </span>]:<span class="lineCov">       1408 :   if (err &amp;&amp; err != ENOENT)</span>
+<span class="lineNum">     117 </span>                :<span class="lineNoCov">          0 :     error (EXIT_FAILURE, err, _(&quot;accessing %s&quot;), quote (file));</span>
+<span class="lineNum">     118 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1406 times"> + </span>]:<span class="lineCov">       1408 :   if (is_a_dir &lt; looks_like_a_dir)</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">          2 :     error (EXIT_FAILURE, err, _(&quot;target %s is not a directory&quot;), quote (file));</span>
+<span class="lineNum">     120 </span>                :<span class="lineCov">       1406 :   return is_a_dir;</span>
+<span class="lineNum">     121 </span>                :            : }
+<span class="lineNum">     122 </span>                :            : 
+<span class="lineNum">     123 </span>                :            : /* Make a link DEST to the (usually) existing file SOURCE.
+<span class="lineNum">     124 </span>                :            :    Symbolic links to nonexistent files are allowed.
+<span class="lineNum">     125 </span>                :            :    Return true if successful.  */
+<a name="126"><span class="lineNum">     126 </span>                :            : </a>
+<span class="lineNum">     127 </span>                :            : static bool
+<span class="lineNum">     128 </span>                :<span class="lineCov">       1415 : do_link (const char *source, const char *dest)</span>
+<span class="lineNum">     129 </span>                :            : {
+<span class="lineNum">     130 </span>                :            :   struct stat source_stats;
+<span class="lineNum">     131 </span>                :            :   struct stat dest_stats;
+<span class="lineNum">     132 </span>                :<span class="lineCov">       1415 :   char *dest_backup = NULL;</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">       1415 :   bool dest_lstat_ok = false;</span>
+<span class="lineNum">     134 </span>                :<span class="lineCov">       1415 :   bool source_is_dir = false;</span>
+<span class="lineNum">     135 </span>                :            :   bool ok;
+<span class="lineNum">     136 </span>                :            : 
+<span class="lineNum">     137 </span>        [<span class="branchCov" title="Branch 0 was taken 127 times"> + </span><span class="branchCov" title="Branch 1 was taken 1288 times"> + </span>]:<span class="lineCov">       1415 :   if (!symbolic_link)</span>
+<span class="lineNum">     138 </span>                :            :     {
+<span class="lineNum">     139 </span>                :            :        /* Which stat to use depends on whether linkat will follow the
+<span class="lineNum">     140 </span>                :            :           symlink.  We can't use the shorter
+<span class="lineNum">     141 </span>                :            :           (logical?stat:lstat) (source, &amp;source_stats)
+<span class="lineNum">     142 </span>                :            :           since stat might be a function-like macro.  */
+<span class="lineNum">     143 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 125 times"> + </span>]:<span class="lineCov">        133 :       if ((logical ? stat (source, &amp;source_stats)</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">        121 :            : lstat (source, &amp;source_stats))</span>
+<span class="lineNum">     145 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 121 times"> + </span>]:<span class="lineCov">        254 :           != 0)</span>
+<span class="lineNum">     146 </span>                :            :         {
+<span class="lineNum">     147 </span>                :<span class="lineCov">          2 :           error (0, errno, _(&quot;accessing %s&quot;), quote (source));</span>
+<span class="lineNum">     148 </span>                :<span class="lineCov">          2 :           return false;</span>
+<span class="lineNum">     149 </span>                :            :         }
+<span class="lineNum">     150 </span>                :            : 
+<span class="lineNum">     151 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 121 times"> + </span>]:<span class="lineCov">        125 :       if (S_ISDIR (source_stats.st_mode))</span>
+<span class="lineNum">     152 </span>                :            :         {
+<span class="lineNum">     153 </span>                :<span class="lineCov">          4 :           source_is_dir = true;</span>
+<span class="lineNum">     154 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :           if (! hard_dir_link)</span>
+<span class="lineNum">     155 </span>                :            :             {
+<span class="lineNum">     156 </span>                :<span class="lineCov">          4 :               error (0, 0, _(&quot;%s: hard link not allowed for directory&quot;),</span>
+<span class="lineNum">     157 </span>                :            :                      quote (source));
+<span class="lineNum">     158 </span>                :<span class="lineCov">          4 :               return false;</span>
+<span class="lineNum">     159 </span>                :            :             }
+<span class="lineNum">     160 </span>                :            :         }
+<span class="lineNum">     161 </span>                :            :     }
+<span class="lineNum">     162 </span>                :            : 
+<span class="lineNum">     163 </span>[<span class="branchCov" title="Branch 0 was taken 1279 times"> + </span><span class="branchCov" title="Branch 1 was taken 130 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 1279 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       1409 :   if (remove_existing_files || interactive || backup_type != no_backups)</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 4 times"> + </span><span class="branchCov" title="Branch 5 was taken 1275 times"> + </span>]
+<span class="lineNum">     164 </span>                :            :     {
+<span class="lineNum">     165 </span>                :<span class="lineCov">        134 :       dest_lstat_ok = (lstat (dest, &amp;dest_stats) == 0);</span>
+<span class="lineNum">     166 </span>[<span class="branchCov" title="Branch 0 was taken 115 times"> + </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 115 times"> + </span>]:<span class="lineCov">        134 :       if (!dest_lstat_ok &amp;&amp; errno != ENOENT)</span>
+<span class="lineNum">     167 </span>                :            :         {
+<span class="lineNum">     168 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;accessing %s&quot;), quote (dest));</span>
+<span class="lineNum">     169 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     170 </span>                :            :         }
+<span class="lineNum">     171 </span>                :            :     }
+<span class="lineNum">     172 </span>                :            : 
+<span class="lineNum">     173 </span>                :            :   /* If the current target was created as a hard link to another
+<span class="lineNum">     174 </span>                :            :      source file, then refuse to unlink it.  */
+<span class="lineNum">     175 </span>        [<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchCov" title="Branch 1 was taken 1390 times"> + </span>]:<span class="lineCov">       1409 :   if (dest_lstat_ok</span>
+<span class="lineNum">     176 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         19 :       &amp;&amp; dest_set != NULL</span>
+<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          1 :       &amp;&amp; seen_file (dest_set, dest, &amp;dest_stats))</span>
+<span class="lineNum">     178 </span>                :            :     {
+<span class="lineNum">     179 </span>                :<span class="lineCov">          1 :       error (0, 0,</span>
+<span class="lineNum">     180 </span>                :<span class="lineCov">          1 :              _(&quot;will not overwrite just-created %s with %s&quot;),</span>
+<span class="lineNum">     181 </span>                :            :              quote_n (0, dest), quote_n (1, source));
+<span class="lineNum">     182 </span>                :<span class="lineCov">          1 :       return false;</span>
+<span class="lineNum">     183 </span>                :            :     }
+<span class="lineNum">     184 </span>                :            : 
+<span class="lineNum">     185 </span>                :            :   /* If --force (-f) has been specified without --backup, then before
+<span class="lineNum">     186 </span>                :            :      making a link ln must remove the destination file if it exists.
+<span class="lineNum">     187 </span>                :            :      (with --backup, it just renames any existing destination file)
+<span class="lineNum">     188 </span>                :            :      But if the source and destination are the same, don't remove
+<span class="lineNum">     189 </span>                :            :      anything and fail right here.  */
+<span class="lineNum">     190 </span>        [<span class="branchCov" title="Branch 0 was taken 1279 times"> + </span><span class="branchCov" title="Branch 1 was taken 129 times"> + </span>]:<span class="lineCov">       1408 :   if ((remove_existing_files</span>
+<span class="lineNum">     191 </span>                :            :        /* Ensure that &quot;ln --backup f f&quot; fails here, with the
+<span class="lineNum">     192 </span>                :            :           &quot;... same file&quot; diagnostic, below.  Otherwise, subsequent
+<span class="lineNum">     193 </span>                :            :           code would give a misleading &quot;file not found&quot; diagnostic.
+<span class="lineNum">     194 </span>                :            :           This case is different than the others handled here, since
+<span class="lineNum">     195 </span>                :            :           the command in question doesn't use --force.  */
+<span class="lineNum">     196 </span>[<span class="branchCov" title="Branch 0 was taken 115 times"> + </span><span class="branchCov" title="Branch 1 was taken 1164 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 4 times"> + </span><span class="branchCov" title="Branch 3 was taken 111 times"> + </span>]:<span class="lineCov">       1279 :        || (!symbolic_link &amp;&amp; backup_type != no_backups))</span>
+<span class="lineNum">     197 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 115 times"> + </span>]:<span class="lineCov">        133 :       &amp;&amp; dest_lstat_ok</span>
+<span class="lineNum">     198 </span>                :            :       /* Allow 'ln -sf --backup k k' to succeed in creating the
+<span class="lineNum">     199 </span>                :            :          self-referential symlink, but don't allow the hard-linking
+<span class="lineNum">     200 </span>                :            :          equivalent: 'ln -f k k' (with or without --backup) to get
+<span class="lineNum">     201 </span>                :            :          beyond this point, because the error message you'd get is
+<span class="lineNum">     202 </span>                :            :          misleading.  */
+<span class="lineNum">     203 </span>[<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         18 :       &amp;&amp; (backup_type == no_backups || !symbolic_link)</span>
+<span class="lineNum">     204 </span>[<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 6 times"> + </span><span class="branchCov" title="Branch 4 was taken 4 times"> + </span>]:<span class="lineCov">         18 :       &amp;&amp; (!symbolic_link || stat (source, &amp;source_stats) == 0)</span>
+<span class="lineNum">     205 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         14 :       &amp;&amp; SAME_INODE (source_stats, dest_stats)</span>
+<span class="lineNum">     206 </span>                :            :       /* The following detects whether removing DEST will also remove
+<span class="lineNum">     207 </span>                :            :          SOURCE.  If the file has only one link then both are surely
+<span class="lineNum">     208 </span>                :            :          the same link.  Otherwise check whether they point to the same
+<span class="lineNum">     209 </span>                :            :          name in the same directory.  */
+<span class="lineNum">     210 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">          6 :       &amp;&amp; (source_stats.st_nlink == 1 || same_name (source, dest)))</span>
+<span class="lineNum">     211 </span>                :            :     {
+<span class="lineNum">     212 </span>                :<span class="lineCov">          6 :       error (0, 0, _(&quot;%s and %s are the same file&quot;),</span>
+<span class="lineNum">     213 </span>                :            :              quote_n (0, source), quote_n (1, dest));
+<span class="lineNum">     214 </span>                :<span class="lineCov">          6 :       return false;</span>
+<span class="lineNum">     215 </span>                :            :     }
+<span class="lineNum">     216 </span>                :            : 
+<span class="lineNum">     217 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 1390 times"> + </span>]:<span class="lineCov">       1402 :   if (dest_lstat_ok)</span>
+<span class="lineNum">     218 </span>                :            :     {
+<span class="lineNum">     219 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         12 :       if (S_ISDIR (dest_stats.st_mode))</span>
+<span class="lineNum">     220 </span>                :            :         {
+<span class="lineNum">     221 </span>                :<span class="lineNoCov">          0 :           error (0, 0, _(&quot;%s: cannot overwrite directory&quot;), quote (dest));</span>
+<span class="lineNum">     222 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     223 </span>                :            :         }
+<span class="lineNum">     224 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         12 :       if (interactive)</span>
+<span class="lineNum">     225 </span>                :            :         {
+<span class="lineNum">     226 </span>                :<span class="lineNoCov">          0 :           fprintf (stderr, _(&quot;%s: replace %s? &quot;), program_name, quote (dest));</span>
+<span class="lineNum">     227 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (!yesno ())</span>
+<span class="lineNum">     228 </span>                :<span class="lineNoCov">          0 :             return true;</span>
+<span class="lineNum">     229 </span>                :<span class="lineNoCov">          0 :           remove_existing_files = true;</span>
+<span class="lineNum">     230 </span>                :            :         }
+<span class="lineNum">     231 </span>                :            : 
+<span class="lineNum">     232 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         12 :       if (backup_type != no_backups)</span>
+<span class="lineNum">     233 </span>                :            :         {
+<span class="lineNum">     234 </span>                :<span class="lineCov">          6 :           dest_backup = find_backup_file_name (dest, backup_type);</span>
+<span class="lineNum">     235 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">          6 :           if (rename (dest, dest_backup) != 0)</span>
+<span class="lineNum">     236 </span>                :            :             {
+<span class="lineNum">     237 </span>                :<span class="lineNoCov">          0 :               int rename_errno = errno;</span>
+<span class="lineNum">     238 </span>                :<span class="lineNoCov">          0 :               free (dest_backup);</span>
+<span class="lineNum">     239 </span>                :<span class="lineNoCov">          0 :               dest_backup = NULL;</span>
+<span class="lineNum">     240 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               if (rename_errno != ENOENT)</span>
+<span class="lineNum">     241 </span>                :            :                 {
+<span class="lineNum">     242 </span>                :<span class="lineNoCov">          0 :                   error (0, rename_errno, _(&quot;cannot backup %s&quot;), quote (dest));</span>
+<span class="lineNum">     243 </span>                :<span class="lineNoCov">          0 :                   return false;</span>
+<span class="lineNum">     244 </span>                :            :                 }
+<span class="lineNum">     245 </span>                :            :             }
+<span class="lineNum">     246 </span>                :            :         }
+<span class="lineNum">     247 </span>                :            :     }
+<span class="lineNum">     248 </span>                :            : 
+<span class="lineNum">     249 </span>                :<span class="lineCov">       1284 :   ok = ((symbolic_link ? symlink (source, dest)</span>
+<span class="lineNum">     250 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 116 times"> + </span>]:<span class="lineCov">        118 :          : linkat (AT_FDCWD, source, AT_FDCWD, dest,</span>
+<span class="lineNum">     251 </span>                :            :                    logical ? AT_SYMLINK_FOLLOW : 0))
+<span class="lineNum">     252 </span>        [<span class="branchCov" title="Branch 0 was taken 1284 times"> + </span><span class="branchCov" title="Branch 1 was taken 118 times"> + </span>]:<span class="lineCov">       2804 :         == 0);</span>
+<span class="lineNum">     253 </span>                :            : 
+<span class="lineNum">     254 </span>                :            :   /* If the attempt to create a link failed and we are removing or
+<span class="lineNum">     255 </span>                :            :      backing up destinations, unlink the destination and try again.
+<span class="lineNum">     256 </span>                :            : 
+<span class="lineNum">     257 </span>                :            :      On the surface, POSIX describes an algorithm that states that
+<span class="lineNum">     258 </span>                :            :      'ln -f A B' will call unlink() on B before ever attempting
+<span class="lineNum">     259 </span>                :            :      link() on A.  But strictly following this has the counterintuitive
+<span class="lineNum">     260 </span>                :            :      effect of losing the contents of B, if A does not exist.
+<span class="lineNum">     261 </span>                :            :      Fortunately, POSIX 2008 clarified that an application is free
+<span class="lineNum">     262 </span>                :            :      to fail early if it can prove that continuing onwards cannot
+<span class="lineNum">     263 </span>                :            :      succeed, so we are justified in trying link() before blindly
+<span class="lineNum">     264 </span>                :            :      removing B, thus sometimes calling link() a second time during
+<span class="lineNum">     265 </span>                :            :      a successful 'ln -f A B'.
+<span class="lineNum">     266 </span>                :            : 
+<span class="lineNum">     267 </span>                :            :      Try to unlink DEST even if we may have backed it up successfully.
+<span class="lineNum">     268 </span>                :            :      In some unusual cases (when DEST and DEST_BACKUP are hard-links
+<span class="lineNum">     269 </span>                :            :      that refer to the same file), rename succeeds and DEST remains.
+<span class="lineNum">     270 </span>                :            :      If we didn't remove DEST in that case, the subsequent symlink or link
+<span class="lineNum">     271 </span>                :            :      call would fail.  */
+<span class="lineNum">     272 </span>                :            : 
+<span class="lineNum">     273 </span>[<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 1384 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 16 times"> + </span><span class="branchCov" title="Branch 4 was taken 2 times"> + </span>]:<span class="lineCov">       1402 :   if (!ok &amp;&amp; errno == EEXIST &amp;&amp; (remove_existing_files || dest_backup))</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 5 was taken 6 times"> + </span><span class="branchCov" title="Branch 6 was taken 10 times"> + </span>][<span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 6 times"> + </span>]
+<span class="lineNum">     274 </span>                :            :     {
+<span class="lineNum">     275 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span>]:<span class="lineCov">         10 :       if (unlink (dest) != 0)</span>
+<span class="lineNum">     276 </span>                :            :         {
+<span class="lineNum">     277 </span>                :<span class="lineNoCov">          0 :           error (0, errno, _(&quot;cannot remove %s&quot;), quote (dest));</span>
+<span class="lineNum">     278 </span>                :<span class="lineNoCov">          0 :           free (dest_backup);</span>
+<span class="lineNum">     279 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     280 </span>                :            :         }
+<span class="lineNum">     281 </span>                :            : 
+<span class="lineNum">     282 </span>                :<span class="lineCov">         16 :       ok = ((symbolic_link ? symlink (source, dest)</span>
+<span class="lineNum">     283 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          4 :              : linkat (AT_FDCWD, source, AT_FDCWD, dest,</span>
+<span class="lineNum">     284 </span>                :            :                        logical ? AT_SYMLINK_FOLLOW : 0))
+<span class="lineNum">     285 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">         20 :             == 0);</span>
+<span class="lineNum">     286 </span>                :            :     }
+<span class="lineNum">     287 </span>                :            : 
+<span class="lineNum">     288 </span>        [<span class="branchCov" title="Branch 0 was taken 1394 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">       1402 :   if (ok)</span>
+<span class="lineNum">     289 </span>                :            :     {
+<span class="lineNum">     290 </span>                :            :       /* Right after creating a hard link, do this: (note dest name and
+<span class="lineNum">     291 </span>                :            :          source_stats, which are also the just-linked-destinations stats) */
+<span class="lineNum">     292 </span>                :<span class="lineCov">       1394 :       record_file (dest_set, dest, &amp;source_stats);</span>
+<span class="lineNum">     293 </span>                :            : 
+<span class="lineNum">     294 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1394 times"> + </span>]:<span class="lineCov">       1394 :       if (verbose)</span>
+<span class="lineNum">     295 </span>                :            :         {
+<span class="lineNum">     296 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (dest_backup)</span>
+<span class="lineNum">     297 </span>                :<span class="lineNoCov">          0 :             printf (&quot;%s ~ &quot;, quote (dest_backup));</span>
+<span class="lineNum">     298 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :           printf (&quot;%s %c&gt; %s\n&quot;, quote_n (0, dest), (symbolic_link ? '-' : '='),</span>
+<span class="lineNum">     299 </span>                :            :                   quote_n (1, source));
+<span class="lineNum">     300 </span>                :            :         }
+<span class="lineNum">     301 </span>                :            :     }
+<span class="lineNum">     302 </span>                :            :   else
+<span class="lineNum">     303 </span>                :            :     {
+<span class="lineNum">     304 </span>  [<span class="branchCov" title="Branch 2 was taken 4 times"> + </span><span class="branchCov" title="Branch 3 was taken 4 times"> + </span><span class="branchCov" title="Branch 4 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]:<span class="lineCov">         28 :       error (0, errno,</span>
+<span class="lineNum">         </span>[<span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchCov" title="Branch 7 was taken 4 times"> + </span>][<span class="branchCov" title="Branch 8 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span>]
+<span class="lineNum">     305 </span>                :            :              (symbolic_link
+<span class="lineNum">     306 </span>        [<span class="branchCov" title="Branch 1 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :               ? (errno != ENAMETOOLONG &amp;&amp; *source</span>
+<span class="lineNum">     307 </span>                :            :                  ? _(&quot;failed to create symbolic link %s&quot;)
+<span class="lineNum">     308 </span>                :            :                  : _(&quot;failed to create symbolic link %s -&gt; %s&quot;))
+<span class="lineNum">     309 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineCov">          4 :               : (errno == EMLINK &amp;&amp; !source_is_dir</span>
+<span class="lineNum">     310 </span>                :            :                  ? _(&quot;failed to create hard link to %.0s%s&quot;)
+<span class="lineNum">     311 </span>[<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 5 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span>]:<span class="lineCov">          8 :                  : (errno == EDQUOT || errno == EEXIST || errno == ENOSPC</span>
+<span class="lineNum">     312 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :                     || errno == EROFS)</span>
+<span class="lineNum">     313 </span>                :            :                  ? _(&quot;failed to create hard link %s&quot;)
+<span class="lineNum">     314 </span>                :            :                  : _(&quot;failed to create hard link %s =&gt; %s&quot;))),
+<span class="lineNum">     315 </span>                :            :              quote_n (0, dest), quote_n (1, source));
+<span class="lineNum">     316 </span>                :            : 
+<span class="lineNum">     317 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :       if (dest_backup)</span>
+<span class="lineNum">     318 </span>                :            :         {
+<span class="lineNum">     319 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (rename (dest_backup, dest) != 0)</span>
+<span class="lineNum">     320 </span>                :<span class="lineNoCov">          0 :             error (0, errno, _(&quot;cannot un-backup %s&quot;), quote (dest));</span>
+<span class="lineNum">     321 </span>                :            :         }
+<span class="lineNum">     322 </span>                :            :     }
+<span class="lineNum">     323 </span>                :            : 
+<span class="lineNum">     324 </span>                :<span class="lineCov">       1402 :   free (dest_backup);</span>
+<span class="lineNum">     325 </span>                :<span class="lineCov">       1415 :   return ok;</span>
+<span class="lineNum">     326 </span>                :            : }
+<a name="327"><span class="lineNum">     327 </span>                :            : </a>
+<span class="lineNum">     328 </span>                :            : void
+<span class="lineNum">     329 </span>                :<span class="lineCov">          8 : usage (int status)</span>
+<span class="lineNum">     330 </span>                :            : {
+<span class="lineNum">     331 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     332 </span>                :<span class="lineCov">          2 :     emit_try_help ();</span>
+<span class="lineNum">     333 </span>                :            :   else
+<span class="lineNum">     334 </span>                :            :     {
+<span class="lineNum">     335 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     336 </span>                :            : Usage: %s [OPTION]... [-T] TARGET LINK_NAME   (1st form)\n\
+<span class="lineNum">     337 </span>                :            :   or:  %s [OPTION]... TARGET                  (2nd form)\n\
+<span class="lineNum">     338 </span>                :            :   or:  %s [OPTION]... TARGET... DIRECTORY     (3rd form)\n\
+<span class="lineNum">     339 </span>                :            :   or:  %s [OPTION]... -t DIRECTORY TARGET...  (4th form)\n\
+<span class="lineNum">     340 </span>                :            : &quot;),
+<span class="lineNum">     341 </span>                :            :               program_name, program_name, program_name, program_name);
+<span class="lineNum">     342 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     343 </span>                :            : In the 1st form, create a link to TARGET with the name LINK_NAME.\n\
+<span class="lineNum">     344 </span>                :            : In the 2nd form, create a link to TARGET in the current directory.\n\
+<span class="lineNum">     345 </span>                :            : In the 3rd and 4th forms, create links to each TARGET in DIRECTORY.\n\
+<span class="lineNum">     346 </span>                :            : Create hard links by default, symbolic links with --symbolic.\n\
+<span class="lineNum">     347 </span>                :            : By default, each destination (name of new link) should not already exist.\n\
+<span class="lineNum">     348 </span>                :            : When creating hard links, each TARGET must exist.  Symbolic links\n\
+<span class="lineNum">     349 </span>                :            : can hold arbitrary text; if later resolved, a relative link is\n\
+<span class="lineNum">     350 </span>                :            : interpreted in relation to its parent directory.\n\
+<span class="lineNum">     351 </span>                :            : \n\
+<span class="lineNum">     352 </span>                :            : &quot;), stdout);
+<span class="lineNum">     353 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     354 </span>                :            : Mandatory arguments to long options are mandatory for short options too.\n\
+<span class="lineNum">     355 </span>                :            : &quot;), stdout);
+<span class="lineNum">     356 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     357 </span>                :            :       --backup[=CONTROL]      make a backup of each existing destination file\n\
+<span class="lineNum">     358 </span>                :            :   -b                          like --backup but does not accept an argument\n\
+<span class="lineNum">     359 </span>                :            :   -d, -F, --directory         allow the superuser to attempt to hard link\n\
+<span class="lineNum">     360 </span>                :            :                                 directories (note: will probably fail due to\n\
+<span class="lineNum">     361 </span>                :            :                                 system restrictions, even for the superuser)\n\
+<span class="lineNum">     362 </span>                :            :   -f, --force                 remove existing destination files\n\
+<span class="lineNum">     363 </span>                :            : &quot;), stdout);
+<span class="lineNum">     364 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     365 </span>                :            :   -i, --interactive           prompt whether to remove destinations\n\
+<span class="lineNum">     366 </span>                :            :   -L, --logical               dereference TARGETs that are symbolic links\n\
+<span class="lineNum">     367 </span>                :            :   -n, --no-dereference        treat LINK_NAME as a normal file if\n\
+<span class="lineNum">     368 </span>                :            :                                 it is a symbolic link to a directory\n\
+<span class="lineNum">     369 </span>                :            :   -P, --physical              make hard links directly to symbolic links\n\
+<span class="lineNum">     370 </span>                :            :   -s, --symbolic              make symbolic links instead of hard links\n\
+<span class="lineNum">     371 </span>                :            : &quot;), stdout);
+<span class="lineNum">     372 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     373 </span>                :            :   -S, --suffix=SUFFIX         override the usual backup suffix\n\
+<span class="lineNum">     374 </span>                :            :   -t, --target-directory=DIRECTORY  specify the DIRECTORY in which to create\n\
+<span class="lineNum">     375 </span>                :            :                                 the links\n\
+<span class="lineNum">     376 </span>                :            :   -T, --no-target-directory   treat LINK_NAME as a normal file always\n\
+<span class="lineNum">     377 </span>                :            :   -v, --verbose               print name of each linked file\n\
+<span class="lineNum">     378 </span>                :            : &quot;), stdout);
+<span class="lineNum">     379 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     380 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     381 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     382 </span>                :            : \n\
+<span class="lineNum">     383 </span>                :            : The backup suffix is '~', unless set with --suffix or SIMPLE_BACKUP_SUFFIX.\n\
+<span class="lineNum">     384 </span>                :            : The version control method may be selected via the --backup option or through\n\
+<span class="lineNum">     385 </span>                :            : the VERSION_CONTROL environment variable.  Here are the values:\n\
+<span class="lineNum">     386 </span>                :            : \n\
+<span class="lineNum">     387 </span>                :            : &quot;), stdout);
+<span class="lineNum">     388 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     389 </span>                :            :   none, off       never make backups (even if --backup is given)\n\
+<span class="lineNum">     390 </span>                :            :   numbered, t     make numbered backups\n\
+<span class="lineNum">     391 </span>                :            :   existing, nil   numbered if numbered backups exist, simple otherwise\n\
+<span class="lineNum">     392 </span>                :            :   simple, never   always make simple backups\n\
+<span class="lineNum">     393 </span>                :            : \n\
+<span class="lineNum">     394 </span>                :            : &quot;), stdout);
+<span class="lineNum">     395 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     396 </span>                :            : Using -s ignores -L and -P.  Otherwise, the last option specified controls\n\
+<span class="lineNum">     397 </span>                :            : behavior when a TARGET is a symbolic link, defaulting to %s.\n\
+<span class="lineNum">     398 </span>                :            : &quot;), LINK_FOLLOWS_SYMLINKS ? &quot;-L&quot; : &quot;-P&quot;);
+<span class="lineNum">     399 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">     400 </span>                :            :     }
+<span class="lineNum">     401 </span>                :<span class="lineCov">          8 :   exit (status);</span>
+<span class="lineNum">     402 </span>                :            : }
+<a name="403"><span class="lineNum">     403 </span>                :            : </a>
+<span class="lineNum">     404 </span>                :            : int
+<span class="lineNum">     405 </span>                :<span class="lineCov">       1448 : main (int argc, char **argv)</span>
+<span class="lineNum">     406 </span>                :            : {
+<span class="lineNum">     407 </span>                :            :   int c;
+<span class="lineNum">     408 </span>                :            :   bool ok;
+<span class="lineNum">     409 </span>                :<span class="lineCov">       1448 :   bool make_backups = false;</span>
+<span class="lineNum">     410 </span>                :            :   char *backup_suffix_string;
+<span class="lineNum">     411 </span>                :<span class="lineCov">       1448 :   char *version_control_string = NULL;</span>
+<span class="lineNum">     412 </span>                :<span class="lineCov">       1448 :   char const *target_directory = NULL;</span>
+<span class="lineNum">     413 </span>                :<span class="lineCov">       1448 :   bool no_target_directory = false;</span>
+<span class="lineNum">     414 </span>                :            :   int n_files;
+<span class="lineNum">     415 </span>                :            :   char **file;
+<span class="lineNum">     416 </span>                :            : 
+<span class="lineNum">     417 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     418 </span>                :<span class="lineCov">       1448 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     419 </span>                :<span class="lineCov">       1448 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     420 </span>                :<span class="lineCov">       1448 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     421 </span>                :<span class="lineCov">       1448 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     422 </span>                :            : 
+<span class="lineNum">     423 </span>                :<span class="lineCov">       1448 :   atexit (close_stdin);</span>
+<span class="lineNum">     424 </span>                :            : 
+<span class="lineNum">     425 </span>                :            :   /* FIXME: consider not calling getenv for SIMPLE_BACKUP_SUFFIX unless
+<span class="lineNum">     426 </span>                :            :      we'll actually use backup_suffix_string.  */
+<span class="lineNum">     427 </span>                :<span class="lineCov">       1448 :   backup_suffix_string = getenv (&quot;SIMPLE_BACKUP_SUFFIX&quot;);</span>
+<span class="lineNum">     428 </span>                :            : 
+<span class="lineNum">     429 </span>                :<span class="lineCov">       1448 :   symbolic_link = remove_existing_files = interactive = verbose</span>
+<span class="lineNum">     430 </span>                :<span class="lineCov">       1448 :     = hard_dir_link = false;</span>
+<span class="lineNum">     431 </span>                :            : 
+<span class="lineNum">     432 </span>        [<span class="branchCov" title="Branch 1 was taken 1575 times"> + </span><span class="branchCov" title="Branch 2 was taken 1416 times"> + </span>]:<span class="lineCov">       2991 :   while ((c = getopt_long (argc, argv, &quot;bdfinst:vFLPS:T&quot;, long_options, NULL))</span>
+<span class="lineNum">     433 </span>                :            :          != -1)
+<span class="lineNum">     434 </span>                :            :     {
+<span class="lineNum">     435 </span>  [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 129 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">       1575 :       switch (c)</span>
+<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 12 times"> + </span><span class="branchCov" title="Branch 5 was taken 86 times"> + </span><span class="branchCov" title="Branch 6 was taken 14 times"> + </span><span class="branchCov" title="Branch 7 was taken 1288 times"> + </span><span class="branchCov" title="Branch 8 was taken 2 times"> + </span> 
+<span class="lineNum">         </span><span class="branchCov" title="Branch 9 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchCov" title="Branch 11 was taken 2 times"> + </span><span class="branchCov" title="Branch 12 was taken 6 times"> + </span><span class="branchCov" title="Branch 13 was taken 24 times"> + </span> 
+<span class="lineNum">         </span>            <span class="branchCov" title="Branch 14 was taken 2 times"> + </span>]
+<span class="lineNum">     436 </span>                :            :         {
+<span class="lineNum">     437 </span>                :            :         case 'b':
+<span class="lineNum">     438 </span>                :<span class="lineCov">          8 :           make_backups = true;</span>
+<span class="lineNum">     439 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          8 :           if (optarg)</span>
+<span class="lineNum">     440 </span>                :<span class="lineCov">          6 :             version_control_string = optarg;</span>
+<span class="lineNum">     441 </span>                :<span class="lineCov">          8 :           break;</span>
+<span class="lineNum">     442 </span>                :            :         case 'd':
+<span class="lineNum">     443 </span>                :            :         case 'F':
+<span class="lineNum">     444 </span>                :<span class="lineNoCov">          0 :           hard_dir_link = true;</span>
+<span class="lineNum">     445 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     446 </span>                :            :         case 'f':
+<span class="lineNum">     447 </span>                :<span class="lineCov">        129 :           remove_existing_files = true;</span>
+<span class="lineNum">     448 </span>                :<span class="lineCov">        129 :           interactive = false;</span>
+<span class="lineNum">     449 </span>                :<span class="lineCov">        129 :           break;</span>
+<span class="lineNum">     450 </span>                :            :         case 'i':
+<span class="lineNum">     451 </span>                :<span class="lineNoCov">          0 :           remove_existing_files = false;</span>
+<span class="lineNum">     452 </span>                :<span class="lineNoCov">          0 :           interactive = true;</span>
+<span class="lineNum">     453 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     454 </span>                :            :         case 'L':
+<span class="lineNum">     455 </span>                :<span class="lineCov">         12 :           logical = true;</span>
+<span class="lineNum">     456 </span>                :<span class="lineCov">         12 :           break;</span>
+<span class="lineNum">     457 </span>                :            :         case 'n':
+<span class="lineNum">     458 </span>                :<span class="lineCov">         86 :           dereference_dest_dir_symlinks = false;</span>
+<span class="lineNum">     459 </span>                :<span class="lineCov">         86 :           break;</span>
+<span class="lineNum">     460 </span>                :            :         case 'P':
+<span class="lineNum">     461 </span>                :<span class="lineCov">         14 :           logical = false;</span>
+<span class="lineNum">     462 </span>                :<span class="lineCov">         14 :           break;</span>
+<span class="lineNum">     463 </span>                :            :         case 's':
+<span class="lineNum">     464 </span>                :<span class="lineCov">       1288 :           symbolic_link = true;</span>
+<span class="lineNum">     465 </span>                :<span class="lineCov">       1288 :           break;</span>
+<span class="lineNum">     466 </span>                :            :         case 't':
+<span class="lineNum">     467 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :           if (target_directory)</span>
+<span class="lineNum">     468 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0, _(&quot;multiple target directories specified&quot;));</span>
+<span class="lineNum">     469 </span>                :            :           else
+<span class="lineNum">     470 </span>                :            :             {
+<span class="lineNum">     471 </span>                :            :               struct stat st;
+<span class="lineNum">     472 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :               if (stat (optarg, &amp;st) != 0)</span>
+<span class="lineNum">     473 </span>                :<span class="lineNoCov">          0 :                 error (EXIT_FAILURE, errno, _(&quot;accessing %s&quot;), quote (optarg));</span>
+<span class="lineNum">     474 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :               if (! S_ISDIR (st.st_mode))</span>
+<span class="lineNum">     475 </span>                :<span class="lineNoCov">          0 :                 error (EXIT_FAILURE, 0, _(&quot;target %s is not a directory&quot;),</span>
+<span class="lineNum">     476 </span>                :            :                        quote (optarg));
+<span class="lineNum">     477 </span>                :            :             }
+<span class="lineNum">     478 </span>                :<span class="lineCov">          2 :           target_directory = optarg;</span>
+<span class="lineNum">     479 </span>                :<span class="lineCov">          2 :           break;</span>
+<span class="lineNum">     480 </span>                :            :         case 'T':
+<span class="lineNum">     481 </span>                :<span class="lineCov">          2 :           no_target_directory = true;</span>
+<span class="lineNum">     482 </span>                :<span class="lineCov">          2 :           break;</span>
+<span class="lineNum">     483 </span>                :            :         case 'v':
+<span class="lineNum">     484 </span>                :<span class="lineNoCov">          0 :           verbose = true;</span>
+<span class="lineNum">     485 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     486 </span>                :            :         case 'S':
+<span class="lineNum">     487 </span>                :<span class="lineCov">          2 :           make_backups = true;</span>
+<span class="lineNum">     488 </span>                :<span class="lineCov">          2 :           backup_suffix_string = optarg;</span>
+<span class="lineNum">     489 </span>                :<span class="lineCov">          2 :           break;</span>
+<span class="lineNum">     490 </span>                :<span class="lineCov">          6 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     491 </span>                :<span class="lineCov">         24 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     492 </span>                :            :         default:
+<span class="lineNum">     493 </span>                :<span class="lineCov">          2 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     494 </span>                :            :           break;
+<span class="lineNum">     495 </span>                :            :         }
+<span class="lineNum">     496 </span>                :            :     }
+<span class="lineNum">     497 </span>                :            : 
+<span class="lineNum">     498 </span>                :<span class="lineCov">       1416 :   n_files = argc - optind;</span>
+<span class="lineNum">     499 </span>                :<span class="lineCov">       1416 :   file = argv + optind;</span>
+<span class="lineNum">     500 </span>                :            : 
+<span class="lineNum">     501 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1416 times"> + </span>]:<span class="lineCov">       1416 :   if (n_files &lt;= 0)</span>
+<span class="lineNum">     502 </span>                :            :     {
+<span class="lineNum">     503 </span>                :<span class="lineNoCov">          0 :       error (0, 0, _(&quot;missing file operand&quot;));</span>
+<span class="lineNum">     504 </span>                :<span class="lineNoCov">          0 :       usage (EXIT_FAILURE);</span>
+<span class="lineNum">     505 </span>                :            :     }
+<span class="lineNum">     506 </span>                :            : 
+<span class="lineNum">     507 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1414 times"> + </span>]:<span class="lineCov">       1416 :   if (no_target_directory)</span>
+<span class="lineNum">     508 </span>                :            :     {
+<span class="lineNum">     509 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :       if (target_directory)</span>
+<span class="lineNum">     510 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, 0,</span>
+<span class="lineNum">     511 </span>                :<span class="lineNoCov">          0 :                _(&quot;cannot combine --target-directory &quot;</span>
+<span class="lineNum">     512 </span>                :            :                  &quot;and --no-target-directory&quot;));
+<span class="lineNum">     513 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :       if (n_files != 2)</span>
+<span class="lineNum">     514 </span>                :            :         {
+<span class="lineNum">     515 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (n_files &lt; 2)</span>
+<span class="lineNum">     516 </span>                :<span class="lineNoCov">          0 :             error (0, 0,</span>
+<span class="lineNum">     517 </span>                :<span class="lineNoCov">          0 :                    _(&quot;missing destination file operand after %s&quot;),</span>
+<span class="lineNum">     518 </span>                :            :                    quote (file[0]));
+<span class="lineNum">     519 </span>                :            :           else
+<span class="lineNum">     520 </span>                :<span class="lineNoCov">          0 :             error (0, 0, _(&quot;extra operand %s&quot;), quote (file[2]));</span>
+<span class="lineNum">     521 </span>                :<span class="lineNoCov">          0 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     522 </span>                :            :         }
+<span class="lineNum">     523 </span>                :            :     }
+<span class="lineNum">     524 </span>        [<span class="branchCov" title="Branch 0 was taken 1412 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">       1414 :   else if (!target_directory)</span>
+<span class="lineNum">     525 </span>                :            :     {
+<span class="lineNum">     526 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 1408 times"> + </span>]:<span class="lineCov">       1412 :       if (n_files &lt; 2)</span>
+<span class="lineNum">     527 </span>                :<span class="lineCov">          4 :         target_directory = &quot;.&quot;;</span>
+<span class="lineNum">     528 </span>[<span class="branchCov" title="Branch 0 was taken 1408 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 21 times"> + </span><span class="branchCov" title="Branch 4 was taken 1385 times"> + </span>]:<span class="lineCov">       1408 :       else if (2 &lt;= n_files &amp;&amp; target_directory_operand (file[n_files - 1]))</span>
+<span class="lineNum">     529 </span>                :<span class="lineCov">         21 :         target_directory = file[--n_files];</span>
+<span class="lineNum">     530 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1385 times"> + </span>]:<span class="lineCov">       1385 :       else if (2 &lt; n_files)</span>
+<span class="lineNum">     531 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, 0, _(&quot;target %s is not a directory&quot;),</span>
+<span class="lineNum">     532 </span>                :<span class="lineNoCov">          0 :                quote (file[n_files - 1]));</span>
+<span class="lineNum">     533 </span>                :            :     }
+<span class="lineNum">     534 </span>                :            : 
+<span class="lineNum">     535 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1412 times"> + </span>]:<span class="lineCov">       1414 :   if (backup_suffix_string)</span>
+<span class="lineNum">     536 </span>                :<span class="lineCov">          2 :     simple_backup_suffix = xstrdup (backup_suffix_string);</span>
+<span class="lineNum">     537 </span>                :            : 
+<span class="lineNum">     538 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 1406 times"> + </span>]:<span class="lineCov">       1414 :   backup_type = (make_backups</span>
+<span class="lineNum">     539 </span>                :<span class="lineCov">          8 :                  ? xget_version (_(&quot;backup type&quot;), version_control_string)</span>
+<span class="lineNum">     540 </span>                :            :                  : no_backups);
+<span class="lineNum">     541 </span>                :            : 
+<span class="lineNum">     542 </span>        [<span class="branchCov" title="Branch 0 was taken 27 times"> + </span><span class="branchCov" title="Branch 1 was taken 1387 times"> + </span>]:<span class="lineCov">       1414 :   if (target_directory)</span>
+<span class="lineNum">     543 </span>                :            :     {
+<span class="lineNum">     544 </span>                :            :       int i;
+<span class="lineNum">     545 </span>                :            : 
+<span class="lineNum">     546 </span>                :            :       /* Create the data structure we'll use to record which hard links we
+<span class="lineNum">     547 </span>                :            :          create.  Used to ensure that ln detects an obscure corner case that
+<span class="lineNum">     548 </span>                :            :          might result in user data loss.  Create it only if needed.  */
+<span class="lineNum">     549 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 26 times"> + </span>]:<span class="lineCov">         27 :       if (2 &lt;= n_files</span>
+<span class="lineNum">     550 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :           &amp;&amp; remove_existing_files</span>
+<span class="lineNum">     551 </span>                :            :           /* Don't bother trying to protect symlinks, since ln clobbering
+<span class="lineNum">     552 </span>                :            :              a just-created symlink won't ever lead to real data loss.  */
+<span class="lineNum">     553 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :           &amp;&amp; ! symbolic_link</span>
+<span class="lineNum">     554 </span>                :            :           /* No destination hard link can be clobbered when making
+<span class="lineNum">     555 </span>                :            :              numbered backups.  */
+<span class="lineNum">     556 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :           &amp;&amp; backup_type != numbered_backups)</span>
+<span class="lineNum">     557 </span>                :            : 
+<span class="lineNum">     558 </span>                :            :         {
+<span class="lineNum">     559 </span>                :<span class="lineCov">          1 :           dest_set = hash_initialize (DEST_INFO_INITIAL_CAPACITY,</span>
+<span class="lineNum">     560 </span>                :            :                                       NULL,
+<span class="lineNum">     561 </span>                :            :                                       triple_hash,
+<span class="lineNum">     562 </span>                :            :                                       triple_compare,
+<span class="lineNum">     563 </span>                :            :                                       triple_free);
+<span class="lineNum">     564 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :           if (dest_set == NULL)</span>
+<span class="lineNum">     565 </span>                :<span class="lineNoCov">          0 :             xalloc_die ();</span>
+<span class="lineNum">     566 </span>                :            :         }
+<span class="lineNum">     567 </span>                :            : 
+<span class="lineNum">     568 </span>                :<span class="lineCov">         27 :       ok = true;</span>
+<span class="lineNum">     569 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         55 :       for (i = 0; i &lt; n_files; ++i)</span>
+<span class="lineNum">     570 </span>                :            :         {
+<span class="lineNum">     571 </span>                :            :           char *dest_base;
+<span class="lineNum">     572 </span>                :<span class="lineCov">         28 :           char *dest = file_name_concat (target_directory,</span>
+<span class="lineNum">     573 </span>                :<span class="lineCov">         28 :                                          last_component (file[i]),</span>
+<span class="lineNum">     574 </span>                :            :                                          &amp;dest_base);
+<span class="lineNum">     575 </span>                :<span class="lineCov">         28 :           strip_trailing_slashes (dest_base);</span>
+<span class="lineNum">     576 </span>                :<span class="lineCov">         28 :           ok &amp;= do_link (file[i], dest);</span>
+<span class="lineNum">     577 </span>                :<span class="lineCov">         28 :           free (dest);</span>
+<span class="lineNum">     578 </span>                :            :         }
+<span class="lineNum">     579 </span>                :            :     }
+<span class="lineNum">     580 </span>                :            :   else
+<span class="lineNum">     581 </span>                :<span class="lineCov">       1387 :     ok = do_link (file[0], file[1]);</span>
+<span class="lineNum">     582 </span>                :            : 
+<span class="lineNum">     583 </span>        [<span class="branchCov" title="Branch 0 was taken 1393 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">       1414 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
+<span class="lineNum">     584 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

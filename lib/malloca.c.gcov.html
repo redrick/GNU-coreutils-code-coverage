@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Safe automatic memory allocation.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2003, 2006-2007, 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2003, 2006-2007, 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            :    Written by Bruno Haible &lt;bruno@clisp.org&gt;, 2003.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software; you can redistribute it and/or modify
@@ -135,36 +135,36 @@
 <span class="lineNum">      64 </span>                :            : #endif
 <a name="65"><span class="lineNum">      65 </span>                :            : </a>
 <span class="lineNum">      66 </span>                :            : void *
-<span class="lineNum">      67 </span>                :<span class="lineCov">     750006 : mmalloca (size_t n)</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">     500004 : mmalloca (size_t n)</span>
 <span class="lineNum">      68 </span>                :            : {
 <span class="lineNum">      69 </span>                :            : #if HAVE_ALLOCA
 <span class="lineNum">      70 </span>                :            :   /* Allocate one more word, that serves as an indicator for malloc()ed
 <span class="lineNum">      71 </span>                :            :      memory, so that freea() of an alloca() result is fast.  */
-<span class="lineNum">      72 </span>                :<span class="lineCov">     750006 :   size_t nplus = n + HEADER_SIZE;</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">     500004 :   size_t nplus = n + HEADER_SIZE;</span>
 <span class="lineNum">      73 </span>                :            : 
-<span class="lineNum">      74 </span>        [<span class="branchCov" title="Branch 0 was taken 750006 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     750006 :   if (nplus &gt;= n)</span>
+<span class="lineNum">      74 </span>        [<span class="branchCov" title="Branch 0 was taken 500004 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     500004 :   if (nplus &gt;= n)</span>
 <span class="lineNum">      75 </span>                :            :     {
-<span class="lineNum">      76 </span>                :<span class="lineCov">     750006 :       char *p = (char *) malloc (nplus);</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">     500004 :       char *p = (char *) malloc (nplus);</span>
 <span class="lineNum">      77 </span>                :            : 
-<span class="lineNum">      78 </span>        [<span class="branchCov" title="Branch 0 was taken 750006 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     750006 :       if (p != NULL)</span>
+<span class="lineNum">      78 </span>        [<span class="branchCov" title="Branch 0 was taken 500004 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     500004 :       if (p != NULL)</span>
 <span class="lineNum">      79 </span>                :            :         {
 <span class="lineNum">      80 </span>                :            :           size_t slot;
 <span class="lineNum">      81 </span>                :            : 
-<span class="lineNum">      82 </span>                :<span class="lineCov">     750006 :           p += HEADER_SIZE;</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">     500004 :           p += HEADER_SIZE;</span>
 <span class="lineNum">      83 </span>                :            : 
 <span class="lineNum">      84 </span>                :            :           /* Put a magic number into the indicator word.  */
-<span class="lineNum">      85 </span>                :<span class="lineCov">     750006 :           ((int *) p)[-1] = MAGIC_NUMBER;</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">     500004 :           ((int *) p)[-1] = MAGIC_NUMBER;</span>
 <span class="lineNum">      86 </span>                :            : 
 <span class="lineNum">      87 </span>                :            :           /* Enter p into the hash table.  */
-<span class="lineNum">      88 </span>                :<span class="lineCov">     750006 :           slot = (unsigned long) p % HASH_TABLE_SIZE;</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">     750006 :           ((struct header *) (p - HEADER_SIZE))-&gt;next = mmalloca_results[slot];</span>
-<span class="lineNum">      90 </span>                :<span class="lineCov">     750006 :           mmalloca_results[slot] = p;</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">     500004 :           slot = (unsigned long) p % HASH_TABLE_SIZE;</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">     500004 :           ((struct header *) (p - HEADER_SIZE))-&gt;next = mmalloca_results[slot];</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">     500004 :           mmalloca_results[slot] = p;</span>
 <span class="lineNum">      91 </span>                :            : 
-<span class="lineNum">      92 </span>                :<span class="lineCov">     750006 :           return p;</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">     500004 :           return p;</span>
 <span class="lineNum">      93 </span>                :            :         }
 <span class="lineNum">      94 </span>                :            :     }
 <span class="lineNum">      95 </span>                :            :   /* Out of memory.  */
-<span class="lineNum">      96 </span>                :<span class="lineCov">     750006 :   return NULL;</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">     500004 :   return NULL;</span>
 <span class="lineNum">      97 </span>                :            : #else
 <span class="lineNum">      98 </span>                :            : # if !MALLOC_0_IS_NONNULL
 <span class="lineNum">      99 </span>                :            :   if (n == 0)
@@ -176,30 +176,30 @@
 <span class="lineNum">     105 </span>                :            : 
 <a name="106"><span class="lineNum">     106 </span>                :            : #if HAVE_ALLOCA</a>
 <span class="lineNum">     107 </span>                :            : void
-<span class="lineNum">     108 </span>                :<span class="lineCov">    1500006 : freea (void *p)</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">    1000004 : freea (void *p)</span>
 <span class="lineNum">     109 </span>                :            : {
 <span class="lineNum">     110 </span>                :            :   /* mmalloca() may have returned NULL.  */
-<span class="lineNum">     111 </span>        [<span class="branchCov" title="Branch 0 was taken 1500006 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    1500006 :   if (p != NULL)</span>
+<span class="lineNum">     111 </span>        [<span class="branchCov" title="Branch 0 was taken 1000004 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    1000004 :   if (p != NULL)</span>
 <span class="lineNum">     112 </span>                :            :     {
 <span class="lineNum">     113 </span>                :            :       /* Attempt to quickly distinguish the mmalloca() result - which has
 <span class="lineNum">     114 </span>                :            :          a magic indicator word - and the alloca() result - which has an
 <span class="lineNum">     115 </span>                :            :          uninitialized indicator word.  It is for this test that sa_increment
 <span class="lineNum">     116 </span>                :            :          additional bytes are allocated in the alloca() case.  */
-<span class="lineNum">     117 </span>        [<span class="branchCov" title="Branch 0 was taken 750006 times"> + </span><span class="branchCov" title="Branch 1 was taken 750000 times"> + </span>]:<span class="lineCov">    1500006 :       if (((int *) p)[-1] == MAGIC_NUMBER)</span>
+<span class="lineNum">     117 </span>        [<span class="branchCov" title="Branch 0 was taken 500004 times"> + </span><span class="branchCov" title="Branch 1 was taken 500000 times"> + </span>]:<span class="lineCov">    1000004 :       if (((int *) p)[-1] == MAGIC_NUMBER)</span>
 <span class="lineNum">     118 </span>                :            :         {
 <span class="lineNum">     119 </span>                :            :           /* Looks like a mmalloca() result.  To see whether it really is one,
 <span class="lineNum">     120 </span>                :            :              perform a lookup in the hash table.  */
-<span class="lineNum">     121 </span>                :<span class="lineCov">     750006 :           size_t slot = (unsigned long) p % HASH_TABLE_SIZE;</span>
-<span class="lineNum">     122 </span>                :<span class="lineCov">     750006 :           void **chain = &amp;mmalloca_results[slot];</span>
-<span class="lineNum">     123 </span>        [<span class="branchCov" title="Branch 0 was taken 750006 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     750006 :           for (; *chain != NULL;)</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">     500004 :           size_t slot = (unsigned long) p % HASH_TABLE_SIZE;</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">     500004 :           void **chain = &amp;mmalloca_results[slot];</span>
+<span class="lineNum">     123 </span>        [<span class="branchCov" title="Branch 0 was taken 500004 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     500004 :           for (; *chain != NULL;)</span>
 <span class="lineNum">     124 </span>                :            :             {
-<span class="lineNum">     125 </span>        [<span class="branchCov" title="Branch 0 was taken 750006 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     750006 :               if (*chain == p)</span>
+<span class="lineNum">     125 </span>        [<span class="branchCov" title="Branch 0 was taken 500004 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     500004 :               if (*chain == p)</span>
 <span class="lineNum">     126 </span>                :            :                 {
 <span class="lineNum">     127 </span>                :            :                   /* Found it.  Remove it from the hash table and free it.  */
-<span class="lineNum">     128 </span>                :<span class="lineCov">     750006 :                   char *p_begin = (char *) p - HEADER_SIZE;</span>
-<span class="lineNum">     129 </span>                :<span class="lineCov">     750006 :                   *chain = ((struct header *) p_begin)-&gt;next;</span>
-<span class="lineNum">     130 </span>                :<span class="lineCov">     750006 :                   free (p_begin);</span>
-<span class="lineNum">     131 </span>                :<span class="lineCov">    1500006 :                   return;</span>
+<span class="lineNum">     128 </span>                :<span class="lineCov">     500004 :                   char *p_begin = (char *) p - HEADER_SIZE;</span>
+<span class="lineNum">     129 </span>                :<span class="lineCov">     500004 :                   *chain = ((struct header *) p_begin)-&gt;next;</span>
+<span class="lineNum">     130 </span>                :<span class="lineCov">     500004 :                   free (p_begin);</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">    1000004 :                   return;</span>
 <span class="lineNum">     132 </span>                :            :                 }
 <span class="lineNum">     133 </span>                :<span class="lineNoCov">          0 :               chain = &amp;((struct header *) ((char *) *chain - HEADER_SIZE))-&gt;next;</span>
 <span class="lineNum">     134 </span>                :            :             }

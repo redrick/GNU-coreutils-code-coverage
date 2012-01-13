@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* xfts.c -- a wrapper for fts_open</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 2003, 2005-2007, 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 2003, 2005-2007, 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -101,11 +101,11 @@
 <span class="lineNum">      30 </span>                :            : /* Fail with a proper diagnostic if fts_open fails.  */
 <a name="31"><span class="lineNum">      31 </span>                :            : </a>
 <span class="lineNum">      32 </span>                :            : FTS *
-<span class="lineNum">      33 </span>                :<span class="lineCov">      15968 : xfts_open (char * const *argv, int options,</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">      13306 : xfts_open (char * const *argv, int options,</span>
 <span class="lineNum">      34 </span>                :            :            int (*compar) (const FTSENT **, const FTSENT **))
 <span class="lineNum">      35 </span>                :            : {
-<span class="lineNum">      36 </span>                :<span class="lineCov">      15968 :   FTS *fts = fts_open (argv, options | FTS_CWDFD, compar);</span>
-<span class="lineNum">      37 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15968 times"> + </span>]:<span class="lineCov">      15968 :   if (fts == NULL)</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">      13306 :   FTS *fts = fts_open (argv, options | FTS_CWDFD, compar);</span>
+<span class="lineNum">      37 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13306 times"> + </span>]:<span class="lineCov">      13306 :   if (fts == NULL)</span>
 <span class="lineNum">      38 </span>                :            :     {
 <span class="lineNum">      39 </span>                :            :       /* This can fail in two ways: out of memory or with errno==EINVAL,
 <span class="lineNum">      40 </span>                :            :          which indicates it was called with invalid bit_flags.  */
@@ -113,7 +113,7 @@
 <span class="lineNum">      42 </span>                :<span class="lineNoCov">          0 :       xalloc_die ();</span>
 <span class="lineNum">      43 </span>                :            :     }
 <span class="lineNum">      44 </span>                :            : 
-<span class="lineNum">      45 </span>                :<span class="lineCov">      15968 :   return fts;</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">      13306 :   return fts;</span>
 <span class="lineNum">      46 </span>                :            : }
 <span class="lineNum">      47 </span>                :            : 
 <span class="lineNum">      48 </span>                :            : /* When fts_read returns FTS_DC to indicate a directory cycle,
@@ -124,14 +124,14 @@
 <span class="lineNum">      53 </span>                :            :    records the options that control this aspect of fts's behavior,
 <a name="54"><span class="lineNum">      54 </span>                :            :    so test that.  */</a>
 <span class="lineNum">      55 </span>                :            : bool
-<span class="lineNum">      56 </span>                :<span class="lineCov">          3 : cycle_warning_required (FTS const *fts, FTSENT const *ent)</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">          2 : cycle_warning_required (FTS const *fts, FTSENT const *ent)</span>
 <span class="lineNum">      57 </span>                :            : {
 <span class="lineNum">      58 </span>                :            : #define ISSET(Fts,Opt) ((Fts)-&gt;fts_options &amp; (Opt))
 <span class="lineNum">      59 </span>                :            :   /* When dereferencing no symlinks, or when dereferencing only
 <span class="lineNum">      60 </span>                :            :      those listed on the command line and we're not processing
 <span class="lineNum">      61 </span>                :            :      a command-line argument, then a cycle is a serious problem. */
-<span class="lineNum">      62 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineCov">          3 :   return ((ISSET (fts, FTS_PHYSICAL) &amp;&amp; !ISSET (fts, FTS_COMFOLLOW))</span>
-<span class="lineNum">      63 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 3 times"> + </span>]:<span class="lineCov">          3 :           || (ISSET (fts, FTS_PHYSICAL) &amp;&amp; ISSET (fts, FTS_COMFOLLOW)</span>
+<span class="lineNum">      62 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineCov">          2 :   return ((ISSET (fts, FTS_PHYSICAL) &amp;&amp; !ISSET (fts, FTS_COMFOLLOW))</span>
+<span class="lineNum">      63 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">          2 :           || (ISSET (fts, FTS_PHYSICAL) &amp;&amp; ISSET (fts, FTS_COMFOLLOW)</span>
 <span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
 <span class="lineNum">      64 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               &amp;&amp; ent-&gt;fts_level != FTS_ROOTLEVEL));</span>
 <span class="lineNum">      65 </span>                :            : }

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Set file access and modification times.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify it
 <span class="lineNum">       6 </span>                :            :    under the terms of the GNU General Public License as published by the
@@ -111,21 +111,21 @@
 <span class="lineNum">      40 </span>                :            :    Return 0 on success, -1 (setting errno) on failure.  */
 <a name="41"><span class="lineNum">      41 </span>                :            : </a>
 <span class="lineNum">      42 </span>                :            : int
-<span class="lineNum">      43 </span>                :<span class="lineCov">     656293 : fdutimensat (int fd, int dir, char const *file, struct timespec const ts[2],</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">     651165 : fdutimensat (int fd, int dir, char const *file, struct timespec const ts[2],</span>
 <span class="lineNum">      44 </span>                :            :              int atflag)
 <span class="lineNum">      45 </span>                :            : {
-<span class="lineNum">      46 </span>                :<span class="lineCov">     656293 :   int result = 1;</span>
-<span class="lineNum">      47 </span>        [<span class="branchCov" title="Branch 0 was taken 655370 times"> + </span><span class="branchCov" title="Branch 1 was taken 923 times"> + </span>]:<span class="lineCov">     656293 :   if (0 &lt;= fd)</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">     655370 :     result = futimens (fd, ts);</span>
-<span class="lineNum">      49 </span>[<span class="branchCov" title="Branch 0 was taken 656204 times"> + </span><span class="branchCov" title="Branch 1 was taken 89 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 655293 times"> + </span><span class="branchCov" title="Branch 3 was taken 911 times"> + </span>]:<span class="lineCov">     656293 :   if (file &amp;&amp; (fd &lt; 0 || (result == -1 &amp;&amp; errno == ENOSYS)))</span>
-<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 24 times"> + </span><span class="branchCov" title="Branch 5 was taken 655269 times"> + </span>][<span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 24 times"> + </span>]
-<span class="lineNum">      50 </span>                :<span class="lineCov">        911 :     result = utimensat (dir, file, ts, atflag);</span>
-<span class="lineNum">      51 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 656281 times"> + </span>]:<span class="lineCov">     656293 :   if (result == 1)</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">     651165 :   int result = 1;</span>
+<span class="lineNum">      47 </span>        [<span class="branchCov" title="Branch 0 was taken 650351 times"> + </span><span class="branchCov" title="Branch 1 was taken 814 times"> + </span>]:<span class="lineCov">     651165 :   if (0 &lt;= fd)</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">     650351 :     result = futimens (fd, ts);</span>
+<span class="lineNum">      49 </span>[<span class="branchCov" title="Branch 0 was taken 651106 times"> + </span><span class="branchCov" title="Branch 1 was taken 59 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 650300 times"> + </span><span class="branchCov" title="Branch 3 was taken 806 times"> + </span>]:<span class="lineCov">     651165 :   if (file &amp;&amp; (fd &lt; 0 || (result == -1 &amp;&amp; errno == ENOSYS)))</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 16 times"> + </span><span class="branchCov" title="Branch 5 was taken 650284 times"> + </span>][<span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 16 times"> + </span>]
+<span class="lineNum">      50 </span>                :<span class="lineCov">        806 :     result = utimensat (dir, file, ts, atflag);</span>
+<span class="lineNum">      51 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 651157 times"> + </span>]:<span class="lineCov">     651165 :   if (result == 1)</span>
 <span class="lineNum">      52 </span>                :            :     {
-<span class="lineNum">      53 </span>                :<span class="lineCov">         12 :       errno = EBADF;</span>
-<span class="lineNum">      54 </span>                :<span class="lineCov">         12 :       result = -1;</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">          8 :       errno = EBADF;</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">          8 :       result = -1;</span>
 <span class="lineNum">      55 </span>                :            :     }
-<span class="lineNum">      56 </span>                :<span class="lineCov">     656293 :   return result;</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">     651165 :   return result;</span>
 <span class="lineNum">      57 </span>                :            : }
 </pre>
       </td>

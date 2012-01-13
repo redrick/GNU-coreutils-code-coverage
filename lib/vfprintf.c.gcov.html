@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Formatted output to a stream.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2004, 2006-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2004, 2006-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -109,18 +109,18 @@
 <span class="lineNum">      38 </span>                :            :   char buf[2000];
 <span class="lineNum">      39 </span>                :            :   char *output;
 <span class="lineNum">      40 </span>                :            :   size_t len;
-<span class="lineNum">      41 </span>                :<span class="lineCov">      63995 :   size_t lenbuf = sizeof (buf);</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">      42662 :   size_t lenbuf = sizeof (buf);</span>
 <span class="lineNum">      42 </span>                :            : 
-<span class="lineNum">      43 </span>                :<span class="lineCov">      63995 :   output = vasnprintf (buf, &amp;lenbuf, format, args);</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">      63995 :   len = lenbuf;</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">      42662 :   output = vasnprintf (buf, &amp;lenbuf, format, args);</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">      42662 :   len = lenbuf;</span>
 <span class="lineNum">      45 </span>                :            : 
-<span class="lineNum">      46 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 63995 times"> + </span>]:<span class="lineCov">      63995 :   if (!output)</span>
+<span class="lineNum">      46 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 42662 times"> + </span>]:<span class="lineCov">      42662 :   if (!output)</span>
 <span class="lineNum">      47 </span>                :            :     {
 <span class="lineNum">      48 </span>                :<span class="lineNoCov">          0 :       fseterr (fp);</span>
 <span class="lineNum">      49 </span>                :<span class="lineNoCov">          0 :       return -1;</span>
 <span class="lineNum">      50 </span>                :            :     }
 <span class="lineNum">      51 </span>                :            : 
-<span class="lineNum">      52 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 63995 times"> + </span>]:<span class="lineCov">      63995 :   if (fwrite (output, 1, len, fp) &lt; len)</span>
+<span class="lineNum">      52 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 42662 times"> + </span>]:<span class="lineCov">      42662 :   if (fwrite (output, 1, len, fp) &lt; len)</span>
 <span class="lineNum">      53 </span>                :            :     {
 <span class="lineNum">      54 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (output != buf)</span>
 <span class="lineNum">      55 </span>                :            :         {
@@ -131,17 +131,17 @@
 <span class="lineNum">      60 </span>                :<span class="lineNoCov">          0 :       return -1;</span>
 <span class="lineNum">      61 </span>                :            :     }
 <span class="lineNum">      62 </span>                :            : 
-<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 63995 times"> + </span>]:<span class="lineCov">      63995 :   if (output != buf)</span>
+<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 42662 times"> + </span>]:<span class="lineCov">      42662 :   if (output != buf)</span>
 <span class="lineNum">      64 </span>                :<span class="lineNoCov">          0 :     free (output);</span>
 <span class="lineNum">      65 </span>                :            : 
-<span class="lineNum">      66 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 63995 times"> + </span>]:<span class="lineCov">      63995 :   if (len &gt; INT_MAX)</span>
+<span class="lineNum">      66 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 42662 times"> + </span>]:<span class="lineCov">      42662 :   if (len &gt; INT_MAX)</span>
 <span class="lineNum">      67 </span>                :            :     {
 <span class="lineNum">      68 </span>                :<span class="lineNoCov">          0 :       errno = EOVERFLOW;</span>
 <span class="lineNum">      69 </span>                :<span class="lineNoCov">          0 :       fseterr (fp);</span>
 <span class="lineNum">      70 </span>                :<span class="lineNoCov">          0 :       return -1;</span>
 <span class="lineNum">      71 </span>                :            :     }
 <span class="lineNum">      72 </span>                :            : 
-<span class="lineNum">      73 </span>                :<span class="lineCov">      63995 :   return len;</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">      42662 :   return len;</span>
 <span class="lineNum">      74 </span>                :            : }
 </pre>
       </td>

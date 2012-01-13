@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* mountlist.c -- return a list of mounted file systems</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1991-1992, 1997-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1991-1992, 1997-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -235,7 +235,7 @@
 <span class="lineNum">     164 </span>                :            : #ifdef __CYGWIN__
 <span class="lineNum">     165 </span>                :            : # include &lt;windows.h&gt;
 <span class="lineNum">     166 </span>                :            : # define ME_REMOTE me_remote
-<span class="lineNum">     167 </span>                :            : /* All cygwin mount points include `:' or start with `//'; so it
+<span class="lineNum">     167 </span>                :            : /* All cygwin mount points include ':' or start with '//'; so it
 <span class="lineNum">     168 </span>                :            :    requires a native Windows call to determine remote disks.  */
 <span class="lineNum">     169 </span>                :            : static bool
 <span class="lineNum">     170 </span>                :            : me_remote (char const *fs_name, char const *fs_type _GL_UNUSED)
@@ -258,8 +258,8 @@
 <span class="lineNum">     187 </span>                :            : #endif
 <span class="lineNum">     188 </span>                :            : 
 <span class="lineNum">     189 </span>                :            : #ifndef ME_REMOTE
-<span class="lineNum">     190 </span>                :            : /* A file system is `remote' if its Fs_name contains a `:'
-<span class="lineNum">     191 </span>                :            :    or if (it is of type (smbfs or cifs) and its Fs_name starts with `//').  */
+<span class="lineNum">     190 </span>                :            : /* A file system is &quot;remote&quot; if its Fs_name contains a ':'
+<span class="lineNum">     191 </span>                :            :    or if (it is of type (smbfs or cifs) and its Fs_name starts with '//').  */
 <span class="lineNum">     192 </span>                :            : # define ME_REMOTE(Fs_name, Fs_type)            \
 <span class="lineNum">     193 </span>                :            :     (strchr (Fs_name, ':') != NULL              \
 <span class="lineNum">     194 </span>                :            :      || ((Fs_name)[0] == '/'                    \
@@ -398,7 +398,7 @@
 <span class="lineNum">     327 </span>                :            : /* Return the device number from MOUNT_OPTIONS, if possible.
 <a name="328"><span class="lineNum">     328 </span>                :            :    Otherwise return (dev_t) -1.  */</a>
 <span class="lineNum">     329 </span>                :            : static dev_t
-<span class="lineNum">     330 </span>                :<span class="lineCov">       2482 : dev_from_mount_options (char const *mount_options)</span>
+<span class="lineNum">     330 </span>                :<span class="lineCov">       1617 : dev_from_mount_options (char const *mount_options)</span>
 <span class="lineNum">     331 </span>                :            : {
 <span class="lineNum">     332 </span>                :            :   /* GNU/Linux allows file system implementations to define their own
 <span class="lineNum">     333 </span>                :            :      meaning for &quot;dev=&quot; mount options, so don't trust the meaning
@@ -424,7 +424,7 @@
 <span class="lineNum">     353 </span>                :            : 
 <span class="lineNum">     354 </span>                :            : # endif
 <span class="lineNum">     355 </span>                :            :   (void) mount_options;
-<span class="lineNum">     356 </span>                :<span class="lineCov">       2482 :   return -1;</span>
+<span class="lineNum">     356 </span>                :<span class="lineCov">       1617 :   return -1;</span>
 <span class="lineNum">     357 </span>                :            : }
 <span class="lineNum">     358 </span>                :            : 
 <span class="lineNum">     359 </span>                :            : #endif
@@ -435,11 +435,11 @@
 <span class="lineNum">     364 </span>                :            :    the returned list are valid.  Otherwise, they might not be.  */
 <a name="365"><span class="lineNum">     365 </span>                :            : </a>
 <span class="lineNum">     366 </span>                :            : struct mount_entry *
-<span class="lineNum">     367 </span>                :<span class="lineCov">         73 : read_file_system_list (bool need_fs_type)</span>
+<span class="lineNum">     367 </span>                :<span class="lineCov">         49 : read_file_system_list (bool need_fs_type)</span>
 <span class="lineNum">     368 </span>                :            : {
 <span class="lineNum">     369 </span>                :            :   struct mount_entry *mount_list;
 <span class="lineNum">     370 </span>                :            :   struct mount_entry *me;
-<span class="lineNum">     371 </span>                :<span class="lineCov">         73 :   struct mount_entry **mtail = &amp;mount_list;</span>
+<span class="lineNum">     371 </span>                :<span class="lineCov">         49 :   struct mount_entry **mtail = &amp;mount_list;</span>
 <span class="lineNum">     372 </span>                :            :   (void) need_fs_type;
 <span class="lineNum">     373 </span>                :            : 
 <span class="lineNum">     374 </span>                :            : #ifdef MOUNTED_LISTMNTENT
@@ -476,34 +476,34 @@
 <span class="lineNum">     405 </span>                :            : #ifdef MOUNTED_GETMNTENT1 /* GNU/Linux, 4.3BSD, SunOS, HP-UX, Dynix, Irix.  */
 <span class="lineNum">     406 </span>                :            :   {
 <span class="lineNum">     407 </span>                :            :     struct mntent *mnt;
-<span class="lineNum">     408 </span>                :<span class="lineCov">         73 :     char const *table = MOUNTED;</span>
+<span class="lineNum">     408 </span>                :<span class="lineCov">         49 :     char const *table = MOUNTED;</span>
 <span class="lineNum">     409 </span>                :            :     FILE *fp;
 <span class="lineNum">     410 </span>                :            : 
-<span class="lineNum">     411 </span>                :<span class="lineCov">         73 :     fp = setmntent (table, &quot;r&quot;);</span>
-<span class="lineNum">     412 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 73 times"> + </span>]:<span class="lineCov">         73 :     if (fp == NULL)</span>
+<span class="lineNum">     411 </span>                :<span class="lineCov">         49 :     fp = setmntent (table, &quot;r&quot;);</span>
+<span class="lineNum">     412 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 49 times"> + </span>]:<span class="lineCov">         49 :     if (fp == NULL)</span>
 <span class="lineNum">     413 </span>                :<span class="lineNoCov">          0 :       return NULL;</span>
 <span class="lineNum">     414 </span>                :            : 
-<span class="lineNum">     415 </span>        [<span class="branchCov" title="Branch 1 was taken 2482 times"> + </span><span class="branchCov" title="Branch 2 was taken 73 times"> + </span>]:<span class="lineCov">       2555 :     while ((mnt = getmntent (fp)))</span>
+<span class="lineNum">     415 </span>        [<span class="branchCov" title="Branch 1 was taken 1617 times"> + </span><span class="branchCov" title="Branch 2 was taken 49 times"> + </span>]:<span class="lineCov">       1666 :     while ((mnt = getmntent (fp)))</span>
 <span class="lineNum">     416 </span>                :            :       {
-<span class="lineNum">     417 </span>                :<span class="lineCov">       2482 :         me = xmalloc (sizeof *me);</span>
-<span class="lineNum">     418 </span>                :<span class="lineCov">       2482 :         me-&gt;me_devname = xstrdup (mnt-&gt;mnt_fsname);</span>
-<span class="lineNum">     419 </span>                :<span class="lineCov">       2482 :         me-&gt;me_mountdir = xstrdup (mnt-&gt;mnt_dir);</span>
-<span class="lineNum">     420 </span>                :<span class="lineCov">       2482 :         me-&gt;me_type = xstrdup (mnt-&gt;mnt_type);</span>
-<span class="lineNum">     421 </span>                :<span class="lineCov">       2482 :         me-&gt;me_type_malloced = 1;</span>
-<span class="lineNum">     422 </span>[<span class="branchCov" title="Branch 0 was taken 2117 times"> + </span><span class="branchCov" title="Branch 1 was taken 365 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 2117 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       2482 :         me-&gt;me_dummy = ME_DUMMY (me-&gt;me_devname, me-&gt;me_type);</span>
-<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 2044 times"> + </span><span class="branchCov" title="Branch 5 was taken 73 times"> + </span>][<span class="branchCov" title="Branch 6 was taken 2044 times"> + </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span>]
-<span class="lineNum">         </span>[<span class="branchCov" title="Branch 8 was taken 2044 times"> + </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span>][<span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchCov" title="Branch 11 was taken 2044 times"> + </span>]
-<span class="lineNum">     423 </span>[<span class="branchCov" title="Branch 0 was taken 2482 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 584 times"> + </span><span class="branchCov" title="Branch 3 was taken 1898 times"> + </span>]:<span class="lineCov">       2482 :         me-&gt;me_remote = ME_REMOTE (me-&gt;me_devname, me-&gt;me_type);</span>
-<span class="lineNum">         </span>[<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 584 times"> + </span>][<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
+<span class="lineNum">     417 </span>                :<span class="lineCov">       1617 :         me = xmalloc (sizeof *me);</span>
+<span class="lineNum">     418 </span>                :<span class="lineCov">       1617 :         me-&gt;me_devname = xstrdup (mnt-&gt;mnt_fsname);</span>
+<span class="lineNum">     419 </span>                :<span class="lineCov">       1617 :         me-&gt;me_mountdir = xstrdup (mnt-&gt;mnt_dir);</span>
+<span class="lineNum">     420 </span>                :<span class="lineCov">       1617 :         me-&gt;me_type = xstrdup (mnt-&gt;mnt_type);</span>
+<span class="lineNum">     421 </span>                :<span class="lineCov">       1617 :         me-&gt;me_type_malloced = 1;</span>
+<span class="lineNum">     422 </span>[<span class="branchCov" title="Branch 0 was taken 1372 times"> + </span><span class="branchCov" title="Branch 1 was taken 245 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 1372 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       1617 :         me-&gt;me_dummy = ME_DUMMY (me-&gt;me_devname, me-&gt;me_type);</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 1323 times"> + </span><span class="branchCov" title="Branch 5 was taken 49 times"> + </span>][<span class="branchCov" title="Branch 6 was taken 1323 times"> + </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span>]
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 8 was taken 1323 times"> + </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span>][<span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchCov" title="Branch 11 was taken 1323 times"> + </span>]
+<span class="lineNum">     423 </span>[<span class="branchCov" title="Branch 0 was taken 1617 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 343 times"> + </span><span class="branchCov" title="Branch 3 was taken 1274 times"> + </span>]:<span class="lineCov">       1617 :         me-&gt;me_remote = ME_REMOTE (me-&gt;me_devname, me-&gt;me_type);</span>
+<span class="lineNum">         </span>[<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 343 times"> + </span>][<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
 <span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 8 was not executed"> # </span><span class="branchNoExec" title="Branch 9 was not executed"> # </span>]
-<span class="lineNum">     424 </span>                :<span class="lineCov">       2482 :         me-&gt;me_dev = dev_from_mount_options (mnt-&gt;mnt_opts);</span>
+<span class="lineNum">     424 </span>                :<span class="lineCov">       1617 :         me-&gt;me_dev = dev_from_mount_options (mnt-&gt;mnt_opts);</span>
 <span class="lineNum">     425 </span>                :            : 
 <span class="lineNum">     426 </span>                :            :         /* Add to the linked list. */
-<span class="lineNum">     427 </span>                :<span class="lineCov">       2482 :         *mtail = me;</span>
-<span class="lineNum">     428 </span>                :<span class="lineCov">       2482 :         mtail = &amp;me-&gt;me_next;</span>
+<span class="lineNum">     427 </span>                :<span class="lineCov">       1617 :         *mtail = me;</span>
+<span class="lineNum">     428 </span>                :<span class="lineCov">       1617 :         mtail = &amp;me-&gt;me_next;</span>
 <span class="lineNum">     429 </span>                :            :       }
 <span class="lineNum">     430 </span>                :            : 
-<span class="lineNum">     431 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 73 times"> + </span>]:<span class="lineCov">         73 :     if (endmntent (fp) == 0)</span>
+<span class="lineNum">     431 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 49 times"> + </span>]:<span class="lineCov">         49 :     if (endmntent (fp) == 0)</span>
 <span class="lineNum">     432 </span>                :<span class="lineNoCov">          0 :       goto free_then_fail;</span>
 <span class="lineNum">     433 </span>                :            :   }
 <span class="lineNum">     434 </span>                :            : #endif /* MOUNTED_GETMNTENT1. */
@@ -1000,8 +1000,8 @@
 <span class="lineNum">     925 </span>                :            :   }
 <span class="lineNum">     926 </span>                :            : #endif /* MOUNTED_INTERIX_STATVFS */
 <span class="lineNum">     927 </span>                :            : 
-<span class="lineNum">     928 </span>                :<span class="lineCov">         73 :   *mtail = NULL;</span>
-<span class="lineNum">     929 </span>                :<span class="lineCov">         73 :   return mount_list;</span>
+<span class="lineNum">     928 </span>                :<span class="lineCov">         49 :   *mtail = NULL;</span>
+<span class="lineNum">     929 </span>                :<span class="lineCov">         49 :   return mount_list;</span>
 <span class="lineNum">     930 </span>                :            : 
 <span class="lineNum">     931 </span>                :            : 
 <span class="lineNum">     932 </span>                :            :  free_then_fail:
@@ -1021,7 +1021,7 @@
 <span class="lineNum">     946 </span>                :            :       }
 <span class="lineNum">     947 </span>                :            : 
 <span class="lineNum">     948 </span>                :<span class="lineNoCov">          0 :     errno = saved_errno;</span>
-<span class="lineNum">     949 </span>                :<span class="lineCov">         73 :     return NULL;</span>
+<span class="lineNum">     949 </span>                :<span class="lineCov">         49 :     return NULL;</span>
 <span class="lineNum">     950 </span>                :            :   }
 <span class="lineNum">     951 </span>                :            : }
 </pre>

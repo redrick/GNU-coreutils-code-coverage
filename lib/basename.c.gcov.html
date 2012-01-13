@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* basename.c -- return the last element in a file name</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1990, 1998-2001, 2003-2006, 2009-2011 Free Software
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1990, 1998-2001, 2003-2006, 2009-2012 Free Software
 <span class="lineNum">       4 </span>                :            :    Foundation, Inc.
 <span class="lineNum">       5 </span>                :            : 
 <span class="lineNum">       6 </span>                :            :    This program is free software: you can redistribute it and/or modify
@@ -96,23 +96,23 @@
 <span class="lineNum">      25 </span>                :            : #include &quot;xstrndup.h&quot;
 <a name="26"><span class="lineNum">      26 </span>                :            : </a>
 <span class="lineNum">      27 </span>                :            : char *
-<span class="lineNum">      28 </span>                :<span class="lineCov">        204 : base_name (char const *name)</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">        134 : base_name (char const *name)</span>
 <span class="lineNum">      29 </span>                :            : {
-<span class="lineNum">      30 </span>                :<span class="lineCov">        204 :   char const *base = last_component (name);</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">        134 :   char const *base = last_component (name);</span>
 <span class="lineNum">      31 </span>                :            :   size_t length;
 <span class="lineNum">      32 </span>                :            : 
 <span class="lineNum">      33 </span>                :            :   /* If there is no last component, then name is a file system root or the
 <span class="lineNum">      34 </span>                :            :      empty string.  */
-<span class="lineNum">      35 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 174 times"> + </span>]:<span class="lineCov">        204 :   if (! *base)</span>
-<span class="lineNum">      36 </span>                :<span class="lineCov">         30 :     return xstrndup (name, base_len (name));</span>
+<span class="lineNum">      35 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 114 times"> + </span>]:<span class="lineCov">        134 :   if (! *base)</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">         20 :     return xstrndup (name, base_len (name));</span>
 <span class="lineNum">      37 </span>                :            : 
 <span class="lineNum">      38 </span>                :            :   /* Collapse a sequence of trailing slashes into one.  */
-<span class="lineNum">      39 </span>                :<span class="lineCov">        174 :   length = base_len (base);</span>
-<span class="lineNum">      40 </span>        [<span class="branchCov" title="Branch 0 was taken 51 times"> + </span><span class="branchCov" title="Branch 1 was taken 123 times"> + </span>]:<span class="lineCov">        174 :   if (ISSLASH (base[length]))</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">         51 :     length++;</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">        114 :   length = base_len (base);</span>
+<span class="lineNum">      40 </span>        [<span class="branchCov" title="Branch 0 was taken 34 times"> + </span><span class="branchCov" title="Branch 1 was taken 80 times"> + </span>]:<span class="lineCov">        114 :   if (ISSLASH (base[length]))</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">         34 :     length++;</span>
 <span class="lineNum">      42 </span>                :            : 
-<span class="lineNum">      43 </span>                :            :   /* On systems with drive letters, `a/b:c' must return `./b:c' rather
-<span class="lineNum">      44 </span>                :            :      than `b:c' to avoid confusion with a drive letter.  On systems
+<span class="lineNum">      43 </span>                :            :   /* On systems with drive letters, &quot;a/b:c&quot; must return &quot;./b:c&quot; rather
+<span class="lineNum">      44 </span>                :            :      than &quot;b:c&quot; to avoid confusion with a drive letter.  On systems
 <span class="lineNum">      45 </span>                :            :      with pure POSIX semantics, this is not an issue.  */
 <span class="lineNum">      46 </span>                :            :   if (FILE_SYSTEM_PREFIX_LEN (base))
 <span class="lineNum">      47 </span>                :            :     {
@@ -125,7 +125,7 @@
 <span class="lineNum">      54 </span>                :            :     }
 <span class="lineNum">      55 </span>                :            : 
 <span class="lineNum">      56 </span>                :            :   /* Finally, copy the basename.  */
-<span class="lineNum">      57 </span>                :<span class="lineCov">        204 :   return xstrndup (base, length);</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">        134 :   return xstrndup (base, length);</span>
 <span class="lineNum">      58 </span>                :            : }
 </pre>
       </td>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Iterate over arguments from argv or --files0-from=FILE</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2008-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2008-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -108,78 +108,78 @@
 <span class="lineNum">      37 </span>                :            : };
 <a name="38"><span class="lineNum">      38 </span>                :            : </a>
 <span class="lineNum">      39 </span>                :            : struct argv_iterator *
-<span class="lineNum">      40 </span>                :<span class="lineCov">       5342 : argv_iter_init_argv (char **argv)</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">       3560 : argv_iter_init_argv (char **argv)</span>
 <span class="lineNum">      41 </span>                :            : {
-<span class="lineNum">      42 </span>                :<span class="lineCov">       5342 :   struct argv_iterator *ai = malloc (sizeof *ai);</span>
-<span class="lineNum">      43 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5342 times"> + </span>]:<span class="lineCov">       5342 :   if (!ai)</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">       3560 :   struct argv_iterator *ai = malloc (sizeof *ai);</span>
+<span class="lineNum">      43 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3560 times"> + </span>]:<span class="lineCov">       3560 :   if (!ai)</span>
 <span class="lineNum">      44 </span>                :<span class="lineNoCov">          0 :     return NULL;</span>
-<span class="lineNum">      45 </span>                :<span class="lineCov">       5342 :   ai-&gt;fp = NULL;</span>
-<span class="lineNum">      46 </span>                :<span class="lineCov">       5342 :   ai-&gt;arg_list = argv;</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">       5342 :   ai-&gt;p = argv;</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">       5342 :   return ai;</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">       3560 :   ai-&gt;fp = NULL;</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">       3560 :   ai-&gt;arg_list = argv;</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">       3560 :   ai-&gt;p = argv;</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">       3560 :   return ai;</span>
 <span class="lineNum">      49 </span>                :            : }
 <span class="lineNum">      50 </span>                :            : 
 <span class="lineNum">      51 </span>                :            : /* Initialize to read from the stream, FP.
 <a name="52"><span class="lineNum">      52 </span>                :            :    The input is expected to contain a list of NUL-delimited tokens.  */</a>
 <span class="lineNum">      53 </span>                :            : struct argv_iterator *
-<span class="lineNum">      54 </span>                :<span class="lineCov">         51 : argv_iter_init_stream (FILE *fp)</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">         34 : argv_iter_init_stream (FILE *fp)</span>
 <span class="lineNum">      55 </span>                :            : {
-<span class="lineNum">      56 </span>                :<span class="lineCov">         51 :   struct argv_iterator *ai = malloc (sizeof *ai);</span>
-<span class="lineNum">      57 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 51 times"> + </span>]:<span class="lineCov">         51 :   if (!ai)</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">         34 :   struct argv_iterator *ai = malloc (sizeof *ai);</span>
+<span class="lineNum">      57 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 34 times"> + </span>]:<span class="lineCov">         34 :   if (!ai)</span>
 <span class="lineNum">      58 </span>                :<span class="lineNoCov">          0 :     return NULL;</span>
-<span class="lineNum">      59 </span>                :<span class="lineCov">         51 :   ai-&gt;fp = fp;</span>
-<span class="lineNum">      60 </span>                :<span class="lineCov">         51 :   ai-&gt;tok = NULL;</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">         51 :   ai-&gt;buf_len = 0;</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">         34 :   ai-&gt;fp = fp;</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">         34 :   ai-&gt;tok = NULL;</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">         34 :   ai-&gt;buf_len = 0;</span>
 <span class="lineNum">      62 </span>                :            : 
-<span class="lineNum">      63 </span>                :<span class="lineCov">         51 :   ai-&gt;item_idx = 0;</span>
-<span class="lineNum">      64 </span>                :<span class="lineCov">         51 :   ai-&gt;arg_list = NULL;</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">         51 :   return ai;</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">         34 :   ai-&gt;item_idx = 0;</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">         34 :   ai-&gt;arg_list = NULL;</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">         34 :   return ai;</span>
 <span class="lineNum">      66 </span>                :            : }
 <a name="67"><span class="lineNum">      67 </span>                :            : </a>
 <span class="lineNum">      68 </span>                :            : char *
-<span class="lineNum">      69 </span>                :<span class="lineCov">      25020 : argv_iter (struct argv_iterator *ai, enum argv_iter_err *err)</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">      17109 : argv_iter (struct argv_iterator *ai, enum argv_iter_err *err)</span>
 <span class="lineNum">      70 </span>                :            : {
-<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 0 was taken 105 times"> + </span><span class="branchCov" title="Branch 1 was taken 24915 times"> + </span>]:<span class="lineCov">      25020 :   if (ai-&gt;fp)</span>
+<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 0 was taken 70 times"> + </span><span class="branchCov" title="Branch 1 was taken 17039 times"> + </span>]:<span class="lineCov">      17109 :   if (ai-&gt;fp)</span>
 <span class="lineNum">      72 </span>                :            :     {
-<span class="lineNum">      73 </span>                :<span class="lineCov">        105 :       ssize_t len = getdelim (&amp;ai-&gt;tok, &amp;ai-&gt;buf_len, '\0', ai-&gt;fp);</span>
-<span class="lineNum">      74 </span>        [<span class="branchCov" title="Branch 0 was taken 51 times"> + </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>]:<span class="lineCov">        105 :       if (len &lt; 0)</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">         70 :       ssize_t len = getdelim (&amp;ai-&gt;tok, &amp;ai-&gt;buf_len, '\0', ai-&gt;fp);</span>
+<span class="lineNum">      74 </span>        [<span class="branchCov" title="Branch 0 was taken 34 times"> + </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         70 :       if (len &lt; 0)</span>
 <span class="lineNum">      75 </span>                :            :         {
-<span class="lineNum">      76 </span>        [<span class="branchCov" title="Branch 1 was taken 45 times"> + </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">         51 :           *err = feof (ai-&gt;fp) ? AI_ERR_EOF : AI_ERR_READ;</span>
-<span class="lineNum">      77 </span>                :<span class="lineCov">         51 :           return NULL;</span>
+<span class="lineNum">      76 </span>        [<span class="branchCov" title="Branch 1 was taken 30 times"> + </span><span class="branchCov" title="Branch 2 was taken 4 times"> + </span>]:<span class="lineCov">         34 :           *err = feof (ai-&gt;fp) ? AI_ERR_EOF : AI_ERR_READ;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">         34 :           return NULL;</span>
 <span class="lineNum">      78 </span>                :            :         }
 <span class="lineNum">      79 </span>                :            : 
-<span class="lineNum">      80 </span>                :<span class="lineCov">         54 :       *err = AI_ERR_OK;</span>
-<span class="lineNum">      81 </span>                :<span class="lineCov">         54 :       ai-&gt;item_idx++;</span>
-<span class="lineNum">      82 </span>                :<span class="lineCov">         54 :       return ai-&gt;tok;</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">         36 :       *err = AI_ERR_OK;</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">         36 :       ai-&gt;item_idx++;</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">         36 :       return ai-&gt;tok;</span>
 <span class="lineNum">      83 </span>                :            :     }
 <span class="lineNum">      84 </span>                :            :   else
 <span class="lineNum">      85 </span>                :            :     {
-<span class="lineNum">      86 </span>        [<span class="branchCov" title="Branch 0 was taken 5342 times"> + </span><span class="branchCov" title="Branch 1 was taken 19573 times"> + </span>]:<span class="lineCov">      24915 :       if (*(ai-&gt;p) == NULL)</span>
+<span class="lineNum">      86 </span>        [<span class="branchCov" title="Branch 0 was taken 3560 times"> + </span><span class="branchCov" title="Branch 1 was taken 13479 times"> + </span>]:<span class="lineCov">      17039 :       if (*(ai-&gt;p) == NULL)</span>
 <span class="lineNum">      87 </span>                :            :         {
-<span class="lineNum">      88 </span>                :<span class="lineCov">       5342 :           *err = AI_ERR_EOF;</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">       5342 :           return NULL;</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">       3560 :           *err = AI_ERR_EOF;</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">       3560 :           return NULL;</span>
 <span class="lineNum">      90 </span>                :            :         }
 <span class="lineNum">      91 </span>                :            :       else
 <span class="lineNum">      92 </span>                :            :         {
-<span class="lineNum">      93 </span>                :<span class="lineCov">      19573 :           *err = AI_ERR_OK;</span>
-<span class="lineNum">      94 </span>                :<span class="lineCov">      25020 :           return *(ai-&gt;p++);</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">      13479 :           *err = AI_ERR_OK;</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">      17109 :           return *(ai-&gt;p++);</span>
 <span class="lineNum">      95 </span>                :            :         }
 <span class="lineNum">      96 </span>                :            :     }
 <span class="lineNum">      97 </span>                :            : }
 <a name="98"><span class="lineNum">      98 </span>                :            : </a>
 <span class="lineNum">      99 </span>                :            : size_t
-<span class="lineNum">     100 </span>                :<span class="lineCov">      10392 : argv_iter_n_args (struct argv_iterator const *ai)</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">       6928 : argv_iter_n_args (struct argv_iterator const *ai)</span>
 <span class="lineNum">     101 </span>                :            : {
-<span class="lineNum">     102 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 10362 times"> + </span>]:<span class="lineCov">      10392 :   return ai-&gt;fp ? ai-&gt;item_idx : ai-&gt;p - ai-&gt;arg_list;</span>
+<span class="lineNum">     102 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 6908 times"> + </span>]:<span class="lineCov">       6928 :   return ai-&gt;fp ? ai-&gt;item_idx : ai-&gt;p - ai-&gt;arg_list;</span>
 <span class="lineNum">     103 </span>                :            : }
 <a name="104"><span class="lineNum">     104 </span>                :            : </a>
 <span class="lineNum">     105 </span>                :            : void
-<span class="lineNum">     106 </span>                :<span class="lineCov">       5393 : argv_iter_free (struct argv_iterator *ai)</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">       3594 : argv_iter_free (struct argv_iterator *ai)</span>
 <span class="lineNum">     107 </span>                :            : {
-<span class="lineNum">     108 </span>        [<span class="branchCov" title="Branch 0 was taken 51 times"> + </span><span class="branchCov" title="Branch 1 was taken 5342 times"> + </span>]:<span class="lineCov">       5393 :   if (ai-&gt;fp)</span>
-<span class="lineNum">     109 </span>                :<span class="lineCov">         51 :     free (ai-&gt;tok);</span>
-<span class="lineNum">     110 </span>                :<span class="lineCov">       5393 :   free (ai);</span>
-<span class="lineNum">     111 </span>                :<span class="lineCov">       5393 : }</span>
+<span class="lineNum">     108 </span>        [<span class="branchCov" title="Branch 0 was taken 34 times"> + </span><span class="branchCov" title="Branch 1 was taken 3560 times"> + </span>]:<span class="lineCov">       3594 :   if (ai-&gt;fp)</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">         34 :     free (ai-&gt;tok);</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">       3594 :   free (ai);</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">       3594 : }</span>
 </pre>
       </td>
     </tr>

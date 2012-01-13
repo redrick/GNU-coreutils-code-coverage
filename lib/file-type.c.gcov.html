@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Return a string describing the type of a file.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1993-1994, 2001-2002, 2004-2006, 2009-2011 Free Software
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1993-1994, 2001-2002, 2004-2006, 2009-2012 Free Software
 <span class="lineNum">       4 </span>                :            :    Foundation, Inc.
 <span class="lineNum">       5 </span>                :            : 
 <span class="lineNum">       6 </span>                :            :    This program is free software: you can redistribute it and/or modify
@@ -97,7 +97,7 @@
 <span class="lineNum">      26 </span>                :            : #define _(text) gettext (text)
 <a name="27"><span class="lineNum">      27 </span>                :            : </a>
 <span class="lineNum">      28 </span>                :            : char const *
-<span class="lineNum">      29 </span>                :<span class="lineCov">         73 : file_type (struct stat const *st)</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">         45 : file_type (struct stat const *st)</span>
 <span class="lineNum">      30 </span>                :            : {
 <span class="lineNum">      31 </span>                :            :   /* See POSIX 1003.1-2001 XCU Table 4-8 lines 17093-17107 for some of
 <span class="lineNum">      32 </span>                :            :      these formats.
@@ -105,23 +105,23 @@
 <span class="lineNum">      34 </span>                :            :      To keep diagnostics grammatical in English, the returned string
 <span class="lineNum">      35 </span>                :            :      must start with a consonant.  */
 <span class="lineNum">      36 </span>                :            : 
-<span class="lineNum">      37 </span>        [<span class="branchCov" title="Branch 0 was taken 38 times"> + </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">         73 :   if (S_ISREG (st-&gt;st_mode))</span>
-<span class="lineNum">      38 </span>        [<span class="branchCov" title="Branch 0 was taken 27 times"> + </span><span class="branchCov" title="Branch 1 was taken 11 times"> + </span>]:<span class="lineCov">         38 :     return st-&gt;st_size == 0 ? _(&quot;regular empty file&quot;) : _(&quot;regular file&quot;);</span>
+<span class="lineNum">      37 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         45 :   if (S_ISREG (st-&gt;st_mode))</span>
+<span class="lineNum">      38 </span>        [<span class="branchCov" title="Branch 0 was taken 17 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">         24 :     return st-&gt;st_size == 0 ? _(&quot;regular empty file&quot;) : _(&quot;regular file&quot;);</span>
 <span class="lineNum">      39 </span>                :            : 
-<span class="lineNum">      40 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">         35 :   if (S_ISDIR (st-&gt;st_mode))</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">         28 :     return _(&quot;directory&quot;);</span>
+<span class="lineNum">      40 </span>        [<span class="branchCov" title="Branch 0 was taken 17 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">         21 :   if (S_ISDIR (st-&gt;st_mode))</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">         17 :     return _(&quot;directory&quot;);</span>
 <span class="lineNum">      42 </span>                :            : 
-<span class="lineNum">      43 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">          7 :   if (S_ISBLK (st-&gt;st_mode))</span>
+<span class="lineNum">      43 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          4 :   if (S_ISBLK (st-&gt;st_mode))</span>
 <span class="lineNum">      44 </span>                :<span class="lineNoCov">          0 :     return _(&quot;block special file&quot;);</span>
 <span class="lineNum">      45 </span>                :            : 
-<span class="lineNum">      46 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">          7 :   if (S_ISCHR (st-&gt;st_mode))</span>
+<span class="lineNum">      46 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          4 :   if (S_ISCHR (st-&gt;st_mode))</span>
 <span class="lineNum">      47 </span>                :<span class="lineNoCov">          0 :     return _(&quot;character special file&quot;);</span>
 <span class="lineNum">      48 </span>                :            : 
-<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">          7 :   if (S_ISFIFO (st-&gt;st_mode))</span>
+<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          4 :   if (S_ISFIFO (st-&gt;st_mode))</span>
 <span class="lineNum">      50 </span>                :<span class="lineNoCov">          0 :     return _(&quot;fifo&quot;);</span>
 <span class="lineNum">      51 </span>                :            : 
-<span class="lineNum">      52 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          7 :   if (S_ISLNK (st-&gt;st_mode))</span>
-<span class="lineNum">      53 </span>                :<span class="lineCov">          7 :     return _(&quot;symbolic link&quot;);</span>
+<span class="lineNum">      52 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :   if (S_ISLNK (st-&gt;st_mode))</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">          4 :     return _(&quot;symbolic link&quot;);</span>
 <span class="lineNum">      54 </span>                :            : 
 <span class="lineNum">      55 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (S_ISSOCK (st-&gt;st_mode))</span>
 <span class="lineNum">      56 </span>                :<span class="lineNoCov">          0 :     return _(&quot;socket&quot;);</span>
@@ -138,7 +138,7 @@
 <span class="lineNum">      67 </span>                :            :   if (S_TYPEISTMO (st))
 <span class="lineNum">      68 </span>                :            :     return _(&quot;typed memory object&quot;);
 <span class="lineNum">      69 </span>                :            : 
-<span class="lineNum">      70 </span>                :<span class="lineCov">         73 :   return _(&quot;weird file&quot;);</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">         45 :   return _(&quot;weird file&quot;);</span>
 <span class="lineNum">      71 </span>                :            : }
 </pre>
       </td>

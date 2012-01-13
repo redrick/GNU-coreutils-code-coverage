@@ -1,0 +1,662 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - coreutils - /home/andrej/Projects/coreutils-december/coreutils/src/factor.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../index.html">top level</a> - <a href="index.html">home/andrej/Projects/coreutils-december/coreutils/src</a> - factor.c<span style="font-size: 80%;"> (source / <a href="factor.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coreutils</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">75</td>
+            <td class="headerCovTableEntry">79</td>
+            <td class="headerCovTableEntryHi">94.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-01-13</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntryHi">87.2 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* factor -- print prime factors of n.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1986, 1995-2005, 2007-2012 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       6 </span>                :            :    the Free Software Foundation, either version 3 of the License, or
+<span class="lineNum">       7 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       8 </span>                :            : 
+<span class="lineNum">       9 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      10 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      11 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      12 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      13 </span>                :            : 
+<span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      15 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :            : /* Written by Paul Rubin &lt;phr@ocf.berkeley.edu&gt;.
+<span class="lineNum">      18 </span>                :            :    Adapted for GNU, fixed to factor UINT_MAX by Jim Meyering.
+<span class="lineNum">      19 </span>                :            :    Arbitrary-precision code adapted by James Youngman from Torbjörn
+<span class="lineNum">      20 </span>                :            :    Granlund's factorize.c, from GNU MP version 4.2.2.
+<span class="lineNum">      21 </span>                :            : */
+<span class="lineNum">      22 </span>                :            : 
+<span class="lineNum">      23 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      24 </span>                :            : #include &lt;getopt.h&gt;
+<span class="lineNum">      25 </span>                :            : #include &lt;stdarg.h&gt;
+<span class="lineNum">      26 </span>                :            : #include &lt;stdio.h&gt;
+<span class="lineNum">      27 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      28 </span>                :            : #if HAVE_GMP
+<span class="lineNum">      29 </span>                :            : # include &lt;gmp.h&gt;
+<span class="lineNum">      30 </span>                :            : #endif
+<span class="lineNum">      31 </span>                :            : 
+<span class="lineNum">      32 </span>                :            : #include &lt;assert.h&gt;
+<span class="lineNum">      33 </span>                :            : 
+<span class="lineNum">      34 </span>                :            : #include &quot;system.h&quot;
+<span class="lineNum">      35 </span>                :            : #include &quot;error.h&quot;
+<span class="lineNum">      36 </span>                :            : #include &quot;quote.h&quot;
+<span class="lineNum">      37 </span>                :            : #include &quot;readtokens.h&quot;
+<span class="lineNum">      38 </span>                :            : #include &quot;xstrtol.h&quot;
+<span class="lineNum">      39 </span>                :            : 
+<span class="lineNum">      40 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
+<span class="lineNum">      41 </span>                :            : #define PROGRAM_NAME &quot;factor&quot;
+<span class="lineNum">      42 </span>                :            : 
+<span class="lineNum">      43 </span>                :            : #define AUTHORS proper_name (&quot;Paul Rubin&quot;)
+<span class="lineNum">      44 </span>                :            : 
+<span class="lineNum">      45 </span>                :            : /* Token delimiters when reading from a file.  */
+<span class="lineNum">      46 </span>                :            : #define DELIM &quot;\n\t &quot;
+<span class="lineNum">      47 </span>                :            : 
+<span class="lineNum">      48 </span>                :            : static bool verbose = false;
+<span class="lineNum">      49 </span>                :            : 
+<span class="lineNum">      50 </span>                :            : #if HAVE_GMP
+<span class="lineNum">      51 </span>                :            : static mpz_t *factor = NULL;
+<span class="lineNum">      52 </span>                :            : static size_t nfactors_found = 0;
+<span class="lineNum">      53 </span>                :            : static size_t nfactors_allocated = 0;
+<span class="lineNum">      54 </span>                :            : 
+<span class="lineNum">      55 </span>                :            : static void
+<span class="lineNum">      56 </span>                :            : debug (char const *fmt, ...)
+<span class="lineNum">      57 </span>                :            : {
+<span class="lineNum">      58 </span>                :            :   if (verbose)
+<span class="lineNum">      59 </span>                :            :     {
+<span class="lineNum">      60 </span>                :            :       va_list ap;
+<span class="lineNum">      61 </span>                :            :       va_start (ap, fmt);
+<span class="lineNum">      62 </span>                :            :       vfprintf (stderr, fmt, ap);
+<span class="lineNum">      63 </span>                :            :       va_end (ap);
+<span class="lineNum">      64 </span>                :            :     }
+<span class="lineNum">      65 </span>                :            : }
+<span class="lineNum">      66 </span>                :            : 
+<span class="lineNum">      67 </span>                :            : static void
+<span class="lineNum">      68 </span>                :            : emit_factor (mpz_t n)
+<span class="lineNum">      69 </span>                :            : {
+<span class="lineNum">      70 </span>                :            :   if (nfactors_found == nfactors_allocated)
+<span class="lineNum">      71 </span>                :            :     factor = X2NREALLOC (factor, &amp;nfactors_allocated);
+<span class="lineNum">      72 </span>                :            :   mpz_init (factor[nfactors_found]);
+<span class="lineNum">      73 </span>                :            :   mpz_set (factor[nfactors_found], n);
+<span class="lineNum">      74 </span>                :            :   ++nfactors_found;
+<span class="lineNum">      75 </span>                :            : }
+<span class="lineNum">      76 </span>                :            : 
+<span class="lineNum">      77 </span>                :            : static void
+<span class="lineNum">      78 </span>                :            : emit_ul_factor (unsigned long int i)
+<span class="lineNum">      79 </span>                :            : {
+<span class="lineNum">      80 </span>                :            :   mpz_t t;
+<span class="lineNum">      81 </span>                :            :   mpz_init (t);
+<span class="lineNum">      82 </span>                :            :   mpz_set_ui (t, i);
+<span class="lineNum">      83 </span>                :            :   emit_factor (t);
+<span class="lineNum">      84 </span>                :            :   mpz_clear (t);
+<span class="lineNum">      85 </span>                :            : }
+<span class="lineNum">      86 </span>                :            : 
+<span class="lineNum">      87 </span>                :            : static void
+<span class="lineNum">      88 </span>                :            : factor_using_division (mpz_t t, unsigned int limit)
+<span class="lineNum">      89 </span>                :            : {
+<span class="lineNum">      90 </span>                :            :   mpz_t q, r;
+<span class="lineNum">      91 </span>                :            :   unsigned long int f;
+<span class="lineNum">      92 </span>                :            :   int ai;
+<span class="lineNum">      93 </span>                :            :   static unsigned int const add[] = {4, 2, 4, 2, 4, 6, 2, 6};
+<span class="lineNum">      94 </span>                :            :   unsigned int const *addv = add;
+<span class="lineNum">      95 </span>                :            :   unsigned int failures;
+<span class="lineNum">      96 </span>                :            : 
+<span class="lineNum">      97 </span>                :            :   debug (&quot;[trial division (%u)] &quot;, limit);
+<span class="lineNum">      98 </span>                :            : 
+<span class="lineNum">      99 </span>                :            :   mpz_init (q);
+<span class="lineNum">     100 </span>                :            :   mpz_init (r);
+<span class="lineNum">     101 </span>                :            : 
+<span class="lineNum">     102 </span>                :            :   f = mpz_scan1 (t, 0);
+<span class="lineNum">     103 </span>                :            :   mpz_div_2exp (t, t, f);
+<span class="lineNum">     104 </span>                :            :   while (f)
+<span class="lineNum">     105 </span>                :            :     {
+<span class="lineNum">     106 </span>                :            :       emit_ul_factor (2);
+<span class="lineNum">     107 </span>                :            :       --f;
+<span class="lineNum">     108 </span>                :            :     }
+<span class="lineNum">     109 </span>                :            : 
+<span class="lineNum">     110 </span>                :            :   while (true)
+<span class="lineNum">     111 </span>                :            :     {
+<span class="lineNum">     112 </span>                :            :       mpz_tdiv_qr_ui (q, r, t, 3);
+<span class="lineNum">     113 </span>                :            :       if (mpz_cmp_ui (r, 0) != 0)
+<span class="lineNum">     114 </span>                :            :         break;
+<span class="lineNum">     115 </span>                :            :       mpz_set (t, q);
+<span class="lineNum">     116 </span>                :            :       emit_ul_factor (3);
+<span class="lineNum">     117 </span>                :            :     }
+<span class="lineNum">     118 </span>                :            : 
+<span class="lineNum">     119 </span>                :            :   while (true)
+<span class="lineNum">     120 </span>                :            :     {
+<span class="lineNum">     121 </span>                :            :       mpz_tdiv_qr_ui (q, r, t, 5);
+<span class="lineNum">     122 </span>                :            :       if (mpz_cmp_ui (r, 0) != 0)
+<span class="lineNum">     123 </span>                :            :         break;
+<span class="lineNum">     124 </span>                :            :       mpz_set (t, q);
+<span class="lineNum">     125 </span>                :            :       emit_ul_factor (5);
+<span class="lineNum">     126 </span>                :            :     }
+<span class="lineNum">     127 </span>                :            : 
+<span class="lineNum">     128 </span>                :            :   failures = 0;
+<span class="lineNum">     129 </span>                :            :   f = 7;
+<span class="lineNum">     130 </span>                :            :   ai = 0;
+<span class="lineNum">     131 </span>                :            :   while (mpz_cmp_ui (t, 1) != 0)
+<span class="lineNum">     132 </span>                :            :     {
+<span class="lineNum">     133 </span>                :            :       mpz_tdiv_qr_ui (q, r, t, f);
+<span class="lineNum">     134 </span>                :            :       if (mpz_cmp_ui (r, 0) != 0)
+<span class="lineNum">     135 </span>                :            :         {
+<span class="lineNum">     136 </span>                :            :           f += addv[ai];
+<span class="lineNum">     137 </span>                :            :           if (mpz_cmp_ui (q, f) &lt; 0)
+<span class="lineNum">     138 </span>                :            :             break;
+<span class="lineNum">     139 </span>                :            :           ai = (ai + 1) &amp; 7;
+<span class="lineNum">     140 </span>                :            :           failures++;
+<span class="lineNum">     141 </span>                :            :           if (failures &gt; limit)
+<span class="lineNum">     142 </span>                :            :             break;
+<span class="lineNum">     143 </span>                :            :         }
+<span class="lineNum">     144 </span>                :            :       else
+<span class="lineNum">     145 </span>                :            :         {
+<span class="lineNum">     146 </span>                :            :           mpz_swap (t, q);
+<span class="lineNum">     147 </span>                :            :           emit_ul_factor (f);
+<span class="lineNum">     148 </span>                :            :           failures = 0;
+<span class="lineNum">     149 </span>                :            :         }
+<span class="lineNum">     150 </span>                :            :     }
+<span class="lineNum">     151 </span>                :            : 
+<span class="lineNum">     152 </span>                :            :   mpz_clear (q);
+<span class="lineNum">     153 </span>                :            :   mpz_clear (r);
+<span class="lineNum">     154 </span>                :            : }
+<span class="lineNum">     155 </span>                :            : 
+<span class="lineNum">     156 </span>                :            : static void
+<span class="lineNum">     157 </span>                :            : factor_using_pollard_rho (mpz_t n, int a_int)
+<span class="lineNum">     158 </span>                :            : {
+<span class="lineNum">     159 </span>                :            :   mpz_t x, x1, y, P;
+<span class="lineNum">     160 </span>                :            :   mpz_t a;
+<span class="lineNum">     161 </span>                :            :   mpz_t g;
+<span class="lineNum">     162 </span>                :            :   mpz_t t1, t2;
+<span class="lineNum">     163 </span>                :            :   int k, l, c;
+<span class="lineNum">     164 </span>                :            : 
+<span class="lineNum">     165 </span>                :            :   debug (&quot;[pollard-rho (%d)] &quot;, a_int);
+<span class="lineNum">     166 </span>                :            : 
+<span class="lineNum">     167 </span>                :            :   mpz_init (g);
+<span class="lineNum">     168 </span>                :            :   mpz_init (t1);
+<span class="lineNum">     169 </span>                :            :   mpz_init (t2);
+<span class="lineNum">     170 </span>                :            : 
+<span class="lineNum">     171 </span>                :            :   mpz_init_set_si (a, a_int);
+<span class="lineNum">     172 </span>                :            :   mpz_init_set_si (y, 2);
+<span class="lineNum">     173 </span>                :            :   mpz_init_set_si (x, 2);
+<span class="lineNum">     174 </span>                :            :   mpz_init_set_si (x1, 2);
+<span class="lineNum">     175 </span>                :            :   k = 1;
+<span class="lineNum">     176 </span>                :            :   l = 1;
+<span class="lineNum">     177 </span>                :            :   mpz_init_set_ui (P, 1);
+<span class="lineNum">     178 </span>                :            :   c = 0;
+<span class="lineNum">     179 </span>                :            : 
+<span class="lineNum">     180 </span>                :            :   while (mpz_cmp_ui (n, 1) != 0)
+<span class="lineNum">     181 </span>                :            :     {
+<span class="lineNum">     182 </span>                :            : S2:
+<span class="lineNum">     183 </span>                :            :       mpz_mul (x, x, x); mpz_add (x, x, a); mpz_mod (x, x, n);
+<span class="lineNum">     184 </span>                :            : 
+<span class="lineNum">     185 </span>                :            :       mpz_sub (t1, x1, x); mpz_mul (t2, P, t1); mpz_mod (P, t2, n);
+<span class="lineNum">     186 </span>                :            :       c++;
+<span class="lineNum">     187 </span>                :            :       if (c == 20)
+<span class="lineNum">     188 </span>                :            :         {
+<span class="lineNum">     189 </span>                :            :           c = 0;
+<span class="lineNum">     190 </span>                :            :           mpz_gcd (g, P, n);
+<span class="lineNum">     191 </span>                :            :           if (mpz_cmp_ui (g, 1) != 0)
+<span class="lineNum">     192 </span>                :            :             goto S4;
+<span class="lineNum">     193 </span>                :            :           mpz_set (y, x);
+<span class="lineNum">     194 </span>                :            :         }
+<span class="lineNum">     195 </span>                :            : 
+<span class="lineNum">     196 </span>                :            :       k--;
+<span class="lineNum">     197 </span>                :            :       if (k &gt; 0)
+<span class="lineNum">     198 </span>                :            :         goto S2;
+<span class="lineNum">     199 </span>                :            : 
+<span class="lineNum">     200 </span>                :            :       mpz_gcd (g, P, n);
+<span class="lineNum">     201 </span>                :            :       if (mpz_cmp_ui (g, 1) != 0)
+<span class="lineNum">     202 </span>                :            :         goto S4;
+<span class="lineNum">     203 </span>                :            : 
+<span class="lineNum">     204 </span>                :            :       mpz_set (x1, x);
+<span class="lineNum">     205 </span>                :            :       k = l;
+<span class="lineNum">     206 </span>                :            :       l = 2 * l;
+<span class="lineNum">     207 </span>                :            :       unsigned int i;
+<span class="lineNum">     208 </span>                :            :       for (i = 0; i &lt; k; i++)
+<span class="lineNum">     209 </span>                :            :         {
+<span class="lineNum">     210 </span>                :            :           mpz_mul (x, x, x); mpz_add (x, x, a); mpz_mod (x, x, n);
+<span class="lineNum">     211 </span>                :            :         }
+<span class="lineNum">     212 </span>                :            :       mpz_set (y, x);
+<span class="lineNum">     213 </span>                :            :       c = 0;
+<span class="lineNum">     214 </span>                :            :       goto S2;
+<span class="lineNum">     215 </span>                :            : S4:
+<span class="lineNum">     216 </span>                :            :       do
+<span class="lineNum">     217 </span>                :            :         {
+<span class="lineNum">     218 </span>                :            :           mpz_mul (y, y, y); mpz_add (y, y, a); mpz_mod (y, y, n);
+<span class="lineNum">     219 </span>                :            :           mpz_sub (t1, x1, y); mpz_gcd (g, t1, n);
+<span class="lineNum">     220 </span>                :            :         }
+<span class="lineNum">     221 </span>                :            :       while (mpz_cmp_ui (g, 1) == 0);
+<span class="lineNum">     222 </span>                :            : 
+<span class="lineNum">     223 </span>                :            :       mpz_div (n, n, g);        /* divide by g, before g is overwritten */
+<span class="lineNum">     224 </span>                :            : 
+<span class="lineNum">     225 </span>                :            :       if (!mpz_probab_prime_p (g, 3))
+<span class="lineNum">     226 </span>                :            :         {
+<span class="lineNum">     227 </span>                :            :           do
+<span class="lineNum">     228 </span>                :            :             {
+<span class="lineNum">     229 </span>                :            :               mp_limb_t a_limb;
+<span class="lineNum">     230 </span>                :            :               mpn_random (&amp;a_limb, (mp_size_t) 1);
+<span class="lineNum">     231 </span>                :            :               a_int = (int) a_limb;
+<span class="lineNum">     232 </span>                :            :             }
+<span class="lineNum">     233 </span>                :            :           while (a_int == -2 || a_int == 0);
+<span class="lineNum">     234 </span>                :            : 
+<span class="lineNum">     235 </span>                :            :           debug (&quot;[composite factor--restarting pollard-rho] &quot;);
+<span class="lineNum">     236 </span>                :            :           factor_using_pollard_rho (g, a_int);
+<span class="lineNum">     237 </span>                :            :         }
+<span class="lineNum">     238 </span>                :            :       else
+<span class="lineNum">     239 </span>                :            :         {
+<span class="lineNum">     240 </span>                :            :           emit_factor (g);
+<span class="lineNum">     241 </span>                :            :         }
+<span class="lineNum">     242 </span>                :            :       mpz_mod (x, x, n);
+<span class="lineNum">     243 </span>                :            :       mpz_mod (x1, x1, n);
+<span class="lineNum">     244 </span>                :            :       mpz_mod (y, y, n);
+<span class="lineNum">     245 </span>                :            :       if (mpz_probab_prime_p (n, 3))
+<span class="lineNum">     246 </span>                :            :         {
+<span class="lineNum">     247 </span>                :            :           emit_factor (n);
+<span class="lineNum">     248 </span>                :            :           break;
+<span class="lineNum">     249 </span>                :            :         }
+<span class="lineNum">     250 </span>                :            :     }
+<span class="lineNum">     251 </span>                :            : 
+<span class="lineNum">     252 </span>                :            :   mpz_clear (g);
+<span class="lineNum">     253 </span>                :            :   mpz_clear (P);
+<span class="lineNum">     254 </span>                :            :   mpz_clear (t2);
+<span class="lineNum">     255 </span>                :            :   mpz_clear (t1);
+<span class="lineNum">     256 </span>                :            :   mpz_clear (a);
+<span class="lineNum">     257 </span>                :            :   mpz_clear (x1);
+<span class="lineNum">     258 </span>                :            :   mpz_clear (x);
+<span class="lineNum">     259 </span>                :            :   mpz_clear (y);
+<span class="lineNum">     260 </span>                :            : }
+<span class="lineNum">     261 </span>                :            : 
+<span class="lineNum">     262 </span>                :            : #else
+<a name="263"><span class="lineNum">     263 </span>                :            : </a>
+<span class="lineNum">     264 </span>                :            : static void
+<span class="lineNum">     265 </span>                :<span class="lineCov">         64 : debug (char const *fmt ATTRIBUTE_UNUSED, ...)</span>
+<span class="lineNum">     266 </span>                :            : {
+<span class="lineNum">     267 </span>                :<span class="lineCov">         64 : }</span>
+<span class="lineNum">     268 </span>                :            : 
+<span class="lineNum">     269 </span>                :            : #endif
+<span class="lineNum">     270 </span>                :            : 
+<span class="lineNum">     271 </span>                :            : /* The maximum number of factors, including -1, for negative numbers.  */
+<span class="lineNum">     272 </span>                :            : #define MAX_N_FACTORS (sizeof (uintmax_t) * CHAR_BIT)
+<span class="lineNum">     273 </span>                :            : 
+<span class="lineNum">     274 </span>                :            : /* The trial divisor increment wheel.  Use it to skip over divisors that
+<span class="lineNum">     275 </span>                :            :    are composites of 2, 3, 5, 7, or 11.  The part from WHEEL_START up to
+<span class="lineNum">     276 </span>                :            :    WHEEL_END is reused periodically, while the &quot;lead in&quot; is used to test
+<span class="lineNum">     277 </span>                :            :    for those primes and to jump onto the wheel.  For more information, see
+<span class="lineNum">     278 </span>                :            :    http://www.utm.edu/research/primes/glossary/WheelFactorization.html  */
+<span class="lineNum">     279 </span>                :            : 
+<span class="lineNum">     280 </span>                :            : #include &quot;wheel-size.h&quot;  /* For the definition of WHEEL_SIZE.  */
+<span class="lineNum">     281 </span>                :            : static const unsigned char wheel_tab[] =
+<span class="lineNum">     282 </span>                :            :   {
+<span class="lineNum">     283 </span>                :            : #include &quot;wheel.h&quot;
+<span class="lineNum">     284 </span>                :            :   };
+<span class="lineNum">     285 </span>                :            : 
+<span class="lineNum">     286 </span>                :            : #define WHEEL_START (wheel_tab + WHEEL_SIZE)
+<span class="lineNum">     287 </span>                :            : #define WHEEL_END (wheel_tab + ARRAY_CARDINALITY (wheel_tab))
+<span class="lineNum">     288 </span>                :            : 
+<span class="lineNum">     289 </span>                :            : /* FIXME: comment */
+<a name="290"><span class="lineNum">     290 </span>                :            : </a>
+<span class="lineNum">     291 </span>                :            : static size_t
+<span class="lineNum">     292 </span>                :<span class="lineCov">         64 : factor_wheel (uintmax_t n0, size_t max_n_factors, uintmax_t *factors)</span>
+<span class="lineNum">     293 </span>                :            : {
+<span class="lineNum">     294 </span>                :<span class="lineCov">         64 :   uintmax_t n = n0, d, q;</span>
+<span class="lineNum">     295 </span>                :<span class="lineCov">         64 :   size_t n_factors = 0;</span>
+<span class="lineNum">     296 </span>                :<span class="lineCov">         64 :   unsigned char const *w = wheel_tab;</span>
+<span class="lineNum">     297 </span>                :            : 
+<span class="lineNum">     298 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 62 times"> + </span>]:<span class="lineCov">         64 :   if (n &lt;= 1)</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">          2 :     return n_factors;</span>
+<span class="lineNum">     300 </span>                :            : 
+<span class="lineNum">     301 </span>                :            :   /* The exit condition in the following loop is correct because
+<span class="lineNum">     302 </span>                :            :      any time it is tested one of these 3 conditions holds:
+<span class="lineNum">     303 </span>                :            :       (1) d divides n
+<span class="lineNum">     304 </span>                :            :       (2) n is prime
+<span class="lineNum">     305 </span>                :            :       (3) n is composite but has no factors less than d.
+<span class="lineNum">     306 </span>                :            :      If (1) or (2) obviously the right thing happens.
+<span class="lineNum">     307 </span>                :            :      If (3), then since n is composite it is &gt;= d^2. */
+<span class="lineNum">     308 </span>                :            : 
+<span class="lineNum">     309 </span>                :<span class="lineCov">         62 :   d = 2;</span>
+<span class="lineNum">     310 </span>                :            :   do
+<span class="lineNum">     311 </span>                :            :     {
+<span class="lineNum">     312 </span>                :<span class="lineCov">     315378 :       q = n / d;</span>
+<span class="lineNum">     313 </span>        [<span class="branchCov" title="Branch 0 was taken 170 times"> + </span><span class="branchCov" title="Branch 1 was taken 315378 times"> + </span>]:<span class="lineCov">     315548 :       while (n == q * d)</span>
+<span class="lineNum">     314 </span>                :            :         {
+<span class="lineNum">     315 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 170 times"> + </span>]:<span class="lineCov">        170 :           assert (n_factors &lt; max_n_factors);</span>
+<span class="lineNum">     316 </span>                :<span class="lineCov">        170 :           factors[n_factors++] = d;</span>
+<span class="lineNum">     317 </span>                :<span class="lineCov">        170 :           n = q;</span>
+<span class="lineNum">     318 </span>                :<span class="lineCov">        170 :           q = n / d;</span>
+<span class="lineNum">     319 </span>                :            :         }
+<span class="lineNum">     320 </span>                :<span class="lineCov">     315378 :       d += *(w++);</span>
+<span class="lineNum">     321 </span>        [<span class="branchCov" title="Branch 0 was taken 632 times"> + </span><span class="branchCov" title="Branch 1 was taken 314746 times"> + </span>]:<span class="lineCov">     315378 :       if (w == WHEEL_END)</span>
+<span class="lineNum">     322 </span>                :<span class="lineCov">        632 :         w = WHEEL_START;</span>
+<span class="lineNum">     323 </span>                :            :     }
+<span class="lineNum">     324 </span>        [<span class="branchCov" title="Branch 0 was taken 315316 times"> + </span><span class="branchCov" title="Branch 1 was taken 62 times"> + </span>]:<span class="lineCov">     315378 :   while (d &lt;= q);</span>
+<span class="lineNum">     325 </span>                :            : 
+<span class="lineNum">     326 </span>[<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 58 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 4 times"> + </span>]:<span class="lineCov">         62 :   if (n != 1 || n0 == 1)</span>
+<span class="lineNum">     327 </span>                :            :     {
+<span class="lineNum">     328 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 58 times"> + </span>]:<span class="lineCov">         58 :       assert (n_factors &lt; max_n_factors);</span>
+<span class="lineNum">     329 </span>                :<span class="lineCov">         58 :       factors[n_factors++] = n;</span>
+<span class="lineNum">     330 </span>                :            :     }
+<span class="lineNum">     331 </span>                :            : 
+<span class="lineNum">     332 </span>                :<span class="lineCov">         64 :   return n_factors;</span>
+<span class="lineNum">     333 </span>                :            : }
+<span class="lineNum">     334 </span>                :            : 
+<a name="335"><span class="lineNum">     335 </span>                :            : /* Single-precision factoring */</a>
+<span class="lineNum">     336 </span>                :            : static void
+<span class="lineNum">     337 </span>                :<span class="lineCov">         64 : print_factors_single (uintmax_t n)</span>
+<span class="lineNum">     338 </span>                :            : {
+<span class="lineNum">     339 </span>                :            :   uintmax_t factors[MAX_N_FACTORS];
+<span class="lineNum">     340 </span>                :<span class="lineCov">         64 :   size_t n_factors = factor_wheel (n, MAX_N_FACTORS, factors);</span>
+<span class="lineNum">     341 </span>                :            :   size_t i;
+<span class="lineNum">     342 </span>                :            :   char buf[INT_BUFSIZE_BOUND (uintmax_t)];
+<span class="lineNum">     343 </span>                :            : 
+<span class="lineNum">     344 </span>                :<span class="lineCov">         64 :   printf (&quot;%s:&quot;, umaxtostr (n, buf));</span>
+<span class="lineNum">     345 </span>        [<span class="branchCov" title="Branch 0 was taken 228 times"> + </span><span class="branchCov" title="Branch 1 was taken 64 times"> + </span>]:<span class="lineCov">        292 :   for (i = 0; i &lt; n_factors; i++)</span>
+<span class="lineNum">     346 </span>                :<span class="lineCov">        228 :     printf (&quot; %s&quot;, umaxtostr (factors[i], buf));</span>
+<span class="lineNum">     347 </span>                :<span class="lineCov">         64 :   putchar ('\n');</span>
+<span class="lineNum">     348 </span>                :<span class="lineCov">         64 : }</span>
+<span class="lineNum">     349 </span>                :            : 
+<span class="lineNum">     350 </span>                :            : #if HAVE_GMP
+<span class="lineNum">     351 </span>                :            : static int
+<span class="lineNum">     352 </span>                :            : mpcompare (const void *av, const void *bv)
+<span class="lineNum">     353 </span>                :            : {
+<span class="lineNum">     354 </span>                :            :   mpz_t *const *a = av;
+<span class="lineNum">     355 </span>                :            :   mpz_t *const *b = bv;
+<span class="lineNum">     356 </span>                :            :   return mpz_cmp (**a, **b);
+<span class="lineNum">     357 </span>                :            : }
+<span class="lineNum">     358 </span>                :            : 
+<span class="lineNum">     359 </span>                :            : static void
+<span class="lineNum">     360 </span>                :            : sort_and_print_factors (void)
+<span class="lineNum">     361 </span>                :            : {
+<span class="lineNum">     362 </span>                :            :   mpz_t **faclist;
+<span class="lineNum">     363 </span>                :            :   size_t i;
+<span class="lineNum">     364 </span>                :            : 
+<span class="lineNum">     365 </span>                :            :   faclist = xcalloc (nfactors_found, sizeof *faclist);
+<span class="lineNum">     366 </span>                :            :   for (i = 0; i &lt; nfactors_found; ++i)
+<span class="lineNum">     367 </span>                :            :     {
+<span class="lineNum">     368 </span>                :            :       faclist[i] = &amp;factor[i];
+<span class="lineNum">     369 </span>                :            :     }
+<span class="lineNum">     370 </span>                :            :   qsort (faclist, nfactors_found, sizeof *faclist, mpcompare);
+<span class="lineNum">     371 </span>                :            : 
+<span class="lineNum">     372 </span>                :            :   for (i = 0; i &lt; nfactors_found; ++i)
+<span class="lineNum">     373 </span>                :            :     {
+<span class="lineNum">     374 </span>                :            :       fputc (' ', stdout);
+<span class="lineNum">     375 </span>                :            :       mpz_out_str (stdout, 10, *faclist[i]);
+<span class="lineNum">     376 </span>                :            :     }
+<span class="lineNum">     377 </span>                :            :   putchar ('\n');
+<span class="lineNum">     378 </span>                :            :   free (faclist);
+<span class="lineNum">     379 </span>                :            : }
+<span class="lineNum">     380 </span>                :            : 
+<span class="lineNum">     381 </span>                :            : static void
+<span class="lineNum">     382 </span>                :            : free_factors (void)
+<span class="lineNum">     383 </span>                :            : {
+<span class="lineNum">     384 </span>                :            :   size_t i;
+<span class="lineNum">     385 </span>                :            : 
+<span class="lineNum">     386 </span>                :            :   for (i = 0; i &lt; nfactors_found; ++i)
+<span class="lineNum">     387 </span>                :            :     {
+<span class="lineNum">     388 </span>                :            :       mpz_clear (factor[i]);
+<span class="lineNum">     389 </span>                :            :     }
+<span class="lineNum">     390 </span>                :            :   /* Don't actually free factor[] because in the case where we are
+<span class="lineNum">     391 </span>                :            :      reading numbers from stdin, we may be about to use it again.  */
+<span class="lineNum">     392 </span>                :            :   nfactors_found = 0;
+<span class="lineNum">     393 </span>                :            : }
+<span class="lineNum">     394 </span>                :            : 
+<span class="lineNum">     395 </span>                :            : /* Arbitrary-precision factoring */
+<span class="lineNum">     396 </span>                :            : static void
+<span class="lineNum">     397 </span>                :            : print_factors_multi (mpz_t t)
+<span class="lineNum">     398 </span>                :            : {
+<span class="lineNum">     399 </span>                :            :   mpz_out_str (stdout, 10, t);
+<span class="lineNum">     400 </span>                :            :   putchar (':');
+<span class="lineNum">     401 </span>                :            : 
+<span class="lineNum">     402 </span>                :            :   if (mpz_sgn (t) != 0)
+<span class="lineNum">     403 </span>                :            :     {
+<span class="lineNum">     404 </span>                :            :       /* Set the trial division limit according to the size of t.  */
+<span class="lineNum">     405 </span>                :            :       size_t n_bits = mpz_sizeinbase (t, 2);
+<span class="lineNum">     406 </span>                :            :       unsigned int division_limit = MIN (n_bits, 1000);
+<span class="lineNum">     407 </span>                :            :       division_limit *= division_limit;
+<span class="lineNum">     408 </span>                :            : 
+<span class="lineNum">     409 </span>                :            :       factor_using_division (t, division_limit);
+<span class="lineNum">     410 </span>                :            : 
+<span class="lineNum">     411 </span>                :            :       if (mpz_cmp_ui (t, 1) != 0)
+<span class="lineNum">     412 </span>                :            :         {
+<span class="lineNum">     413 </span>                :            :           debug (&quot;[is number prime?] &quot;);
+<span class="lineNum">     414 </span>                :            :           if (mpz_probab_prime_p (t, 3))
+<span class="lineNum">     415 </span>                :            :             emit_factor (t);
+<span class="lineNum">     416 </span>                :            :           else
+<span class="lineNum">     417 </span>                :            :             factor_using_pollard_rho (t, 1);
+<span class="lineNum">     418 </span>                :            :         }
+<span class="lineNum">     419 </span>                :            :     }
+<span class="lineNum">     420 </span>                :            : 
+<span class="lineNum">     421 </span>                :            :   mpz_clear (t);
+<span class="lineNum">     422 </span>                :            :   sort_and_print_factors ();
+<span class="lineNum">     423 </span>                :            :   free_factors ();
+<span class="lineNum">     424 </span>                :            : }
+<span class="lineNum">     425 </span>                :            : #endif
+<span class="lineNum">     426 </span>                :            : 
+<span class="lineNum">     427 </span>                :            : 
+<span class="lineNum">     428 </span>                :            : /* Emit the factors of the indicated number.  If we have the option of using
+<span class="lineNum">     429 </span>                :            :    either algorithm, we select on the basis of the length of the number.
+<span class="lineNum">     430 </span>                :            :    For longer numbers, we prefer the MP algorithm even if the native algorithm
+<span class="lineNum">     431 </span>                :            :    has enough digits, because the algorithm is better.  The turnover point
+<a name="432"><span class="lineNum">     432 </span>                :            :    depends on the value.  */</a>
+<span class="lineNum">     433 </span>                :            : static bool
+<span class="lineNum">     434 </span>                :<span class="lineCov">         66 : print_factors (char const *s)</span>
+<span class="lineNum">     435 </span>                :            : {
+<span class="lineNum">     436 </span>                :            :   uintmax_t n;
+<span class="lineNum">     437 </span>                :<span class="lineCov">         66 :   strtol_error err = xstrtoumax (s, NULL, 10, &amp;n, &quot;&quot;);</span>
+<span class="lineNum">     438 </span>                :            : 
+<span class="lineNum">     439 </span>                :            : #if HAVE_GMP
+<span class="lineNum">     440 </span>                :            :   enum { GMP_TURNOVER_POINT = 100000 };
+<span class="lineNum">     441 </span>                :            : 
+<span class="lineNum">     442 </span>                :            :   if (err == LONGINT_OVERFLOW
+<span class="lineNum">     443 </span>                :            :       || (err == LONGINT_OK &amp;&amp; GMP_TURNOVER_POINT &lt;= n))
+<span class="lineNum">     444 </span>                :            :     {
+<span class="lineNum">     445 </span>                :            :       mpz_t t;
+<span class="lineNum">     446 </span>                :            :       mpz_init (t);
+<span class="lineNum">     447 </span>                :            :       if (gmp_sscanf (s, &quot;%Zd&quot;, t) == 1)
+<span class="lineNum">     448 </span>                :            :         {
+<span class="lineNum">     449 </span>                :            :           debug (&quot;[%s]&quot;, _(&quot;using arbitrary-precision arithmetic&quot;));
+<span class="lineNum">     450 </span>                :            :           print_factors_multi (t);
+<span class="lineNum">     451 </span>                :            :           return true;
+<span class="lineNum">     452 </span>                :            :         }
+<span class="lineNum">     453 </span>                :            :       err = LONGINT_INVALID;
+<span class="lineNum">     454 </span>                :            :     }
+<span class="lineNum">     455 </span>                :            : #endif
+<span class="lineNum">     456 </span>                :            : 
+<span class="lineNum">     457 </span>     [<span class="branchCov" title="Branch 0 was taken 64 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">         66 :   switch (err)</span>
+<span class="lineNum">     458 </span>                :            :     {
+<span class="lineNum">     459 </span>                :            :     case LONGINT_OK:
+<span class="lineNum">     460 </span>                :<span class="lineCov">         64 :       debug (&quot;[%s]&quot;, _(&quot;using single-precision arithmetic&quot;));</span>
+<span class="lineNum">     461 </span>                :<span class="lineCov">         64 :       print_factors_single (n);</span>
+<span class="lineNum">     462 </span>                :<span class="lineCov">         64 :       return true;</span>
+<span class="lineNum">     463 </span>                :            : 
+<span class="lineNum">     464 </span>                :            :     case LONGINT_OVERFLOW:
+<span class="lineNum">     465 </span>                :<span class="lineNoCov">          0 :       error (0, 0, _(&quot;%s is too large&quot;), quote (s));</span>
+<span class="lineNum">     466 </span>                :<span class="lineNoCov">          0 :       return false;</span>
+<span class="lineNum">     467 </span>                :            : 
+<span class="lineNum">     468 </span>                :            :     default:
+<span class="lineNum">     469 </span>                :<span class="lineCov">          2 :       error (0, 0, _(&quot;%s is not a valid positive integer&quot;), quote (s));</span>
+<span class="lineNum">     470 </span>                :<span class="lineCov">         66 :       return false;</span>
+<span class="lineNum">     471 </span>                :            :     }
+<span class="lineNum">     472 </span>                :            : }
+<span class="lineNum">     473 </span>                :            : 
+<span class="lineNum">     474 </span>                :            : enum
+<span class="lineNum">     475 </span>                :            : {
+<span class="lineNum">     476 </span>                :            :   VERBOSE_OPTION = CHAR_MAX + 1
+<span class="lineNum">     477 </span>                :            : };
+<span class="lineNum">     478 </span>                :            : 
+<span class="lineNum">     479 </span>                :            : static struct option const long_options[] =
+<span class="lineNum">     480 </span>                :            : {
+<span class="lineNum">     481 </span>                :            :   {&quot;verbose&quot;, no_argument, NULL, VERBOSE_OPTION},
+<span class="lineNum">     482 </span>                :            :   {GETOPT_HELP_OPTION_DECL},
+<span class="lineNum">     483 </span>                :            :   {GETOPT_VERSION_OPTION_DECL},
+<span class="lineNum">     484 </span>                :            :   {NULL, 0, NULL, 0}
+<span class="lineNum">     485 </span>                :            : };
+<a name="486"><span class="lineNum">     486 </span>                :            : </a>
+<span class="lineNum">     487 </span>                :            : void
+<span class="lineNum">     488 </span>                :<span class="lineCov">         10 : usage (int status)</span>
+<span class="lineNum">     489 </span>                :            : {
+<span class="lineNum">     490 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">         10 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     491 </span>                :<span class="lineCov">          4 :     emit_try_help ();</span>
+<span class="lineNum">     492 </span>                :            :   else
+<span class="lineNum">     493 </span>                :            :     {
+<span class="lineNum">     494 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     495 </span>                :            : Usage: %s [NUMBER]...\n\
+<span class="lineNum">     496 </span>                :            :   or:  %s OPTION\n\
+<span class="lineNum">     497 </span>                :            : &quot;),
+<span class="lineNum">     498 </span>                :            :               program_name, program_name);
+<span class="lineNum">     499 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     500 </span>                :            : Print the prime factors of each specified integer NUMBER.  If none\n\
+<span class="lineNum">     501 </span>                :            : are specified on the command line, read them from standard input.\n\
+<span class="lineNum">     502 </span>                :            : \n\
+<span class="lineNum">     503 </span>                :            : &quot;), stdout);
+<span class="lineNum">     504 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     505 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     506 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">     507 </span>                :            :     }
+<span class="lineNum">     508 </span>                :<span class="lineCov">         10 :   exit (status);</span>
+<span class="lineNum">     509 </span>                :            : }
+<a name="510"><span class="lineNum">     510 </span>                :            : </a>
+<span class="lineNum">     511 </span>                :            : static bool
+<span class="lineNum">     512 </span>                :<span class="lineCov">          2 : do_stdin (void)</span>
+<span class="lineNum">     513 </span>                :            : {
+<span class="lineNum">     514 </span>                :<span class="lineCov">          2 :   bool ok = true;</span>
+<span class="lineNum">     515 </span>                :            :   token_buffer tokenbuffer;
+<span class="lineNum">     516 </span>                :            : 
+<span class="lineNum">     517 </span>                :<span class="lineCov">          2 :   init_tokenbuffer (&amp;tokenbuffer);</span>
+<span class="lineNum">     518 </span>                :            : 
+<span class="lineNum">     519 </span>                :            :   while (true)
+<span class="lineNum">     520 </span>                :            :     {
+<span class="lineNum">     521 </span>                :<span class="lineCov">          6 :       size_t token_length = readtoken (stdin, DELIM, sizeof (DELIM) - 1,</span>
+<span class="lineNum">     522 </span>                :            :                                        &amp;tokenbuffer);
+<span class="lineNum">     523 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          6 :       if (token_length == (size_t) -1)</span>
+<span class="lineNum">     524 </span>                :<span class="lineCov">          2 :         break;</span>
+<span class="lineNum">     525 </span>                :<span class="lineCov">          4 :       ok &amp;= print_factors (tokenbuffer.buffer);</span>
+<span class="lineNum">     526 </span>                :<span class="lineCov">          4 :     }</span>
+<span class="lineNum">     527 </span>                :<span class="lineCov">          2 :   free (tokenbuffer.buffer);</span>
+<span class="lineNum">     528 </span>                :            : 
+<span class="lineNum">     529 </span>                :<span class="lineCov">          2 :   return ok;</span>
+<span class="lineNum">     530 </span>                :            : }
+<a name="531"><span class="lineNum">     531 </span>                :            : </a>
+<span class="lineNum">     532 </span>                :            : int
+<span class="lineNum">     533 </span>                :<span class="lineCov">         82 : main (int argc, char **argv)</span>
+<span class="lineNum">     534 </span>                :            : {
+<span class="lineNum">     535 </span>                :            :   bool ok;
+<span class="lineNum">     536 </span>                :            :   int c;
+<span class="lineNum">     537 </span>                :            : 
+<span class="lineNum">     538 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     539 </span>                :<span class="lineCov">         82 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     540 </span>                :<span class="lineCov">         82 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     541 </span>                :<span class="lineCov">         82 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     542 </span>                :<span class="lineCov">         82 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     543 </span>                :            : 
+<span class="lineNum">     544 </span>                :<span class="lineCov">         82 :   atexit (close_stdout);</span>
+<span class="lineNum">     545 </span>                :            : 
+<span class="lineNum">     546 </span>        [<span class="branchCov" title="Branch 1 was taken 20 times"> + </span><span class="branchCov" title="Branch 2 was taken 62 times"> + </span>]:<span class="lineCov">         82 :   while ((c = getopt_long (argc, argv, &quot;&quot;, long_options, NULL)) != -1)</span>
+<span class="lineNum">     547 </span>                :            :     {
+<span class="lineNum">     548 </span>  [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span><span class="branchCov" title="Branch 3 was taken 4 times"> + </span>]:<span class="lineCov">         20 :       switch (c)</span>
+<span class="lineNum">     549 </span>                :            :         {
+<span class="lineNum">     550 </span>                :            :         case VERBOSE_OPTION:
+<span class="lineNum">     551 </span>                :<span class="lineNoCov">          0 :           verbose = true;</span>
+<span class="lineNum">     552 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     553 </span>                :            : 
+<span class="lineNum">     554 </span>                :<span class="lineCov">          6 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     555 </span>                :            : 
+<span class="lineNum">     556 </span>                :<span class="lineCov">         10 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     557 </span>                :            : 
+<span class="lineNum">     558 </span>                :            :         default:
+<span class="lineNum">     559 </span>                :<span class="lineCov">          4 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     560 </span>                :            :         }
+<span class="lineNum">     561 </span>                :            :     }
+<span class="lineNum">     562 </span>                :            : 
+<span class="lineNum">     563 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>]:<span class="lineCov">         62 :   if (argc &lt;= optind)</span>
+<span class="lineNum">     564 </span>                :<span class="lineCov">          2 :     ok = do_stdin ();</span>
+<span class="lineNum">     565 </span>                :            :   else
+<span class="lineNum">     566 </span>                :            :     {
+<span class="lineNum">     567 </span>                :            :       int i;
+<span class="lineNum">     568 </span>                :<span class="lineCov">         60 :       ok = true;</span>
+<span class="lineNum">     569 </span>        [<span class="branchCov" title="Branch 0 was taken 62 times"> + </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>]:<span class="lineCov">        122 :       for (i = optind; i &lt; argc; i++)</span>
+<span class="lineNum">     570 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 60 times"> + </span>]:<span class="lineCov">         62 :         if (! print_factors (argv[i]))</span>
+<span class="lineNum">     571 </span>                :<span class="lineCov">          2 :           ok = false;</span>
+<span class="lineNum">     572 </span>                :            :     }
+<span class="lineNum">     573 </span>                :            : #if HAVE_GMP
+<span class="lineNum">     574 </span>                :            :   free (factor);
+<span class="lineNum">     575 </span>                :            : #endif
+<span class="lineNum">     576 </span>        [<span class="branchCov" title="Branch 0 was taken 60 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">         62 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
+<span class="lineNum">     577 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

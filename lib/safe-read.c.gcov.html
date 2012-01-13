@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* An interface to read and write that retries after interrupts.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1993-1994, 1998, 2002-2006, 2009-2011 Free Software
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1993-1994, 1998, 2002-2006, 2009-2012 Free Software
 <span class="lineNum">       4 </span>                :            :    Foundation, Inc.
 <span class="lineNum">       5 </span>                :            : 
 <span class="lineNum">       6 </span>                :            :    This program is free software: you can redistribute it and/or modify
@@ -124,7 +124,7 @@
 <span class="lineNum">      53 </span>                :            :    interrupted.  Return the actual number of bytes read(written), zero for EOF,
 <a name="54"><span class="lineNum">      54 </span>                :            :    or SAFE_READ_ERROR(SAFE_WRITE_ERROR) upon error.  */</a>
 <span class="lineNum">      55 </span>                :            : size_t
-<span class="lineNum">      56 </span>                :<span class="lineCov">     158456 : safe_rw (int fd, void const *buf, size_t count)</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">     123546 : safe_rw (int fd, void const *buf, size_t count)</span>
 <span class="lineNum">      57 </span>                :            : {
 <span class="lineNum">      58 </span>                :            :   /* Work around a bug in Tru64 5.1.  Attempting to read more than
 <span class="lineNum">      59 </span>                :            :      INT_MAX bytes fails with errno == EINVAL.  See
@@ -134,17 +134,17 @@
 <span class="lineNum">      63 </span>                :            : 
 <span class="lineNum">      64 </span>                :            :   for (;;)
 <span class="lineNum">      65 </span>                :            :     {
-<span class="lineNum">      66 </span>                :<span class="lineCov">     158456 :       ssize_t result = rw (fd, buf, count);</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">     123546 :       ssize_t result = rw (fd, buf, count);</span>
 <span class="lineNum">      67 </span>                :            : 
-<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 158411 times"> + </span><span class="branchCov" title="Branch 1 was taken 45 times"> + </span>]:<span class="lineCov">     158456 :       if (0 &lt;= result)</span>
-<span class="lineNum">      69 </span>                :<span class="lineCov">     158411 :         return result;</span>
-<span class="lineNum">      70 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 45 times"> + </span>]:<span class="lineCov">         45 :       else if (IS_EINTR (errno))</span>
+<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 123516 times"> + </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">     123546 :       if (0 &lt;= result)</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">     123516 :         return result;</span>
+<span class="lineNum">      70 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 30 times"> + </span>]:<span class="lineCov">         30 :       else if (IS_EINTR (errno))</span>
 <span class="lineNum">      71 </span>                :<span class="lineNoCov">          0 :         continue;</span>
-<span class="lineNum">      72 </span>[<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 45 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         45 :       else if (errno == EINVAL &amp;&amp; BUGGY_READ_MAXIMUM &lt; count)</span>
+<span class="lineNum">      72 </span>[<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 30 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         30 :       else if (errno == EINVAL &amp;&amp; BUGGY_READ_MAXIMUM &lt; count)</span>
 <span class="lineNum">      73 </span>                :<span class="lineNoCov">          0 :         count = BUGGY_READ_MAXIMUM;</span>
 <span class="lineNum">      74 </span>                :            :       else
-<span class="lineNum">      75 </span>                :<span class="lineCov">         45 :         return result;</span>
-<span class="lineNum">      76 </span>                :<span class="lineCov">     158456 :     }</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">         30 :         return result;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">     123546 :     }</span>
 <span class="lineNum">      77 </span>                :            : }
 </pre>
       </td>

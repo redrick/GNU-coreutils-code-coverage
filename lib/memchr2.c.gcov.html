@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -69,7 +69,7 @@
       <td>
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>                :            : /* Copyright (C) 1991, 1993, 1996-1997, 1999-2000, 2003-2004, 2006, 2008-2011</a>
+<a name="1"><span class="lineNum">       1 </span>                :            : /* Copyright (C) 1991, 1993, 1996-1997, 1999-2000, 2003-2004, 2006, 2008-2012</a>
 <span class="lineNum">       2 </span>                :            :    Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    Based on strlen implementation by Torbjorn Granlund (tege@sics.se),
@@ -104,7 +104,7 @@
 <span class="lineNum">      33 </span>                :            :    char) that occurs within N bytes of the memory region S.  If
 <a name="34"><span class="lineNum">      34 </span>                :            :    neither byte appears, return NULL.  */</a>
 <span class="lineNum">      35 </span>                :            : void *
-<span class="lineNum">      36 </span>                :<span class="lineCov">     169632 : memchr2 (void const *s, int c1_in, int c2_in, size_t n)</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">     113089 : memchr2 (void const *s, int c1_in, int c2_in, size_t n)</span>
 <span class="lineNum">      37 </span>                :            : {
 <span class="lineNum">      38 </span>                :            :   /* On 32-bit hardware, choosing longword to be a 32-bit unsigned
 <span class="lineNum">      39 </span>                :            :      long instead of a 64-bit uintmax_t tends to give better
@@ -121,21 +121,21 @@
 <span class="lineNum">      50 </span>                :            :   unsigned char c1;
 <span class="lineNum">      51 </span>                :            :   unsigned char c2;
 <span class="lineNum">      52 </span>                :            : 
-<span class="lineNum">      53 </span>                :<span class="lineCov">     169632 :   c1 = (unsigned char) c1_in;</span>
-<span class="lineNum">      54 </span>                :<span class="lineCov">     169632 :   c2 = (unsigned char) c2_in;</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">     113089 :   c1 = (unsigned char) c1_in;</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">     113089 :   c2 = (unsigned char) c2_in;</span>
 <span class="lineNum">      55 </span>                :            : 
-<span class="lineNum">      56 </span>        [<span class="branchCov" title="Branch 0 was taken 213 times"> + </span><span class="branchCov" title="Branch 1 was taken 169419 times"> + </span>]:<span class="lineCov">     169632 :   if (c1 == c2)</span>
-<span class="lineNum">      57 </span>                :<span class="lineCov">        213 :     return memchr (s, c1, n);</span>
+<span class="lineNum">      56 </span>        [<span class="branchCov" title="Branch 0 was taken 142 times"> + </span><span class="branchCov" title="Branch 1 was taken 112947 times"> + </span>]:<span class="lineCov">     113089 :   if (c1 == c2)</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">        142 :     return memchr (s, c1, n);</span>
 <span class="lineNum">      58 </span>                :            : 
 <span class="lineNum">      59 </span>                :            :   /* Handle the first few bytes by reading one byte at a time.
 <span class="lineNum">      60 </span>                :            :      Do this until CHAR_PTR is aligned on a longword boundary.  */
-<span class="lineNum">      61 </span>        [<span class="branchCov" title="Branch 0 was taken 242583 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">     242589 :   for (char_ptr = (const unsigned char *) s;</span>
-<span class="lineNum">      62 </span>        [<span class="branchCov" title="Branch 0 was taken 73461 times"> + </span><span class="branchCov" title="Branch 1 was taken 169122 times"> + </span>]:<span class="lineCov">     242583 :        n &gt; 0 &amp;&amp; (size_t) char_ptr % sizeof (longword) != 0;</span>
-<span class="lineNum">      63 </span>                :<span class="lineCov">      73170 :        --n, ++char_ptr)</span>
-<span class="lineNum">      64 </span>[<span class="branchCov" title="Branch 0 was taken 73314 times"> + </span><span class="branchCov" title="Branch 1 was taken 147 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 144 times"> + </span><span class="branchCov" title="Branch 3 was taken 73170 times"> + </span>]:<span class="lineCov">      73461 :     if (*char_ptr == c1 || *char_ptr == c2)</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">        291 :       return (void *) char_ptr;</span>
+<span class="lineNum">      61 </span>        [<span class="branchCov" title="Branch 0 was taken 161723 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">     161727 :   for (char_ptr = (const unsigned char *) s;</span>
+<span class="lineNum">      62 </span>        [<span class="branchCov" title="Branch 0 was taken 48974 times"> + </span><span class="branchCov" title="Branch 1 was taken 112749 times"> + </span>]:<span class="lineCov">     161723 :        n &gt; 0 &amp;&amp; (size_t) char_ptr % sizeof (longword) != 0;</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">      48780 :        --n, ++char_ptr)</span>
+<span class="lineNum">      64 </span>[<span class="branchCov" title="Branch 0 was taken 48876 times"> + </span><span class="branchCov" title="Branch 1 was taken 98 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 96 times"> + </span><span class="branchCov" title="Branch 3 was taken 48780 times"> + </span>]:<span class="lineCov">      48974 :     if (*char_ptr == c1 || *char_ptr == c2)</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">        194 :       return (void *) char_ptr;</span>
 <span class="lineNum">      66 </span>                :            : 
-<span class="lineNum">      67 </span>                :<span class="lineCov">     169128 :   longword_ptr = (const longword *) char_ptr;</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">     112753 :   longword_ptr = (const longword *) char_ptr;</span>
 <span class="lineNum">      68 </span>                :            : 
 <span class="lineNum">      69 </span>                :            :   /* All these elucidatory comments refer to 4-byte longwords,
 <span class="lineNum">      70 </span>                :            :      but the theory applies equally well to any size longwords.  */
@@ -144,11 +144,11 @@
 <span class="lineNum">      73 </span>                :            :      repeated_one is a value which has a 1 in every byte.
 <span class="lineNum">      74 </span>                :            :      repeated_c1 has c1 in every byte.
 <span class="lineNum">      75 </span>                :            :      repeated_c2 has c2 in every byte.  */
-<span class="lineNum">      76 </span>                :<span class="lineCov">     169128 :   repeated_one = 0x01010101;</span>
-<span class="lineNum">      77 </span>                :<span class="lineCov">     169128 :   repeated_c1 = c1 | (c1 &lt;&lt; 8);</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">     169128 :   repeated_c2 = c2 | (c2 &lt;&lt; 8);</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">     169128 :   repeated_c1 |= repeated_c1 &lt;&lt; 16;</span>
-<span class="lineNum">      80 </span>                :<span class="lineCov">     169128 :   repeated_c2 |= repeated_c2 &lt;&lt; 16;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">     112753 :   repeated_one = 0x01010101;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">     112753 :   repeated_c1 = c1 | (c1 &lt;&lt; 8);</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">     112753 :   repeated_c2 = c2 | (c2 &lt;&lt; 8);</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">     112753 :   repeated_c1 |= repeated_c1 &lt;&lt; 16;</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">     112753 :   repeated_c2 |= repeated_c2 &lt;&lt; 16;</span>
 <span class="lineNum">      81 </span>                :            :   if (0xffffffffU &lt; (longword) -1)
 <span class="lineNum">      82 </span>                :            :     {
 <span class="lineNum">      83 </span>                :            :       repeated_one |= repeated_one &lt;&lt; 31 &lt;&lt; 1;
@@ -203,20 +203,20 @@
 <span class="lineNum">     132 </span>                :            :      to testing whether tmp1 is nonzero or tmp2 is nonzero.  We can combine
 <span class="lineNum">     133 </span>                :            :      this into a single test, whether (tmp1 | tmp2) is nonzero.  */
 <span class="lineNum">     134 </span>                :            : 
-<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 4841097 times"> + </span><span class="branchCov" title="Branch 1 was taken 189 times"> + </span>]:<span class="lineCov">    4841286 :   while (n &gt;= sizeof (longword))</span>
+<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 3227401 times"> + </span><span class="branchCov" title="Branch 1 was taken 126 times"> + </span>]:<span class="lineCov">    3227527 :   while (n &gt;= sizeof (longword))</span>
 <span class="lineNum">     136 </span>                :            :     {
-<span class="lineNum">     137 </span>                :<span class="lineCov">    4841097 :       longword longword1 = *longword_ptr ^ repeated_c1;</span>
-<span class="lineNum">     138 </span>                :<span class="lineCov">    4841097 :       longword longword2 = *longword_ptr ^ repeated_c2;</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">    3227401 :       longword longword1 = *longword_ptr ^ repeated_c1;</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">    3227401 :       longword longword2 = *longword_ptr ^ repeated_c2;</span>
 <span class="lineNum">     139 </span>                :            : 
-<span class="lineNum">     140 </span>        [<span class="branchCov" title="Branch 0 was taken 168939 times"> + </span><span class="branchCov" title="Branch 1 was taken 4672158 times"> + </span>]:<span class="lineCov">    4841097 :       if (((((longword1 - repeated_one) &amp; ~longword1)</span>
-<span class="lineNum">     141 </span>                :<span class="lineCov">    4841097 :             | ((longword2 - repeated_one) &amp; ~longword2))</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">    4841097 :            &amp; (repeated_one &lt;&lt; 7)) != 0)</span>
-<span class="lineNum">     143 </span>                :<span class="lineCov">     168939 :         break;</span>
-<span class="lineNum">     144 </span>                :<span class="lineCov">    4672158 :       longword_ptr++;</span>
-<span class="lineNum">     145 </span>                :<span class="lineCov">    4672158 :       n -= sizeof (longword);</span>
+<span class="lineNum">     140 </span>        [<span class="branchCov" title="Branch 0 was taken 112627 times"> + </span><span class="branchCov" title="Branch 1 was taken 3114774 times"> + </span>]:<span class="lineCov">    3227401 :       if (((((longword1 - repeated_one) &amp; ~longword1)</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">    3227401 :             | ((longword2 - repeated_one) &amp; ~longword2))</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">    3227401 :            &amp; (repeated_one &lt;&lt; 7)) != 0)</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">     112627 :         break;</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">    3114774 :       longword_ptr++;</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">    3114774 :       n -= sizeof (longword);</span>
 <span class="lineNum">     146 </span>                :            :     }
 <span class="lineNum">     147 </span>                :            : 
-<span class="lineNum">     148 </span>                :<span class="lineCov">     169128 :   char_ptr = (const unsigned char *) longword_ptr;</span>
+<span class="lineNum">     148 </span>                :<span class="lineCov">     112753 :   char_ptr = (const unsigned char *) longword_ptr;</span>
 <span class="lineNum">     149 </span>                :            : 
 <span class="lineNum">     150 </span>                :            :   /* At this point, we know that either n &lt; sizeof (longword), or one of the
 <span class="lineNum">     151 </span>                :            :      sizeof (longword) bytes starting at char_ptr is == c1 or == c2.  On
@@ -225,13 +225,13 @@
 <span class="lineNum">     154 </span>                :            :      from the last loop iteration.  But this does not work on big-endian
 <span class="lineNum">     155 </span>                :            :      machines.  Choose code that works in both cases.  */
 <span class="lineNum">     156 </span>                :            : 
-<span class="lineNum">     157 </span>        [<span class="branchCov" title="Branch 0 was taken 482265 times"> + </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">     482292 :   for (; n &gt; 0; --n, ++char_ptr)</span>
+<span class="lineNum">     157 </span>        [<span class="branchCov" title="Branch 0 was taken 321514 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">     321532 :   for (; n &gt; 0; --n, ++char_ptr)</span>
 <span class="lineNum">     158 </span>                :            :     {
-<span class="lineNum">     159 </span>[<span class="branchCov" title="Branch 0 was taken 397518 times"> + </span><span class="branchCov" title="Branch 1 was taken 84747 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 84354 times"> + </span><span class="branchCov" title="Branch 3 was taken 313164 times"> + </span>]:<span class="lineCov">     482265 :       if (*char_ptr == c1 || *char_ptr == c2)</span>
-<span class="lineNum">     160 </span>                :<span class="lineCov">     169101 :         return (void *) char_ptr;</span>
+<span class="lineNum">     159 </span>[<span class="branchCov" title="Branch 0 was taken 265015 times"> + </span><span class="branchCov" title="Branch 1 was taken 56499 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 56236 times"> + </span><span class="branchCov" title="Branch 3 was taken 208779 times"> + </span>]:<span class="lineCov">     321514 :       if (*char_ptr == c1 || *char_ptr == c2)</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">     112735 :         return (void *) char_ptr;</span>
 <span class="lineNum">     161 </span>                :            :     }
 <span class="lineNum">     162 </span>                :            : 
-<span class="lineNum">     163 </span>                :<span class="lineCov">     169632 :   return NULL;</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">     113089 :   return NULL;</span>
 <span class="lineNum">     164 </span>                :            : }
 </pre>
       </td>

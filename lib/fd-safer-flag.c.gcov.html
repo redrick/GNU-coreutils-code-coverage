@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -72,7 +72,7 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Adjust a file descriptor result so that it avoids clobbering</a>
 <span class="lineNum">       2 </span>                :            :    STD{IN,OUT,ERR}_FILENO, with specific flags.
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :            :    Copyright (C) 2005-2006, 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>                :            :    Copyright (C) 2005-2006, 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       5 </span>                :            : 
 <span class="lineNum">       6 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       7 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -108,18 +108,18 @@
 <span class="lineNum">      37 </span>                :            :    descriptors, e.g., fd_safer_flag (open (&quot;file&quot;, O_RDONLY | flag), flag).  */
 <a name="38"><span class="lineNum">      38 </span>                :            : </a>
 <span class="lineNum">      39 </span>                :            : int
-<span class="lineNum">      40 </span>                :<span class="lineCov">         12 : fd_safer_flag (int fd, int flag)</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">          8 : fd_safer_flag (int fd, int flag)</span>
 <span class="lineNum">      41 </span>                :            : {
-<span class="lineNum">      42 </span>[<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 9 times"> + </span><span class="branchCov" title="Branch 3 was taken 3 times"> + </span>]:<span class="lineCov">         12 :   if (STDIN_FILENO &lt;= fd &amp;&amp; fd &lt;= STDERR_FILENO)</span>
+<span class="lineNum">      42 </span>[<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 6 times"> + </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">          8 :   if (STDIN_FILENO &lt;= fd &amp;&amp; fd &lt;= STDERR_FILENO)</span>
 <span class="lineNum">      43 </span>                :            :     {
-<span class="lineNum">      44 </span>                :<span class="lineCov">          9 :       int f = dup_safer_flag (fd, flag);</span>
-<span class="lineNum">      45 </span>                :<span class="lineCov">          9 :       int e = errno;</span>
-<span class="lineNum">      46 </span>                :<span class="lineCov">          9 :       close (fd);</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">          9 :       errno = e;</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">          9 :       fd = f;</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">          6 :       int f = dup_safer_flag (fd, flag);</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">          6 :       int e = errno;</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">          6 :       close (fd);</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">          6 :       errno = e;</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">          6 :       fd = f;</span>
 <span class="lineNum">      49 </span>                :            :     }
 <span class="lineNum">      50 </span>                :            : 
-<span class="lineNum">      51 </span>                :<span class="lineCov">         12 :   return fd;</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">          8 :   return fd;</span>
 <span class="lineNum">      52 </span>                :            : }
 </pre>
       </td>

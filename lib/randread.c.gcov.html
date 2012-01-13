@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Generate buffers of random data.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 2006, 2008-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 2006, 2008-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -205,13 +205,13 @@
 <span class="lineNum">     134 </span>                :            :    handler.  */
 <a name="135"><span class="lineNum">     135 </span>                :            : </a>
 <span class="lineNum">     136 </span>                :            : static struct randread_source *
-<span class="lineNum">     137 </span>                :<span class="lineCov">       1378 : simple_new (FILE *source, void const *handler_arg)</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">        921 : simple_new (FILE *source, void const *handler_arg)</span>
 <span class="lineNum">     138 </span>                :            : {
-<span class="lineNum">     139 </span>                :<span class="lineCov">       1378 :   struct randread_source *s = xmalloc (sizeof *s);</span>
-<span class="lineNum">     140 </span>                :<span class="lineCov">       1378 :   s-&gt;source = source;</span>
-<span class="lineNum">     141 </span>                :<span class="lineCov">       1378 :   s-&gt;handler = randread_error;</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">       1378 :   s-&gt;handler_arg = handler_arg;</span>
-<span class="lineNum">     143 </span>                :<span class="lineCov">       1378 :   return s;</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">        921 :   struct randread_source *s = xmalloc (sizeof *s);</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">        921 :   s-&gt;source = source;</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">        921 :   s-&gt;handler = randread_error;</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">        921 :   s-&gt;handler_arg = handler_arg;</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">        921 :   return s;</span>
 <span class="lineNum">     144 </span>                :            : }
 <span class="lineNum">     145 </span>                :            : 
 <span class="lineNum">     146 </span>                :            : /* Put a nonce value into BUFFER, with size BUFSIZE, but do not get
@@ -219,19 +219,19 @@
 <span class="lineNum">     148 </span>                :            :    nonce device.  */
 <a name="149"><span class="lineNum">     149 </span>                :            : </a>
 <span class="lineNum">     150 </span>                :            : static void
-<span class="lineNum">     151 </span>                :<span class="lineCov">       1366 : get_nonce (void *buffer, size_t bufsize, size_t bytes_bound)</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">        913 : get_nonce (void *buffer, size_t bufsize, size_t bytes_bound)</span>
 <span class="lineNum">     152 </span>                :            : {
-<span class="lineNum">     153 </span>                :<span class="lineCov">       1366 :   char *buf = buffer;</span>
-<span class="lineNum">     154 </span>                :<span class="lineCov">       1366 :   ssize_t seeded = 0;</span>
+<span class="lineNum">     153 </span>                :<span class="lineCov">        913 :   char *buf = buffer;</span>
+<span class="lineNum">     154 </span>                :<span class="lineCov">        913 :   ssize_t seeded = 0;</span>
 <span class="lineNum">     155 </span>                :            : 
 <span class="lineNum">     156 </span>                :            :   /* Get some data from FD if available.  */
-<span class="lineNum">     157 </span>                :<span class="lineCov">       1366 :   int fd = open (NAME_OF_NONCE_DEVICE, O_RDONLY | O_BINARY);</span>
-<span class="lineNum">     158 </span>        [<span class="branchCov" title="Branch 0 was taken 1366 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1366 :   if (0 &lt;= fd)</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">        913 :   int fd = open (NAME_OF_NONCE_DEVICE, O_RDONLY | O_BINARY);</span>
+<span class="lineNum">     158 </span>        [<span class="branchCov" title="Branch 0 was taken 913 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        913 :   if (0 &lt;= fd)</span>
 <span class="lineNum">     159 </span>                :            :     {
-<span class="lineNum">     160 </span>                :<span class="lineCov">       1366 :       seeded = read (fd, buf, MIN (bufsize, bytes_bound));</span>
-<span class="lineNum">     161 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1366 times"> + </span>]:<span class="lineCov">       1366 :       if (seeded &lt; 0)</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">        913 :       seeded = read (fd, buf, MIN (bufsize, bytes_bound));</span>
+<span class="lineNum">     161 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 913 times"> + </span>]:<span class="lineCov">        913 :       if (seeded &lt; 0)</span>
 <span class="lineNum">     162 </span>                :<span class="lineNoCov">          0 :         seeded = 0;</span>
-<span class="lineNum">     163 </span>                :<span class="lineCov">       1366 :       close (fd);</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">        913 :       close (fd);</span>
 <span class="lineNum">     164 </span>                :            :     }
 <span class="lineNum">     165 </span>                :            : 
 <span class="lineNum">     166 </span>                :            :   /* If there's no nonce device, use a poor approximation
@@ -245,11 +245,11 @@
 <span class="lineNum">     174 </span>                :            :       memcpy (buf + seeded, &amp;v, nbytes);                    \
 <span class="lineNum">     175 </span>                :            :       seeded += nbytes;                                     \
 <span class="lineNum">     176 </span>                :            :     }
-<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 1342 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">       1366 :   ISAAC_SEED (struct timeval, gettimeofday (&amp;v, NULL));</span>
-<span class="lineNum">     178 </span>        [<span class="branchCov" title="Branch 0 was taken 1342 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">       1366 :   ISAAC_SEED (pid_t, v = getpid ());</span>
-<span class="lineNum">     179 </span>        [<span class="branchCov" title="Branch 0 was taken 1342 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">       1366 :   ISAAC_SEED (pid_t, v = getppid ());</span>
-<span class="lineNum">     180 </span>        [<span class="branchCov" title="Branch 0 was taken 1342 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">       1366 :   ISAAC_SEED (uid_t, v = getuid ());</span>
-<span class="lineNum">     181 </span>        [<span class="branchCov" title="Branch 0 was taken 1342 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">       1366 :   ISAAC_SEED (uid_t, v = getgid ());</span>
+<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 897 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">        913 :   ISAAC_SEED (struct timeval, gettimeofday (&amp;v, NULL));</span>
+<span class="lineNum">     178 </span>        [<span class="branchCov" title="Branch 0 was taken 897 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">        913 :   ISAAC_SEED (pid_t, v = getpid ());</span>
+<span class="lineNum">     179 </span>        [<span class="branchCov" title="Branch 0 was taken 897 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">        913 :   ISAAC_SEED (pid_t, v = getppid ());</span>
+<span class="lineNum">     180 </span>        [<span class="branchCov" title="Branch 0 was taken 897 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">        913 :   ISAAC_SEED (uid_t, v = getuid ());</span>
+<span class="lineNum">     181 </span>        [<span class="branchCov" title="Branch 0 was taken 897 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">        913 :   ISAAC_SEED (uid_t, v = getgid ());</span>
 <span class="lineNum">     182 </span>                :            : 
 <span class="lineNum">     183 </span>                :            : #ifdef lint
 <span class="lineNum">     184 </span>                :            :   /* Normally we like having the extra randomness from uninitialized
@@ -257,7 +257,7 @@
 <span class="lineNum">     186 </span>                :            :      avoid false-positives from memory-checking debugging tools.  */
 <span class="lineNum">     187 </span>                :            :   memset (buf + seeded, 0, bufsize - seeded);
 <span class="lineNum">     188 </span>                :            : #endif
-<span class="lineNum">     189 </span>                :<span class="lineCov">       1366 : }</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">        913 : }</span>
 <span class="lineNum">     190 </span>                :            : 
 <span class="lineNum">     191 </span>                :            : 
 <span class="lineNum">     192 </span>                :            : /* Create and initialize a random data source from NAME, or use a
@@ -272,32 +272,32 @@
 <span class="lineNum">     201 </span>                :            :    Return NULL (setting errno) on failure.  */
 <a name="202"><span class="lineNum">     202 </span>                :            : </a>
 <span class="lineNum">     203 </span>                :            : struct randread_source *
-<span class="lineNum">     204 </span>                :<span class="lineCov">       1378 : randread_new (char const *name, size_t bytes_bound)</span>
+<span class="lineNum">     204 </span>                :<span class="lineCov">        921 : randread_new (char const *name, size_t bytes_bound)</span>
 <span class="lineNum">     205 </span>                :            : {
-<span class="lineNum">     206 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 1369 times"> + </span>]:<span class="lineCov">       1378 :   if (bytes_bound == 0)</span>
-<span class="lineNum">     207 </span>                :<span class="lineCov">          9 :     return simple_new (NULL, NULL);</span>
+<span class="lineNum">     206 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 915 times"> + </span>]:<span class="lineCov">        921 :   if (bytes_bound == 0)</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">          6 :     return simple_new (NULL, NULL);</span>
 <span class="lineNum">     208 </span>                :            :   else
 <span class="lineNum">     209 </span>                :            :     {
-<span class="lineNum">     210 </span>                :<span class="lineCov">       1369 :       FILE *source = NULL;</span>
+<span class="lineNum">     210 </span>                :<span class="lineCov">        915 :       FILE *source = NULL;</span>
 <span class="lineNum">     211 </span>                :            :       struct randread_source *s;
 <span class="lineNum">     212 </span>                :            : 
-<span class="lineNum">     213 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 1366 times"> + </span>]:<span class="lineCov">       1369 :       if (name)</span>
-<span class="lineNum">     214 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 3 times"> + </span>]:<span class="lineCov">          3 :         if (! (source = fopen_safer (name, &quot;rb&quot;)))</span>
+<span class="lineNum">     213 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 913 times"> + </span>]:<span class="lineCov">        915 :       if (name)</span>
+<span class="lineNum">     214 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if (! (source = fopen_safer (name, &quot;rb&quot;)))</span>
 <span class="lineNum">     215 </span>                :<span class="lineNoCov">          0 :           return NULL;</span>
 <span class="lineNum">     216 </span>                :            : 
-<span class="lineNum">     217 </span>                :<span class="lineCov">       1369 :       s = simple_new (source, name);</span>
+<span class="lineNum">     217 </span>                :<span class="lineCov">        915 :       s = simple_new (source, name);</span>
 <span class="lineNum">     218 </span>                :            : 
-<span class="lineNum">     219 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 1366 times"> + </span>]:<span class="lineCov">       1369 :       if (source)</span>
-<span class="lineNum">     220 </span>                :<span class="lineCov">          3 :         setvbuf (source, s-&gt;buf.c, _IOFBF, MIN (sizeof s-&gt;buf.c, bytes_bound));</span>
+<span class="lineNum">     219 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 913 times"> + </span>]:<span class="lineCov">        915 :       if (source)</span>
+<span class="lineNum">     220 </span>                :<span class="lineCov">          2 :         setvbuf (source, s-&gt;buf.c, _IOFBF, MIN (sizeof s-&gt;buf.c, bytes_bound));</span>
 <span class="lineNum">     221 </span>                :            :       else
 <span class="lineNum">     222 </span>                :            :         {
-<span class="lineNum">     223 </span>                :<span class="lineCov">       1366 :           s-&gt;buf.isaac.buffered = 0;</span>
-<span class="lineNum">     224 </span>                :<span class="lineCov">       1366 :           get_nonce (s-&gt;buf.isaac.state.m, sizeof s-&gt;buf.isaac.state.m,</span>
+<span class="lineNum">     223 </span>                :<span class="lineCov">        913 :           s-&gt;buf.isaac.buffered = 0;</span>
+<span class="lineNum">     224 </span>                :<span class="lineCov">        913 :           get_nonce (s-&gt;buf.isaac.state.m, sizeof s-&gt;buf.isaac.state.m,</span>
 <span class="lineNum">     225 </span>                :            :                      bytes_bound);
-<span class="lineNum">     226 </span>                :<span class="lineCov">       1366 :           isaac_seed (&amp;s-&gt;buf.isaac.state);</span>
+<span class="lineNum">     226 </span>                :<span class="lineCov">        913 :           isaac_seed (&amp;s-&gt;buf.isaac.state);</span>
 <span class="lineNum">     227 </span>                :            :         }
 <span class="lineNum">     228 </span>                :            : 
-<span class="lineNum">     229 </span>                :<span class="lineCov">       1378 :       return s;</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">        921 :       return s;</span>
 <span class="lineNum">     230 </span>                :            :     }
 <span class="lineNum">     231 </span>                :            : }
 <span class="lineNum">     232 </span>                :            : 
@@ -326,65 +326,65 @@
 <span class="lineNum">     255 </span>                :            :    the stream in S.  */
 <a name="256"><span class="lineNum">     256 </span>                :            : </a>
 <span class="lineNum">     257 </span>                :            : static void
-<span class="lineNum">     258 </span>                :<span class="lineCov">          3 : readsource (struct randread_source *s, unsigned char *p, size_t size)</span>
+<span class="lineNum">     258 </span>                :<span class="lineCov">          2 : readsource (struct randread_source *s, unsigned char *p, size_t size)</span>
 <span class="lineNum">     259 </span>                :            : {
 <span class="lineNum">     260 </span>                :            :   while (true)
 <span class="lineNum">     261 </span>                :            :     {
-<span class="lineNum">     262 </span>                :<span class="lineCov">          3 :       size_t inbytes = fread (p, sizeof *p, size, s-&gt;source);</span>
-<span class="lineNum">     263 </span>                :<span class="lineCov">          3 :       int fread_errno = errno;</span>
-<span class="lineNum">     264 </span>                :<span class="lineCov">          3 :       p += inbytes;</span>
-<span class="lineNum">     265 </span>                :<span class="lineCov">          3 :       size -= inbytes;</span>
-<span class="lineNum">     266 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          3 :       if (size == 0)</span>
-<span class="lineNum">     267 </span>                :<span class="lineCov">          3 :         break;</span>
+<span class="lineNum">     262 </span>                :<span class="lineCov">          2 :       size_t inbytes = fread (p, sizeof *p, size, s-&gt;source);</span>
+<span class="lineNum">     263 </span>                :<span class="lineCov">          2 :       int fread_errno = errno;</span>
+<span class="lineNum">     264 </span>                :<span class="lineCov">          2 :       p += inbytes;</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">          2 :       size -= inbytes;</span>
+<span class="lineNum">     266 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :       if (size == 0)</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">          2 :         break;</span>
 <span class="lineNum">     268 </span>        [<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       errno = (ferror (s-&gt;source) ? fread_errno : 0);</span>
 <span class="lineNum">     269 </span>                :<span class="lineNoCov">          0 :       s-&gt;handler (s-&gt;handler_arg);</span>
 <span class="lineNum">     270 </span>                :<span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     271 </span>                :<span class="lineCov">          3 : }</span>
+<span class="lineNum">     271 </span>                :<span class="lineCov">          2 : }</span>
 <span class="lineNum">     272 </span>                :            : 
 <span class="lineNum">     273 </span>                :            : 
 <span class="lineNum">     274 </span>                :            : /* Place SIZE pseudorandom bytes into the buffer beginning at P, using
 <span class="lineNum">     275 </span>                :            :    the buffered ISAAC generator in ISAAC.  */
 <a name="276"><span class="lineNum">     276 </span>                :            : </a>
 <span class="lineNum">     277 </span>                :            : static void
-<span class="lineNum">     278 </span>                :<span class="lineCov">      21264 : readisaac (struct isaac *isaac, unsigned char *p, size_t size)</span>
+<span class="lineNum">     278 </span>                :<span class="lineCov">      17798 : readisaac (struct isaac *isaac, unsigned char *p, size_t size)</span>
 <span class="lineNum">     279 </span>                :            : {
-<span class="lineNum">     280 </span>                :<span class="lineCov">      21264 :   size_t inbytes = isaac-&gt;buffered;</span>
+<span class="lineNum">     280 </span>                :<span class="lineCov">      17798 :   size_t inbytes = isaac-&gt;buffered;</span>
 <span class="lineNum">     281 </span>                :            : 
 <span class="lineNum">     282 </span>                :            :   while (true)
 <span class="lineNum">     283 </span>                :            :     {
-<span class="lineNum">     284 </span>        [<span class="branchCov" title="Branch 0 was taken 21219 times"> + </span><span class="branchCov" title="Branch 1 was taken 1417 times"> + </span>]:<span class="lineCov">      22636 :       if (size &lt;= inbytes)</span>
+<span class="lineNum">     284 </span>        [<span class="branchCov" title="Branch 0 was taken 17768 times"> + </span><span class="branchCov" title="Branch 1 was taken 952 times"> + </span>]:<span class="lineCov">      18720 :       if (size &lt;= inbytes)</span>
 <span class="lineNum">     285 </span>                :            :         {
-<span class="lineNum">     286 </span>                :<span class="lineCov">      21219 :           memcpy (p, isaac-&gt;data.b + ISAAC_BYTES - inbytes, size);</span>
-<span class="lineNum">     287 </span>                :<span class="lineCov">      21219 :           isaac-&gt;buffered = inbytes - size;</span>
-<span class="lineNum">     288 </span>                :<span class="lineCov">      21219 :           return;</span>
+<span class="lineNum">     286 </span>                :<span class="lineCov">      17768 :           memcpy (p, isaac-&gt;data.b + ISAAC_BYTES - inbytes, size);</span>
+<span class="lineNum">     287 </span>                :<span class="lineCov">      17768 :           isaac-&gt;buffered = inbytes - size;</span>
+<span class="lineNum">     288 </span>                :<span class="lineCov">      17768 :           return;</span>
 <span class="lineNum">     289 </span>                :            :         }
 <span class="lineNum">     290 </span>                :            : 
-<span class="lineNum">     291 </span>                :<span class="lineCov">       1417 :       memcpy (p, isaac-&gt;data.b + ISAAC_BYTES - inbytes, inbytes);</span>
-<span class="lineNum">     292 </span>                :<span class="lineCov">       1417 :       p += inbytes;</span>
-<span class="lineNum">     293 </span>                :<span class="lineCov">       1417 :       size -= inbytes;</span>
+<span class="lineNum">     291 </span>                :<span class="lineCov">        952 :       memcpy (p, isaac-&gt;data.b + ISAAC_BYTES - inbytes, inbytes);</span>
+<span class="lineNum">     292 </span>                :<span class="lineCov">        952 :       p += inbytes;</span>
+<span class="lineNum">     293 </span>                :<span class="lineCov">        952 :       size -= inbytes;</span>
 <span class="lineNum">     294 </span>                :            : 
 <span class="lineNum">     295 </span>                :            :       /* If P is aligned, write to *P directly to avoid the overhead
 <span class="lineNum">     296 </span>                :            :          of copying from the buffer.  */
-<span class="lineNum">     297 </span>        [<span class="branchCov" title="Branch 0 was taken 1414 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">       1417 :       if (ALIGNED_POINTER (p, isaac_word))</span>
+<span class="lineNum">     297 </span>        [<span class="branchCov" title="Branch 0 was taken 948 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">        952 :       if (ALIGNED_POINTER (p, isaac_word))</span>
 <span class="lineNum">     298 </span>                :            :         {
-<span class="lineNum">     299 </span>                :<span class="lineCov">       1414 :           isaac_word *wp = (isaac_word *) p;</span>
-<span class="lineNum">     300 </span>        [<span class="branchCov" title="Branch 0 was taken 180 times"> + </span><span class="branchCov" title="Branch 1 was taken 1369 times"> + </span>]:<span class="lineCov">       1549 :           while (ISAAC_BYTES &lt;= size)</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">        948 :           isaac_word *wp = (isaac_word *) p;</span>
+<span class="lineNum">     300 </span>        [<span class="branchCov" title="Branch 0 was taken 120 times"> + </span><span class="branchCov" title="Branch 1 was taken 918 times"> + </span>]:<span class="lineCov">       1038 :           while (ISAAC_BYTES &lt;= size)</span>
 <span class="lineNum">     301 </span>                :            :             {
-<span class="lineNum">     302 </span>                :<span class="lineCov">        180 :               isaac_refill (&amp;isaac-&gt;state, wp);</span>
-<span class="lineNum">     303 </span>                :<span class="lineCov">        180 :               wp += ISAAC_WORDS;</span>
-<span class="lineNum">     304 </span>                :<span class="lineCov">        180 :               size -= ISAAC_BYTES;</span>
-<span class="lineNum">     305 </span>        [<span class="branchCov" title="Branch 0 was taken 45 times"> + </span><span class="branchCov" title="Branch 1 was taken 135 times"> + </span>]:<span class="lineCov">        180 :               if (size == 0)</span>
+<span class="lineNum">     302 </span>                :<span class="lineCov">        120 :               isaac_refill (&amp;isaac-&gt;state, wp);</span>
+<span class="lineNum">     303 </span>                :<span class="lineCov">        120 :               wp += ISAAC_WORDS;</span>
+<span class="lineNum">     304 </span>                :<span class="lineCov">        120 :               size -= ISAAC_BYTES;</span>
+<span class="lineNum">     305 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>]:<span class="lineCov">        120 :               if (size == 0)</span>
 <span class="lineNum">     306 </span>                :            :                 {
-<span class="lineNum">     307 </span>                :<span class="lineCov">         45 :                   isaac-&gt;buffered = 0;</span>
-<span class="lineNum">     308 </span>                :<span class="lineCov">         45 :                   return;</span>
+<span class="lineNum">     307 </span>                :<span class="lineCov">         30 :                   isaac-&gt;buffered = 0;</span>
+<span class="lineNum">     308 </span>                :<span class="lineCov">         30 :                   return;</span>
 <span class="lineNum">     309 </span>                :            :                 }
 <span class="lineNum">     310 </span>                :            :             }
-<span class="lineNum">     311 </span>                :<span class="lineCov">       1369 :           p = (unsigned char *) wp;</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">        918 :           p = (unsigned char *) wp;</span>
 <span class="lineNum">     312 </span>                :            :         }
 <span class="lineNum">     313 </span>                :            : 
-<span class="lineNum">     314 </span>                :<span class="lineCov">       1372 :       isaac_refill (&amp;isaac-&gt;state, isaac-&gt;data.w);</span>
-<span class="lineNum">     315 </span>                :<span class="lineCov">       1372 :       inbytes = ISAAC_BYTES;</span>
-<span class="lineNum">     316 </span>                :<span class="lineCov">      22636 :     }</span>
+<span class="lineNum">     314 </span>                :<span class="lineCov">        922 :       isaac_refill (&amp;isaac-&gt;state, isaac-&gt;data.w);</span>
+<span class="lineNum">     315 </span>                :<span class="lineCov">        922 :       inbytes = ISAAC_BYTES;</span>
+<span class="lineNum">     316 </span>                :<span class="lineCov">      18720 :     }</span>
 <span class="lineNum">     317 </span>                :            : }
 <span class="lineNum">     318 </span>                :            : 
 <span class="lineNum">     319 </span>                :            : 
@@ -392,13 +392,13 @@
 <span class="lineNum">     321 </span>                :            :    SIZE.  */
 <a name="322"><span class="lineNum">     322 </span>                :            : </a>
 <span class="lineNum">     323 </span>                :            : void
-<span class="lineNum">     324 </span>                :<span class="lineCov">      21267 : randread (struct randread_source *s, void *buf, size_t size)</span>
+<span class="lineNum">     324 </span>                :<span class="lineCov">      17800 : randread (struct randread_source *s, void *buf, size_t size)</span>
 <span class="lineNum">     325 </span>                :            : {
-<span class="lineNum">     326 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 21264 times"> + </span>]:<span class="lineCov">      21267 :   if (s-&gt;source)</span>
-<span class="lineNum">     327 </span>                :<span class="lineCov">          3 :     readsource (s, buf, size);</span>
+<span class="lineNum">     326 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 17798 times"> + </span>]:<span class="lineCov">      17800 :   if (s-&gt;source)</span>
+<span class="lineNum">     327 </span>                :<span class="lineCov">          2 :     readsource (s, buf, size);</span>
 <span class="lineNum">     328 </span>                :            :   else
-<span class="lineNum">     329 </span>                :<span class="lineCov">      21264 :     readisaac (&amp;s-&gt;buf.isaac, buf, size);</span>
-<span class="lineNum">     330 </span>                :<span class="lineCov">      21267 : }</span>
+<span class="lineNum">     329 </span>                :<span class="lineCov">      17798 :     readisaac (&amp;s-&gt;buf.isaac, buf, size);</span>
+<span class="lineNum">     330 </span>                :<span class="lineCov">      17800 : }</span>
 <span class="lineNum">     331 </span>                :            : 
 <span class="lineNum">     332 </span>                :            : 
 <span class="lineNum">     333 </span>                :            : /* Clear *S so that it no longer contains undelivered random data, and
@@ -407,12 +407,12 @@
 <span class="lineNum">     336 </span>                :            :    but can occur in theory if there is an input error).  */
 <a name="337"><span class="lineNum">     337 </span>                :            : </a>
 <span class="lineNum">     338 </span>                :            : int
-<span class="lineNum">     339 </span>                :<span class="lineCov">       1344 : randread_free (struct randread_source *s)</span>
+<span class="lineNum">     339 </span>                :<span class="lineCov">        898 : randread_free (struct randread_source *s)</span>
 <span class="lineNum">     340 </span>                :            : {
-<span class="lineNum">     341 </span>                :<span class="lineCov">       1344 :   FILE *source = s-&gt;source;</span>
-<span class="lineNum">     342 </span>                :<span class="lineCov">       1344 :   memset (s, 0, sizeof *s);</span>
-<span class="lineNum">     343 </span>                :<span class="lineCov">       1344 :   free (s);</span>
-<span class="lineNum">     344 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 1341 times"> + </span>]:<span class="lineCov">       1344 :   return (source ? fclose (source) : 0);</span>
+<span class="lineNum">     341 </span>                :<span class="lineCov">        898 :   FILE *source = s-&gt;source;</span>
+<span class="lineNum">     342 </span>                :<span class="lineCov">        898 :   memset (s, 0, sizeof *s);</span>
+<span class="lineNum">     343 </span>                :<span class="lineCov">        898 :   free (s);</span>
+<span class="lineNum">     344 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 896 times"> + </span>]:<span class="lineCov">        898 :   return (source ? fclose (source) : 0);</span>
 <span class="lineNum">     345 </span>                :            : }
 </pre>
       </td>

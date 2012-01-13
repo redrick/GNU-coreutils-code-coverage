@@ -1,0 +1,610 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - coreutils - /home/andrej/Projects/coreutils-december/coreutils/src/su.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../index.html">top level</a> - <a href="index.html">home/andrej/Projects/coreutils-december/coreutils/src</a> - su.c<span style="font-size: 80%;"> (source / <a href="su.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coreutils</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">155</td>
+            <td class="headerCovTableEntryLo">10.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-01-13</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryLo">12.5 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">102</td>
+            <td class="headerCovTableEntryLo">2.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* su for GNU.  Run a shell with substitute user and group IDs.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1992-2006, 2008-2012 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       6 </span>                :            :    the Free Software Foundation, either version 3 of the License, or
+<span class="lineNum">       7 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       8 </span>                :            : 
+<span class="lineNum">       9 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      10 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      11 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      12 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      13 </span>                :            : 
+<span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      15 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :            : /* Run a shell with the real and effective UID and GID and groups
+<span class="lineNum">      18 </span>                :            :    of USER, default 'root'.
+<span class="lineNum">      19 </span>                :            : 
+<span class="lineNum">      20 </span>                :            :    The shell run is taken from USER's password entry, /bin/sh if
+<span class="lineNum">      21 </span>                :            :    none is specified there.  If the account has a password, su
+<span class="lineNum">      22 </span>                :            :    prompts for a password unless run by a user with real UID 0.
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :            :    Does not change the current directory.
+<span class="lineNum">      25 </span>                :            :    Sets 'HOME' and 'SHELL' from the password entry for USER, and if
+<span class="lineNum">      26 </span>                :            :    USER is not root, sets 'USER' and 'LOGNAME' to USER.
+<span class="lineNum">      27 </span>                :            :    The subshell is not a login shell.
+<span class="lineNum">      28 </span>                :            : 
+<span class="lineNum">      29 </span>                :            :    If one or more ARGs are given, they are passed as additional
+<span class="lineNum">      30 </span>                :            :    arguments to the subshell.
+<span class="lineNum">      31 </span>                :            : 
+<span class="lineNum">      32 </span>                :            :    Does not handle /bin/sh or other shells specially
+<span class="lineNum">      33 </span>                :            :    (setting argv[0] to &quot;-su&quot;, passing -c only to certain shells, etc.).
+<span class="lineNum">      34 </span>                :            :    I don't see the point in doing that, and it's ugly.
+<span class="lineNum">      35 </span>                :            : 
+<span class="lineNum">      36 </span>                :            :    This program intentionally does not support a &quot;wheel group&quot; that
+<span class="lineNum">      37 </span>                :            :    restricts who can su to UID 0 accounts.  RMS considers that to
+<span class="lineNum">      38 </span>                :            :    be fascist.
+<span class="lineNum">      39 </span>                :            : 
+<span class="lineNum">      40 </span>                :            :    Compile-time options:
+<span class="lineNum">      41 </span>                :            :    -DSYSLOG_SUCCESS     Log successful su's (by default, to root) with syslog.
+<span class="lineNum">      42 </span>                :            :    -DSYSLOG_FAILURE     Log failed su's (by default, to root) with syslog.
+<span class="lineNum">      43 </span>                :            : 
+<span class="lineNum">      44 </span>                :            :    -DSYSLOG_NON_ROOT    Log all su's, not just those to root (UID 0).
+<span class="lineNum">      45 </span>                :            :    Never logs attempted su's to nonexistent accounts.
+<span class="lineNum">      46 </span>                :            : 
+<span class="lineNum">      47 </span>                :            :    Written by David MacKenzie &lt;djm@gnu.ai.mit.edu&gt;.  */
+<span class="lineNum">      48 </span>                :            : 
+<span class="lineNum">      49 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      50 </span>                :            : #include &lt;stdio.h&gt;
+<span class="lineNum">      51 </span>                :            : #include &lt;getopt.h&gt;
+<span class="lineNum">      52 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      53 </span>                :            : #include &lt;pwd.h&gt;
+<span class="lineNum">      54 </span>                :            : #include &lt;grp.h&gt;
+<span class="lineNum">      55 </span>                :            : 
+<span class="lineNum">      56 </span>                :            : #include &quot;system.h&quot;
+<span class="lineNum">      57 </span>                :            : #include &quot;getpass.h&quot;
+<span class="lineNum">      58 </span>                :            : 
+<span class="lineNum">      59 </span>                :            : #if HAVE_SYSLOG_H &amp;&amp; HAVE_SYSLOG
+<span class="lineNum">      60 </span>                :            : # include &lt;syslog.h&gt;
+<span class="lineNum">      61 </span>                :            : #else
+<span class="lineNum">      62 </span>                :            : # undef SYSLOG_SUCCESS
+<span class="lineNum">      63 </span>                :            : # undef SYSLOG_FAILURE
+<span class="lineNum">      64 </span>                :            : # undef SYSLOG_NON_ROOT
+<span class="lineNum">      65 </span>                :            : #endif
+<span class="lineNum">      66 </span>                :            : 
+<span class="lineNum">      67 </span>                :            : #if HAVE_SYS_PARAM_H
+<span class="lineNum">      68 </span>                :            : # include &lt;sys/param.h&gt;
+<span class="lineNum">      69 </span>                :            : #endif
+<span class="lineNum">      70 </span>                :            : 
+<span class="lineNum">      71 </span>                :            : #ifndef HAVE_ENDGRENT
+<span class="lineNum">      72 </span>                :            : # define endgrent() ((void) 0)
+<span class="lineNum">      73 </span>                :            : #endif
+<span class="lineNum">      74 </span>                :            : 
+<span class="lineNum">      75 </span>                :            : #ifndef HAVE_ENDPWENT
+<span class="lineNum">      76 </span>                :            : # define endpwent() ((void) 0)
+<span class="lineNum">      77 </span>                :            : #endif
+<span class="lineNum">      78 </span>                :            : 
+<span class="lineNum">      79 </span>                :            : #if HAVE_SHADOW_H
+<span class="lineNum">      80 </span>                :            : # include &lt;shadow.h&gt;
+<span class="lineNum">      81 </span>                :            : #endif
+<span class="lineNum">      82 </span>                :            : 
+<span class="lineNum">      83 </span>                :            : #include &quot;error.h&quot;
+<span class="lineNum">      84 </span>                :            : 
+<span class="lineNum">      85 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
+<span class="lineNum">      86 </span>                :            : #define PROGRAM_NAME &quot;su&quot;
+<span class="lineNum">      87 </span>                :            : 
+<span class="lineNum">      88 </span>                :            : #define AUTHORS proper_name (&quot;David MacKenzie&quot;)
+<span class="lineNum">      89 </span>                :            : 
+<span class="lineNum">      90 </span>                :            : #if HAVE_PATHS_H
+<span class="lineNum">      91 </span>                :            : # include &lt;paths.h&gt;
+<span class="lineNum">      92 </span>                :            : #endif
+<span class="lineNum">      93 </span>                :            : 
+<span class="lineNum">      94 </span>                :            : /* The default PATH for simulated logins to non-superuser accounts.  */
+<span class="lineNum">      95 </span>                :            : #ifdef _PATH_DEFPATH
+<span class="lineNum">      96 </span>                :            : # define DEFAULT_LOGIN_PATH _PATH_DEFPATH
+<span class="lineNum">      97 </span>                :            : #else
+<span class="lineNum">      98 </span>                :            : # define DEFAULT_LOGIN_PATH &quot;:/usr/ucb:/bin:/usr/bin&quot;
+<span class="lineNum">      99 </span>                :            : #endif
+<span class="lineNum">     100 </span>                :            : 
+<span class="lineNum">     101 </span>                :            : /* The default PATH for simulated logins to superuser accounts.  */
+<span class="lineNum">     102 </span>                :            : #ifdef _PATH_DEFPATH_ROOT
+<span class="lineNum">     103 </span>                :            : # define DEFAULT_ROOT_LOGIN_PATH _PATH_DEFPATH_ROOT
+<span class="lineNum">     104 </span>                :            : #else
+<span class="lineNum">     105 </span>                :            : # define DEFAULT_ROOT_LOGIN_PATH &quot;/usr/ucb:/bin:/usr/bin:/etc&quot;
+<span class="lineNum">     106 </span>                :            : #endif
+<span class="lineNum">     107 </span>                :            : 
+<span class="lineNum">     108 </span>                :            : /* The shell to run if none is given in the user's passwd entry.  */
+<span class="lineNum">     109 </span>                :            : #define DEFAULT_SHELL &quot;/bin/sh&quot;
+<span class="lineNum">     110 </span>                :            : 
+<span class="lineNum">     111 </span>                :            : /* The user to become if none is specified.  */
+<span class="lineNum">     112 </span>                :            : #define DEFAULT_USER &quot;root&quot;
+<span class="lineNum">     113 </span>                :            : 
+<span class="lineNum">     114 </span>                :            : char *crypt (char const *key, char const *salt);
+<span class="lineNum">     115 </span>                :            : 
+<span class="lineNum">     116 </span>                :            : static void run_shell (char const *, char const *, char **, size_t)
+<span class="lineNum">     117 </span>                :            :      ATTRIBUTE_NORETURN;
+<span class="lineNum">     118 </span>                :            : 
+<span class="lineNum">     119 </span>                :            : /* If true, pass the '-f' option to the subshell.  */
+<span class="lineNum">     120 </span>                :            : static bool fast_startup;
+<span class="lineNum">     121 </span>                :            : 
+<span class="lineNum">     122 </span>                :            : /* If true, simulate a login instead of just starting a shell.  */
+<span class="lineNum">     123 </span>                :            : static bool simulate_login;
+<span class="lineNum">     124 </span>                :            : 
+<span class="lineNum">     125 </span>                :            : /* If true, change some environment vars to indicate the user su'd to.  */
+<span class="lineNum">     126 </span>                :            : static bool change_environment;
+<span class="lineNum">     127 </span>                :            : 
+<span class="lineNum">     128 </span>                :            : static struct option const longopts[] =
+<span class="lineNum">     129 </span>                :            : {
+<span class="lineNum">     130 </span>                :            :   {&quot;command&quot;, required_argument, NULL, 'c'},
+<span class="lineNum">     131 </span>                :            :   {&quot;fast&quot;, no_argument, NULL, 'f'},
+<span class="lineNum">     132 </span>                :            :   {&quot;login&quot;, no_argument, NULL, 'l'},
+<span class="lineNum">     133 </span>                :            :   {&quot;preserve-environment&quot;, no_argument, NULL, 'p'},
+<span class="lineNum">     134 </span>                :            :   {&quot;shell&quot;, required_argument, NULL, 's'},
+<span class="lineNum">     135 </span>                :            :   {GETOPT_HELP_OPTION_DECL},
+<span class="lineNum">     136 </span>                :            :   {GETOPT_VERSION_OPTION_DECL},
+<span class="lineNum">     137 </span>                :            :   {NULL, 0, NULL, 0}
+<span class="lineNum">     138 </span>                :            : };
+<span class="lineNum">     139 </span>                :            : 
+<span class="lineNum">     140 </span>                :            : /* Add NAME=VAL to the environment, checking for out of memory errors.  */
+<a name="141"><span class="lineNum">     141 </span>                :            : </a>
+<span class="lineNum">     142 </span>                :            : static void
+<span class="lineNum">     143 </span>                :<span class="lineNoCov">          0 : xsetenv (char const *name, char const *val)</span>
+<span class="lineNum">     144 </span>                :            : {
+<span class="lineNum">     145 </span>                :<span class="lineNoCov">          0 :   size_t namelen = strlen (name);</span>
+<span class="lineNum">     146 </span>                :<span class="lineNoCov">          0 :   size_t vallen = strlen (val);</span>
+<span class="lineNum">     147 </span>                :<span class="lineNoCov">          0 :   char *string = xmalloc (namelen + 1 + vallen + 1);</span>
+<span class="lineNum">     148 </span>                :<span class="lineNoCov">          0 :   strcpy (string, name);</span>
+<span class="lineNum">     149 </span>                :<span class="lineNoCov">          0 :   string[namelen] = '=';</span>
+<span class="lineNum">     150 </span>                :<span class="lineNoCov">          0 :   strcpy (string + namelen + 1, val);</span>
+<span class="lineNum">     151 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (putenv (string) != 0)</span>
+<span class="lineNum">     152 </span>                :<span class="lineNoCov">          0 :     xalloc_die ();</span>
+<span class="lineNum">     153 </span>                :<span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     154 </span>                :            : 
+<span class="lineNum">     155 </span>                :            : #if defined SYSLOG_SUCCESS || defined SYSLOG_FAILURE
+<span class="lineNum">     156 </span>                :            : /* Log the fact that someone has run su to the user given by PW;
+<span class="lineNum">     157 </span>                :            :    if SUCCESSFUL is true, they gave the correct password, etc.  */
+<span class="lineNum">     158 </span>                :            : 
+<span class="lineNum">     159 </span>                :            : static void
+<span class="lineNum">     160 </span>                :            : log_su (struct passwd const *pw, bool successful)
+<span class="lineNum">     161 </span>                :            : {
+<span class="lineNum">     162 </span>                :            :   const char *new_user, *old_user, *tty;
+<span class="lineNum">     163 </span>                :            : 
+<span class="lineNum">     164 </span>                :            : # ifndef SYSLOG_NON_ROOT
+<span class="lineNum">     165 </span>                :            :   if (pw-&gt;pw_uid)
+<span class="lineNum">     166 </span>                :            :     return;
+<span class="lineNum">     167 </span>                :            : # endif
+<span class="lineNum">     168 </span>                :            :   new_user = pw-&gt;pw_name;
+<span class="lineNum">     169 </span>                :            :   /* The utmp entry (via getlogin) is probably the best way to identify
+<span class="lineNum">     170 </span>                :            :      the user, especially if someone su's from a su-shell.  */
+<span class="lineNum">     171 </span>                :            :   old_user = getlogin ();
+<span class="lineNum">     172 </span>                :            :   if (!old_user)
+<span class="lineNum">     173 </span>                :            :     {
+<span class="lineNum">     174 </span>                :            :       /* getlogin can fail -- usually due to lack of utmp entry.
+<span class="lineNum">     175 </span>                :            :          Resort to getpwuid.  */
+<span class="lineNum">     176 </span>                :            :       errno = 0;
+<span class="lineNum">     177 </span>                :            :       uid_t ruid = getuid ();
+<span class="lineNum">     178 </span>                :            :       uid_t NO_UID = -1;
+<span class="lineNum">     179 </span>                :            :       struct passwd *pwd = (ruid == NO_UID &amp;&amp; errno ? NULL : getpwuid (ruid));
+<span class="lineNum">     180 </span>                :            :       old_user = (pwd ? pwd-&gt;pw_name : &quot;&quot;);
+<span class="lineNum">     181 </span>                :            :     }
+<span class="lineNum">     182 </span>                :            :   tty = ttyname (STDERR_FILENO);
+<span class="lineNum">     183 </span>                :            :   if (!tty)
+<span class="lineNum">     184 </span>                :            :     tty = &quot;none&quot;;
+<span class="lineNum">     185 </span>                :            :   /* 4.2BSD openlog doesn't have the third parameter.  */
+<span class="lineNum">     186 </span>                :            :   openlog (last_component (program_name), 0
+<span class="lineNum">     187 </span>                :            : # ifdef LOG_AUTH
+<span class="lineNum">     188 </span>                :            :            , LOG_AUTH
+<span class="lineNum">     189 </span>                :            : # endif
+<span class="lineNum">     190 </span>                :            :            );
+<span class="lineNum">     191 </span>                :            :   syslog (LOG_NOTICE,
+<span class="lineNum">     192 </span>                :            : # ifdef SYSLOG_NON_ROOT
+<span class="lineNum">     193 </span>                :            :           &quot;%s(to %s) %s on %s&quot;,
+<span class="lineNum">     194 </span>                :            : # else
+<span class="lineNum">     195 </span>                :            :           &quot;%s%s on %s&quot;,
+<span class="lineNum">     196 </span>                :            : # endif
+<span class="lineNum">     197 </span>                :            :           successful ? &quot;&quot; : &quot;FAILED SU &quot;,
+<span class="lineNum">     198 </span>                :            : # ifdef SYSLOG_NON_ROOT
+<span class="lineNum">     199 </span>                :            :           new_user,
+<span class="lineNum">     200 </span>                :            : # endif
+<span class="lineNum">     201 </span>                :            :           old_user, tty);
+<span class="lineNum">     202 </span>                :            :   closelog ();
+<span class="lineNum">     203 </span>                :            : }
+<span class="lineNum">     204 </span>                :            : #endif
+<span class="lineNum">     205 </span>                :            : 
+<span class="lineNum">     206 </span>                :            : /* Ask the user for a password.
+<span class="lineNum">     207 </span>                :            :    Return true if the user gives the correct password for entry PW,
+<span class="lineNum">     208 </span>                :            :    false if not.  Return true without asking for a password if run by UID 0
+<span class="lineNum">     209 </span>                :            :    or if PW has an empty password.  */
+<a name="210"><span class="lineNum">     210 </span>                :            : </a>
+<span class="lineNum">     211 </span>                :            : static bool
+<span class="lineNum">     212 </span>                :<span class="lineNoCov">          0 : correct_password (const struct passwd *pw)</span>
+<span class="lineNum">     213 </span>                :            : {
+<span class="lineNum">     214 </span>                :            :   char *unencrypted, *encrypted, *correct;
+<span class="lineNum">     215 </span>                :            : #if HAVE_GETSPNAM &amp;&amp; HAVE_STRUCT_SPWD_SP_PWDP
+<span class="lineNum">     216 </span>                :            :   /* Shadow passwd stuff for SVR3 and maybe other systems.  */
+<span class="lineNum">     217 </span>                :<span class="lineNoCov">          0 :   struct spwd *sp = getspnam (pw-&gt;pw_name);</span>
+<span class="lineNum">     218 </span>                :            : 
+<span class="lineNum">     219 </span>                :<span class="lineNoCov">          0 :   endspent ();</span>
+<span class="lineNum">     220 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (sp)</span>
+<span class="lineNum">     221 </span>                :<span class="lineNoCov">          0 :     correct = sp-&gt;sp_pwdp;</span>
+<span class="lineNum">     222 </span>                :            :   else
+<span class="lineNum">     223 </span>                :            : #endif
+<span class="lineNum">     224 </span>                :<span class="lineNoCov">          0 :     correct = pw-&gt;pw_passwd;</span>
+<span class="lineNum">     225 </span>                :            : 
+<span class="lineNum">     226 </span>[<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (getuid () == 0 || !correct || correct[0] == '\0')</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span>]
+<span class="lineNum">     227 </span>                :<span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">     228 </span>                :            : 
+<span class="lineNum">     229 </span>                :<span class="lineNoCov">          0 :   unencrypted = getpass (_(&quot;Password:&quot;));</span>
+<span class="lineNum">     230 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (!unencrypted)</span>
+<span class="lineNum">     231 </span>                :            :     {
+<span class="lineNum">     232 </span>                :<span class="lineNoCov">          0 :       error (0, 0, _(&quot;getpass: cannot open /dev/tty&quot;));</span>
+<span class="lineNum">     233 </span>                :<span class="lineNoCov">          0 :       return false;</span>
+<span class="lineNum">     234 </span>                :            :     }
+<span class="lineNum">     235 </span>                :<span class="lineNoCov">          0 :   encrypted = crypt (unencrypted, correct);</span>
+<span class="lineNum">     236 </span>                :<span class="lineNoCov">          0 :   memset (unencrypted, 0, strlen (unencrypted));</span>
+<span class="lineNum">     237 </span>                :<span class="lineNoCov">          0 :   return STREQ (encrypted, correct);</span>
+<span class="lineNum">     238 </span>                :            : }
+<span class="lineNum">     239 </span>                :            : 
+<span class="lineNum">     240 </span>                :            : /* Update 'environ' for the new shell based on PW, with SHELL being
+<span class="lineNum">     241 </span>                :            :    the value for the SHELL environment variable.  */
+<a name="242"><span class="lineNum">     242 </span>                :            : </a>
+<span class="lineNum">     243 </span>                :            : static void
+<span class="lineNum">     244 </span>                :<span class="lineNoCov">          0 : modify_environment (const struct passwd *pw, const char *shell)</span>
+<span class="lineNum">     245 </span>                :            : {
+<span class="lineNum">     246 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (simulate_login)</span>
+<span class="lineNum">     247 </span>                :            :     {
+<span class="lineNum">     248 </span>                :            :       /* Leave TERM unchanged.  Set HOME, SHELL, USER, LOGNAME, PATH.
+<span class="lineNum">     249 </span>                :            :          Unset all other environment variables.  */
+<span class="lineNum">     250 </span>                :<span class="lineNoCov">          0 :       char const *term = getenv (&quot;TERM&quot;);</span>
+<span class="lineNum">     251 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (term)</span>
+<span class="lineNum">     252 </span>                :<span class="lineNoCov">          0 :         term = xstrdup (term);</span>
+<span class="lineNum">     253 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       environ = xmalloc ((6 + !!term) * sizeof (char *));</span>
+<span class="lineNum">     254 </span>                :<span class="lineNoCov">          0 :       environ[0] = NULL;</span>
+<span class="lineNum">     255 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (term)</span>
+<span class="lineNum">     256 </span>                :<span class="lineNoCov">          0 :         xsetenv (&quot;TERM&quot;, term);</span>
+<span class="lineNum">     257 </span>                :<span class="lineNoCov">          0 :       xsetenv (&quot;HOME&quot;, pw-&gt;pw_dir);</span>
+<span class="lineNum">     258 </span>                :<span class="lineNoCov">          0 :       xsetenv (&quot;SHELL&quot;, shell);</span>
+<span class="lineNum">     259 </span>                :<span class="lineNoCov">          0 :       xsetenv (&quot;USER&quot;, pw-&gt;pw_name);</span>
+<span class="lineNum">     260 </span>                :<span class="lineNoCov">          0 :       xsetenv (&quot;LOGNAME&quot;, pw-&gt;pw_name);</span>
+<span class="lineNum">     261 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       xsetenv (&quot;PATH&quot;, (pw-&gt;pw_uid</span>
+<span class="lineNum">     262 </span>                :            :                         ? DEFAULT_LOGIN_PATH
+<span class="lineNum">     263 </span>                :            :                         : DEFAULT_ROOT_LOGIN_PATH));
+<span class="lineNum">     264 </span>                :            :     }
+<span class="lineNum">     265 </span>                :            :   else
+<span class="lineNum">     266 </span>                :            :     {
+<span class="lineNum">     267 </span>                :            :       /* Set HOME, SHELL, and if not becoming a super-user,
+<span class="lineNum">     268 </span>                :            :          USER and LOGNAME.  */
+<span class="lineNum">     269 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (change_environment)</span>
+<span class="lineNum">     270 </span>                :            :         {
+<span class="lineNum">     271 </span>                :<span class="lineNoCov">          0 :           xsetenv (&quot;HOME&quot;, pw-&gt;pw_dir);</span>
+<span class="lineNum">     272 </span>                :<span class="lineNoCov">          0 :           xsetenv (&quot;SHELL&quot;, shell);</span>
+<span class="lineNum">     273 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (pw-&gt;pw_uid)</span>
+<span class="lineNum">     274 </span>                :            :             {
+<span class="lineNum">     275 </span>                :<span class="lineNoCov">          0 :               xsetenv (&quot;USER&quot;, pw-&gt;pw_name);</span>
+<span class="lineNum">     276 </span>                :<span class="lineNoCov">          0 :               xsetenv (&quot;LOGNAME&quot;, pw-&gt;pw_name);</span>
+<span class="lineNum">     277 </span>                :            :             }
+<span class="lineNum">     278 </span>                :            :         }
+<span class="lineNum">     279 </span>                :            :     }
+<span class="lineNum">     280 </span>                :<span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     281 </span>                :            : 
+<span class="lineNum">     282 </span>                :            : /* Become the user and group(s) specified by PW.  */
+<a name="283"><span class="lineNum">     283 </span>                :            : </a>
+<span class="lineNum">     284 </span>                :            : static void
+<span class="lineNum">     285 </span>                :<span class="lineNoCov">          0 : change_identity (const struct passwd *pw)</span>
+<span class="lineNum">     286 </span>                :            : {
+<span class="lineNum">     287 </span>                :            : #ifdef HAVE_INITGROUPS
+<span class="lineNum">     288 </span>                :<span class="lineNoCov">          0 :   errno = 0;</span>
+<span class="lineNum">     289 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (initgroups (pw-&gt;pw_name, pw-&gt;pw_gid) == -1)</span>
+<span class="lineNum">     290 </span>                :<span class="lineNoCov">          0 :     error (EXIT_CANCELED, errno, _(&quot;cannot set groups&quot;));</span>
+<span class="lineNum">     291 </span>                :<span class="lineNoCov">          0 :   endgrent ();</span>
+<span class="lineNum">     292 </span>                :            : #endif
+<span class="lineNum">     293 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (setgid (pw-&gt;pw_gid))</span>
+<span class="lineNum">     294 </span>                :<span class="lineNoCov">          0 :     error (EXIT_CANCELED, errno, _(&quot;cannot set group id&quot;));</span>
+<span class="lineNum">     295 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (setuid (pw-&gt;pw_uid))</span>
+<span class="lineNum">     296 </span>                :<span class="lineNoCov">          0 :     error (EXIT_CANCELED, errno, _(&quot;cannot set user id&quot;));</span>
+<span class="lineNum">     297 </span>                :<span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     298 </span>                :            : 
+<span class="lineNum">     299 </span>                :            : /* Run SHELL, or DEFAULT_SHELL if SHELL is empty.
+<span class="lineNum">     300 </span>                :            :    If COMMAND is nonzero, pass it to the shell with the -c option.
+<span class="lineNum">     301 </span>                :            :    Pass ADDITIONAL_ARGS to the shell as more arguments; there
+<span class="lineNum">     302 </span>                :            :    are N_ADDITIONAL_ARGS extra arguments.  */
+<a name="303"><span class="lineNum">     303 </span>                :            : </a>
+<span class="lineNum">     304 </span>                :            : static void
+<span class="lineNum">     305 </span>                :<span class="lineNoCov">          0 : run_shell (char const *shell, char const *command, char **additional_args,</span>
+<span class="lineNum">     306 </span>                :            :            size_t n_additional_args)
+<span class="lineNum">     307 </span>                :            : {
+<span class="lineNum">     308 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   size_t n_args = 1 + fast_startup + 2 * !!command + n_additional_args + 1;</span>
+<span class="lineNum">     309 </span>                :<span class="lineNoCov">          0 :   char const **args = xnmalloc (n_args, sizeof *args);</span>
+<span class="lineNum">     310 </span>                :<span class="lineNoCov">          0 :   size_t argno = 1;</span>
+<span class="lineNum">     311 </span>                :            : 
+<span class="lineNum">     312 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (simulate_login)</span>
+<span class="lineNum">     313 </span>                :            :     {
+<span class="lineNum">     314 </span>                :            :       char *arg0;
+<span class="lineNum">     315 </span>                :            :       char *shell_basename;
+<span class="lineNum">     316 </span>                :            : 
+<span class="lineNum">     317 </span>                :<span class="lineNoCov">          0 :       shell_basename = last_component (shell);</span>
+<span class="lineNum">     318 </span>                :<span class="lineNoCov">          0 :       arg0 = xmalloc (strlen (shell_basename) + 2);</span>
+<span class="lineNum">     319 </span>                :<span class="lineNoCov">          0 :       arg0[0] = '-';</span>
+<span class="lineNum">     320 </span>                :<span class="lineNoCov">          0 :       strcpy (arg0 + 1, shell_basename);</span>
+<span class="lineNum">     321 </span>                :<span class="lineNoCov">          0 :       args[0] = arg0;</span>
+<span class="lineNum">     322 </span>                :            :     }
+<span class="lineNum">     323 </span>                :            :   else
+<span class="lineNum">     324 </span>                :<span class="lineNoCov">          0 :     args[0] = last_component (shell);</span>
+<span class="lineNum">     325 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (fast_startup)</span>
+<span class="lineNum">     326 </span>                :<span class="lineNoCov">          0 :     args[argno++] = &quot;-f&quot;;</span>
+<span class="lineNum">     327 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (command)</span>
+<span class="lineNum">     328 </span>                :            :     {
+<span class="lineNum">     329 </span>                :<span class="lineNoCov">          0 :       args[argno++] = &quot;-c&quot;;</span>
+<span class="lineNum">     330 </span>                :<span class="lineNoCov">          0 :       args[argno++] = command;</span>
+<span class="lineNum">     331 </span>                :            :     }
+<span class="lineNum">     332 </span>                :<span class="lineNoCov">          0 :   memcpy (args + argno, additional_args, n_additional_args * sizeof *args);</span>
+<span class="lineNum">     333 </span>                :<span class="lineNoCov">          0 :   args[argno + n_additional_args] = NULL;</span>
+<span class="lineNum">     334 </span>                :<span class="lineNoCov">          0 :   execv (shell, (char **) args);</span>
+<span class="lineNum">     335 </span>                :            : 
+<span class="lineNum">     336 </span>                :            :   {
+<span class="lineNum">     337 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :     int exit_status = (errno == ENOENT ? EXIT_ENOENT : EXIT_CANNOT_INVOKE);</span>
+<span class="lineNum">     338 </span>                :<span class="lineNoCov">          0 :     error (0, errno, &quot;%s&quot;, shell);</span>
+<span class="lineNum">     339 </span>                :<span class="lineNoCov">          0 :     exit (exit_status);</span>
+<span class="lineNum">     340 </span>                :            :   }
+<span class="lineNum">     341 </span>                :            : }
+<span class="lineNum">     342 </span>                :            : 
+<span class="lineNum">     343 </span>                :            : /* Return true if SHELL is a restricted shell (one not returned by
+<span class="lineNum">     344 </span>                :            :    getusershell), else false, meaning it is a standard shell.  */
+<a name="345"><span class="lineNum">     345 </span>                :            : </a>
+<span class="lineNum">     346 </span>                :            : static bool
+<span class="lineNum">     347 </span>                :<span class="lineNoCov">          0 : restricted_shell (const char *shell)</span>
+<span class="lineNum">     348 </span>                :            : {
+<span class="lineNum">     349 </span>                :            :   char *line;
+<span class="lineNum">     350 </span>                :            : 
+<span class="lineNum">     351 </span>                :<span class="lineNoCov">          0 :   setusershell ();</span>
+<span class="lineNum">     352 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   while ((line = getusershell ()) != NULL)</span>
+<span class="lineNum">     353 </span>                :            :     {
+<span class="lineNum">     354 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (*line != '#' &amp;&amp; STREQ (line, shell))</span>
+<span class="lineNum">     355 </span>                :            :         {
+<span class="lineNum">     356 </span>                :<span class="lineNoCov">          0 :           endusershell ();</span>
+<span class="lineNum">     357 </span>                :<span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">     358 </span>                :            :         }
+<span class="lineNum">     359 </span>                :            :     }
+<span class="lineNum">     360 </span>                :<span class="lineNoCov">          0 :   endusershell ();</span>
+<span class="lineNum">     361 </span>                :<span class="lineNoCov">          0 :   return true;</span>
+<span class="lineNum">     362 </span>                :            : }
+<a name="363"><span class="lineNum">     363 </span>                :            : </a>
+<span class="lineNum">     364 </span>                :            : void
+<span class="lineNum">     365 </span>                :<span class="lineNoCov">          0 : usage (int status)</span>
+<span class="lineNum">     366 </span>                :            : {
+<span class="lineNum">     367 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     368 </span>                :<span class="lineNoCov">          0 :     emit_try_help ();</span>
+<span class="lineNum">     369 </span>                :            :   else
+<span class="lineNum">     370 </span>                :            :     {
+<span class="lineNum">     371 </span>                :<span class="lineNoCov">          0 :       printf (_(&quot;Usage: %s [OPTION]... [-] [USER [ARG]...]\n&quot;), program_name);</span>
+<span class="lineNum">     372 </span>                :<span class="lineNoCov">          0 :       fputs (_(&quot;\</span>
+<span class="lineNum">     373 </span>                :            : Change the effective user id and group id to that of USER.\n\
+<span class="lineNum">     374 </span>                :            : \n\
+<span class="lineNum">     375 </span>                :            :   -, -l, --login               make the shell a login shell\n\
+<span class="lineNum">     376 </span>                :            :   -c, --command=COMMAND        pass a single COMMAND to the shell with -c\n\
+<span class="lineNum">     377 </span>                :            :   -f, --fast                   pass -f to the shell (for csh or tcsh)\n\
+<span class="lineNum">     378 </span>                :            :   -m, --preserve-environment   do not reset environment variables\n\
+<span class="lineNum">     379 </span>                :            :   -p                           same as -m\n\
+<span class="lineNum">     380 </span>                :            :   -s, --shell=SHELL            run SHELL if /etc/shells allows it\n\
+<span class="lineNum">     381 </span>                :            : &quot;), stdout);
+<span class="lineNum">     382 </span>                :<span class="lineNoCov">          0 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     383 </span>                :<span class="lineNoCov">          0 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     384 </span>                :<span class="lineNoCov">          0 :       fputs (_(&quot;\</span>
+<span class="lineNum">     385 </span>                :            : \n\
+<span class="lineNum">     386 </span>                :            : A mere - implies -l.   If USER not given, assume root.\n\
+<span class="lineNum">     387 </span>                :            : &quot;), stdout);
+<span class="lineNum">     388 </span>                :<span class="lineNoCov">          0 :       emit_ancillary_info ();</span>
+<span class="lineNum">     389 </span>                :            :     }
+<span class="lineNum">     390 </span>                :<span class="lineNoCov">          0 :   exit (status);</span>
+<span class="lineNum">     391 </span>                :            : }
+<a name="392"><span class="lineNum">     392 </span>                :            : </a>
+<span class="lineNum">     393 </span>                :            : int
+<span class="lineNum">     394 </span>                :<span class="lineCov">          2 : main (int argc, char **argv)</span>
+<span class="lineNum">     395 </span>                :            : {
+<span class="lineNum">     396 </span>                :            :   int optc;
+<span class="lineNum">     397 </span>                :<span class="lineCov">          2 :   const char *new_user = DEFAULT_USER;</span>
+<span class="lineNum">     398 </span>                :<span class="lineCov">          2 :   char *command = NULL;</span>
+<span class="lineNum">     399 </span>                :<span class="lineCov">          2 :   char *shell = NULL;</span>
+<span class="lineNum">     400 </span>                :            :   struct passwd *pw;
+<span class="lineNum">     401 </span>                :            :   struct passwd pw_copy;
+<span class="lineNum">     402 </span>                :            : 
+<span class="lineNum">     403 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     404 </span>                :<span class="lineCov">          2 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     405 </span>                :<span class="lineCov">          2 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     406 </span>                :<span class="lineCov">          2 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     407 </span>                :<span class="lineCov">          2 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     408 </span>                :            : 
+<span class="lineNum">     409 </span>                :<span class="lineCov">          2 :   initialize_exit_failure (EXIT_CANCELED);</span>
+<span class="lineNum">     410 </span>                :<span class="lineCov">          2 :   atexit (close_stdout);</span>
+<span class="lineNum">     411 </span>                :            : 
+<span class="lineNum">     412 </span>                :<span class="lineCov">          2 :   fast_startup = false;</span>
+<span class="lineNum">     413 </span>                :<span class="lineCov">          2 :   simulate_login = false;</span>
+<span class="lineNum">     414 </span>                :<span class="lineCov">          2 :   change_environment = true;</span>
+<span class="lineNum">     415 </span>                :            : 
+<span class="lineNum">     416 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          2 :   while ((optc = getopt_long (argc, argv, &quot;c:flmps:&quot;, longopts, NULL)) != -1)</span>
+<span class="lineNum">     417 </span>                :            :     {
+<span class="lineNum">     418 </span>  [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">          2 :       switch (optc)</span>
+<span class="lineNum">         </span>   <span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span>]
+<span class="lineNum">     419 </span>                :            :         {
+<span class="lineNum">     420 </span>                :            :         case 'c':
+<span class="lineNum">     421 </span>                :<span class="lineNoCov">          0 :           command = optarg;</span>
+<span class="lineNum">     422 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     423 </span>                :            : 
+<span class="lineNum">     424 </span>                :            :         case 'f':
+<span class="lineNum">     425 </span>                :<span class="lineNoCov">          0 :           fast_startup = true;</span>
+<span class="lineNum">     426 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     427 </span>                :            : 
+<span class="lineNum">     428 </span>                :            :         case 'l':
+<span class="lineNum">     429 </span>                :<span class="lineNoCov">          0 :           simulate_login = true;</span>
+<span class="lineNum">     430 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     431 </span>                :            : 
+<span class="lineNum">     432 </span>                :            :         case 'm':
+<span class="lineNum">     433 </span>                :            :         case 'p':
+<span class="lineNum">     434 </span>                :<span class="lineNoCov">          0 :           change_environment = false;</span>
+<span class="lineNum">     435 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     436 </span>                :            : 
+<span class="lineNum">     437 </span>                :            :         case 's':
+<span class="lineNum">     438 </span>                :<span class="lineNoCov">          0 :           shell = optarg;</span>
+<span class="lineNum">     439 </span>                :<span class="lineNoCov">          0 :           break;</span>
+<span class="lineNum">     440 </span>                :            : 
+<span class="lineNum">     441 </span>                :<span class="lineNoCov">          0 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     442 </span>                :            : 
+<span class="lineNum">     443 </span>                :<span class="lineCov">          2 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     444 </span>                :            : 
+<span class="lineNum">     445 </span>                :            :         default:
+<span class="lineNum">     446 </span>                :<span class="lineNoCov">          0 :           usage (EXIT_CANCELED);</span>
+<span class="lineNum">     447 </span>                :            :         }
+<span class="lineNum">     448 </span>                :            :     }
+<span class="lineNum">     449 </span>                :            : 
+<span class="lineNum">     450 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (optind &lt; argc &amp;&amp; STREQ (argv[optind], &quot;-&quot;))</span>
+<span class="lineNum">     451 </span>                :            :     {
+<span class="lineNum">     452 </span>                :<span class="lineNoCov">          0 :       simulate_login = true;</span>
+<span class="lineNum">     453 </span>                :<span class="lineNoCov">          0 :       ++optind;</span>
+<span class="lineNum">     454 </span>                :            :     }
+<span class="lineNum">     455 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (optind &lt; argc)</span>
+<span class="lineNum">     456 </span>                :<span class="lineNoCov">          0 :     new_user = argv[optind++];</span>
+<span class="lineNum">     457 </span>                :            : 
+<span class="lineNum">     458 </span>                :<span class="lineNoCov">          0 :   pw = getpwnam (new_user);</span>
+<span class="lineNum">     459 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (! (pw &amp;&amp; pw-&gt;pw_name &amp;&amp; pw-&gt;pw_name[0] &amp;&amp; pw-&gt;pw_dir &amp;&amp; pw-&gt;pw_dir[0]</span>
+<span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>][<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
+<span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 8 was not executed"> # </span><span class="branchNoExec" title="Branch 9 was not executed"> # </span>][<span class="branchNoExec" title="Branch 10 was not executed"> # </span><span class="branchNoExec" title="Branch 11 was not executed"> # </span>]
+<span class="lineNum">     460 </span>                :<span class="lineNoCov">          0 :          &amp;&amp; pw-&gt;pw_passwd))</span>
+<span class="lineNum">     461 </span>                :<span class="lineNoCov">          0 :     error (EXIT_CANCELED, 0, _(&quot;user %s does not exist&quot;), new_user);</span>
+<span class="lineNum">     462 </span>                :            : 
+<span class="lineNum">     463 </span>                :            :   /* Make a copy of the password information and point pw at the local
+<span class="lineNum">     464 </span>                :            :      copy instead.  Otherwise, some systems (e.g. GNU/Linux) would clobber
+<span class="lineNum">     465 </span>                :            :      the static data through the getlogin call from log_su.
+<span class="lineNum">     466 </span>                :            :      Also, make sure pw-&gt;pw_shell is a nonempty string.
+<span class="lineNum">     467 </span>                :            :      It may be NULL when NEW_USER is a username that is retrieved via NIS (YP),
+<span class="lineNum">     468 </span>                :            :      but that doesn't have a default shell listed.  */
+<span class="lineNum">     469 </span>                :<span class="lineNoCov">          0 :   pw_copy = *pw;</span>
+<span class="lineNum">     470 </span>                :<span class="lineNoCov">          0 :   pw = &amp;pw_copy;</span>
+<span class="lineNum">     471 </span>                :<span class="lineNoCov">          0 :   pw-&gt;pw_name = xstrdup (pw-&gt;pw_name);</span>
+<span class="lineNum">     472 </span>                :<span class="lineNoCov">          0 :   pw-&gt;pw_passwd = xstrdup (pw-&gt;pw_passwd);</span>
+<span class="lineNum">     473 </span>                :<span class="lineNoCov">          0 :   pw-&gt;pw_dir = xstrdup (pw-&gt;pw_dir);</span>
+<span class="lineNum">     474 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :   pw-&gt;pw_shell = xstrdup (pw-&gt;pw_shell &amp;&amp; pw-&gt;pw_shell[0]</span>
+<span class="lineNum">     475 </span>                :            :                           ? pw-&gt;pw_shell
+<span class="lineNum">     476 </span>                :            :                           : DEFAULT_SHELL);
+<span class="lineNum">     477 </span>                :<span class="lineNoCov">          0 :   endpwent ();</span>
+<span class="lineNum">     478 </span>                :            : 
+<span class="lineNum">     479 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (!correct_password (pw))</span>
+<span class="lineNum">     480 </span>                :            :     {
+<span class="lineNum">     481 </span>                :            : #ifdef SYSLOG_FAILURE
+<span class="lineNum">     482 </span>                :            :       log_su (pw, false);
+<span class="lineNum">     483 </span>                :            : #endif
+<span class="lineNum">     484 </span>                :<span class="lineNoCov">          0 :       error (EXIT_CANCELED, 0, _(&quot;incorrect password&quot;));</span>
+<span class="lineNum">     485 </span>                :            :     }
+<span class="lineNum">     486 </span>                :            : #ifdef SYSLOG_SUCCESS
+<span class="lineNum">     487 </span>                :            :   else
+<span class="lineNum">     488 </span>                :            :     {
+<span class="lineNum">     489 </span>                :            :       log_su (pw, true);
+<span class="lineNum">     490 </span>                :            :     }
+<span class="lineNum">     491 </span>                :            : #endif
+<span class="lineNum">     492 </span>                :            : 
+<span class="lineNum">     493 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (!shell &amp;&amp; !change_environment)</span>
+<span class="lineNum">     494 </span>                :<span class="lineNoCov">          0 :     shell = getenv (&quot;SHELL&quot;);</span>
+<span class="lineNum">     495 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (shell &amp;&amp; getuid () != 0 &amp;&amp; restricted_shell (pw-&gt;pw_shell))</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
+<span class="lineNum">     496 </span>                :            :     {
+<span class="lineNum">     497 </span>                :            :       /* The user being su'd to has a nonstandard shell, and so is
+<span class="lineNum">     498 </span>                :            :          probably a uucp account or has restricted access.  Don't
+<span class="lineNum">     499 </span>                :            :          compromise the account by allowing access with a standard
+<span class="lineNum">     500 </span>                :            :          shell.  */
+<span class="lineNum">     501 </span>                :<span class="lineNoCov">          0 :       error (0, 0, _(&quot;using restricted shell %s&quot;), pw-&gt;pw_shell);</span>
+<span class="lineNum">     502 </span>                :<span class="lineNoCov">          0 :       shell = NULL;</span>
+<span class="lineNum">     503 </span>                :            :     }
+<span class="lineNum">     504 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   shell = xstrdup (shell ? shell : pw-&gt;pw_shell);</span>
+<span class="lineNum">     505 </span>                :<span class="lineNoCov">          0 :   modify_environment (pw, shell);</span>
+<span class="lineNum">     506 </span>                :            : 
+<span class="lineNum">     507 </span>                :<span class="lineNoCov">          0 :   change_identity (pw);</span>
+<span class="lineNum">     508 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (simulate_login &amp;&amp; chdir (pw-&gt;pw_dir) != 0)</span>
+<span class="lineNum">     509 </span>                :<span class="lineNoCov">          0 :     error (0, errno, _(&quot;warning: cannot change directory to %s&quot;), pw-&gt;pw_dir);</span>
+<span class="lineNum">     510 </span>                :            : 
+<span class="lineNum">     511 </span>                :            :   /* error() flushes stderr, but does not check for write failure.
+<span class="lineNum">     512 </span>                :            :      Normally, we would catch this via our atexit() hook of
+<span class="lineNum">     513 </span>                :            :      close_stdout, but execv() gets in the way.  If stderr
+<span class="lineNum">     514 </span>                :            :      encountered a write failure, there is no need to try calling
+<span class="lineNum">     515 </span>                :            :      error() again.  */
+<span class="lineNum">     516 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (ferror (stderr))</span>
+<span class="lineNum">     517 </span>                :<span class="lineNoCov">          0 :     exit (EXIT_CANCELED);</span>
+<span class="lineNum">     518 </span>                :            : 
+<span class="lineNum">     519 </span>                :<span class="lineNoCov">          0 :   run_shell (shell, command, argv + optind, MAX (0, argc - optind));</span>
+<span class="lineNum">     520 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

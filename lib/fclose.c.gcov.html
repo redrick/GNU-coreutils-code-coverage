@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* fclose replacement.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 2008-2011 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2008-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -126,21 +126,21 @@
 <span class="lineNum">      55 </span>                :            : int
 <span class="lineNum">      56 </span>                :            : rpl_fclose (FILE *fp)
 <span class="lineNum">      57 </span>                :            : {
-<span class="lineNum">      58 </span>                :<span class="lineCov">     346391 :   int saved_errno = 0;</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">     280127 :   int saved_errno = 0;</span>
 <span class="lineNum">      59 </span>                :            :   int fd;
-<span class="lineNum">      60 </span>                :<span class="lineCov">     346391 :   int result = 0;</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">     280127 :   int result = 0;</span>
 <span class="lineNum">      61 </span>                :            : 
 <span class="lineNum">      62 </span>                :            :   /* Don't change behavior on memstreams.  */
-<span class="lineNum">      63 </span>                :<span class="lineCov">     346391 :   fd = fileno (fp);</span>
-<span class="lineNum">      64 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 346391 times"> + </span>]:<span class="lineCov">     346391 :   if (fd &lt; 0)</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">     280127 :   fd = fileno (fp);</span>
+<span class="lineNum">      64 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 280127 times"> + </span>]:<span class="lineCov">     280127 :   if (fd &lt; 0)</span>
 <span class="lineNum">      65 </span>                :<span class="lineNoCov">          0 :     return fclose_nothrow (fp);</span>
 <span class="lineNum">      66 </span>                :            : 
 <span class="lineNum">      67 </span>                :            :   /* We only need to flush the file if it is not reading or if it is
 <span class="lineNum">      68 </span>                :            :      seekable.  This only guarantees the file position of input files
 <span class="lineNum">      69 </span>                :            :      if the fflush module is also in use.  */
-<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 1 was taken 44597 times"> + </span><span class="branchCov" title="Branch 2 was taken 301794 times"> + </span>][<span class="branchCov" title="Branch 5 was taken 15318 times"> + </span><span class="branchCov" title="Branch 6 was taken 29279 times"> + </span>]:<span class="lineCov">     346391 :   if ((!freading (fp) || lseek (fileno (fp), 0, SEEK_CUR) != -1)</span>
-<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 1 was taken 12 times"> + </span><span class="branchCov" title="Branch 2 was taken 317100 times"> + </span>]:<span class="lineCov">     317112 :       &amp;&amp; fflush (fp))</span>
-<span class="lineNum">      72 </span>                :<span class="lineCov">         12 :     saved_errno = errno;</span>
+<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 1 was taken 34983 times"> + </span><span class="branchCov" title="Branch 2 was taken 245144 times"> + </span>][<span class="branchCov" title="Branch 5 was taken 10678 times"> + </span><span class="branchCov" title="Branch 6 was taken 24305 times"> + </span>]:<span class="lineCov">     280127 :   if ((!freading (fp) || lseek (fileno (fp), 0, SEEK_CUR) != -1)</span>
+<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchCov" title="Branch 2 was taken 255814 times"> + </span>]:<span class="lineCov">     255822 :       &amp;&amp; fflush (fp))</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">          8 :     saved_errno = errno;</span>
 <span class="lineNum">      73 </span>                :            : 
 <span class="lineNum">      74 </span>                :            :   /* fclose() calls close(), but we need to also invoke all hooks that our
 <span class="lineNum">      75 </span>                :            :      overridden close() function invokes.  See lib/close.c.  */
@@ -166,18 +166,18 @@
 <span class="lineNum">      95 </span>                :            :     _gl_unregister_fd (fd);
 <span class="lineNum">      96 </span>                :            : # else
 <span class="lineNum">      97 </span>                :            :   /* No race condition here.  */
-<span class="lineNum">      98 </span>                :<span class="lineCov">     346391 :   result = fclose_nothrow (fp);</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">     280127 :   result = fclose_nothrow (fp);</span>
 <span class="lineNum">      99 </span>                :            : # endif
 <span class="lineNum">     100 </span>                :            : 
 <span class="lineNum">     101 </span>                :            : #endif /* !WINDOWS_SOCKETS */
 <span class="lineNum">     102 </span>                :            : 
-<span class="lineNum">     103 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 346379 times"> + </span>]:<span class="lineCov">     346391 :   if (saved_errno != 0)</span>
+<span class="lineNum">     103 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 280119 times"> + </span>]:<span class="lineCov">     280127 :   if (saved_errno != 0)</span>
 <span class="lineNum">     104 </span>                :            :     {
-<span class="lineNum">     105 </span>                :<span class="lineCov">         12 :       errno = saved_errno;</span>
-<span class="lineNum">     106 </span>                :<span class="lineCov">         12 :       result = EOF;</span>
+<span class="lineNum">     105 </span>                :<span class="lineCov">          8 :       errno = saved_errno;</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">          8 :       result = EOF;</span>
 <span class="lineNum">     107 </span>                :            :     }
 <span class="lineNum">     108 </span>                :            : 
-<span class="lineNum">     109 </span>                :<span class="lineCov">     346391 :   return result;</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">     280127 :   return result;</span>
 <span class="lineNum">     110 </span>                :            : }
 </pre>
       </td>

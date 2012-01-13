@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2011-12-16</td>
+            <td class="headerValue">2012-01-13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Convert string to double, using the C locale.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 2003-2004, 2006, 2009-2011 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 2003-2004, 2006, 2009-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -124,31 +124,31 @@
 <span class="lineNum">      53 </span>                :            : /* Return the C locale object, or (locale_t) 0 with errno set
 <a name="54"><span class="lineNum">      54 </span>                :            :    if it cannot be created.  */</a>
 <span class="lineNum">      55 </span>                :            : static inline locale_t
-<span class="lineNum">      56 </span>                :<span class="lineCov">       1682 : c_locale (void)</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">       1302 : c_locale (void)</span>
 <span class="lineNum">      57 </span>                :            : {
-<span class="lineNum">      58 </span>        [<span class="branchCov" title="Branch 0 was taken 1035 times"> + </span><span class="branchCov" title="Branch 1 was taken 647 times"> + </span>]:<span class="lineCov">       1682 :   if (!c_locale_cache)</span>
-<span class="lineNum">      59 </span>                :<span class="lineCov">       1035 :     c_locale_cache = newlocale (LC_ALL_MASK, &quot;C&quot;, (locale_t) 0);</span>
-<span class="lineNum">      60 </span>                :<span class="lineCov">       1682 :   return c_locale_cache;</span>
+<span class="lineNum">      58 </span>        [<span class="branchCov" title="Branch 0 was taken 816 times"> + </span><span class="branchCov" title="Branch 1 was taken 486 times"> + </span>]:<span class="lineCov">       1302 :   if (!c_locale_cache)</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">        816 :     c_locale_cache = newlocale (LC_ALL_MASK, &quot;C&quot;, (locale_t) 0);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">       1302 :   return c_locale_cache;</span>
 <span class="lineNum">      61 </span>                :            : }
 <span class="lineNum">      62 </span>                :            : 
 <span class="lineNum">      63 </span>                :            : #endif
 <a name="64"><span class="lineNum">      64 </span>                :            : </a>
 <span class="lineNum">      65 </span>                :            : DOUBLE
-<span class="lineNum">      66 </span>                :<span class="lineCov">       1682 : C_STRTOD (char const *nptr, char **endptr)</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">       1302 : C_STRTOD (char const *nptr, char **endptr)</span>
 <span class="lineNum">      67 </span>                :            : {
 <span class="lineNum">      68 </span>                :            :   DOUBLE r;
 <span class="lineNum">      69 </span>                :            : 
 <span class="lineNum">      70 </span>                :            : #if defined LC_ALL_MASK &amp;&amp; (LONG ? HAVE_STRTOLD_L : HAVE_STRTOD_L)
 <span class="lineNum">      71 </span>                :            : 
-<span class="lineNum">      72 </span>                :<span class="lineCov">       1682 :   locale_t locale = c_locale ();</span>
-<span class="lineNum">      73 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1682 times"> + </span>]:<span class="lineCov">       1682 :   if (!locale)</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">       1302 :   locale_t locale = c_locale ();</span>
+<span class="lineNum">      73 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1302 times"> + </span>]:<span class="lineCov">       1302 :   if (!locale)</span>
 <span class="lineNum">      74 </span>                :            :     {
 <span class="lineNum">      75 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (endptr)</span>
 <span class="lineNum">      76 </span>                :<span class="lineNoCov">          0 :         *endptr = (char *) nptr;</span>
 <span class="lineNum">      77 </span>                :<span class="lineNoCov">          0 :       return 0; /* errno is set here */</span>
 <span class="lineNum">      78 </span>                :            :     }
 <span class="lineNum">      79 </span>                :            : 
-<span class="lineNum">      80 </span>                :<span class="lineCov">       1682 :   r = STRTOD_L (nptr, endptr, locale);</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">       1302 :   r = STRTOD_L (nptr, endptr, locale);</span>
 <span class="lineNum">      81 </span>                :            : 
 <span class="lineNum">      82 </span>                :            : #else
 <span class="lineNum">      83 </span>                :            : 
@@ -179,7 +179,7 @@
 <span class="lineNum">     108 </span>                :            : 
 <span class="lineNum">     109 </span>                :            : #endif
 <span class="lineNum">     110 </span>                :            : 
-<span class="lineNum">     111 </span>                :<span class="lineCov">       1682 :   return r;</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">       1302 :   return r;</span>
 <span class="lineNum">     112 </span>                :            : }
 </pre>
       </td>
