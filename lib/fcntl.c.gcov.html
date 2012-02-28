@@ -33,11 +33,11 @@
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">19</td>
             <td class="headerCovTableEntry">26</td>
-            <td class="headerCovTableEntryHi">73.1 %</td>
+            <td class="headerCovTableEntryLo">73.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntry">18</td>
-            <td class="headerCovTableEntryHi">61.1 %</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntryLo">59.1 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -165,7 +165,7 @@
 <span class="lineNum">      94 </span>                :            :           result = -1;
 <span class="lineNum">      95 </span>                :            :           break;
 <span class="lineNum">      96 </span>                :            :         }
-<span class="lineNum">      97 </span>                :            :       duplicated_fd = _open_osfhandle ((long) new_handle, flags);
+<span class="lineNum">      97 </span>                :            :       duplicated_fd = _open_osfhandle ((intptr_t) new_handle, flags);
 <span class="lineNum">      98 </span>                :            :       if (duplicated_fd &lt; 0)
 <span class="lineNum">      99 </span>                :            :         {
 <span class="lineNum">     100 </span>                :            :           CloseHandle (new_handle);
@@ -240,9 +240,9 @@
 <span class="lineNum">     169 </span>                :            : rpl_fcntl (int fd, int action, /* arg */...)
 <span class="lineNum">     170 </span>                :            : {
 <span class="lineNum">     171 </span>                :            :   va_list arg;
-<span class="lineNum">     172 </span>                :<span class="lineCov">     612119 :   int result = -1;</span>
-<span class="lineNum">     173 </span>                :<span class="lineCov">     612119 :   va_start (arg, action);</span>
-<span class="lineNum">     174 </span>        [<span class="branchCov" title="Branch 0 was taken 48 times"> + </span><span class="branchCov" title="Branch 1 was taken 612071 times"> + </span>]:<span class="lineCov">     612119 :   switch (action)</span>
+<span class="lineNum">     172 </span>                :<span class="lineCov">    2403621 :   int result = -1;</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">    2403621 :   va_start (arg, action);</span>
+<span class="lineNum">     174 </span>        [<span class="branchCov" title="Branch 0 was taken 168 times"> + </span><span class="branchCov" title="Branch 1 was taken 2403453 times"> + </span>]:<span class="lineCov">    2403621 :   switch (action)</span>
 <span class="lineNum">     175 </span>                :            :     {
 <span class="lineNum">     176 </span>                :            : 
 <span class="lineNum">     177 </span>                :            : #if !HAVE_FCNTL
@@ -287,7 +287,7 @@
 <span class="lineNum">     216 </span>                :            : 
 <span class="lineNum">     217 </span>                :            :     case F_DUPFD_CLOEXEC:
 <span class="lineNum">     218 </span>                :            :       {
-<span class="lineNum">     219 </span>                :<span class="lineCov">         48 :         int target = va_arg (arg, int);</span>
+<span class="lineNum">     219 </span>        [<span class="branchCov" title="Branch 0 was taken 168 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        168 :         int target = va_arg (arg, int);</span>
 <span class="lineNum">     220 </span>                :            : 
 <span class="lineNum">     221 </span>                :            : #if !HAVE_FCNTL
 <span class="lineNum">     222 </span>                :            :         result = dupfd (fd, target, O_CLOEXEC);
@@ -301,12 +301,12 @@
 <span class="lineNum">     230 </span>                :            :            avoid caching failure if the corresponding F_DUPFD fails
 <span class="lineNum">     231 </span>                :            :            for any reason.  0 = unknown, 1 = yes, -1 = no.  */
 <span class="lineNum">     232 </span>                :            :         static int have_dupfd_cloexec = GNULIB_defined_F_DUPFD_CLOEXEC ? -1 : 0;
-<span class="lineNum">     233 </span>        [<span class="branchCov" title="Branch 0 was taken 48 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         48 :         if (0 &lt;= have_dupfd_cloexec)</span>
+<span class="lineNum">     233 </span>        [<span class="branchCov" title="Branch 0 was taken 168 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        168 :         if (0 &lt;= have_dupfd_cloexec)</span>
 <span class="lineNum">     234 </span>                :            :           {
-<span class="lineNum">     235 </span>                :<span class="lineCov">         48 :             result = fcntl (fd, action, target);</span>
-<span class="lineNum">     236 </span>[<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 12 times"> + </span><span class="branchCov" title="Branch 4 was taken 4 times"> + </span>]:<span class="lineCov">         48 :             if (0 &lt;= result || errno != EINVAL)</span>
+<span class="lineNum">     235 </span>                :<span class="lineCov">        168 :             result = fcntl (fd, action, target);</span>
+<span class="lineNum">     236 </span>[<span class="branchCov" title="Branch 3 was taken 42 times"> + </span><span class="branchCov" title="Branch 4 was taken 14 times"> + </span>][<span class="branchCov" title="Branch 0 was taken 56 times"> + </span><span class="branchCov" title="Branch 1 was taken 112 times"> + </span>]:<span class="lineCov">        168 :             if (0 &lt;= result || errno != EINVAL)</span>
 <span class="lineNum">     237 </span>                :            :               {
-<span class="lineNum">     238 </span>                :<span class="lineCov">         44 :                 have_dupfd_cloexec = 1;</span>
+<span class="lineNum">     238 </span>                :<span class="lineCov">        154 :                 have_dupfd_cloexec = 1;</span>
 <span class="lineNum">     239 </span>                :            : # if REPLACE_FCHDIR
 <span class="lineNum">     240 </span>                :            :                 if (0 &lt;= result)
 <span class="lineNum">     241 </span>                :            :                   result = _gl_register_dup (fd, result);
@@ -314,18 +314,18 @@
 <span class="lineNum">     243 </span>                :            :               }
 <span class="lineNum">     244 </span>                :            :             else
 <span class="lineNum">     245 </span>                :            :               {
-<span class="lineNum">     246 </span>                :<span class="lineCov">          4 :                 result = rpl_fcntl (fd, F_DUPFD, target);</span>
-<span class="lineNum">     247 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :                 if (result &lt; 0)</span>
-<span class="lineNum">     248 </span>                :<span class="lineCov">          4 :                   break;</span>
-<span class="lineNum">     249 </span>                :<span class="lineCov">         44 :                 have_dupfd_cloexec = -1;</span>
+<span class="lineNum">     246 </span>                :<span class="lineCov">         14 :                 result = rpl_fcntl (fd, F_DUPFD, target);</span>
+<span class="lineNum">     247 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         14 :                 if (result &lt; 0)</span>
+<span class="lineNum">     248 </span>                :<span class="lineCov">         14 :                   break;</span>
+<span class="lineNum">     249 </span>                :<span class="lineCov">        154 :                 have_dupfd_cloexec = -1;</span>
 <span class="lineNum">     250 </span>                :            :               }
 <span class="lineNum">     251 </span>                :            :           }
 <span class="lineNum">     252 </span>                :            :         else
 <span class="lineNum">     253 </span>                :<span class="lineNoCov">          0 :           result = rpl_fcntl (fd, F_DUPFD, target);</span>
-<span class="lineNum">     254 </span>[<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 32 times"> + </span>]:<span class="lineCov">         44 :         if (0 &lt;= result &amp;&amp; have_dupfd_cloexec == -1)</span>
+<span class="lineNum">     254 </span>[<span class="branchCov" title="Branch 0 was taken 112 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 112 times"> + </span>]:<span class="lineCov">        154 :         if (0 &lt;= result &amp;&amp; have_dupfd_cloexec == -1)</span>
 <span class="lineNum">     255 </span>                :            :           {
 <span class="lineNum">     256 </span>                :<span class="lineNoCov">          0 :             int flags = fcntl (result, F_GETFD);</span>
-<span class="lineNum">     257 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineNoCov">          0 :             if (flags &lt; 0 || fcntl (result, F_SETFD, flags | FD_CLOEXEC) == -1)</span>
+<span class="lineNum">     257 </span>[<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>][<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :             if (flags &lt; 0 || fcntl (result, F_SETFD, flags | FD_CLOEXEC) == -1)</span>
 <span class="lineNum">     258 </span>                :            :               {
 <span class="lineNum">     259 </span>                :<span class="lineNoCov">          0 :                 int saved_errno = errno;</span>
 <span class="lineNum">     260 </span>                :<span class="lineNoCov">          0 :                 close (result);</span>
@@ -333,7 +333,7 @@
 <span class="lineNum">     262 </span>                :<span class="lineNoCov">          0 :                 result = -1;</span>
 <span class="lineNum">     263 </span>                :            :               }
 <span class="lineNum">     264 </span>                :            :           }
-<span class="lineNum">     265 </span>                :<span class="lineCov">         44 :         break;</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">        154 :         break;</span>
 <span class="lineNum">     266 </span>                :            : #endif /* HAVE_FCNTL */
 <span class="lineNum">     267 </span>                :            :       } /* F_DUPFD_CLOEXEC */
 <span class="lineNum">     268 </span>                :            : 
@@ -369,16 +369,16 @@
 <span class="lineNum">     298 </span>                :            :     default:
 <span class="lineNum">     299 </span>                :            :       {
 <span class="lineNum">     300 </span>                :            : #if HAVE_FCNTL
-<span class="lineNum">     301 </span>                :<span class="lineCov">     612071 :         void *p = va_arg (arg, void *);</span>
-<span class="lineNum">     302 </span>                :<span class="lineCov">     612071 :         result = fcntl (fd, action, p);</span>
+<span class="lineNum">     301 </span>        [<span class="branchCov" title="Branch 0 was taken 2403453 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    2403453 :         void *p = va_arg (arg, void *);</span>
+<span class="lineNum">     302 </span>                :<span class="lineCov">    2403453 :         result = fcntl (fd, action, p);</span>
 <span class="lineNum">     303 </span>                :            : #else
 <span class="lineNum">     304 </span>                :            :         errno = EINVAL;
 <span class="lineNum">     305 </span>                :            : #endif
-<span class="lineNum">     306 </span>                :<span class="lineCov">     612071 :         break;</span>
+<span class="lineNum">     306 </span>                :<span class="lineCov">    2403453 :         break;</span>
 <span class="lineNum">     307 </span>                :            :       }
 <span class="lineNum">     308 </span>                :            :     }
-<span class="lineNum">     309 </span>                :<span class="lineCov">     612119 :   va_end (arg);</span>
-<span class="lineNum">     310 </span>                :<span class="lineCov">     612119 :   return result;</span>
+<span class="lineNum">     309 </span>                :<span class="lineCov">    2403621 :   va_end (arg);</span>
+<span class="lineNum">     310 </span>                :<span class="lineCov">    2403621 :   return result;</span>
 <span class="lineNum">     311 </span>                :            : }
 </pre>
       </td>

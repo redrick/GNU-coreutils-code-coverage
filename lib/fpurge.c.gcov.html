@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -102,9 +102,9 @@
 <span class="lineNum">      31 </span>                :            : {
 <span class="lineNum">      32 </span>                :            : #if HAVE___FPURGE                   /* glibc &gt;= 2.2, Haiku, Solaris &gt;= 7 */
 <span class="lineNum">      33 </span>                :            : 
-<span class="lineNum">      34 </span>                :<span class="lineCov">         12 :   __fpurge (fp);</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">         42 :   __fpurge (fp);</span>
 <span class="lineNum">      35 </span>                :            :   /* The __fpurge function does not have a return value.  */
-<span class="lineNum">      36 </span>                :<span class="lineCov">         12 :   return 0;</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">         42 :   return 0;</span>
 <span class="lineNum">      37 </span>                :            : 
 <span class="lineNum">      38 </span>                :            : #elif HAVE_FPURGE                   /* FreeBSD, NetBSD, OpenBSD, DragonFly, MacOS X, Cygwin 1.7 */
 <span class="lineNum">      39 </span>                :            : 
@@ -205,12 +205,15 @@
 <span class="lineNum">     134 </span>                :            :   /* Nothing in the buffer, next putc is nontrivial.  */
 <span class="lineNum">     135 </span>                :            :   fp-&gt;__put_limit = fp-&gt;__buffer;
 <span class="lineNum">     136 </span>                :            :   return 0;
-<span class="lineNum">     137 </span>                :            : # else
-<span class="lineNum">     138 </span>                :            : #  error &quot;Please port gnulib fpurge.c to your platform! Look at the definitions of fflush, setvbuf and ungetc on your system, then report this to bug-gnulib.&quot;
-<span class="lineNum">     139 </span>                :            : # endif
-<span class="lineNum">     140 </span>                :            : 
-<span class="lineNum">     141 </span>                :            : #endif
-<span class="lineNum">     142 </span>                :            : }
+<span class="lineNum">     137 </span>                :            : # elif defined EPLAN9               /* Plan9 */
+<span class="lineNum">     138 </span>                :            :   fp-&gt;rp = fp-&gt;wp = fp-&gt;lp = fp-&gt;buf;
+<span class="lineNum">     139 </span>                :            :   return 0;
+<span class="lineNum">     140 </span>                :            : # else
+<span class="lineNum">     141 </span>                :            : #  error &quot;Please port gnulib fpurge.c to your platform! Look at the definitions of fflush, setvbuf and ungetc on your system, then report this to bug-gnulib.&quot;
+<span class="lineNum">     142 </span>                :            : # endif
+<span class="lineNum">     143 </span>                :            : 
+<span class="lineNum">     144 </span>                :            : #endif
+<span class="lineNum">     145 </span>                :            : }
 </pre>
       </td>
     </tr>

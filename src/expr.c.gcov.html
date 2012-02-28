@@ -31,27 +31,27 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">292</td>
-            <td class="headerCovTableEntry">389</td>
-            <td class="headerCovTableEntryHi">75.1 %</td>
+            <td class="headerCovTableEntry">248</td>
+            <td class="headerCovTableEntry">337</td>
+            <td class="headerCovTableEntryLo">73.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">33</td>
-            <td class="headerCovTableEntry">38</td>
-            <td class="headerCovTableEntryMed">86.8 %</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryMed">88.0 %</td>
           </tr>
           <tr>
             <td></td>
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">126</td>
-            <td class="headerCovTableEntry">209</td>
-            <td class="headerCovTableEntryHi">60.3 %</td>
+            <td class="headerCovTableEntry">118</td>
+            <td class="headerCovTableEntry">185</td>
+            <td class="headerCovTableEntryLo">63.8 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* expr -- evaluate expressions.</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 1986, 1991-1997, 1999-2012 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1986-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -124,95 +124,94 @@
 <span class="lineNum">      53 </span>                :            : #if HAVE_GMP
 <span class="lineNum">      54 </span>                :            : # include &lt;gmp.h&gt;
 <span class="lineNum">      55 </span>                :            : #else
-<a name="56"><span class="lineNum">      56 </span>                :            : /* Approximate gmp.h well enough for expr.c's purposes.  */</a>
-<a name="57"><span class="lineNum">      57 </span>                :            : typedef intmax_t mpz_t[1];</a>
-<span class="lineNum">      58 </span>                :<span class="lineCov">       5979 : static void mpz_clear (mpz_t z) { (void) z; }</span>
-<a name="59"><span class="lineNum">      59 </span>                :<span class="lineCov">        488 : static void mpz_init_set_ui (mpz_t z, unsigned long int i) { z[0] = i; }</span></a>
+<span class="lineNum">      56 </span>                :            : /* Approximate gmp.h well enough for expr.c's purposes.  */
+<span class="lineNum">      57 </span>                :            : typedef intmax_t mpz_t[1];
+<span class="lineNum">      58 </span>                :            : static void mpz_clear (mpz_t z) { (void) z; }
+<span class="lineNum">      59 </span>                :            : static void mpz_init_set_ui (mpz_t z, unsigned long int i) { z[0] = i; }
 <span class="lineNum">      60 </span>                :            : static int
-<span class="lineNum">      61 </span>                :<span class="lineCov">      11097 : mpz_init_set_str (mpz_t z, char *s, int base)</span>
+<span class="lineNum">      61 </span>                :            : mpz_init_set_str (mpz_t z, char *s, int base)
 <span class="lineNum">      62 </span>                :            : {
-<span class="lineNum">      63 </span>        [<span class="branchCov" title="Branch 1 was taken 11095 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">      11097 :   return xstrtoimax (s, NULL, base, z, NULL) == LONGINT_OK ? 0 : -1;</span>
-<a name="64"><span class="lineNum">      64 </span>                :            : }</a>
+<span class="lineNum">      63 </span>                :            :   return xstrtoimax (s, NULL, base, z, NULL) == LONGINT_OK ? 0 : -1;
+<span class="lineNum">      64 </span>                :            : }
 <span class="lineNum">      65 </span>                :            : static void
-<span class="lineNum">      66 </span>                :<span class="lineCov">       4197 : mpz_add (mpz_t r, mpz_t a0, mpz_t b0)</span>
+<span class="lineNum">      66 </span>                :            : mpz_add (mpz_t r, mpz_t a0, mpz_t b0)
 <span class="lineNum">      67 </span>                :            : {
-<span class="lineNum">      68 </span>                :<span class="lineCov">       4197 :   intmax_t a = a0[0];</span>
-<span class="lineNum">      69 </span>                :<span class="lineCov">       4197 :   intmax_t b = b0[0];</span>
-<span class="lineNum">      70 </span>                :<span class="lineCov">       4197 :   intmax_t val = a + b;</span>
-<span class="lineNum">      71 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4197 times"> + </span>]:<span class="lineCov">       4197 :   if ((val &lt; a) != (b &lt; 0))</span>
-<span class="lineNum">      72 </span>                :<span class="lineNoCov">          0 :     integer_overflow ('+');</span>
-<span class="lineNum">      73 </span>                :<span class="lineCov">       4197 :   r[0] = val;</span>
-<a name="74"><span class="lineNum">      74 </span>                :<span class="lineCov">       4197 : }</span></a>
+<span class="lineNum">      68 </span>                :            :   intmax_t a = a0[0];
+<span class="lineNum">      69 </span>                :            :   intmax_t b = b0[0];
+<span class="lineNum">      70 </span>                :            :   intmax_t val = a + b;
+<span class="lineNum">      71 </span>                :            :   if ((val &lt; a) != (b &lt; 0))
+<span class="lineNum">      72 </span>                :            :     integer_overflow ('+');
+<span class="lineNum">      73 </span>                :            :   r[0] = val;
+<span class="lineNum">      74 </span>                :            : }
 <span class="lineNum">      75 </span>                :            : static void
-<span class="lineNum">      76 </span>                :<span class="lineCov">         16 : mpz_sub (mpz_t r, mpz_t a0, mpz_t b0)</span>
+<span class="lineNum">      76 </span>                :            : mpz_sub (mpz_t r, mpz_t a0, mpz_t b0)
 <span class="lineNum">      77 </span>                :            : {
-<span class="lineNum">      78 </span>                :<span class="lineCov">         16 :   intmax_t a = a0[0];</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">         16 :   intmax_t b = b0[0];</span>
-<span class="lineNum">      80 </span>                :<span class="lineCov">         16 :   intmax_t val = a - b;</span>
-<span class="lineNum">      81 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">         16 :   if ((a &lt; val) != (b &lt; 0))</span>
-<span class="lineNum">      82 </span>                :<span class="lineNoCov">          0 :     integer_overflow ('-');</span>
-<span class="lineNum">      83 </span>                :<span class="lineCov">         16 :   r[0] = val;</span>
-<a name="84"><span class="lineNum">      84 </span>                :<span class="lineCov">         16 : }</span></a>
+<span class="lineNum">      78 </span>                :            :   intmax_t a = a0[0];
+<span class="lineNum">      79 </span>                :            :   intmax_t b = b0[0];
+<span class="lineNum">      80 </span>                :            :   intmax_t val = a - b;
+<span class="lineNum">      81 </span>                :            :   if ((a &lt; val) != (b &lt; 0))
+<span class="lineNum">      82 </span>                :            :     integer_overflow ('-');
+<span class="lineNum">      83 </span>                :            :   r[0] = val;
+<span class="lineNum">      84 </span>                :            : }
 <span class="lineNum">      85 </span>                :            : static void
-<span class="lineNum">      86 </span>                :<span class="lineCov">        903 : mpz_mul (mpz_t r, mpz_t a0, mpz_t b0)</span>
+<span class="lineNum">      86 </span>                :            : mpz_mul (mpz_t r, mpz_t a0, mpz_t b0)
 <span class="lineNum">      87 </span>                :            : {
-<span class="lineNum">      88 </span>                :<span class="lineCov">        903 :   intmax_t a = a0[0];</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">        903 :   intmax_t b = b0[0];</span>
-<span class="lineNum">      90 </span>                :<span class="lineCov">        903 :   intmax_t val = a * b;</span>
-<span class="lineNum">      91 </span>[<span class="branchCov" title="Branch 0 was taken 903 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 903 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        903 :   if (! (a == 0 || b == 0</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 903 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
-<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 903 times"> + </span>]:<span class="lineCov">        903 :          || ((val &lt; 0) == ((a &lt; 0) ^ (b &lt; 0)) &amp;&amp; val / a == b)))</span>
-<span class="lineNum">      93 </span>                :<span class="lineNoCov">          0 :     integer_overflow ('*');</span>
-<span class="lineNum">      94 </span>                :<span class="lineCov">        903 :   r[0] = val;</span>
-<a name="95"><span class="lineNum">      95 </span>                :<span class="lineCov">        903 : }</span></a>
+<span class="lineNum">      88 </span>                :            :   intmax_t a = a0[0];
+<span class="lineNum">      89 </span>                :            :   intmax_t b = b0[0];
+<span class="lineNum">      90 </span>                :            :   intmax_t val = a * b;
+<span class="lineNum">      91 </span>                :            :   if (! (a == 0 || b == 0
+<span class="lineNum">      92 </span>                :            :          || ((val &lt; 0) == ((a &lt; 0) ^ (b &lt; 0)) &amp;&amp; val / a == b)))
+<span class="lineNum">      93 </span>                :            :     integer_overflow ('*');
+<span class="lineNum">      94 </span>                :            :   r[0] = val;
+<span class="lineNum">      95 </span>                :            : }
 <span class="lineNum">      96 </span>                :            : static void
-<span class="lineNum">      97 </span>                :<span class="lineCov">        431 : mpz_tdiv_q (mpz_t r, mpz_t a0, mpz_t b0)</span>
+<span class="lineNum">      97 </span>                :            : mpz_tdiv_q (mpz_t r, mpz_t a0, mpz_t b0)
 <span class="lineNum">      98 </span>                :            : {
-<span class="lineNum">      99 </span>                :<span class="lineCov">        431 :   intmax_t a = a0[0];</span>
-<span class="lineNum">     100 </span>                :<span class="lineCov">        431 :   intmax_t b = b0[0];</span>
+<span class="lineNum">      99 </span>                :            :   intmax_t a = a0[0];
+<span class="lineNum">     100 </span>                :            :   intmax_t b = b0[0];
 <span class="lineNum">     101 </span>                :            : 
 <span class="lineNum">     102 </span>                :            :   /* Some x86-style hosts raise an exception for INT_MIN / -1.  */
-<span class="lineNum">     103 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 431 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">        431 :   if (a &lt; - INTMAX_MAX &amp;&amp; b == -1)</span>
-<span class="lineNum">     104 </span>                :<span class="lineNoCov">          0 :     integer_overflow ('/');</span>
-<span class="lineNum">     105 </span>                :<span class="lineCov">        431 :   r[0] = a / b;</span>
-<a name="106"><span class="lineNum">     106 </span>                :<span class="lineCov">        431 : }</span></a>
+<span class="lineNum">     103 </span>                :            :   if (a &lt; - INTMAX_MAX &amp;&amp; b == -1)
+<span class="lineNum">     104 </span>                :            :     integer_overflow ('/');
+<span class="lineNum">     105 </span>                :            :   r[0] = a / b;
+<span class="lineNum">     106 </span>                :            : }
 <span class="lineNum">     107 </span>                :            : static void
-<span class="lineNum">     108 </span>                :<span class="lineCov">         12 : mpz_tdiv_r (mpz_t r, mpz_t a0, mpz_t b0)</span>
+<span class="lineNum">     108 </span>                :            : mpz_tdiv_r (mpz_t r, mpz_t a0, mpz_t b0)
 <span class="lineNum">     109 </span>                :            : {
-<span class="lineNum">     110 </span>                :<span class="lineCov">         12 :   intmax_t a = a0[0];</span>
-<span class="lineNum">     111 </span>                :<span class="lineCov">         12 :   intmax_t b = b0[0];</span>
+<span class="lineNum">     110 </span>                :            :   intmax_t a = a0[0];
+<span class="lineNum">     111 </span>                :            :   intmax_t b = b0[0];
 <span class="lineNum">     112 </span>                :            : 
 <span class="lineNum">     113 </span>                :            :   /* Some x86-style hosts raise an exception for INT_MIN % -1.  */
-<span class="lineNum">     114 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         12 :   r[0] = a &lt; - INTMAX_MAX &amp;&amp; b == -1 ? 0 : a % b;</span>
-<a name="115"><span class="lineNum">     115 </span>                :<span class="lineCov">         12 : }</span></a>
+<span class="lineNum">     114 </span>                :            :   r[0] = a &lt; - INTMAX_MAX &amp;&amp; b == -1 ? 0 : a % b;
+<span class="lineNum">     115 </span>                :            : }
 <span class="lineNum">     116 </span>                :            : static char *
-<span class="lineNum">     117 </span>                :<span class="lineCov">        420 : mpz_get_str (char const *str, int base, mpz_t z)</span>
+<span class="lineNum">     117 </span>                :            : mpz_get_str (char const *str, int base, mpz_t z)
 <span class="lineNum">     118 </span>                :            : {
 <span class="lineNum">     119 </span>                :            :   (void) str; (void) base;
 <span class="lineNum">     120 </span>                :            :   char buf[INT_BUFSIZE_BOUND (intmax_t)];
-<span class="lineNum">     121 </span>                :<span class="lineCov">        420 :   return xstrdup (imaxtostr (z[0], buf));</span>
-<a name="122"><span class="lineNum">     122 </span>                :            : }</a>
+<span class="lineNum">     121 </span>                :            :   return xstrdup (imaxtostr (z[0], buf));
+<span class="lineNum">     122 </span>                :            : }
 <span class="lineNum">     123 </span>                :            : static int
-<span class="lineNum">     124 </span>                :<span class="lineCov">       6045 : mpz_sgn (mpz_t z)</span>
+<span class="lineNum">     124 </span>                :            : mpz_sgn (mpz_t z)
 <span class="lineNum">     125 </span>                :            : {
-<span class="lineNum">     126 </span>        [<span class="branchCov" title="Branch 0 was taken 6033 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">       6045 :   return z[0] &lt; 0 ? -1 : 0 &lt; z[0];</span>
-<a name="127"><span class="lineNum">     127 </span>                :            : }</a>
+<span class="lineNum">     126 </span>                :            :   return z[0] &lt; 0 ? -1 : 0 &lt; z[0];
+<span class="lineNum">     127 </span>                :            : }
 <span class="lineNum">     128 </span>                :            : static int
-<span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 : mpz_fits_ulong_p (mpz_t z)</span>
+<span class="lineNum">     129 </span>                :            : mpz_fits_ulong_p (mpz_t z)
 <span class="lineNum">     130 </span>                :            : {
-<span class="lineNum">     131 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :   return 0 &lt;= z[0] &amp;&amp; z[0] &lt;= ULONG_MAX;</span>
-<a name="132"><span class="lineNum">     132 </span>                :            : }</a>
+<span class="lineNum">     131 </span>                :            :   return 0 &lt;= z[0] &amp;&amp; z[0] &lt;= ULONG_MAX;
+<span class="lineNum">     132 </span>                :            : }
 <span class="lineNum">     133 </span>                :            : static unsigned long int
-<span class="lineNum">     134 </span>                :<span class="lineNoCov">          0 : mpz_get_ui (mpz_t z)</span>
+<span class="lineNum">     134 </span>                :            : mpz_get_ui (mpz_t z)
 <span class="lineNum">     135 </span>                :            : {
-<span class="lineNum">     136 </span>                :<span class="lineNoCov">          0 :   return z[0];</span>
-<a name="137"><span class="lineNum">     137 </span>                :            : }</a>
+<span class="lineNum">     136 </span>                :            :   return z[0];
+<span class="lineNum">     137 </span>                :            : }
 <span class="lineNum">     138 </span>                :            : static int
-<span class="lineNum">     139 </span>                :<span class="lineCov">       5602 : mpz_out_str (FILE *stream, int base, mpz_t z)</span>
+<span class="lineNum">     139 </span>                :            : mpz_out_str (FILE *stream, int base, mpz_t z)
 <span class="lineNum">     140 </span>                :            : {
 <span class="lineNum">     141 </span>                :            :   (void) base;
 <span class="lineNum">     142 </span>                :            :   char buf[INT_BUFSIZE_BOUND (intmax_t)];
-<span class="lineNum">     143 </span>                :<span class="lineCov">       5602 :   return fputs (imaxtostr (z[0], buf), stream) != EOF;</span>
+<span class="lineNum">     143 </span>                :            :   return fputs (imaxtostr (z[0], buf), stream) != EOF;
 <span class="lineNum">     144 </span>                :            : }
 <span class="lineNum">     145 </span>                :            : #endif
 <span class="lineNum">     146 </span>                :            : 
@@ -266,21 +265,21 @@
 <span class="lineNum">     194 </span>                :            : static void printv (VALUE *v);
 <a name="195"><span class="lineNum">     195 </span>                :            : </a>
 <span class="lineNum">     196 </span>                :            : void
-<span class="lineNum">     197 </span>                :<span class="lineCov">          8 : usage (int status)</span>
+<span class="lineNum">     197 </span>                :<span class="lineCov">         28 : usage (int status)</span>
 <span class="lineNum">     198 </span>                :            : {
-<span class="lineNum">     199 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">     200 </span>                :<span class="lineCov">          2 :     emit_try_help ();</span>
+<span class="lineNum">     199 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         28 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     200 </span>                :<span class="lineCov">          7 :     emit_try_help ();</span>
 <span class="lineNum">     201 </span>                :            :   else
 <span class="lineNum">     202 </span>                :            :     {
-<span class="lineNum">     203 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     203 </span>                :<span class="lineCov">         21 :       printf (_(&quot;\</span>
 <span class="lineNum">     204 </span>                :            : Usage: %s EXPRESSION\n\
 <span class="lineNum">     205 </span>                :            :   or:  %s OPTION\n\
 <span class="lineNum">     206 </span>                :            : &quot;),
 <span class="lineNum">     207 </span>                :            :               program_name, program_name);
-<span class="lineNum">     208 </span>                :<span class="lineCov">          6 :       putchar ('\n');</span>
-<span class="lineNum">     209 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     210 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     211 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     208 </span>                :<span class="lineCov">         21 :       putchar ('\n');</span>
+<span class="lineNum">     209 </span>                :<span class="lineCov">         21 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     210 </span>                :<span class="lineCov">         21 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     211 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     212 </span>                :            : \n\
 <span class="lineNum">     213 </span>                :            : Print the value of EXPRESSION to standard output.  A blank line below\n\
 <span class="lineNum">     214 </span>                :            : separates increasing precedence groups.  EXPRESSION may be:\n\
@@ -289,7 +288,7 @@
 <span class="lineNum">     217 </span>                :            : \n\
 <span class="lineNum">     218 </span>                :            :   ARG1 &amp; ARG2       ARG1 if neither argument is null or 0, otherwise 0\n\
 <span class="lineNum">     219 </span>                :            : &quot;), stdout);
-<span class="lineNum">     220 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     220 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     221 </span>                :            : \n\
 <span class="lineNum">     222 </span>                :            :   ARG1 &lt; ARG2       ARG1 is less than ARG2\n\
 <span class="lineNum">     223 </span>                :            :   ARG1 &lt;= ARG2      ARG1 is less than or equal to ARG2\n\
@@ -298,20 +297,20 @@
 <span class="lineNum">     226 </span>                :            :   ARG1 &gt;= ARG2      ARG1 is greater than or equal to ARG2\n\
 <span class="lineNum">     227 </span>                :            :   ARG1 &gt; ARG2       ARG1 is greater than ARG2\n\
 <span class="lineNum">     228 </span>                :            : &quot;), stdout);
-<span class="lineNum">     229 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     230 </span>                :            : \n\
 <span class="lineNum">     231 </span>                :            :   ARG1 + ARG2       arithmetic sum of ARG1 and ARG2\n\
 <span class="lineNum">     232 </span>                :            :   ARG1 - ARG2       arithmetic difference of ARG1 and ARG2\n\
 <span class="lineNum">     233 </span>                :            : &quot;), stdout);
 <span class="lineNum">     234 </span>                :            :       /* Tell xgettext that the &quot;% A&quot; below is not a printf-style
 <span class="lineNum">     235 </span>                :            :          format string:  xgettext:no-c-format */
-<span class="lineNum">     236 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     236 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     237 </span>                :            : \n\
 <span class="lineNum">     238 </span>                :            :   ARG1 * ARG2       arithmetic product of ARG1 and ARG2\n\
 <span class="lineNum">     239 </span>                :            :   ARG1 / ARG2       arithmetic quotient of ARG1 divided by ARG2\n\
 <span class="lineNum">     240 </span>                :            :   ARG1 % ARG2       arithmetic remainder of ARG1 divided by ARG2\n\
 <span class="lineNum">     241 </span>                :            : &quot;), stdout);
-<span class="lineNum">     242 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     242 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     243 </span>                :            : \n\
 <span class="lineNum">     244 </span>                :            :   STRING : REGEXP   anchored pattern match of REGEXP in STRING\n\
 <span class="lineNum">     245 </span>                :            : \n\
@@ -320,34 +319,34 @@
 <span class="lineNum">     248 </span>                :            :   index STRING CHARS         index in STRING where any CHARS is found, or 0\n\
 <span class="lineNum">     249 </span>                :            :   length STRING              length of STRING\n\
 <span class="lineNum">     250 </span>                :            : &quot;), stdout);
-<span class="lineNum">     251 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     251 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     252 </span>                :            :   + TOKEN                    interpret TOKEN as a string, even if it is a\n\
 <span class="lineNum">     253 </span>                :            :                                keyword like 'match' or an operator like '/'\n\
 <span class="lineNum">     254 </span>                :            : \n\
 <span class="lineNum">     255 </span>                :            :   ( EXPRESSION )             value of EXPRESSION\n\
 <span class="lineNum">     256 </span>                :            : &quot;), stdout);
-<span class="lineNum">     257 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     257 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     258 </span>                :            : \n\
 <span class="lineNum">     259 </span>                :            : Beware that many operators need to be escaped or quoted for shells.\n\
 <span class="lineNum">     260 </span>                :            : Comparisons are arithmetic if both ARGs are numbers, else lexicographical.\n\
 <span class="lineNum">     261 </span>                :            : Pattern matches return the string matched between \\( and \\) or null; if\n\
 <span class="lineNum">     262 </span>                :            : \\( and \\) are not used, they return the number of characters matched or 0.\n\
 <span class="lineNum">     263 </span>                :            : &quot;), stdout);
-<span class="lineNum">     264 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     264 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     265 </span>                :            : \n\
 <span class="lineNum">     266 </span>                :            : Exit status is 0 if EXPRESSION is neither null nor 0, 1 if EXPRESSION is null\n\
 <span class="lineNum">     267 </span>                :            : or 0, 2 if EXPRESSION is syntactically invalid, and 3 if an error occurred.\n\
 <span class="lineNum">     268 </span>                :            : &quot;), stdout);
-<span class="lineNum">     269 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">     269 </span>                :<span class="lineCov">         21 :       emit_ancillary_info ();</span>
 <span class="lineNum">     270 </span>                :            :     }
-<span class="lineNum">     271 </span>                :<span class="lineCov">          8 :   exit (status);</span>
+<span class="lineNum">     271 </span>                :<span class="lineCov">         28 :   exit (status);</span>
 <span class="lineNum">     272 </span>                :            : }
 <span class="lineNum">     273 </span>                :            : 
 <a name="274"><span class="lineNum">     274 </span>                :            : /* Report a syntax error and exit.  */</a>
 <span class="lineNum">     275 </span>                :            : static void
-<span class="lineNum">     276 </span>                :<span class="lineCov">          2 : syntax_error (void)</span>
+<span class="lineNum">     276 </span>                :<span class="lineCov">          7 : syntax_error (void)</span>
 <span class="lineNum">     277 </span>                :            : {
-<span class="lineNum">     278 </span>                :<span class="lineCov">          2 :   error (EXPR_INVALID, 0, _(&quot;syntax error&quot;));</span>
+<span class="lineNum">     278 </span>                :<span class="lineCov">          7 :   error (EXPR_INVALID, 0, _(&quot;syntax error&quot;));</span>
 <span class="lineNum">     279 </span>                :<span class="lineNoCov">          0 : }</span>
 <span class="lineNum">     280 </span>                :            : 
 <a name="281"><span class="lineNum">     281 </span>                :            : /* Report an integer overflow for operation OP and exit.  */</a>
@@ -368,191 +367,191 @@
 <span class="lineNum">     296 </span>                :            : }
 <a name="297"><span class="lineNum">     297 </span>                :            : </a>
 <span class="lineNum">     298 </span>                :            : int
-<span class="lineNum">     299 </span>                :<span class="lineCov">       6622 : main (int argc, char **argv)</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">      25204 : main (int argc, char **argv)</span>
 <span class="lineNum">     300 </span>                :            : {
 <span class="lineNum">     301 </span>                :            :   VALUE *v;
 <span class="lineNum">     302 </span>                :            : 
 <span class="lineNum">     303 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">     304 </span>                :<span class="lineCov">       6622 :   set_program_name (argv[0]);</span>
-<span class="lineNum">     305 </span>                :<span class="lineCov">       6622 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     306 </span>                :<span class="lineCov">       6622 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     307 </span>                :<span class="lineCov">       6622 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     304 </span>                :<span class="lineCov">      25204 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     305 </span>                :<span class="lineCov">      25204 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     306 </span>                :<span class="lineCov">      25204 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     307 </span>                :<span class="lineCov">      25204 :   textdomain (PACKAGE);</span>
 <span class="lineNum">     308 </span>                :            : 
-<span class="lineNum">     309 </span>                :<span class="lineCov">       6622 :   initialize_exit_failure (EXPR_FAILURE);</span>
-<span class="lineNum">     310 </span>                :<span class="lineCov">       6622 :   atexit (close_stdout);</span>
+<span class="lineNum">     309 </span>                :<span class="lineCov">      25204 :   initialize_exit_failure (EXPR_FAILURE);</span>
+<span class="lineNum">     310 </span>                :<span class="lineCov">      25204 :   atexit (close_stdout);</span>
 <span class="lineNum">     311 </span>                :            : 
-<span class="lineNum">     312 </span>                :<span class="lineCov">       6622 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, VERSION,</span>
+<span class="lineNum">     312 </span>                :<span class="lineCov">      25204 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, VERSION,</span>
 <span class="lineNum">     313 </span>                :            :                       usage, AUTHORS, (char const *) NULL);
 <span class="lineNum">     314 </span>                :            : 
 <span class="lineNum">     315 </span>                :            :   /* The above handles --help and --version.
 <span class="lineNum">     316 </span>                :            :      Since there is no other invocation of getopt, handle '--' here.  */
-<span class="lineNum">     317 </span>                :<span class="lineCov">       6606 :   unsigned int u_argc = argc;</span>
-<span class="lineNum">     318 </span>[<span class="branchCov" title="Branch 0 was taken 6604 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10 times"> + </span><span class="branchCov" title="Branch 3 was taken 6594 times"> + </span>]:<span class="lineCov">       6606 :   if (1 &lt; u_argc &amp;&amp; STREQ (argv[1], &quot;--&quot;))</span>
+<span class="lineNum">     317 </span>                :<span class="lineCov">      25148 :   unsigned int u_argc = argc;</span>
+<span class="lineNum">     318 </span>[<span class="branchCov" title="Branch 2 was taken 35 times"> + </span><span class="branchCov" title="Branch 3 was taken 25106 times"> + </span>][<span class="branchCov" title="Branch 0 was taken 25141 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">      25148 :   if (1 &lt; u_argc &amp;&amp; STREQ (argv[1], &quot;--&quot;))</span>
 <span class="lineNum">     319 </span>                :            :     {
-<span class="lineNum">     320 </span>                :<span class="lineCov">         10 :       --u_argc;</span>
-<span class="lineNum">     321 </span>                :<span class="lineCov">         10 :       ++argv;</span>
+<span class="lineNum">     320 </span>                :<span class="lineCov">         35 :       --u_argc;</span>
+<span class="lineNum">     321 </span>                :<span class="lineCov">         35 :       ++argv;</span>
 <span class="lineNum">     322 </span>                :            :     }
 <span class="lineNum">     323 </span>                :            : 
-<span class="lineNum">     324 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6604 times"> + </span>]:<span class="lineCov">       6606 :   if (u_argc &lt;= 1)</span>
+<span class="lineNum">     324 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 25141 times"> + </span>]:<span class="lineCov">      25148 :   if (u_argc &lt;= 1)</span>
 <span class="lineNum">     325 </span>                :            :     {
-<span class="lineNum">     326 </span>                :<span class="lineCov">          2 :       error (0, 0, _(&quot;missing operand&quot;));</span>
-<span class="lineNum">     327 </span>                :<span class="lineCov">          2 :       usage (EXPR_INVALID);</span>
+<span class="lineNum">     326 </span>                :<span class="lineCov">          7 :       error (0, 0, _(&quot;missing operand&quot;));</span>
+<span class="lineNum">     327 </span>                :<span class="lineCov">          7 :       usage (EXPR_INVALID);</span>
 <span class="lineNum">     328 </span>                :            :     }
 <span class="lineNum">     329 </span>                :            : 
-<span class="lineNum">     330 </span>                :<span class="lineCov">       6604 :   args = argv + 1;</span>
+<span class="lineNum">     330 </span>                :<span class="lineCov">      25141 :   args = argv + 1;</span>
 <span class="lineNum">     331 </span>                :            : 
-<span class="lineNum">     332 </span>                :<span class="lineCov">       6604 :   v = eval (true);</span>
-<span class="lineNum">     333 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 6576 times"> + </span>]:<span class="lineCov">       6578 :   if (!nomoreargs ())</span>
-<span class="lineNum">     334 </span>                :<span class="lineCov">          2 :     syntax_error ();</span>
-<span class="lineNum">     335 </span>                :<span class="lineCov">       6576 :   printv (v);</span>
+<span class="lineNum">     332 </span>                :<span class="lineCov">      25141 :   v = eval (true);</span>
+<span class="lineNum">     333 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchCov" title="Branch 2 was taken 25050 times"> + </span>]:<span class="lineCov">      25057 :   if (!nomoreargs ())</span>
+<span class="lineNum">     334 </span>                :<span class="lineCov">          7 :     syntax_error ();</span>
+<span class="lineNum">     335 </span>                :<span class="lineCov">      25050 :   printv (v);</span>
 <span class="lineNum">     336 </span>                :            : 
-<span class="lineNum">     337 </span>                :<span class="lineCov">       6576 :   exit (null (v));</span>
+<span class="lineNum">     337 </span>                :<span class="lineCov">      25050 :   exit (null (v));</span>
 <span class="lineNum">     338 </span>                :            : }
 <span class="lineNum">     339 </span>                :            : 
 <span class="lineNum">     340 </span>                :            : /* Return a VALUE for I.  */
 <a name="341"><span class="lineNum">     341 </span>                :            : </a>
 <span class="lineNum">     342 </span>                :            : static VALUE *
-<span class="lineNum">     343 </span>                :<span class="lineCov">        488 : int_value (unsigned long int i)</span>
+<span class="lineNum">     343 </span>                :<span class="lineCov">       3422 : int_value (unsigned long int i)</span>
 <span class="lineNum">     344 </span>                :            : {
-<span class="lineNum">     345 </span>                :<span class="lineCov">        488 :   VALUE *v = xmalloc (sizeof *v);</span>
-<span class="lineNum">     346 </span>                :<span class="lineCov">        488 :   v-&gt;type = integer;</span>
-<span class="lineNum">     347 </span>                :<span class="lineCov">        488 :   mpz_init_set_ui (v-&gt;u.i, i);</span>
-<span class="lineNum">     348 </span>                :<span class="lineCov">        488 :   return v;</span>
+<span class="lineNum">     345 </span>                :<span class="lineCov">       3422 :   VALUE *v = xmalloc (sizeof *v);</span>
+<span class="lineNum">     346 </span>                :<span class="lineCov">       3422 :   v-&gt;type = integer;</span>
+<span class="lineNum">     347 </span>                :<span class="lineCov">       3422 :   mpz_init_set_ui (v-&gt;u.i, i);</span>
+<span class="lineNum">     348 </span>                :<span class="lineCov">       3422 :   return v;</span>
 <span class="lineNum">     349 </span>                :            : }
 <span class="lineNum">     350 </span>                :            : 
 <span class="lineNum">     351 </span>                :            : /* Return a VALUE for S.  */
 <a name="352"><span class="lineNum">     352 </span>                :            : </a>
 <span class="lineNum">     353 </span>                :            : static VALUE *
-<span class="lineNum">     354 </span>                :<span class="lineCov">      14631 : str_value (char const *s)</span>
+<span class="lineNum">     354 </span>                :<span class="lineCov">      57026 : str_value (char const *s)</span>
 <span class="lineNum">     355 </span>                :            : {
-<span class="lineNum">     356 </span>                :<span class="lineCov">      14631 :   VALUE *v = xmalloc (sizeof *v);</span>
-<span class="lineNum">     357 </span>                :<span class="lineCov">      14631 :   v-&gt;type = string;</span>
-<span class="lineNum">     358 </span>                :<span class="lineCov">      14631 :   v-&gt;u.s = xstrdup (s);</span>
-<span class="lineNum">     359 </span>                :<span class="lineCov">      14631 :   return v;</span>
+<span class="lineNum">     356 </span>                :<span class="lineCov">      57026 :   VALUE *v = xmalloc (sizeof *v);</span>
+<span class="lineNum">     357 </span>                :<span class="lineCov">      57026 :   v-&gt;type = string;</span>
+<span class="lineNum">     358 </span>                :<span class="lineCov">      57026 :   v-&gt;u.s = xstrdup (s);</span>
+<span class="lineNum">     359 </span>                :<span class="lineCov">      57026 :   return v;</span>
 <span class="lineNum">     360 </span>                :            : }
 <span class="lineNum">     361 </span>                :            : 
 <span class="lineNum">     362 </span>                :            : /* Free VALUE V, including structure components.  */
 <a name="363"><span class="lineNum">     363 </span>                :            : </a>
 <span class="lineNum">     364 </span>                :            : static void
-<span class="lineNum">     365 </span>                :<span class="lineCov">       8489 : freev (VALUE *v)</span>
+<span class="lineNum">     365 </span>                :<span class="lineCov">      35223 : freev (VALUE *v)</span>
 <span class="lineNum">     366 </span>                :            : {
-<span class="lineNum">     367 </span>        [<span class="branchCov" title="Branch 0 was taken 2930 times"> + </span><span class="branchCov" title="Branch 1 was taken 5559 times"> + </span>]:<span class="lineCov">       8489 :   if (v-&gt;type == string)</span>
-<span class="lineNum">     368 </span>                :<span class="lineCov">       2930 :     free (v-&gt;u.s);</span>
+<span class="lineNum">     367 </span>        [<span class="branchCov" title="Branch 0 was taken 13767 times"> + </span><span class="branchCov" title="Branch 1 was taken 21456 times"> + </span>]:<span class="lineCov">      35223 :   if (v-&gt;type == string)</span>
+<span class="lineNum">     368 </span>                :<span class="lineCov">      13767 :     free (v-&gt;u.s);</span>
 <span class="lineNum">     369 </span>                :            :   else
-<span class="lineNum">     370 </span>                :<span class="lineCov">       5559 :     mpz_clear (v-&gt;u.i);</span>
-<span class="lineNum">     371 </span>                :<span class="lineCov">       8489 :   free (v);</span>
-<span class="lineNum">     372 </span>                :<span class="lineCov">       8489 : }</span>
+<span class="lineNum">     370 </span>                :<span class="lineCov">      21456 :     mpz_clear (v-&gt;u.i);</span>
+<span class="lineNum">     371 </span>                :<span class="lineCov">      35223 :   free (v);</span>
+<span class="lineNum">     372 </span>                :<span class="lineCov">      35223 : }</span>
 <span class="lineNum">     373 </span>                :            : 
 <span class="lineNum">     374 </span>                :            : /* Print VALUE V.  */
 <a name="375"><span class="lineNum">     375 </span>                :            : </a>
 <span class="lineNum">     376 </span>                :            : static void
-<span class="lineNum">     377 </span>                :<span class="lineCov">       6576 : printv (VALUE *v)</span>
+<span class="lineNum">     377 </span>                :<span class="lineCov">      25050 : printv (VALUE *v)</span>
 <span class="lineNum">     378 </span>                :            : {
-<span class="lineNum">     379 </span>     [<span class="branchCov" title="Branch 0 was taken 5602 times"> + </span><span class="branchCov" title="Branch 1 was taken 974 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">       6576 :   switch (v-&gt;type)</span>
+<span class="lineNum">     379 </span>     [<span class="branchCov" title="Branch 0 was taken 21599 times"> + </span><span class="branchCov" title="Branch 1 was taken 3451 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">      25050 :   switch (v-&gt;type)</span>
 <span class="lineNum">     380 </span>                :            :     {
 <span class="lineNum">     381 </span>                :            :     case integer:
-<span class="lineNum">     382 </span>                :<span class="lineCov">       5602 :       mpz_out_str (stdout, 10, v-&gt;u.i);</span>
-<span class="lineNum">     383 </span>                :<span class="lineCov">       5602 :       putchar ('\n');</span>
-<span class="lineNum">     384 </span>                :<span class="lineCov">       5602 :       break;</span>
+<span class="lineNum">     382 </span>                :<span class="lineCov">      21599 :       mpz_out_str (stdout, 10, v-&gt;u.i);</span>
+<span class="lineNum">     383 </span>                :<span class="lineCov">      21599 :       putchar ('\n');</span>
+<span class="lineNum">     384 </span>                :<span class="lineCov">      21599 :       break;</span>
 <span class="lineNum">     385 </span>                :            :     case string:
-<span class="lineNum">     386 </span>                :<span class="lineCov">        974 :       puts (v-&gt;u.s);</span>
-<span class="lineNum">     387 </span>                :<span class="lineCov">        974 :       break;</span>
+<span class="lineNum">     386 </span>                :<span class="lineCov">       3451 :       puts (v-&gt;u.s);</span>
+<span class="lineNum">     387 </span>                :<span class="lineCov">       3451 :       break;</span>
 <span class="lineNum">     388 </span>                :            :     default:
 <span class="lineNum">     389 </span>                :<span class="lineNoCov">          0 :       abort ();</span>
 <span class="lineNum">     390 </span>                :            :     }
-<span class="lineNum">     391 </span>                :<span class="lineCov">       6576 : }</span>
+<span class="lineNum">     391 </span>                :<span class="lineCov">      25050 : }</span>
 <span class="lineNum">     392 </span>                :            : 
 <span class="lineNum">     393 </span>                :            : /* Return true if V is a null-string or zero-number.  */
 <a name="394"><span class="lineNum">     394 </span>                :            : </a>
 <span class="lineNum">     395 </span>                :            : static bool _GL_ATTRIBUTE_PURE
-<span class="lineNum">     396 </span>                :<span class="lineCov">       6590 : null (VALUE *v)</span>
+<span class="lineNum">     396 </span>                :<span class="lineCov">      25099 : null (VALUE *v)</span>
 <span class="lineNum">     397 </span>                :            : {
-<span class="lineNum">     398 </span>     [<span class="branchCov" title="Branch 0 was taken 5602 times"> + </span><span class="branchCov" title="Branch 1 was taken 988 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">       6590 :   switch (v-&gt;type)</span>
+<span class="lineNum">     398 </span>     [<span class="branchCov" title="Branch 0 was taken 21599 times"> + </span><span class="branchCov" title="Branch 1 was taken 3500 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">      25099 :   switch (v-&gt;type)</span>
 <span class="lineNum">     399 </span>                :            :     {
 <span class="lineNum">     400 </span>                :            :     case integer:
-<span class="lineNum">     401 </span>                :<span class="lineCov">       5602 :       return mpz_sgn (v-&gt;u.i) == 0;</span>
+<span class="lineNum">     401 </span>[<span class="branchCov" title="Branch 0 was taken 21564 times"> + </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 39 times"> + </span><span class="branchCov" title="Branch 3 was taken 21525 times"> + </span>]:<span class="lineCov">      21599 :       return mpz_sgn (v-&gt;u.i) == 0;</span>
 <span class="lineNum">     402 </span>                :            :     case string:
 <span class="lineNum">     403 </span>                :            :       {
-<span class="lineNum">     404 </span>                :<span class="lineCov">        988 :         char const *cp = v-&gt;u.s;</span>
-<span class="lineNum">     405 </span>        [<span class="branchCov" title="Branch 0 was taken 50 times"> + </span><span class="branchCov" title="Branch 1 was taken 938 times"> + </span>]:<span class="lineCov">        988 :         if (*cp == '\0')</span>
-<span class="lineNum">     406 </span>                :<span class="lineCov">         50 :           return true;</span>
+<span class="lineNum">     404 </span>                :<span class="lineCov">       3500 :         char const *cp = v-&gt;u.s;</span>
+<span class="lineNum">     405 </span>        [<span class="branchCov" title="Branch 0 was taken 175 times"> + </span><span class="branchCov" title="Branch 1 was taken 3325 times"> + </span>]:<span class="lineCov">       3500 :         if (*cp == '\0')</span>
+<span class="lineNum">     406 </span>                :<span class="lineCov">        175 :           return true;</span>
 <span class="lineNum">     407 </span>                :            : 
-<span class="lineNum">     408 </span>                :<span class="lineCov">        938 :         cp += (*cp == '-');</span>
+<span class="lineNum">     408 </span>                :<span class="lineCov">       3325 :         cp += (*cp == '-');</span>
 <span class="lineNum">     409 </span>                :            : 
 <span class="lineNum">     410 </span>                :            :         do
 <span class="lineNum">     411 </span>                :            :           {
-<span class="lineNum">     412 </span>        [<span class="branchCov" title="Branch 0 was taken 930 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">        940 :             if (*cp != '0')</span>
-<span class="lineNum">     413 </span>                :<span class="lineCov">        930 :               return false;</span>
+<span class="lineNum">     412 </span>        [<span class="branchCov" title="Branch 0 was taken 3297 times"> + </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">       3332 :             if (*cp != '0')</span>
+<span class="lineNum">     413 </span>                :<span class="lineCov">       3297 :               return false;</span>
 <span class="lineNum">     414 </span>                :            :           }
-<span class="lineNum">     415 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">         10 :         while (*++cp);</span>
+<span class="lineNum">     415 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         35 :         while (*++cp);</span>
 <span class="lineNum">     416 </span>                :            : 
-<span class="lineNum">     417 </span>                :<span class="lineCov">          8 :         return true;</span>
+<span class="lineNum">     417 </span>                :<span class="lineCov">         28 :         return true;</span>
 <span class="lineNum">     418 </span>                :            :       }
 <span class="lineNum">     419 </span>                :            :     default:
-<span class="lineNum">     420 </span>                :<span class="lineCov">       6590 :       abort ();</span>
+<span class="lineNum">     420 </span>                :<span class="lineCov">      25099 :       abort ();</span>
 <span class="lineNum">     421 </span>                :            :     }
 <span class="lineNum">     422 </span>                :            : }
 <span class="lineNum">     423 </span>                :            : 
 <span class="lineNum">     424 </span>                :            : /* Return true if CP takes the form of an integer.  */
 <a name="425"><span class="lineNum">     425 </span>                :            : </a>
 <span class="lineNum">     426 </span>                :            : static bool _GL_ATTRIBUTE_PURE
-<span class="lineNum">     427 </span>                :<span class="lineCov">      11947 : looks_like_integer (char const *cp)</span>
+<span class="lineNum">     427 </span>                :<span class="lineCov">      49227 : looks_like_integer (char const *cp)</span>
 <span class="lineNum">     428 </span>                :            : {
-<span class="lineNum">     429 </span>                :<span class="lineCov">      11947 :   cp += (*cp == '-');</span>
+<span class="lineNum">     429 </span>                :<span class="lineCov">      49227 :   cp += (*cp == '-');</span>
 <span class="lineNum">     430 </span>                :            : 
 <span class="lineNum">     431 </span>                :            :   do
-<span class="lineNum">     432 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 26795 times"> + </span>]:<span class="lineCov">      26799 :     if (! ISDIGIT (*cp))</span>
-<span class="lineNum">     433 </span>                :<span class="lineCov">          4 :       return false;</span>
-<span class="lineNum">     434 </span>        [<span class="branchCov" title="Branch 0 was taken 14852 times"> + </span><span class="branchCov" title="Branch 1 was taken 11943 times"> + </span>]:<span class="lineCov">      26795 :   while (*++cp);</span>
+<span class="lineNum">     432 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 119325 times"> + </span>]:<span class="lineCov">     119339 :     if (! ISDIGIT (*cp))</span>
+<span class="lineNum">     433 </span>                :<span class="lineCov">         14 :       return false;</span>
+<span class="lineNum">     434 </span>        [<span class="branchCov" title="Branch 0 was taken 70112 times"> + </span><span class="branchCov" title="Branch 1 was taken 49213 times"> + </span>]:<span class="lineCov">     119325 :   while (*++cp);</span>
 <span class="lineNum">     435 </span>                :            : 
-<span class="lineNum">     436 </span>                :<span class="lineCov">      11947 :   return true;</span>
+<span class="lineNum">     436 </span>                :<span class="lineCov">      49227 :   return true;</span>
 <span class="lineNum">     437 </span>                :            : }
 <span class="lineNum">     438 </span>                :            : 
 <span class="lineNum">     439 </span>                :            : /* Coerce V to a string value (can't fail).  */
 <a name="440"><span class="lineNum">     440 </span>                :            : </a>
 <span class="lineNum">     441 </span>                :            : static void
-<span class="lineNum">     442 </span>                :<span class="lineCov">       2960 : tostring (VALUE *v)</span>
+<span class="lineNum">     442 </span>                :<span class="lineCov">      13872 : tostring (VALUE *v)</span>
 <span class="lineNum">     443 </span>                :            : {
-<span class="lineNum">     444 </span>     [<span class="branchCov" title="Branch 0 was taken 420 times"> + </span><span class="branchCov" title="Branch 1 was taken 2540 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">       2960 :   switch (v-&gt;type)</span>
+<span class="lineNum">     444 </span>     [<span class="branchCov" title="Branch 0 was taken 3184 times"> + </span><span class="branchCov" title="Branch 1 was taken 10688 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">      13872 :   switch (v-&gt;type)</span>
 <span class="lineNum">     445 </span>                :            :     {
 <span class="lineNum">     446 </span>                :            :     case integer:
 <span class="lineNum">     447 </span>                :            :       {
-<span class="lineNum">     448 </span>                :<span class="lineCov">        420 :         char *s = mpz_get_str (NULL, 10, v-&gt;u.i);</span>
-<span class="lineNum">     449 </span>                :<span class="lineCov">        420 :         mpz_clear (v-&gt;u.i);</span>
-<span class="lineNum">     450 </span>                :<span class="lineCov">        420 :         v-&gt;u.s = s;</span>
-<span class="lineNum">     451 </span>                :<span class="lineCov">        420 :         v-&gt;type = string;</span>
+<span class="lineNum">     448 </span>                :<span class="lineCov">       3184 :         char *s = mpz_get_str (NULL, 10, v-&gt;u.i);</span>
+<span class="lineNum">     449 </span>                :<span class="lineCov">       3184 :         mpz_clear (v-&gt;u.i);</span>
+<span class="lineNum">     450 </span>                :<span class="lineCov">       3184 :         v-&gt;u.s = s;</span>
+<span class="lineNum">     451 </span>                :<span class="lineCov">       3184 :         v-&gt;type = string;</span>
 <span class="lineNum">     452 </span>                :            :       }
-<span class="lineNum">     453 </span>                :<span class="lineCov">        420 :       break;</span>
+<span class="lineNum">     453 </span>                :<span class="lineCov">       3184 :       break;</span>
 <span class="lineNum">     454 </span>                :            :     case string:
-<span class="lineNum">     455 </span>                :<span class="lineCov">       2540 :       break;</span>
+<span class="lineNum">     455 </span>                :<span class="lineCov">      10688 :       break;</span>
 <span class="lineNum">     456 </span>                :            :     default:
 <span class="lineNum">     457 </span>                :<span class="lineNoCov">          0 :       abort ();</span>
 <span class="lineNum">     458 </span>                :            :     }
-<span class="lineNum">     459 </span>                :<span class="lineCov">       2960 : }</span>
+<span class="lineNum">     459 </span>                :<span class="lineCov">      13872 : }</span>
 <span class="lineNum">     460 </span>                :            : 
 <span class="lineNum">     461 </span>                :            : /* Coerce V to an integer value.  Return true on success, false on failure.  */
 <a name="462"><span class="lineNum">     462 </span>                :            : </a>
 <span class="lineNum">     463 </span>                :            : static bool
-<span class="lineNum">     464 </span>                :<span class="lineCov">      11124 : toarith (VALUE *v)</span>
+<span class="lineNum">     464 </span>                :<span class="lineCov">      42926 : toarith (VALUE *v)</span>
 <span class="lineNum">     465 </span>                :            : {
-<span class="lineNum">     466 </span>     [<span class="branchCov" title="Branch 0 was taken 25 times"> + </span><span class="branchCov" title="Branch 1 was taken 11099 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">      11124 :   switch (v-&gt;type)</span>
+<span class="lineNum">     466 </span>     [<span class="branchCov" title="Branch 0 was taken 95 times"> + </span><span class="branchCov" title="Branch 1 was taken 42831 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">      42926 :   switch (v-&gt;type)</span>
 <span class="lineNum">     467 </span>                :            :     {
 <span class="lineNum">     468 </span>                :            :     case integer:
-<span class="lineNum">     469 </span>                :<span class="lineCov">         25 :       return true;</span>
+<span class="lineNum">     469 </span>                :<span class="lineCov">         95 :       return true;</span>
 <span class="lineNum">     470 </span>                :            :     case string:
 <span class="lineNum">     471 </span>                :            :       {
-<span class="lineNum">     472 </span>                :<span class="lineCov">      11099 :         char *s = v-&gt;u.s;</span>
+<span class="lineNum">     472 </span>                :<span class="lineCov">      42831 :         char *s = v-&gt;u.s;</span>
 <span class="lineNum">     473 </span>                :            : 
-<span class="lineNum">     474 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 11097 times"> + </span>]:<span class="lineCov">      11099 :         if (! looks_like_integer (s))</span>
-<span class="lineNum">     475 </span>                :<span class="lineCov">          2 :           return false;</span>
-<span class="lineNum">     476 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 11095 times"> + </span>]:<span class="lineCov">      11097 :         if (mpz_init_set_str (v-&gt;u.i, s, 10) != 0 &amp;&amp; !HAVE_GMP)</span>
-<span class="lineNum">     477 </span>                :<span class="lineCov">          2 :           error (EXPR_FAILURE, ERANGE, &quot;%s&quot;, s);</span>
-<span class="lineNum">     478 </span>                :<span class="lineCov">      11095 :         free (s);</span>
-<span class="lineNum">     479 </span>                :<span class="lineCov">      11095 :         v-&gt;type = integer;</span>
-<span class="lineNum">     480 </span>                :<span class="lineCov">      11095 :         return true;</span>
+<span class="lineNum">     474 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchCov" title="Branch 2 was taken 42824 times"> + </span>]:<span class="lineCov">      42831 :         if (! looks_like_integer (s))</span>
+<span class="lineNum">     475 </span>                :<span class="lineCov">          7 :           return false;</span>
+<span class="lineNum">     476 </span>                :<span class="lineCov">      42824 :         if (mpz_init_set_str (v-&gt;u.i, s, 10) != 0 &amp;&amp; !HAVE_GMP)</span>
+<span class="lineNum">     477 </span>                :            :           error (EXPR_FAILURE, ERANGE, &quot;%s&quot;, s);
+<span class="lineNum">     478 </span>                :<span class="lineCov">      42824 :         free (s);</span>
+<span class="lineNum">     479 </span>                :<span class="lineCov">      42824 :         v-&gt;type = integer;</span>
+<span class="lineNum">     480 </span>                :<span class="lineCov">      42824 :         return true;</span>
 <span class="lineNum">     481 </span>                :            :       }
 <span class="lineNum">     482 </span>                :            :     default:
-<span class="lineNum">     483 </span>                :<span class="lineCov">      11122 :       abort ();</span>
+<span class="lineNum">     483 </span>                :<span class="lineCov">      42926 :       abort ();</span>
 <span class="lineNum">     484 </span>                :            :     }
 <span class="lineNum">     485 </span>                :            : }
 <span class="lineNum">     486 </span>                :            : 
@@ -562,7 +561,7 @@
 <span class="lineNum">     490 </span>                :            : static size_t
 <span class="lineNum">     491 </span>                :<span class="lineNoCov">          0 : getsize (mpz_t i)</span>
 <span class="lineNum">     492 </span>                :            : {
-<span class="lineNum">     493 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (mpz_sgn (i) &lt; 0)</span>
+<span class="lineNum">     493 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (mpz_sgn (i) &lt; 0)</span>
 <span class="lineNum">     494 </span>                :<span class="lineNoCov">          0 :     return SIZE_MAX;</span>
 <span class="lineNum">     495 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (mpz_fits_ulong_p (i))</span>
 <span class="lineNum">     496 </span>                :            :     {
@@ -577,24 +576,24 @@
 <span class="lineNum">     505 </span>                :            :    STR must not be NULL.  */
 <a name="506"><span class="lineNum">     506 </span>                :            : </a>
 <span class="lineNum">     507 </span>                :            : static bool
-<span class="lineNum">     508 </span>                :<span class="lineCov">     222997 : nextarg (char const *str)</span>
+<span class="lineNum">     508 </span>                :<span class="lineCov">     869925 : nextarg (char const *str)</span>
 <span class="lineNum">     509 </span>                :            : {
-<span class="lineNum">     510 </span>        [<span class="branchCov" title="Branch 0 was taken 98648 times"> + </span><span class="branchCov" title="Branch 1 was taken 124349 times"> + </span>]:<span class="lineCov">     222997 :   if (*args == NULL)</span>
-<span class="lineNum">     511 </span>                :<span class="lineCov">      98648 :     return false;</span>
+<span class="lineNum">     510 </span>        [<span class="branchCov" title="Branch 0 was taken 375778 times"> + </span><span class="branchCov" title="Branch 1 was taken 494147 times"> + </span>]:<span class="lineCov">     869925 :   if (*args == NULL)</span>
+<span class="lineNum">     511 </span>                :<span class="lineCov">     375778 :     return false;</span>
 <span class="lineNum">     512 </span>                :            :   else
 <span class="lineNum">     513 </span>                :            :     {
-<span class="lineNum">     514 </span>                :<span class="lineCov">     124349 :       bool r = STREQ (*args, str);</span>
-<span class="lineNum">     515 </span>                :<span class="lineCov">     124349 :       args += r;</span>
-<span class="lineNum">     516 </span>                :<span class="lineCov">     222997 :       return r;</span>
+<span class="lineNum">     514 </span>                :<span class="lineCov">     494147 :       bool r = STREQ (*args, str);</span>
+<span class="lineNum">     515 </span>                :<span class="lineCov">     494147 :       args += r;</span>
+<span class="lineNum">     516 </span>                :<span class="lineCov">     869925 :       return r;</span>
 <span class="lineNum">     517 </span>                :            :     }
 <span class="lineNum">     518 </span>                :            : }
 <span class="lineNum">     519 </span>                :            : 
 <span class="lineNum">     520 </span>                :            : /* Return true if there no more tokens.  */
 <a name="521"><span class="lineNum">     521 </span>                :            : </a>
 <span class="lineNum">     522 </span>                :            : static bool
-<span class="lineNum">     523 </span>                :<span class="lineCov">      20251 : nomoreargs (void)</span>
+<span class="lineNum">     523 </span>                :<span class="lineCov">      78688 : nomoreargs (void)</span>
 <span class="lineNum">     524 </span>                :            : {
-<span class="lineNum">     525 </span>                :<span class="lineCov">      20251 :   return *args == 0;</span>
+<span class="lineNum">     525 </span>                :<span class="lineCov">      78688 :   return *args == 0;</span>
 <span class="lineNum">     526 </span>                :            : }
 <span class="lineNum">     527 </span>                :            : 
 <span class="lineNum">     528 </span>                :            : #ifdef EVAL_TRACE
@@ -618,7 +617,7 @@
 <span class="lineNum">     546 </span>                :            :    PV is the VALUE for the rhs (the pattern).  */
 <a name="547"><span class="lineNum">     547 </span>                :            : </a>
 <span class="lineNum">     548 </span>                :            : static VALUE *
-<span class="lineNum">     549 </span>                :<span class="lineCov">       1056 : docolon (VALUE *sv, VALUE *pv)</span>
+<span class="lineNum">     549 </span>                :<span class="lineCov">       3738 : docolon (VALUE *sv, VALUE *pv)</span>
 <span class="lineNum">     550 </span>                :            : {
 <span class="lineNum">     551 </span>                :            :   VALUE *v IF_LINT ( = NULL);
 <span class="lineNum">     552 </span>                :            :   const char *errmsg;
@@ -627,90 +626,90 @@
 <span class="lineNum">     555 </span>                :            :   struct re_registers re_regs;
 <span class="lineNum">     556 </span>                :            :   regoff_t matchlen;
 <span class="lineNum">     557 </span>                :            : 
-<span class="lineNum">     558 </span>                :<span class="lineCov">       1056 :   tostring (sv);</span>
-<span class="lineNum">     559 </span>                :<span class="lineCov">       1056 :   tostring (pv);</span>
+<span class="lineNum">     558 </span>                :<span class="lineCov">       3738 :   tostring (sv);</span>
+<span class="lineNum">     559 </span>                :<span class="lineCov">       3738 :   tostring (pv);</span>
 <span class="lineNum">     560 </span>                :            : 
-<span class="lineNum">     561 </span>                :<span class="lineCov">       1056 :   re_regs.num_regs = 0;</span>
-<span class="lineNum">     562 </span>                :<span class="lineCov">       1056 :   re_regs.start = NULL;</span>
-<span class="lineNum">     563 </span>                :<span class="lineCov">       1056 :   re_regs.end = NULL;</span>
+<span class="lineNum">     561 </span>                :<span class="lineCov">       3738 :   re_regs.num_regs = 0;</span>
+<span class="lineNum">     562 </span>                :<span class="lineCov">       3738 :   re_regs.start = NULL;</span>
+<span class="lineNum">     563 </span>                :<span class="lineCov">       3738 :   re_regs.end = NULL;</span>
 <span class="lineNum">     564 </span>                :            : 
-<span class="lineNum">     565 </span>                :<span class="lineCov">       1056 :   re_buffer.buffer = NULL;</span>
-<span class="lineNum">     566 </span>                :<span class="lineCov">       1056 :   re_buffer.allocated = 0;</span>
-<span class="lineNum">     567 </span>                :<span class="lineCov">       1056 :   re_buffer.fastmap = fastmap;</span>
-<span class="lineNum">     568 </span>                :<span class="lineCov">       1056 :   re_buffer.translate = NULL;</span>
-<span class="lineNum">     569 </span>                :<span class="lineCov">       1056 :   re_syntax_options =</span>
+<span class="lineNum">     565 </span>                :<span class="lineCov">       3738 :   re_buffer.buffer = NULL;</span>
+<span class="lineNum">     566 </span>                :<span class="lineCov">       3738 :   re_buffer.allocated = 0;</span>
+<span class="lineNum">     567 </span>                :<span class="lineCov">       3738 :   re_buffer.fastmap = fastmap;</span>
+<span class="lineNum">     568 </span>                :<span class="lineCov">       3738 :   re_buffer.translate = NULL;</span>
+<span class="lineNum">     569 </span>                :<span class="lineCov">       3738 :   re_syntax_options =</span>
 <span class="lineNum">     570 </span>                :            :     RE_SYNTAX_POSIX_BASIC &amp; ~RE_CONTEXT_INVALID_DUP &amp; ~RE_NO_EMPTY_RANGES;
-<span class="lineNum">     571 </span>                :<span class="lineCov">       1056 :   errmsg = re_compile_pattern (pv-&gt;u.s, strlen (pv-&gt;u.s), &amp;re_buffer);</span>
-<span class="lineNum">     572 </span>        [<span class="branchCov" title="Branch 0 was taken 22 times"> + </span><span class="branchCov" title="Branch 1 was taken 1034 times"> + </span>]:<span class="lineCov">       1056 :   if (errmsg)</span>
-<span class="lineNum">     573 </span>                :<span class="lineCov">         22 :     error (EXPR_INVALID, 0, &quot;%s&quot;, errmsg);</span>
-<span class="lineNum">     574 </span>                :<span class="lineCov">       1034 :   re_buffer.newline_anchor = 0;</span>
+<span class="lineNum">     571 </span>                :<span class="lineCov">       3738 :   errmsg = re_compile_pattern (pv-&gt;u.s, strlen (pv-&gt;u.s), &amp;re_buffer);</span>
+<span class="lineNum">     572 </span>        [<span class="branchCov" title="Branch 0 was taken 77 times"> + </span><span class="branchCov" title="Branch 1 was taken 3661 times"> + </span>]:<span class="lineCov">       3738 :   if (errmsg)</span>
+<span class="lineNum">     573 </span>                :<span class="lineCov">         77 :     error (EXPR_INVALID, 0, &quot;%s&quot;, errmsg);</span>
+<span class="lineNum">     574 </span>                :<span class="lineCov">       3661 :   re_buffer.newline_anchor = 0;</span>
 <span class="lineNum">     575 </span>                :            : 
-<span class="lineNum">     576 </span>                :<span class="lineCov">       1034 :   matchlen = re_match (&amp;re_buffer, sv-&gt;u.s, strlen (sv-&gt;u.s), 0, &amp;re_regs);</span>
-<span class="lineNum">     577 </span>        [<span class="branchCov" title="Branch 0 was taken 1022 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">       1034 :   if (0 &lt;= matchlen)</span>
+<span class="lineNum">     576 </span>                :<span class="lineCov">       3661 :   matchlen = re_match (&amp;re_buffer, sv-&gt;u.s, strlen (sv-&gt;u.s), 0, &amp;re_regs);</span>
+<span class="lineNum">     577 </span>        [<span class="branchCov" title="Branch 0 was taken 3619 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">       3661 :   if (0 &lt;= matchlen)</span>
 <span class="lineNum">     578 </span>                :            :     {
 <span class="lineNum">     579 </span>                :            :       /* Were \(...\) used? */
-<span class="lineNum">     580 </span>        [<span class="branchCov" title="Branch 0 was taken 964 times"> + </span><span class="branchCov" title="Branch 1 was taken 58 times"> + </span>]:<span class="lineCov">       1022 :       if (re_buffer.re_nsub &gt; 0)</span>
+<span class="lineNum">     580 </span>        [<span class="branchCov" title="Branch 0 was taken 3416 times"> + </span><span class="branchCov" title="Branch 1 was taken 203 times"> + </span>]:<span class="lineCov">       3619 :       if (re_buffer.re_nsub &gt; 0)</span>
 <span class="lineNum">     581 </span>                :            :         {
-<span class="lineNum">     582 </span>                :<span class="lineCov">        964 :           sv-&gt;u.s[re_regs.end[1]] = '\0';</span>
-<span class="lineNum">     583 </span>                :<span class="lineCov">        964 :           v = str_value (sv-&gt;u.s + re_regs.start[1]);</span>
+<span class="lineNum">     582 </span>                :<span class="lineCov">       3416 :           sv-&gt;u.s[re_regs.end[1]] = '\0';</span>
+<span class="lineNum">     583 </span>                :<span class="lineCov">       3416 :           v = str_value (sv-&gt;u.s + re_regs.start[1]);</span>
 <span class="lineNum">     584 </span>                :            :         }
 <span class="lineNum">     585 </span>                :            :       else
-<span class="lineNum">     586 </span>                :<span class="lineCov">         58 :         v = int_value (matchlen);</span>
+<span class="lineNum">     586 </span>                :<span class="lineCov">        203 :         v = int_value (matchlen);</span>
 <span class="lineNum">     587 </span>                :            :     }
-<span class="lineNum">     588 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         12 :   else if (matchlen == -1)</span>
+<span class="lineNum">     588 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         42 :   else if (matchlen == -1)</span>
 <span class="lineNum">     589 </span>                :            :     {
 <span class="lineNum">     590 </span>                :            :       /* Match failed -- return the right kind of null.  */
-<span class="lineNum">     591 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">         12 :       if (re_buffer.re_nsub &gt; 0)</span>
-<span class="lineNum">     592 </span>                :<span class="lineCov">         10 :         v = str_value (&quot;&quot;);</span>
+<span class="lineNum">     591 </span>        [<span class="branchCov" title="Branch 0 was taken 35 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">         42 :       if (re_buffer.re_nsub &gt; 0)</span>
+<span class="lineNum">     592 </span>                :<span class="lineCov">         35 :         v = str_value (&quot;&quot;);</span>
 <span class="lineNum">     593 </span>                :            :       else
-<span class="lineNum">     594 </span>                :<span class="lineCov">          2 :         v = int_value (0);</span>
+<span class="lineNum">     594 </span>                :<span class="lineCov">          7 :         v = int_value (0);</span>
 <span class="lineNum">     595 </span>                :            :     }
 <span class="lineNum">     596 </span>                :            :   else
 <span class="lineNum">     597 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     error (EXPR_FAILURE,</span>
 <span class="lineNum">     598 </span>                :<span class="lineNoCov">          0 :            (matchlen == -2 ? errno : EOVERFLOW),</span>
 <span class="lineNum">     599 </span>                :<span class="lineNoCov">          0 :            _(&quot;error in regular expression matcher&quot;));</span>
 <span class="lineNum">     600 </span>                :            : 
-<span class="lineNum">     601 </span>        [<span class="branchCov" title="Branch 0 was taken 1022 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">       1034 :   if (0 &lt; re_regs.num_regs)</span>
+<span class="lineNum">     601 </span>        [<span class="branchCov" title="Branch 0 was taken 3619 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">       3661 :   if (0 &lt; re_regs.num_regs)</span>
 <span class="lineNum">     602 </span>                :            :     {
-<span class="lineNum">     603 </span>                :<span class="lineCov">       1022 :       free (re_regs.start);</span>
-<span class="lineNum">     604 </span>                :<span class="lineCov">       1022 :       free (re_regs.end);</span>
+<span class="lineNum">     603 </span>                :<span class="lineCov">       3619 :       free (re_regs.start);</span>
+<span class="lineNum">     604 </span>                :<span class="lineCov">       3619 :       free (re_regs.end);</span>
 <span class="lineNum">     605 </span>                :            :     }
-<span class="lineNum">     606 </span>                :<span class="lineCov">       1034 :   re_buffer.fastmap = NULL;</span>
-<span class="lineNum">     607 </span>                :<span class="lineCov">       1034 :   regfree (&amp;re_buffer);</span>
-<span class="lineNum">     608 </span>                :<span class="lineCov">       1034 :   return v;</span>
+<span class="lineNum">     606 </span>                :<span class="lineCov">       3661 :   re_buffer.fastmap = NULL;</span>
+<span class="lineNum">     607 </span>                :<span class="lineCov">       3661 :   regfree (&amp;re_buffer);</span>
+<span class="lineNum">     608 </span>                :<span class="lineCov">       3661 :   return v;</span>
 <span class="lineNum">     609 </span>                :            : }
 <span class="lineNum">     610 </span>                :            : 
 <span class="lineNum">     611 </span>                :            : /* Handle bare operands and ( expr ) syntax.  */
 <a name="612"><span class="lineNum">     612 </span>                :            : </a>
 <span class="lineNum">     613 </span>                :            : static VALUE *
-<span class="lineNum">     614 </span>                :<span class="lineCov">      13673 : eval7 (bool evaluate)</span>
+<span class="lineNum">     614 </span>                :<span class="lineCov">      53631 : eval7 (bool evaluate)</span>
 <span class="lineNum">     615 </span>                :            : {
 <span class="lineNum">     616 </span>                :            :   VALUE *v;
 <span class="lineNum">     617 </span>                :            : 
 <span class="lineNum">     618 </span>                :            : #ifdef EVAL_TRACE
 <span class="lineNum">     619 </span>                :            :   trace (&quot;eval7&quot;);
 <span class="lineNum">     620 </span>                :            : #endif
-<span class="lineNum">     621 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13673 times"> + </span>]:<span class="lineCov">      13673 :   if (nomoreargs ())</span>
+<span class="lineNum">     621 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 53631 times"> + </span>]:<span class="lineCov">      53631 :   if (nomoreargs ())</span>
 <span class="lineNum">     622 </span>                :<span class="lineNoCov">          0 :     syntax_error ();</span>
 <span class="lineNum">     623 </span>                :            : 
-<span class="lineNum">     624 </span>        [<span class="branchCov" title="Branch 1 was taken 16 times"> + </span><span class="branchCov" title="Branch 2 was taken 13657 times"> + </span>]:<span class="lineCov">      13673 :   if (nextarg (&quot;(&quot;))</span>
+<span class="lineNum">     624 </span>        [<span class="branchCov" title="Branch 1 was taken 56 times"> + </span><span class="branchCov" title="Branch 2 was taken 53575 times"> + </span>]:<span class="lineCov">      53631 :   if (nextarg (&quot;(&quot;))</span>
 <span class="lineNum">     625 </span>                :            :     {
-<span class="lineNum">     626 </span>                :<span class="lineCov">         16 :       v = eval (evaluate);</span>
-<span class="lineNum">     627 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 16 times"> + </span>]:<span class="lineCov">         16 :       if (!nextarg (&quot;)&quot;))</span>
+<span class="lineNum">     626 </span>                :<span class="lineCov">         56 :       v = eval (evaluate);</span>
+<span class="lineNum">     627 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 56 times"> + </span>]:<span class="lineCov">         56 :       if (!nextarg (&quot;)&quot;))</span>
 <span class="lineNum">     628 </span>                :<span class="lineNoCov">          0 :         syntax_error ();</span>
-<span class="lineNum">     629 </span>                :<span class="lineCov">         16 :       return v;</span>
+<span class="lineNum">     629 </span>                :<span class="lineCov">         56 :       return v;</span>
 <span class="lineNum">     630 </span>                :            :     }
 <span class="lineNum">     631 </span>                :            : 
-<span class="lineNum">     632 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13657 times"> + </span>]:<span class="lineCov">      13657 :   if (nextarg (&quot;)&quot;))</span>
+<span class="lineNum">     632 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 53575 times"> + </span>]:<span class="lineCov">      53575 :   if (nextarg (&quot;)&quot;))</span>
 <span class="lineNum">     633 </span>                :<span class="lineNoCov">          0 :     syntax_error ();</span>
 <span class="lineNum">     634 </span>                :            : 
-<span class="lineNum">     635 </span>                :<span class="lineCov">      13673 :   return str_value (*args++);</span>
+<span class="lineNum">     635 </span>                :<span class="lineCov">      53631 :   return str_value (*args++);</span>
 <span class="lineNum">     636 </span>                :            : }
 <span class="lineNum">     637 </span>                :            : 
 <span class="lineNum">     638 </span>                :            : /* Handle match, substr, index, and length keywords, and quoting &quot;+&quot;.  */
 <a name="639"><span class="lineNum">     639 </span>                :            : </a>
 <span class="lineNum">     640 </span>                :            : static VALUE *
-<span class="lineNum">     641 </span>                :<span class="lineCov">      13673 : eval6 (bool evaluate)</span>
+<span class="lineNum">     641 </span>                :<span class="lineCov">      53631 : eval6 (bool evaluate)</span>
 <span class="lineNum">     642 </span>                :            : {
 <span class="lineNum">     643 </span>                :            :   VALUE *l;
 <span class="lineNum">     644 </span>                :            :   VALUE *r;
@@ -721,13 +720,13 @@
 <span class="lineNum">     649 </span>                :            : #ifdef EVAL_TRACE
 <span class="lineNum">     650 </span>                :            :   trace (&quot;eval6&quot;);
 <span class="lineNum">     651 </span>                :            : #endif
-<span class="lineNum">     652 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13673 times"> + </span>]:<span class="lineCov">      13673 :   if (nextarg (&quot;+&quot;))</span>
+<span class="lineNum">     652 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 53631 times"> + </span>]:<span class="lineCov">      53631 :   if (nextarg (&quot;+&quot;))</span>
 <span class="lineNum">     653 </span>                :            :     {
 <span class="lineNum">     654 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (nomoreargs ())</span>
 <span class="lineNum">     655 </span>                :<span class="lineNoCov">          0 :         syntax_error ();</span>
 <span class="lineNum">     656 </span>                :<span class="lineNoCov">          0 :       return str_value (*args++);</span>
 <span class="lineNum">     657 </span>                :            :     }
-<span class="lineNum">     658 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13673 times"> + </span>]:<span class="lineCov">      13673 :   else if (nextarg (&quot;length&quot;))</span>
+<span class="lineNum">     658 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 53631 times"> + </span>]:<span class="lineCov">      53631 :   else if (nextarg (&quot;length&quot;))</span>
 <span class="lineNum">     659 </span>                :            :     {
 <span class="lineNum">     660 </span>                :<span class="lineNoCov">          0 :       r = eval6 (evaluate);</span>
 <span class="lineNum">     661 </span>                :<span class="lineNoCov">          0 :       tostring (r);</span>
@@ -735,7 +734,7 @@
 <span class="lineNum">     663 </span>                :<span class="lineNoCov">          0 :       freev (r);</span>
 <span class="lineNum">     664 </span>                :<span class="lineNoCov">          0 :       return v;</span>
 <span class="lineNum">     665 </span>                :            :     }
-<span class="lineNum">     666 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13673 times"> + </span>]:<span class="lineCov">      13673 :   else if (nextarg (&quot;match&quot;))</span>
+<span class="lineNum">     666 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 53631 times"> + </span>]:<span class="lineCov">      53631 :   else if (nextarg (&quot;match&quot;))</span>
 <span class="lineNum">     667 </span>                :            :     {
 <span class="lineNum">     668 </span>                :<span class="lineNoCov">          0 :       l = eval6 (evaluate);</span>
 <span class="lineNum">     669 </span>                :<span class="lineNoCov">          0 :       r = eval6 (evaluate);</span>
@@ -749,7 +748,7 @@
 <span class="lineNum">     677 </span>                :<span class="lineNoCov">          0 :       freev (r);</span>
 <span class="lineNum">     678 </span>                :<span class="lineNoCov">          0 :       return v;</span>
 <span class="lineNum">     679 </span>                :            :     }
-<span class="lineNum">     680 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13673 times"> + </span>]:<span class="lineCov">      13673 :   else if (nextarg (&quot;index&quot;))</span>
+<span class="lineNum">     680 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 53631 times"> + </span>]:<span class="lineCov">      53631 :   else if (nextarg (&quot;index&quot;))</span>
 <span class="lineNum">     681 </span>                :            :     {
 <span class="lineNum">     682 </span>                :            :       size_t pos;
 <span class="lineNum">     683 </span>                :            : 
@@ -763,7 +762,7 @@
 <span class="lineNum">     691 </span>                :<span class="lineNoCov">          0 :       freev (r);</span>
 <span class="lineNum">     692 </span>                :<span class="lineNoCov">          0 :       return v;</span>
 <span class="lineNum">     693 </span>                :            :     }
-<span class="lineNum">     694 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13673 times"> + </span>]:<span class="lineCov">      13673 :   else if (nextarg (&quot;substr&quot;))</span>
+<span class="lineNum">     694 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 53631 times"> + </span>]:<span class="lineCov">      53631 :   else if (nextarg (&quot;substr&quot;))</span>
 <span class="lineNum">     695 </span>                :            :     {
 <span class="lineNum">     696 </span>                :            :       size_t llen;
 <span class="lineNum">     697 </span>                :<span class="lineNoCov">          0 :       l = eval6 (evaluate);</span>
@@ -772,15 +771,15 @@
 <span class="lineNum">     700 </span>                :<span class="lineNoCov">          0 :       tostring (l);</span>
 <span class="lineNum">     701 </span>                :<span class="lineNoCov">          0 :       llen = strlen (l-&gt;u.s);</span>
 <span class="lineNum">     702 </span>                :            : 
-<span class="lineNum">     703 </span>[<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>][<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (!toarith (i1) || !toarith (i2))</span>
+<span class="lineNum">     703 </span>[<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>][<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (!toarith (i1) || !toarith (i2))</span>
 <span class="lineNum">     704 </span>                :<span class="lineNoCov">          0 :         v = str_value (&quot;&quot;);</span>
 <span class="lineNum">     705 </span>                :            :       else
 <span class="lineNum">     706 </span>                :            :         {
 <span class="lineNum">     707 </span>                :<span class="lineNoCov">          0 :           size_t pos = getsize (i1-&gt;u.i);</span>
 <span class="lineNum">     708 </span>                :<span class="lineNoCov">          0 :           size_t len = getsize (i2-&gt;u.i);</span>
 <span class="lineNum">     709 </span>                :            : 
-<span class="lineNum">     710 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (llen &lt; pos || pos == 0 || len == 0 || len == SIZE_MAX)</span>
-<span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>][<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
+<span class="lineNum">     710 </span>[<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>][<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (llen &lt; pos || pos == 0 || len == 0 || len == SIZE_MAX)</span>
+<span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>][<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]
 <span class="lineNum">     711 </span>                :<span class="lineNoCov">          0 :             v = str_value (&quot;&quot;);</span>
 <span class="lineNum">     712 </span>                :            :           else
 <span class="lineNum">     713 </span>                :            :             {
@@ -799,14 +798,14 @@
 <span class="lineNum">     726 </span>                :<span class="lineNoCov">          0 :       return v;</span>
 <span class="lineNum">     727 </span>                :            :     }
 <span class="lineNum">     728 </span>                :            :   else
-<span class="lineNum">     729 </span>                :<span class="lineCov">      13673 :     return eval7 (evaluate);</span>
+<span class="lineNum">     729 </span>                :<span class="lineCov">      53631 :     return eval7 (evaluate);</span>
 <span class="lineNum">     730 </span>                :            : }
 <span class="lineNum">     731 </span>                :            : 
 <span class="lineNum">     732 </span>                :            : /* Handle : operator (pattern matching).
 <span class="lineNum">     733 </span>                :            :    Calls docolon to do the real work.  */
 <a name="734"><span class="lineNum">     734 </span>                :            : </a>
 <span class="lineNum">     735 </span>                :            : static VALUE *
-<span class="lineNum">     736 </span>                :<span class="lineCov">      12617 : eval5 (bool evaluate)</span>
+<span class="lineNum">     736 </span>                :<span class="lineCov">      49893 : eval5 (bool evaluate)</span>
 <span class="lineNum">     737 </span>                :            : {
 <span class="lineNum">     738 </span>                :            :   VALUE *l;
 <span class="lineNum">     739 </span>                :            :   VALUE *r;
@@ -815,29 +814,29 @@
 <span class="lineNum">     742 </span>                :            : #ifdef EVAL_TRACE
 <span class="lineNum">     743 </span>                :            :   trace (&quot;eval5&quot;);
 <span class="lineNum">     744 </span>                :            : #endif
-<span class="lineNum">     745 </span>                :<span class="lineCov">      12617 :   l = eval6 (evaluate);</span>
+<span class="lineNum">     745 </span>                :<span class="lineCov">      49893 :   l = eval6 (evaluate);</span>
 <span class="lineNum">     746 </span>                :            :   while (1)
 <span class="lineNum">     747 </span>                :            :     {
-<span class="lineNum">     748 </span>        [<span class="branchCov" title="Branch 1 was taken 1056 times"> + </span><span class="branchCov" title="Branch 2 was taken 12595 times"> + </span>]:<span class="lineCov">      13651 :       if (nextarg (&quot;:&quot;))</span>
+<span class="lineNum">     748 </span>        [<span class="branchCov" title="Branch 1 was taken 3738 times"> + </span><span class="branchCov" title="Branch 2 was taken 49816 times"> + </span>]:<span class="lineCov">      53554 :       if (nextarg (&quot;:&quot;))</span>
 <span class="lineNum">     749 </span>                :            :         {
-<span class="lineNum">     750 </span>                :<span class="lineCov">       1056 :           r = eval6 (evaluate);</span>
-<span class="lineNum">     751 </span>        [<span class="branchCov" title="Branch 0 was taken 1056 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1056 :           if (evaluate)</span>
+<span class="lineNum">     750 </span>                :<span class="lineCov">       3738 :           r = eval6 (evaluate);</span>
+<span class="lineNum">     751 </span>        [<span class="branchCov" title="Branch 0 was taken 3738 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       3738 :           if (evaluate)</span>
 <span class="lineNum">     752 </span>                :            :             {
-<span class="lineNum">     753 </span>                :<span class="lineCov">       1056 :               v = docolon (l, r);</span>
-<span class="lineNum">     754 </span>                :<span class="lineCov">       1034 :               freev (l);</span>
-<span class="lineNum">     755 </span>                :<span class="lineCov">       1034 :               l = v;</span>
+<span class="lineNum">     753 </span>                :<span class="lineCov">       3738 :               v = docolon (l, r);</span>
+<span class="lineNum">     754 </span>                :<span class="lineCov">       3661 :               freev (l);</span>
+<span class="lineNum">     755 </span>                :<span class="lineCov">       3661 :               l = v;</span>
 <span class="lineNum">     756 </span>                :            :             }
-<span class="lineNum">     757 </span>                :<span class="lineCov">       1034 :           freev (r);</span>
+<span class="lineNum">     757 </span>                :<span class="lineCov">       3661 :           freev (r);</span>
 <span class="lineNum">     758 </span>                :            :         }
 <span class="lineNum">     759 </span>                :            :       else
-<span class="lineNum">     760 </span>                :<span class="lineCov">      12595 :         return l;</span>
-<span class="lineNum">     761 </span>                :<span class="lineCov">       1034 :     }</span>
+<span class="lineNum">     760 </span>                :<span class="lineCov">      49816 :         return l;</span>
+<span class="lineNum">     761 </span>                :<span class="lineCov">       3661 :     }</span>
 <span class="lineNum">     762 </span>                :            : }
 <span class="lineNum">     763 </span>                :            : 
 <span class="lineNum">     764 </span>                :            : /* Handle *, /, % operators.  */
 <a name="765"><span class="lineNum">     765 </span>                :            : </a>
 <span class="lineNum">     766 </span>                :            : static VALUE *
-<span class="lineNum">     767 </span>                :<span class="lineCov">      11265 : eval4 (bool evaluate)</span>
+<span class="lineNum">     767 </span>                :<span class="lineCov">      43416 : eval4 (bool evaluate)</span>
 <span class="lineNum">     768 </span>                :            : {
 <span class="lineNum">     769 </span>                :            :   VALUE *l;
 <span class="lineNum">     770 </span>                :            :   VALUE *r;
@@ -846,37 +845,38 @@
 <span class="lineNum">     773 </span>                :            : #ifdef EVAL_TRACE
 <span class="lineNum">     774 </span>                :            :   trace (&quot;eval4&quot;);
 <span class="lineNum">     775 </span>                :            : #endif
-<span class="lineNum">     776 </span>                :<span class="lineCov">      11265 :   l = eval5 (evaluate);</span>
+<span class="lineNum">     776 </span>                :<span class="lineCov">      43416 :   l = eval5 (evaluate);</span>
 <span class="lineNum">     777 </span>                :            :   while (1)
 <span class="lineNum">     778 </span>                :            :     {
-<span class="lineNum">     779 </span>        [<span class="branchCov" title="Branch 1 was taken 905 times"> + </span><span class="branchCov" title="Branch 2 was taken 11688 times"> + </span>]:<span class="lineCov">      12593 :       if (nextarg (&quot;*&quot;))</span>
-<span class="lineNum">     780 </span>                :<span class="lineCov">        905 :         fxn = multiply;</span>
-<span class="lineNum">     781 </span>        [<span class="branchCov" title="Branch 1 was taken 435 times"> + </span><span class="branchCov" title="Branch 2 was taken 11253 times"> + </span>]:<span class="lineCov">      11688 :       else if (nextarg (&quot;/&quot;))</span>
-<span class="lineNum">     782 </span>                :<span class="lineCov">        435 :         fxn = divide;</span>
-<span class="lineNum">     783 </span>        [<span class="branchCov" title="Branch 1 was taken 12 times"> + </span><span class="branchCov" title="Branch 2 was taken 11241 times"> + </span>]:<span class="lineCov">      11253 :       else if (nextarg (&quot;%&quot;))</span>
-<span class="lineNum">     784 </span>                :<span class="lineCov">         12 :         fxn = mod;</span>
+<span class="lineNum">     779 </span>        [<span class="branchCov" title="Branch 1 was taken 3191 times"> + </span><span class="branchCov" title="Branch 2 was taken 46625 times"> + </span>]:<span class="lineCov">      49816 :       if (nextarg (&quot;*&quot;))</span>
+<span class="lineNum">     780 </span>                :<span class="lineCov">       3191 :         fxn = multiply;</span>
+<span class="lineNum">     781 </span>        [<span class="branchCov" title="Branch 1 was taken 3244 times"> + </span><span class="branchCov" title="Branch 2 was taken 43381 times"> + </span>]:<span class="lineCov">      46625 :       else if (nextarg (&quot;/&quot;))</span>
+<span class="lineNum">     782 </span>                :<span class="lineCov">       3244 :         fxn = divide;</span>
+<span class="lineNum">     783 </span>        [<span class="branchCov" title="Branch 1 was taken 42 times"> + </span><span class="branchCov" title="Branch 2 was taken 43339 times"> + </span>]:<span class="lineCov">      43381 :       else if (nextarg (&quot;%&quot;))</span>
+<span class="lineNum">     784 </span>                :<span class="lineCov">         42 :         fxn = mod;</span>
 <span class="lineNum">     785 </span>                :            :       else
-<span class="lineNum">     786 </span>                :<span class="lineCov">      11241 :         return l;</span>
-<span class="lineNum">     787 </span>                :<span class="lineCov">       1352 :       r = eval5 (evaluate);</span>
-<span class="lineNum">     788 </span>        [<span class="branchCov" title="Branch 0 was taken 1348 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">       1352 :       if (evaluate)</span>
+<span class="lineNum">     786 </span>                :<span class="lineCov">      43339 :         return l;</span>
+<span class="lineNum">     787 </span>                :<span class="lineCov">       6477 :       r = eval5 (evaluate);</span>
+<span class="lineNum">     788 </span>        [<span class="branchCov" title="Branch 0 was taken 6463 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">       6477 :       if (evaluate)</span>
 <span class="lineNum">     789 </span>                :            :         {
-<span class="lineNum">     790 </span>[<span class="branchCov" title="Branch 1 was taken 1346 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 1346 times"> + </span>]:<span class="lineCov">       1348 :           if (!toarith (l) || !toarith (r))</span>
+<span class="lineNum">     790 </span>[<span class="branchCov" title="Branch 1 was taken 6463 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 6463 times"> + </span>]:<span class="lineCov">       6463 :           if (!toarith (l) || !toarith (r))</span>
 <span class="lineNum">     791 </span>                :<span class="lineNoCov">          0 :             error (EXPR_INVALID, 0, _(&quot;non-integer argument&quot;));</span>
-<span class="lineNum">     792 </span>[<span class="branchCov" title="Branch 0 was taken 443 times"> + </span><span class="branchCov" title="Branch 1 was taken 903 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 443 times"> + </span>]:<span class="lineCov">       1346 :           if (fxn != multiply &amp;&amp; mpz_sgn (r-&gt;u.i) == 0)</span>
+<span class="lineNum">     792 </span>[<span class="branchCov" title="Branch 0 was taken 3272 times"> + </span><span class="branchCov" title="Branch 1 was taken 3191 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3265 times"> + </span><span class="branchCov" title="Branch 3 was taken 7 times"> + </span>]:<span class="lineCov">       6463 :           if (fxn != multiply &amp;&amp; mpz_sgn (r-&gt;u.i) == 0)</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 3265 times"> + </span>]
 <span class="lineNum">     793 </span>                :<span class="lineNoCov">          0 :             error (EXPR_INVALID, 0, _(&quot;division by zero&quot;));</span>
 <span class="lineNum">     794 </span>                :            :           ((fxn == multiply ? mpz_mul
-<span class="lineNum">     795 </span>        [<span class="branchCov" title="Branch 0 was taken 443 times"> + </span><span class="branchCov" title="Branch 1 was taken 903 times"> + </span>]:<span class="lineCov">       1789 :             : fxn == divide ? mpz_tdiv_q</span>
-<span class="lineNum">     796 </span>        [<span class="branchCov" title="Branch 0 was taken 431 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">        443 :             : mpz_tdiv_r)</span>
-<span class="lineNum">     797 </span>                :<span class="lineCov">       1346 :            (l-&gt;u.i, l-&gt;u.i, r-&gt;u.i));</span>
+<span class="lineNum">     795 </span>        [<span class="branchCov" title="Branch 0 was taken 3272 times"> + </span><span class="branchCov" title="Branch 1 was taken 3191 times"> + </span>]:<span class="lineCov">       9735 :             : fxn == divide ? mpz_tdiv_q</span>
+<span class="lineNum">     796 </span>        [<span class="branchCov" title="Branch 0 was taken 3230 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">       3272 :             : mpz_tdiv_r)</span>
+<span class="lineNum">     797 </span>                :<span class="lineCov">       6463 :            (l-&gt;u.i, l-&gt;u.i, r-&gt;u.i));</span>
 <span class="lineNum">     798 </span>                :            :         }
-<span class="lineNum">     799 </span>                :<span class="lineCov">       1350 :       freev (r);</span>
-<span class="lineNum">     800 </span>                :<span class="lineCov">       1350 :     }</span>
+<span class="lineNum">     799 </span>                :<span class="lineCov">       6477 :       freev (r);</span>
+<span class="lineNum">     800 </span>                :<span class="lineCov">       6477 :     }</span>
 <span class="lineNum">     801 </span>                :            : }
 <span class="lineNum">     802 </span>                :            : 
 <span class="lineNum">     803 </span>                :            : /* Handle +, - operators.  */
 <a name="804"><span class="lineNum">     804 </span>                :            : </a>
 <span class="lineNum">     805 </span>                :            : static VALUE *
-<span class="lineNum">     806 </span>                :<span class="lineCov">       7050 : eval3 (bool evaluate)</span>
+<span class="lineNum">     806 </span>                :<span class="lineCov">      28416 : eval3 (bool evaluate)</span>
 <span class="lineNum">     807 </span>                :            : {
 <span class="lineNum">     808 </span>                :            :   VALUE *l;
 <span class="lineNum">     809 </span>                :            :   VALUE *r;
@@ -885,37 +885,37 @@
 <span class="lineNum">     812 </span>                :            : #ifdef EVAL_TRACE
 <span class="lineNum">     813 </span>                :            :   trace (&quot;eval3&quot;);
 <span class="lineNum">     814 </span>                :            : #endif
-<span class="lineNum">     815 </span>                :<span class="lineCov">       7050 :   l = eval4 (evaluate);</span>
+<span class="lineNum">     815 </span>                :<span class="lineCov">      28416 :   l = eval4 (evaluate);</span>
 <span class="lineNum">     816 </span>                :            :   while (1)
 <span class="lineNum">     817 </span>                :            :     {
-<span class="lineNum">     818 </span>        [<span class="branchCov" title="Branch 1 was taken 4199 times"> + </span><span class="branchCov" title="Branch 2 was taken 7040 times"> + </span>]:<span class="lineCov">      11239 :       if (nextarg (&quot;+&quot;))</span>
-<span class="lineNum">     819 </span>                :<span class="lineCov">       4199 :         fxn = plus;</span>
-<span class="lineNum">     820 </span>        [<span class="branchCov" title="Branch 1 was taken 16 times"> + </span><span class="branchCov" title="Branch 2 was taken 7024 times"> + </span>]:<span class="lineCov">       7040 :       else if (nextarg (&quot;-&quot;))</span>
-<span class="lineNum">     821 </span>                :<span class="lineCov">         16 :         fxn = minus;</span>
+<span class="lineNum">     818 </span>        [<span class="branchCov" title="Branch 1 was taken 14929 times"> + </span><span class="branchCov" title="Branch 2 was taken 28403 times"> + </span>]:<span class="lineCov">      43332 :       if (nextarg (&quot;+&quot;))</span>
+<span class="lineNum">     819 </span>                :<span class="lineCov">      14929 :         fxn = plus;</span>
+<span class="lineNum">     820 </span>        [<span class="branchCov" title="Branch 1 was taken 71 times"> + </span><span class="branchCov" title="Branch 2 was taken 28332 times"> + </span>]:<span class="lineCov">      28403 :       else if (nextarg (&quot;-&quot;))</span>
+<span class="lineNum">     821 </span>                :<span class="lineCov">         71 :         fxn = minus;</span>
 <span class="lineNum">     822 </span>                :            :       else
-<span class="lineNum">     823 </span>                :<span class="lineCov">       7024 :         return l;</span>
-<span class="lineNum">     824 </span>                :<span class="lineCov">       4215 :       r = eval4 (evaluate);</span>
-<span class="lineNum">     825 </span>        [<span class="branchCov" title="Branch 0 was taken 4215 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       4215 :       if (evaluate)</span>
+<span class="lineNum">     823 </span>                :<span class="lineCov">      28332 :         return l;</span>
+<span class="lineNum">     824 </span>                :<span class="lineCov">      15000 :       r = eval4 (evaluate);</span>
+<span class="lineNum">     825 </span>        [<span class="branchCov" title="Branch 0 was taken 15000 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      15000 :       if (evaluate)</span>
 <span class="lineNum">     826 </span>                :            :         {
-<span class="lineNum">     827 </span>[<span class="branchCov" title="Branch 1 was taken 4215 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 4 was taken 2 times"> + </span><span class="branchCov" title="Branch 5 was taken 4213 times"> + </span>]:<span class="lineCov">       4215 :           if (!toarith (l) || !toarith (r))</span>
-<span class="lineNum">     828 </span>                :<span class="lineCov">          2 :             error (EXPR_INVALID, 0, _(&quot;non-integer argument&quot;));</span>
-<span class="lineNum">     829 </span>        [<span class="branchCov" title="Branch 0 was taken 4197 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">       4213 :           (fxn == plus ? mpz_add : mpz_sub) (l-&gt;u.i, l-&gt;u.i, r-&gt;u.i);</span>
+<span class="lineNum">     827 </span>[<span class="branchCov" title="Branch 1 was taken 15000 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 4 was taken 7 times"> + </span><span class="branchCov" title="Branch 5 was taken 14993 times"> + </span>]:<span class="lineCov">      15000 :           if (!toarith (l) || !toarith (r))</span>
+<span class="lineNum">     828 </span>                :<span class="lineCov">          7 :             error (EXPR_INVALID, 0, _(&quot;non-integer argument&quot;));</span>
+<span class="lineNum">     829 </span>        [<span class="branchCov" title="Branch 0 was taken 14922 times"> + </span><span class="branchCov" title="Branch 1 was taken 71 times"> + </span>]:<span class="lineCov">      14993 :           (fxn == plus ? mpz_add : mpz_sub) (l-&gt;u.i, l-&gt;u.i, r-&gt;u.i);</span>
 <span class="lineNum">     830 </span>                :            :         }
-<span class="lineNum">     831 </span>                :<span class="lineCov">       4213 :       freev (r);</span>
-<span class="lineNum">     832 </span>                :<span class="lineCov">       4213 :     }</span>
+<span class="lineNum">     831 </span>                :<span class="lineCov">      14993 :       freev (r);</span>
+<span class="lineNum">     832 </span>                :<span class="lineCov">      14993 :     }</span>
 <span class="lineNum">     833 </span>                :            : }
 <span class="lineNum">     834 </span>                :            : 
 <span class="lineNum">     835 </span>                :            : /* Handle comparisons.  */
 <a name="836"><span class="lineNum">     836 </span>                :            : </a>
 <span class="lineNum">     837 </span>                :            : static VALUE *
-<span class="lineNum">     838 </span>                :<span class="lineCov">       6626 : eval2 (bool evaluate)</span>
+<span class="lineNum">     838 </span>                :<span class="lineCov">      25218 : eval2 (bool evaluate)</span>
 <span class="lineNum">     839 </span>                :            : {
 <span class="lineNum">     840 </span>                :            :   VALUE *l;
 <span class="lineNum">     841 </span>                :            : 
 <span class="lineNum">     842 </span>                :            : #ifdef EVAL_TRACE
 <span class="lineNum">     843 </span>                :            :   trace (&quot;eval2&quot;);
 <span class="lineNum">     844 </span>                :            : #endif
-<span class="lineNum">     845 </span>                :<span class="lineCov">       6626 :   l = eval3 (evaluate);</span>
+<span class="lineNum">     845 </span>                :<span class="lineCov">      25218 :   l = eval3 (evaluate);</span>
 <span class="lineNum">     846 </span>                :            :   while (1)
 <span class="lineNum">     847 </span>                :            :     {
 <span class="lineNum">     848 </span>                :            :       VALUE *r;
@@ -923,38 +923,38 @@
 <span class="lineNum">     850 </span>                :            :         {
 <span class="lineNum">     851 </span>                :            :           less_than, less_equal, equal, not_equal, greater_equal, greater_than
 <span class="lineNum">     852 </span>                :            :         } fxn;
-<span class="lineNum">     853 </span>                :<span class="lineCov">       7024 :       bool val = false;</span>
+<span class="lineNum">     853 </span>                :<span class="lineCov">      28332 :       bool val = false;</span>
 <span class="lineNum">     854 </span>                :            : 
-<span class="lineNum">     855 </span>        [<span class="branchCov" title="Branch 1 was taken 424 times"> + </span><span class="branchCov" title="Branch 2 was taken 6600 times"> + </span>]:<span class="lineCov">       7024 :       if (nextarg (&quot;&lt;&quot;))</span>
-<span class="lineNum">     856 </span>                :<span class="lineCov">        424 :         fxn = less_than;</span>
-<span class="lineNum">     857 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6600 times"> + </span>]:<span class="lineCov">       6600 :       else if (nextarg (&quot;&lt;=&quot;))</span>
+<span class="lineNum">     855 </span>        [<span class="branchCov" title="Branch 1 was taken 3198 times"> + </span><span class="branchCov" title="Branch 2 was taken 25134 times"> + </span>]:<span class="lineCov">      28332 :       if (nextarg (&quot;&lt;&quot;))</span>
+<span class="lineNum">     856 </span>                :<span class="lineCov">       3198 :         fxn = less_than;</span>
+<span class="lineNum">     857 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 25134 times"> + </span>]:<span class="lineCov">      25134 :       else if (nextarg (&quot;&lt;=&quot;))</span>
 <span class="lineNum">     858 </span>                :<span class="lineNoCov">          0 :         fxn = less_equal;</span>
-<span class="lineNum">     859 </span>[<span class="branchCov" title="Branch 1 was taken 6600 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 6600 times"> + </span>]:<span class="lineCov">       6600 :       else if (nextarg (&quot;=&quot;) || nextarg (&quot;==&quot;))</span>
+<span class="lineNum">     859 </span>[<span class="branchCov" title="Branch 1 was taken 25134 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 25134 times"> + </span>]:<span class="lineCov">      25134 :       else if (nextarg (&quot;=&quot;) || nextarg (&quot;==&quot;))</span>
 <span class="lineNum">     860 </span>                :<span class="lineNoCov">          0 :         fxn = equal;</span>
-<span class="lineNum">     861 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6600 times"> + </span>]:<span class="lineCov">       6600 :       else if (nextarg (&quot;!=&quot;))</span>
+<span class="lineNum">     861 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 25134 times"> + </span>]:<span class="lineCov">      25134 :       else if (nextarg (&quot;!=&quot;))</span>
 <span class="lineNum">     862 </span>                :<span class="lineNoCov">          0 :         fxn = not_equal;</span>
-<span class="lineNum">     863 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6600 times"> + </span>]:<span class="lineCov">       6600 :       else if (nextarg (&quot;&gt;=&quot;))</span>
+<span class="lineNum">     863 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 25134 times"> + </span>]:<span class="lineCov">      25134 :       else if (nextarg (&quot;&gt;=&quot;))</span>
 <span class="lineNum">     864 </span>                :<span class="lineNoCov">          0 :         fxn = greater_equal;</span>
-<span class="lineNum">     865 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6600 times"> + </span>]:<span class="lineCov">       6600 :       else if (nextarg (&quot;&gt;&quot;))</span>
+<span class="lineNum">     865 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 25134 times"> + </span>]:<span class="lineCov">      25134 :       else if (nextarg (&quot;&gt;&quot;))</span>
 <span class="lineNum">     866 </span>                :<span class="lineNoCov">          0 :         fxn = greater_than;</span>
 <span class="lineNum">     867 </span>                :            :       else
-<span class="lineNum">     868 </span>                :<span class="lineCov">       6600 :         return l;</span>
-<span class="lineNum">     869 </span>                :<span class="lineCov">        424 :       r = eval3 (evaluate);</span>
+<span class="lineNum">     868 </span>                :<span class="lineCov">      25134 :         return l;</span>
+<span class="lineNum">     869 </span>                :<span class="lineCov">       3198 :       r = eval3 (evaluate);</span>
 <span class="lineNum">     870 </span>                :            : 
-<span class="lineNum">     871 </span>        [<span class="branchCov" title="Branch 0 was taken 424 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        424 :       if (evaluate)</span>
+<span class="lineNum">     871 </span>        [<span class="branchCov" title="Branch 0 was taken 3198 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       3198 :       if (evaluate)</span>
 <span class="lineNum">     872 </span>                :            :         {
 <span class="lineNum">     873 </span>                :            :           int cmp;
-<span class="lineNum">     874 </span>                :<span class="lineCov">        424 :           tostring (l);</span>
-<span class="lineNum">     875 </span>                :<span class="lineCov">        424 :           tostring (r);</span>
+<span class="lineNum">     874 </span>                :<span class="lineCov">       3198 :           tostring (l);</span>
+<span class="lineNum">     875 </span>                :<span class="lineCov">       3198 :           tostring (r);</span>
 <span class="lineNum">     876 </span>                :            : 
-<span class="lineNum">     877 </span>[<span class="branchCov" title="Branch 1 was taken 424 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 4 was taken 422 times"> + </span><span class="branchCov" title="Branch 5 was taken 2 times"> + </span>]:<span class="lineCov">        424 :           if (looks_like_integer (l-&gt;u.s) &amp;&amp; looks_like_integer (r-&gt;u.s))</span>
-<span class="lineNum">     878 </span>                :<span class="lineCov">        422 :             cmp = strintcmp (l-&gt;u.s, r-&gt;u.s);</span>
+<span class="lineNum">     877 </span>[<span class="branchCov" title="Branch 4 was taken 3191 times"> + </span><span class="branchCov" title="Branch 5 was taken 7 times"> + </span>][<span class="branchCov" title="Branch 1 was taken 3198 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">       3198 :           if (looks_like_integer (l-&gt;u.s) &amp;&amp; looks_like_integer (r-&gt;u.s))</span>
+<span class="lineNum">     878 </span>                :<span class="lineCov">       3191 :             cmp = strintcmp (l-&gt;u.s, r-&gt;u.s);</span>
 <span class="lineNum">     879 </span>                :            :           else
 <span class="lineNum">     880 </span>                :            :             {
-<span class="lineNum">     881 </span>                :<span class="lineCov">          2 :               errno = 0;</span>
-<span class="lineNum">     882 </span>                :<span class="lineCov">          2 :               cmp = strcoll (l-&gt;u.s, r-&gt;u.s);</span>
+<span class="lineNum">     881 </span>                :<span class="lineCov">          7 :               errno = 0;</span>
+<span class="lineNum">     882 </span>                :<span class="lineCov">          7 :               cmp = strcoll (l-&gt;u.s, r-&gt;u.s);</span>
 <span class="lineNum">     883 </span>                :            : 
-<span class="lineNum">     884 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :               if (errno)</span>
+<span class="lineNum">     884 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 7 times"> + </span>]:<span class="lineCov">          7 :               if (errno)</span>
 <span class="lineNum">     885 </span>                :            :                 {
 <span class="lineNum">     886 </span>                :<span class="lineNoCov">          0 :                   error (0, errno, _(&quot;string comparison failed&quot;));</span>
 <span class="lineNum">     887 </span>                :<span class="lineNoCov">          0 :                   error (0, 0, _(&quot;set LC_ALL='C' to work around the problem&quot;));</span>
@@ -965,10 +965,10 @@
 <span class="lineNum">     892 </span>                :            :                 }
 <span class="lineNum">     893 </span>                :            :             }
 <span class="lineNum">     894 </span>                :            : 
-<span class="lineNum">     895 </span>  [<span class="branchCov" title="Branch 0 was taken 424 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">        424 :           switch (fxn)</span>
+<span class="lineNum">     895 </span>  [<span class="branchCov" title="Branch 0 was taken 3198 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">       3198 :           switch (fxn)</span>
 <span class="lineNum">         </span>      <span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span>]
 <span class="lineNum">     896 </span>                :            :             {
-<span class="lineNum">     897 </span>                :<span class="lineCov">        424 :             case less_than:     val = (cmp &lt;  0); break;</span>
+<span class="lineNum">     897 </span>                :<span class="lineCov">       3198 :             case less_than:     val = (cmp &lt;  0); break;</span>
 <span class="lineNum">     898 </span>                :<span class="lineNoCov">          0 :             case less_equal:    val = (cmp &lt;= 0); break;</span>
 <span class="lineNum">     899 </span>                :<span class="lineNoCov">          0 :             case equal:         val = (cmp == 0); break;</span>
 <span class="lineNum">     900 </span>                :<span class="lineNoCov">          0 :             case not_equal:     val = (cmp != 0); break;</span>
@@ -978,16 +978,16 @@
 <span class="lineNum">     904 </span>                :            :             }
 <span class="lineNum">     905 </span>                :            :         }
 <span class="lineNum">     906 </span>                :            : 
-<span class="lineNum">     907 </span>                :<span class="lineCov">        424 :       freev (l);</span>
-<span class="lineNum">     908 </span>                :<span class="lineCov">        424 :       freev (r);</span>
-<span class="lineNum">     909 </span>                :<span class="lineCov">        424 :       l = int_value (val);</span>
-<span class="lineNum">     910 </span>                :<span class="lineCov">        424 :     }</span>
+<span class="lineNum">     907 </span>                :<span class="lineCov">       3198 :       freev (l);</span>
+<span class="lineNum">     908 </span>                :<span class="lineCov">       3198 :       freev (r);</span>
+<span class="lineNum">     909 </span>                :<span class="lineCov">       3198 :       l = int_value (val);</span>
+<span class="lineNum">     910 </span>                :<span class="lineCov">       3198 :     }</span>
 <span class="lineNum">     911 </span>                :            : }
 <span class="lineNum">     912 </span>                :            : 
 <span class="lineNum">     913 </span>                :            : /* Handle &amp;.  */
 <a name="914"><span class="lineNum">     914 </span>                :            : </a>
 <span class="lineNum">     915 </span>                :            : static VALUE *
-<span class="lineNum">     916 </span>                :<span class="lineCov">       6624 : eval1 (bool evaluate)</span>
+<span class="lineNum">     916 </span>                :<span class="lineCov">      25211 : eval1 (bool evaluate)</span>
 <span class="lineNum">     917 </span>                :            : {
 <span class="lineNum">     918 </span>                :            :   VALUE *l;
 <span class="lineNum">     919 </span>                :            :   VALUE *r;
@@ -995,30 +995,30 @@
 <span class="lineNum">     921 </span>                :            : #ifdef EVAL_TRACE
 <span class="lineNum">     922 </span>                :            :   trace (&quot;eval1&quot;);
 <span class="lineNum">     923 </span>                :            : #endif
-<span class="lineNum">     924 </span>                :<span class="lineCov">       6624 :   l = eval2 (evaluate);</span>
+<span class="lineNum">     924 </span>                :<span class="lineCov">      25211 :   l = eval2 (evaluate);</span>
 <span class="lineNum">     925 </span>                :            :   while (1)
 <span class="lineNum">     926 </span>                :            :     {
-<span class="lineNum">     927 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 6598 times"> + </span>]:<span class="lineCov">       6600 :       if (nextarg (&quot;&amp;&quot;))</span>
+<span class="lineNum">     927 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchCov" title="Branch 2 was taken 25127 times"> + </span>]:<span class="lineCov">      25134 :       if (nextarg (&quot;&amp;&quot;))</span>
 <span class="lineNum">     928 </span>                :            :         {
-<span class="lineNum">     929 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 2 times"> + </span>]:<span class="lineCov">          2 :           r = eval2 (evaluate &amp;&amp; !null (l));</span>
-<span class="lineNum">     930 </span>[<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]:<span class="lineCov">          2 :           if (null (l) || null (r))</span>
+<span class="lineNum">     929 </span>[<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 7 times"> + </span>]:<span class="lineCov">          7 :           r = eval2 (evaluate &amp;&amp; !null (l));</span>
+<span class="lineNum">     930 </span>[<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>][<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 7 times"> + </span>]:<span class="lineCov">          7 :           if (null (l) || null (r))</span>
 <span class="lineNum">     931 </span>                :            :             {
-<span class="lineNum">     932 </span>                :<span class="lineCov">          2 :               freev (l);</span>
-<span class="lineNum">     933 </span>                :<span class="lineCov">          2 :               freev (r);</span>
-<span class="lineNum">     934 </span>                :<span class="lineCov">          2 :               l = int_value (0);</span>
+<span class="lineNum">     932 </span>                :<span class="lineCov">          7 :               freev (l);</span>
+<span class="lineNum">     933 </span>                :<span class="lineCov">          7 :               freev (r);</span>
+<span class="lineNum">     934 </span>                :<span class="lineCov">          7 :               l = int_value (0);</span>
 <span class="lineNum">     935 </span>                :            :             }
 <span class="lineNum">     936 </span>                :            :           else
 <span class="lineNum">     937 </span>                :<span class="lineNoCov">          0 :             freev (r);</span>
 <span class="lineNum">     938 </span>                :            :         }
 <span class="lineNum">     939 </span>                :            :       else
-<span class="lineNum">     940 </span>                :<span class="lineCov">       6598 :         return l;</span>
-<span class="lineNum">     941 </span>                :<span class="lineCov">          2 :     }</span>
+<span class="lineNum">     940 </span>                :<span class="lineCov">      25127 :         return l;</span>
+<span class="lineNum">     941 </span>                :<span class="lineCov">          7 :     }</span>
 <span class="lineNum">     942 </span>                :            : }
 <span class="lineNum">     943 </span>                :            : 
 <span class="lineNum">     944 </span>                :            : /* Handle |.  */
 <a name="945"><span class="lineNum">     945 </span>                :            : </a>
 <span class="lineNum">     946 </span>                :            : static VALUE *
-<span class="lineNum">     947 </span>                :<span class="lineCov">       6620 : eval (bool evaluate)</span>
+<span class="lineNum">     947 </span>                :<span class="lineCov">      25197 : eval (bool evaluate)</span>
 <span class="lineNum">     948 </span>                :            : {
 <span class="lineNum">     949 </span>                :            :   VALUE *l;
 <span class="lineNum">     950 </span>                :            :   VALUE *r;
@@ -1026,28 +1026,28 @@
 <span class="lineNum">     952 </span>                :            : #ifdef EVAL_TRACE
 <span class="lineNum">     953 </span>                :            :   trace (&quot;eval&quot;);
 <span class="lineNum">     954 </span>                :            : #endif
-<span class="lineNum">     955 </span>                :<span class="lineCov">       6620 :   l = eval1 (evaluate);</span>
+<span class="lineNum">     955 </span>                :<span class="lineCov">      25197 :   l = eval1 (evaluate);</span>
 <span class="lineNum">     956 </span>                :            :   while (1)
 <span class="lineNum">     957 </span>                :            :     {
-<span class="lineNum">     958 </span>        [<span class="branchCov" title="Branch 1 was taken 4 times"> + </span><span class="branchCov" title="Branch 2 was taken 6594 times"> + </span>]:<span class="lineCov">       6598 :       if (nextarg (&quot;|&quot;))</span>
+<span class="lineNum">     958 </span>        [<span class="branchCov" title="Branch 1 was taken 14 times"> + </span><span class="branchCov" title="Branch 2 was taken 25113 times"> + </span>]:<span class="lineCov">      25127 :       if (nextarg (&quot;|&quot;))</span>
 <span class="lineNum">     959 </span>                :            :         {
-<span class="lineNum">     960 </span>[<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 2 times"> + </span><span class="branchCov" title="Branch 4 was taken 2 times"> + </span>]:<span class="lineCov">          4 :           r = eval1 (evaluate &amp;&amp; null (l));</span>
-<span class="lineNum">     961 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          4 :           if (null (l))</span>
+<span class="lineNum">     960 </span>[<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 7 times"> + </span><span class="branchCov" title="Branch 4 was taken 7 times"> + </span>]:<span class="lineCov">         14 :           r = eval1 (evaluate &amp;&amp; null (l));</span>
+<span class="lineNum">     961 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchCov" title="Branch 2 was taken 7 times"> + </span>]:<span class="lineCov">         14 :           if (null (l))</span>
 <span class="lineNum">     962 </span>                :            :             {
-<span class="lineNum">     963 </span>                :<span class="lineCov">          2 :               freev (l);</span>
-<span class="lineNum">     964 </span>                :<span class="lineCov">          2 :               l = r;</span>
-<span class="lineNum">     965 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          2 :               if (null (l))</span>
+<span class="lineNum">     963 </span>                :<span class="lineCov">          7 :               freev (l);</span>
+<span class="lineNum">     964 </span>                :<span class="lineCov">          7 :               l = r;</span>
+<span class="lineNum">     965 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          7 :               if (null (l))</span>
 <span class="lineNum">     966 </span>                :            :                 {
-<span class="lineNum">     967 </span>                :<span class="lineCov">          2 :                   freev (l);</span>
-<span class="lineNum">     968 </span>                :<span class="lineCov">          2 :                   l = int_value (0);</span>
+<span class="lineNum">     967 </span>                :<span class="lineCov">          7 :                   freev (l);</span>
+<span class="lineNum">     968 </span>                :<span class="lineCov">          7 :                   l = int_value (0);</span>
 <span class="lineNum">     969 </span>                :            :                 }
 <span class="lineNum">     970 </span>                :            :             }
 <span class="lineNum">     971 </span>                :            :           else
-<span class="lineNum">     972 </span>                :<span class="lineCov">          2 :             freev (r);</span>
+<span class="lineNum">     972 </span>                :<span class="lineCov">          7 :             freev (r);</span>
 <span class="lineNum">     973 </span>                :            :         }
 <span class="lineNum">     974 </span>                :            :       else
-<span class="lineNum">     975 </span>                :<span class="lineCov">       6594 :         return l;</span>
-<span class="lineNum">     976 </span>                :<span class="lineCov">          4 :     }</span>
+<span class="lineNum">     975 </span>                :<span class="lineCov">      25113 :         return l;</span>
+<span class="lineNum">     976 </span>                :<span class="lineCov">         14 :     }</span>
 <span class="lineNum">     977 </span>                :            : }
 </pre>
       </td>

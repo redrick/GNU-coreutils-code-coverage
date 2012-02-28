@@ -33,11 +33,11 @@
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">75</td>
             <td class="headerCovTableEntry">98</td>
-            <td class="headerCovTableEntryHi">76.5 %</td>
+            <td class="headerCovTableEntryMed">76.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">33</td>
             <td class="headerCovTableEntry">60</td>
-            <td class="headerCovTableEntryHi">55.0 %</td>
+            <td class="headerCovTableEntryLo">55.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -160,13 +160,13 @@
 <span class="lineNum">      89 </span>                :            :    before E.  */
 <a name="90"><span class="lineNum">      90 </span>                :            : </a>
 <span class="lineNum">      91 </span>                :            : static void
-<span class="lineNum">      92 </span>                :<span class="lineCov">        162 : check_extension (char *file, size_t filelen, char e)</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">        575 : check_extension (char *file, size_t filelen, char e)</span>
 <span class="lineNum">      93 </span>                :            : {
-<span class="lineNum">      94 </span>                :<span class="lineCov">        162 :   char *base = last_component (file);</span>
-<span class="lineNum">      95 </span>                :<span class="lineCov">        162 :   size_t baselen = base_len (base);</span>
-<span class="lineNum">      96 </span>                :<span class="lineCov">        162 :   size_t baselen_max = HAVE_LONG_FILE_NAMES ? 255 : NAME_MAX_MINIMUM;</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">        575 :   char *base = last_component (file);</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">        575 :   size_t baselen = base_len (base);</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">        575 :   size_t baselen_max = HAVE_LONG_FILE_NAMES ? 255 : NAME_MAX_MINIMUM;</span>
 <span class="lineNum">      97 </span>                :            : 
-<span class="lineNum">      98 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 162 times"> + </span>]:<span class="lineCov">        162 :   if (HAVE_DOS_FILE_NAMES || NAME_MAX_MINIMUM &lt; baselen)</span>
+<span class="lineNum">      98 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 575 times"> + </span>]:<span class="lineCov">        575 :   if (HAVE_DOS_FILE_NAMES || NAME_MAX_MINIMUM &lt; baselen)</span>
 <span class="lineNum">      99 </span>                :            :     {
 <span class="lineNum">     100 </span>                :            :       /* The new base name is long enough to require a pathconf check.  */
 <span class="lineNum">     101 </span>                :            :       long name_max;
@@ -178,7 +178,7 @@
 <span class="lineNum">     107 </span>                :<span class="lineNoCov">          0 :       strcpy (base, &quot;.&quot;);</span>
 <span class="lineNum">     108 </span>                :<span class="lineNoCov">          0 :       errno = 0;</span>
 <span class="lineNum">     109 </span>                :<span class="lineNoCov">          0 :       name_max = pathconf (file, _PC_NAME_MAX);</span>
-<span class="lineNum">     110 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (0 &lt;= name_max || errno == 0)</span>
+<span class="lineNum">     110 </span>[<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>][<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (0 &lt;= name_max || errno == 0)</span>
 <span class="lineNum">     111 </span>                :            :         {
 <span class="lineNum">     112 </span>                :<span class="lineNoCov">          0 :           long size = baselen_max = name_max;</span>
 <span class="lineNum">     113 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (name_max != size)</span>
@@ -202,7 +202,7 @@
 <span class="lineNum">     131 </span>                :            :         }
 <span class="lineNum">     132 </span>                :            :     }
 <span class="lineNum">     133 </span>                :            : 
-<span class="lineNum">     134 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 162 times"> + </span>]:<span class="lineCov">        162 :   if (baselen_max &lt; baselen)</span>
+<span class="lineNum">     134 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 575 times"> + </span>]:<span class="lineCov">        575 :   if (baselen_max &lt; baselen)</span>
 <span class="lineNum">     135 </span>                :            :     {
 <span class="lineNum">     136 </span>                :<span class="lineNoCov">          0 :       baselen = file + filelen - base;</span>
 <span class="lineNum">     137 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (baselen_max &lt;= baselen)</span>
@@ -210,7 +210,7 @@
 <span class="lineNum">     139 </span>                :<span class="lineNoCov">          0 :       base[baselen] = e;</span>
 <span class="lineNum">     140 </span>                :<span class="lineNoCov">          0 :       base[baselen + 1] = '\0';</span>
 <span class="lineNum">     141 </span>                :            :     }
-<span class="lineNum">     142 </span>                :<span class="lineCov">        162 : }</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">        575 : }</span>
 <span class="lineNum">     143 </span>                :            : 
 <span class="lineNum">     144 </span>                :            : /* Returned values for NUMBERED_BACKUP.  */
 <span class="lineNum">     145 </span>                :            : 
@@ -240,30 +240,30 @@
 <span class="lineNum">     169 </span>                :            :    was found.  */
 <a name="170"><span class="lineNum">     170 </span>                :            : </a>
 <span class="lineNum">     171 </span>                :            : static enum numbered_backup_result
-<span class="lineNum">     172 </span>                :<span class="lineCov">        140 : numbered_backup (char **buffer, size_t buffer_size, size_t filelen)</span>
+<span class="lineNum">     172 </span>                :<span class="lineCov">        498 : numbered_backup (char **buffer, size_t buffer_size, size_t filelen)</span>
 <span class="lineNum">     173 </span>                :            : {
-<span class="lineNum">     174 </span>                :<span class="lineCov">        140 :   enum numbered_backup_result result = BACKUP_IS_NEW;</span>
+<span class="lineNum">     174 </span>                :<span class="lineCov">        498 :   enum numbered_backup_result result = BACKUP_IS_NEW;</span>
 <span class="lineNum">     175 </span>                :            :   DIR *dirp;
 <span class="lineNum">     176 </span>                :            :   struct dirent *dp;
-<span class="lineNum">     177 </span>                :<span class="lineCov">        140 :   char *buf = *buffer;</span>
-<span class="lineNum">     178 </span>                :<span class="lineCov">        140 :   size_t versionlenmax = 1;</span>
-<span class="lineNum">     179 </span>                :<span class="lineCov">        140 :   char *base = last_component (buf);</span>
-<span class="lineNum">     180 </span>                :<span class="lineCov">        140 :   size_t base_offset = base - buf;</span>
-<span class="lineNum">     181 </span>                :<span class="lineCov">        140 :   size_t baselen = base_len (base);</span>
+<span class="lineNum">     177 </span>                :<span class="lineCov">        498 :   char *buf = *buffer;</span>
+<span class="lineNum">     178 </span>                :<span class="lineCov">        498 :   size_t versionlenmax = 1;</span>
+<span class="lineNum">     179 </span>                :<span class="lineCov">        498 :   char *base = last_component (buf);</span>
+<span class="lineNum">     180 </span>                :<span class="lineCov">        498 :   size_t base_offset = base - buf;</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">        498 :   size_t baselen = base_len (base);</span>
 <span class="lineNum">     182 </span>                :            : 
 <span class="lineNum">     183 </span>                :            :   /* Temporarily modify the buffer into its parent directory name,
 <span class="lineNum">     184 </span>                :            :      open the directory, and then restore the buffer.  */
 <span class="lineNum">     185 </span>                :            :   char tmp[sizeof &quot;.&quot;];
-<span class="lineNum">     186 </span>                :<span class="lineCov">        140 :   memcpy (tmp, base, sizeof &quot;.&quot;);</span>
-<span class="lineNum">     187 </span>                :<span class="lineCov">        140 :   strcpy (base, &quot;.&quot;);</span>
-<span class="lineNum">     188 </span>                :<span class="lineCov">        140 :   dirp = opendir (buf);</span>
-<span class="lineNum">     189 </span>                :<span class="lineCov">        140 :   memcpy (base, tmp, sizeof &quot;.&quot;);</span>
-<span class="lineNum">     190 </span>                :<span class="lineCov">        140 :   strcpy (base + baselen, &quot;.~1~&quot;);</span>
+<span class="lineNum">     186 </span>                :<span class="lineCov">        498 :   memcpy (tmp, base, sizeof &quot;.&quot;);</span>
+<span class="lineNum">     187 </span>                :<span class="lineCov">        498 :   strcpy (base, &quot;.&quot;);</span>
+<span class="lineNum">     188 </span>                :<span class="lineCov">        498 :   dirp = opendir (buf);</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">        498 :   memcpy (base, tmp, sizeof &quot;.&quot;);</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">        498 :   strcpy (base + baselen, &quot;.~1~&quot;);</span>
 <span class="lineNum">     191 </span>                :            : 
-<span class="lineNum">     192 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 140 times"> + </span>]:<span class="lineCov">        140 :   if (!dirp)</span>
+<span class="lineNum">     192 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 498 times"> + </span>]:<span class="lineCov">        498 :   if (!dirp)</span>
 <span class="lineNum">     193 </span>                :<span class="lineNoCov">          0 :     return result;</span>
 <span class="lineNum">     194 </span>                :            : 
-<span class="lineNum">     195 </span>        [<span class="branchCov" title="Branch 1 was taken 732 times"> + </span><span class="branchCov" title="Branch 2 was taken 140 times"> + </span>]:<span class="lineCov">        872 :   while ((dp = readdir (dirp)) != NULL)</span>
+<span class="lineNum">     195 </span>        [<span class="branchCov" title="Branch 1 was taken 2607 times"> + </span><span class="branchCov" title="Branch 2 was taken 498 times"> + </span>]:<span class="lineCov">       3105 :   while ((dp = readdir (dirp)) != NULL)</span>
 <span class="lineNum">     196 </span>                :            :     {
 <span class="lineNum">     197 </span>                :            :       char const *p;
 <span class="lineNum">     198 </span>                :            :       char *q;
@@ -271,61 +271,61 @@
 <span class="lineNum">     200 </span>                :            :       size_t versionlen;
 <span class="lineNum">     201 </span>                :            :       size_t new_buflen;
 <span class="lineNum">     202 </span>                :            : 
-<span class="lineNum">     203 </span>[<span class="branchCov" title="Branch 0 was taken 732 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 632 times"> + </span><span class="branchCov" title="Branch 3 was taken 100 times"> + </span>]:<span class="lineCov">        732 :       if (! REAL_DIR_ENTRY (dp) || _D_EXACT_NAMLEN (dp) &lt; baselen + 4)</span>
-<span class="lineNum">     204 </span>                :<span class="lineCov">        632 :         continue;</span>
+<span class="lineNum">     203 </span>[<span class="branchCov" title="Branch 0 was taken 2607 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 2257 times"> + </span><span class="branchCov" title="Branch 3 was taken 350 times"> + </span>]:<span class="lineCov">       2607 :       if (! REAL_DIR_ENTRY (dp) || _D_EXACT_NAMLEN (dp) &lt; baselen + 4)</span>
+<span class="lineNum">     204 </span>                :<span class="lineCov">       2257 :         continue;</span>
 <span class="lineNum">     205 </span>                :            : 
-<span class="lineNum">     206 </span>        [<span class="branchCov" title="Branch 0 was taken 68 times"> + </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>]:<span class="lineCov">        100 :       if (memcmp (buf + base_offset, dp-&gt;d_name, baselen + 2) != 0)</span>
-<span class="lineNum">     207 </span>                :<span class="lineCov">         68 :         continue;</span>
+<span class="lineNum">     206 </span>        [<span class="branchCov" title="Branch 0 was taken 238 times"> + </span><span class="branchCov" title="Branch 1 was taken 112 times"> + </span>]:<span class="lineCov">        350 :       if (memcmp (buf + base_offset, dp-&gt;d_name, baselen + 2) != 0)</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">        238 :         continue;</span>
 <span class="lineNum">     208 </span>                :            : 
-<span class="lineNum">     209 </span>                :<span class="lineCov">         32 :       p = dp-&gt;d_name + baselen + 2;</span>
+<span class="lineNum">     209 </span>                :<span class="lineCov">        112 :       p = dp-&gt;d_name + baselen + 2;</span>
 <span class="lineNum">     210 </span>                :            : 
 <span class="lineNum">     211 </span>                :            :       /* Check whether this file has a version number and if so,
 <span class="lineNum">     212 </span>                :            :          whether it is larger.  Use string operations rather than
 <span class="lineNum">     213 </span>                :            :          integer arithmetic, to avoid problems with integer overflow.  */
 <span class="lineNum">     214 </span>                :            : 
-<span class="lineNum">     215 </span>[<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 32 times"> + </span>]:<span class="lineCov">         32 :       if (! ('1' &lt;= *p &amp;&amp; *p &lt;= '9'))</span>
+<span class="lineNum">     215 </span>[<span class="branchCov" title="Branch 0 was taken 112 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 112 times"> + </span>]:<span class="lineCov">        112 :       if (! ('1' &lt;= *p &amp;&amp; *p &lt;= '9'))</span>
 <span class="lineNum">     216 </span>                :<span class="lineNoCov">          0 :         continue;</span>
-<span class="lineNum">     217 </span>                :<span class="lineCov">         32 :       all_9s = (*p == '9');</span>
-<span class="lineNum">     218 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>]:<span class="lineCov">         32 :       for (versionlen = 1; ISDIGIT (p[versionlen]); versionlen++)</span>
+<span class="lineNum">     217 </span>                :<span class="lineCov">        112 :       all_9s = (*p == '9');</span>
+<span class="lineNum">     218 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 112 times"> + </span>]:<span class="lineCov">        112 :       for (versionlen = 1; ISDIGIT (p[versionlen]); versionlen++)</span>
 <span class="lineNum">     219 </span>                :<span class="lineNoCov">          0 :         all_9s &amp;= (p[versionlen] == '9');</span>
 <span class="lineNum">     220 </span>                :            : 
-<span class="lineNum">     221 </span>[<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 32 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         32 :       if (! (p[versionlen] == '~' &amp;&amp; !p[versionlen + 1]</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 32 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
+<span class="lineNum">     221 </span>[<span class="branchCov" title="Branch 0 was taken 112 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 112 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        112 :       if (! (p[versionlen] == '~' &amp;&amp; !p[versionlen + 1]</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 112 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
 <span class="lineNum">     222 </span>                :            :              &amp;&amp; (versionlenmax &lt; versionlen
-<span class="lineNum">     223 </span>        [<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         32 :                  || (versionlenmax == versionlen</span>
-<span class="lineNum">     224 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>]:<span class="lineCov">         32 :                      &amp;&amp; memcmp (buf + filelen + 2, p, versionlen) &lt;= 0))))</span>
+<span class="lineNum">     223 </span>        [<span class="branchCov" title="Branch 0 was taken 112 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        112 :                  || (versionlenmax == versionlen</span>
+<span class="lineNum">     224 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 112 times"> + </span>]:<span class="lineCov">        112 :                      &amp;&amp; memcmp (buf + filelen + 2, p, versionlen) &lt;= 0))))</span>
 <span class="lineNum">     225 </span>                :<span class="lineNoCov">          0 :         continue;</span>
 <span class="lineNum">     226 </span>                :            : 
 <span class="lineNum">     227 </span>                :            :       /* This directory has the largest version number seen so far.
 <span class="lineNum">     228 </span>                :            :          Append this highest numbered extension to the file name,
 <span class="lineNum">     229 </span>                :            :          prepending '0' to the number if it is all 9s.  */
 <span class="lineNum">     230 </span>                :            : 
-<span class="lineNum">     231 </span>                :<span class="lineCov">         32 :       versionlenmax = all_9s + versionlen;</span>
-<span class="lineNum">     232 </span>                :<span class="lineCov">         32 :       result = (all_9s ? BACKUP_IS_LONGER : BACKUP_IS_SAME_LENGTH);</span>
-<span class="lineNum">     233 </span>                :<span class="lineCov">         32 :       new_buflen = filelen + 2 + versionlenmax + 1;</span>
-<span class="lineNum">     234 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>]:<span class="lineCov">         32 :       if (buffer_size &lt;= new_buflen)</span>
+<span class="lineNum">     231 </span>                :<span class="lineCov">        112 :       versionlenmax = all_9s + versionlen;</span>
+<span class="lineNum">     232 </span>                :<span class="lineCov">        112 :       result = (all_9s ? BACKUP_IS_LONGER : BACKUP_IS_SAME_LENGTH);</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">        112 :       new_buflen = filelen + 2 + versionlenmax + 1;</span>
+<span class="lineNum">     234 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 112 times"> + </span>]:<span class="lineCov">        112 :       if (buffer_size &lt;= new_buflen)</span>
 <span class="lineNum">     235 </span>                :            :         {
 <span class="lineNum">     236 </span>                :<span class="lineNoCov">          0 :           buf = xnrealloc (buf, 2, new_buflen);</span>
 <span class="lineNum">     237 </span>                :<span class="lineNoCov">          0 :           buffer_size = new_buflen * 2;</span>
 <span class="lineNum">     238 </span>                :            :         }
-<span class="lineNum">     239 </span>                :<span class="lineCov">         32 :       q = buf + filelen;</span>
-<span class="lineNum">     240 </span>                :<span class="lineCov">         32 :       *q++ = '.';</span>
-<span class="lineNum">     241 </span>                :<span class="lineCov">         32 :       *q++ = '~';</span>
-<span class="lineNum">     242 </span>                :<span class="lineCov">         32 :       *q = '0';</span>
-<span class="lineNum">     243 </span>                :<span class="lineCov">         32 :       q += all_9s;</span>
-<span class="lineNum">     244 </span>                :<span class="lineCov">         32 :       memcpy (q, p, versionlen + 2);</span>
+<span class="lineNum">     239 </span>                :<span class="lineCov">        112 :       q = buf + filelen;</span>
+<span class="lineNum">     240 </span>                :<span class="lineCov">        112 :       *q++ = '.';</span>
+<span class="lineNum">     241 </span>                :<span class="lineCov">        112 :       *q++ = '~';</span>
+<span class="lineNum">     242 </span>                :<span class="lineCov">        112 :       *q = '0';</span>
+<span class="lineNum">     243 </span>                :<span class="lineCov">        112 :       q += all_9s;</span>
+<span class="lineNum">     244 </span>                :<span class="lineCov">        112 :       memcpy (q, p, versionlen + 2);</span>
 <span class="lineNum">     245 </span>                :            : 
 <span class="lineNum">     246 </span>                :            :       /* Add 1 to the version number.  */
 <span class="lineNum">     247 </span>                :            : 
-<span class="lineNum">     248 </span>                :<span class="lineCov">         32 :       q += versionlen;</span>
-<span class="lineNum">     249 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>]:<span class="lineCov">         32 :       while (*--q == '9')</span>
+<span class="lineNum">     248 </span>                :<span class="lineCov">        112 :       q += versionlen;</span>
+<span class="lineNum">     249 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 112 times"> + </span>]:<span class="lineCov">        112 :       while (*--q == '9')</span>
 <span class="lineNum">     250 </span>                :<span class="lineNoCov">          0 :         *q = '0';</span>
-<span class="lineNum">     251 </span>                :<span class="lineCov">         32 :       ++*q;</span>
+<span class="lineNum">     251 </span>                :<span class="lineCov">        112 :       ++*q;</span>
 <span class="lineNum">     252 </span>                :            :     }
 <span class="lineNum">     253 </span>                :            : 
-<span class="lineNum">     254 </span>                :<span class="lineCov">        140 :   closedir (dirp);</span>
-<span class="lineNum">     255 </span>                :<span class="lineCov">        140 :   *buffer = buf;</span>
-<span class="lineNum">     256 </span>                :<span class="lineCov">        140 :   return result;</span>
+<span class="lineNum">     254 </span>                :<span class="lineCov">        498 :   closedir (dirp);</span>
+<span class="lineNum">     255 </span>                :<span class="lineCov">        498 :   *buffer = buf;</span>
+<span class="lineNum">     256 </span>                :<span class="lineCov">        498 :   return result;</span>
 <span class="lineNum">     257 </span>                :            : }
 <span class="lineNum">     258 </span>                :            : 
 <span class="lineNum">     259 </span>                :            : /* Return the name of the new backup file for the existing file FILE,
@@ -333,44 +333,44 @@
 <span class="lineNum">     261 </span>                :            :    Do not call this function if backup_type == no_backups.  */
 <a name="262"><span class="lineNum">     262 </span>                :            : </a>
 <span class="lineNum">     263 </span>                :            : char *
-<span class="lineNum">     264 </span>                :<span class="lineCov">        194 : find_backup_file_name (char const *file, enum backup_type backup_type)</span>
+<span class="lineNum">     264 </span>                :<span class="lineCov">        687 : find_backup_file_name (char const *file, enum backup_type backup_type)</span>
 <span class="lineNum">     265 </span>                :            : {
-<span class="lineNum">     266 </span>                :<span class="lineCov">        194 :   size_t filelen = strlen (file);</span>
+<span class="lineNum">     266 </span>                :<span class="lineCov">        687 :   size_t filelen = strlen (file);</span>
 <span class="lineNum">     267 </span>                :            :   char *s;
 <span class="lineNum">     268 </span>                :            :   size_t ssize;
-<span class="lineNum">     269 </span>                :<span class="lineCov">        194 :   bool simple = true;</span>
+<span class="lineNum">     269 </span>                :<span class="lineCov">        687 :   bool simple = true;</span>
 <span class="lineNum">     270 </span>                :            : 
 <span class="lineNum">     271 </span>                :            :   /* Allow room for simple or &quot;.~N~&quot; backups.  The guess must be at
 <span class="lineNum">     272 </span>                :            :      least sizeof &quot;.~1~&quot;, but otherwise will be adjusted as needed.  */
-<span class="lineNum">     273 </span>                :<span class="lineCov">        194 :   size_t simple_backup_suffix_size = strlen (simple_backup_suffix) + 1;</span>
-<span class="lineNum">     274 </span>                :<span class="lineCov">        194 :   size_t backup_suffix_size_guess = simple_backup_suffix_size;</span>
+<span class="lineNum">     273 </span>                :<span class="lineCov">        687 :   size_t simple_backup_suffix_size = strlen (simple_backup_suffix) + 1;</span>
+<span class="lineNum">     274 </span>                :<span class="lineCov">        687 :   size_t backup_suffix_size_guess = simple_backup_suffix_size;</span>
 <span class="lineNum">     275 </span>                :            :   enum { GUESS = sizeof &quot;.~12345~&quot; };
-<span class="lineNum">     276 </span>        [<span class="branchCov" title="Branch 0 was taken 194 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        194 :   if (backup_suffix_size_guess &lt; GUESS)</span>
-<span class="lineNum">     277 </span>                :<span class="lineCov">        194 :     backup_suffix_size_guess = GUESS;</span>
+<span class="lineNum">     276 </span>        [<span class="branchCov" title="Branch 0 was taken 687 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        687 :   if (backup_suffix_size_guess &lt; GUESS)</span>
+<span class="lineNum">     277 </span>                :<span class="lineCov">        687 :     backup_suffix_size_guess = GUESS;</span>
 <span class="lineNum">     278 </span>                :            : 
-<span class="lineNum">     279 </span>                :<span class="lineCov">        194 :   ssize = filelen + backup_suffix_size_guess + 1;</span>
-<span class="lineNum">     280 </span>                :<span class="lineCov">        194 :   s = xmalloc (ssize);</span>
-<span class="lineNum">     281 </span>                :<span class="lineCov">        194 :   memcpy (s, file, filelen + 1);</span>
+<span class="lineNum">     279 </span>                :<span class="lineCov">        687 :   ssize = filelen + backup_suffix_size_guess + 1;</span>
+<span class="lineNum">     280 </span>                :<span class="lineCov">        687 :   s = xmalloc (ssize);</span>
+<span class="lineNum">     281 </span>                :<span class="lineCov">        687 :   memcpy (s, file, filelen + 1);</span>
 <span class="lineNum">     282 </span>                :            : 
-<span class="lineNum">     283 </span>        [<span class="branchCov" title="Branch 0 was taken 140 times"> + </span><span class="branchCov" title="Branch 1 was taken 54 times"> + </span>]:<span class="lineCov">        194 :   if (backup_type != simple_backups)</span>
-<span class="lineNum">     284 </span>  [<span class="branchCov" title="Branch 1 was taken 32 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 108 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">        140 :     switch (numbered_backup (&amp;s, ssize, filelen))</span>
+<span class="lineNum">     283 </span>        [<span class="branchCov" title="Branch 0 was taken 498 times"> + </span><span class="branchCov" title="Branch 1 was taken 189 times"> + </span>]:<span class="lineCov">        687 :   if (backup_type != simple_backups)</span>
+<span class="lineNum">     284 </span>  [<span class="branchCov" title="Branch 1 was taken 112 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 386 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">        498 :     switch (numbered_backup (&amp;s, ssize, filelen))</span>
 <span class="lineNum">     285 </span>                :            :       {
 <span class="lineNum">     286 </span>                :            :       case BACKUP_IS_SAME_LENGTH:
-<span class="lineNum">     287 </span>                :<span class="lineCov">         32 :         return s;</span>
+<span class="lineNum">     287 </span>                :<span class="lineCov">        112 :         return s;</span>
 <span class="lineNum">     288 </span>                :            : 
 <span class="lineNum">     289 </span>                :            :       case BACKUP_IS_LONGER:
 <span class="lineNum">     290 </span>                :<span class="lineNoCov">          0 :         simple = false;</span>
 <span class="lineNum">     291 </span>                :<span class="lineNoCov">          0 :         break;</span>
 <span class="lineNum">     292 </span>                :            : 
 <span class="lineNum">     293 </span>                :            :       case BACKUP_IS_NEW:
-<span class="lineNum">     294 </span>                :<span class="lineCov">        108 :         simple = (backup_type == numbered_existing_backups);</span>
-<span class="lineNum">     295 </span>                :<span class="lineCov">        108 :         break;</span>
+<span class="lineNum">     294 </span>                :<span class="lineCov">        386 :         simple = (backup_type == numbered_existing_backups);</span>
+<span class="lineNum">     295 </span>                :<span class="lineCov">        386 :         break;</span>
 <span class="lineNum">     296 </span>                :            :       }
 <span class="lineNum">     297 </span>                :            : 
-<span class="lineNum">     298 </span>        [<span class="branchCov" title="Branch 0 was taken 94 times"> + </span><span class="branchCov" title="Branch 1 was taken 68 times"> + </span>]:<span class="lineCov">        162 :   if (simple)</span>
-<span class="lineNum">     299 </span>                :<span class="lineCov">         94 :     memcpy (s + filelen, simple_backup_suffix, simple_backup_suffix_size);</span>
-<span class="lineNum">     300 </span>                :<span class="lineCov">        162 :   check_extension (s, filelen, '~');</span>
-<span class="lineNum">     301 </span>                :<span class="lineCov">        194 :   return s;</span>
+<span class="lineNum">     298 </span>        [<span class="branchCov" title="Branch 0 was taken 336 times"> + </span><span class="branchCov" title="Branch 1 was taken 239 times"> + </span>]:<span class="lineCov">        575 :   if (simple)</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">        336 :     memcpy (s + filelen, simple_backup_suffix, simple_backup_suffix_size);</span>
+<span class="lineNum">     300 </span>                :<span class="lineCov">        575 :   check_extension (s, filelen, '~');</span>
+<span class="lineNum">     301 </span>                :<span class="lineCov">        687 :   return s;</span>
 <span class="lineNum">     302 </span>                :            : }
 <span class="lineNum">     303 </span>                :            : 
 <span class="lineNum">     304 </span>                :            : static char const * const backup_args[] =
@@ -402,12 +402,12 @@
 <span class="lineNum">     330 </span>                :            :    for the specified CONTEXT.  Unambiguous abbreviations are accepted.  */
 <a name="331"><span class="lineNum">     331 </span>                :            : </a>
 <span class="lineNum">     332 </span>                :            : enum backup_type
-<span class="lineNum">     333 </span>                :<span class="lineCov">        297 : get_version (char const *context, char const *version)</span>
+<span class="lineNum">     333 </span>                :<span class="lineCov">       1048 : get_version (char const *context, char const *version)</span>
 <span class="lineNum">     334 </span>                :            : {
-<span class="lineNum">     335 </span>[<span class="branchCov" title="Branch 0 was taken 258 times"> + </span><span class="branchCov" title="Branch 1 was taken 39 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 258 times"> + </span>]:<span class="lineCov">        297 :   if (version == 0 || *version == 0)</span>
-<span class="lineNum">     336 </span>                :<span class="lineCov">         39 :     return numbered_existing_backups;</span>
+<span class="lineNum">     335 </span>[<span class="branchCov" title="Branch 0 was taken 904 times"> + </span><span class="branchCov" title="Branch 1 was taken 144 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 904 times"> + </span>]:<span class="lineCov">       1048 :   if (version == 0 || *version == 0)</span>
+<span class="lineNum">     336 </span>                :<span class="lineCov">        144 :     return numbered_existing_backups;</span>
 <span class="lineNum">     337 </span>                :            :   else
-<span class="lineNum">     338 </span>                :<span class="lineCov">        297 :     return XARGMATCH (context, version, backup_args, backup_types);</span>
+<span class="lineNum">     338 </span>                :<span class="lineCov">       1048 :     return XARGMATCH (context, version, backup_args, backup_types);</span>
 <span class="lineNum">     339 </span>                :            : }
 <span class="lineNum">     340 </span>                :            : 
 <span class="lineNum">     341 </span>                :            : 
@@ -418,12 +418,12 @@
 <span class="lineNum">     346 </span>                :            :    Unambiguous abbreviations are accepted.  */
 <a name="347"><span class="lineNum">     347 </span>                :            : </a>
 <span class="lineNum">     348 </span>                :            : enum backup_type
-<span class="lineNum">     349 </span>                :<span class="lineCov">        297 : xget_version (char const *context, char const *version)</span>
+<span class="lineNum">     349 </span>                :<span class="lineCov">       1048 : xget_version (char const *context, char const *version)</span>
 <span class="lineNum">     350 </span>                :            : {
-<span class="lineNum">     351 </span>[<span class="branchCov" title="Branch 0 was taken 186 times"> + </span><span class="branchCov" title="Branch 1 was taken 111 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 186 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        297 :   if (version &amp;&amp; *version)</span>
-<span class="lineNum">     352 </span>                :<span class="lineCov">        186 :     return get_version (context, version);</span>
+<span class="lineNum">     351 </span>[<span class="branchCov" title="Branch 0 was taken 652 times"> + </span><span class="branchCov" title="Branch 1 was taken 396 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 652 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       1048 :   if (version &amp;&amp; *version)</span>
+<span class="lineNum">     352 </span>                :<span class="lineCov">        652 :     return get_version (context, version);</span>
 <span class="lineNum">     353 </span>                :            :   else
-<span class="lineNum">     354 </span>                :<span class="lineCov">        297 :     return get_version (&quot;$VERSION_CONTROL&quot;, getenv (&quot;VERSION_CONTROL&quot;));</span>
+<span class="lineNum">     354 </span>                :<span class="lineCov">       1048 :     return get_version (&quot;$VERSION_CONTROL&quot;, getenv (&quot;VERSION_CONTROL&quot;));</span>
 <span class="lineNum">     355 </span>                :            : }
 </pre>
       </td>

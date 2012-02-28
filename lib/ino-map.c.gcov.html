@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntry">38</td>
             <td class="headerCovTableEntry">44</td>
-            <td class="headerCovTableEntryHi">88.6 %</td>
+            <td class="headerCovTableEntryMed">86.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">10</td>
             <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntryHi">68.8 %</td>
+            <td class="headerCovTableEntryLo">62.5 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -122,64 +122,64 @@
 <span class="lineNum">      51 </span>                :            : 
 <a name="52"><span class="lineNum">      52 </span>                :            : /* Hash an inode map entry.  */</a>
 <span class="lineNum">      53 </span>                :            : static size_t
-<span class="lineNum">      54 </span>                :<span class="lineCov">        220 : ino_hash (void const *x, size_t table_size)</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">        770 : ino_hash (void const *x, size_t table_size)</span>
 <span class="lineNum">      55 </span>                :            : {
-<span class="lineNum">      56 </span>                :<span class="lineCov">        220 :   struct ino_map_ent const *p = x;</span>
-<span class="lineNum">      57 </span>                :<span class="lineCov">        220 :   ino_t ino = p-&gt;ino;</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">        770 :   struct ino_map_ent const *p = x;</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">        770 :   ino_t ino = p-&gt;ino;</span>
 <span class="lineNum">      58 </span>                :            : 
 <span class="lineNum">      59 </span>                :            :   /* When INO is wider than size_t, exclusive-OR the words of INO into H.
 <span class="lineNum">      60 </span>                :            :      This avoids loss of info, without applying % to the wider type,
 <span class="lineNum">      61 </span>                :            :      which could be quite slow on some systems.  */
-<span class="lineNum">      62 </span>                :<span class="lineCov">        220 :   size_t h = ino;</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">        770 :   size_t h = ino;</span>
 <span class="lineNum">      63 </span>                :            :   unsigned int i;
-<span class="lineNum">      64 </span>                :<span class="lineCov">        220 :   unsigned int n_words = sizeof ino / sizeof h + (sizeof ino % sizeof h != 0);</span>
-<span class="lineNum">      65 </span>        [<span class="branchCov" title="Branch 0 was taken 220 times"> + </span><span class="branchCov" title="Branch 1 was taken 220 times"> + </span>]:<span class="lineCov">        440 :   for (i = 1; i &lt; n_words; i++)</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">        220 :     h ^= ino &gt;&gt; CHAR_BIT * sizeof h * i;</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">        770 :   unsigned int n_words = sizeof ino / sizeof h + (sizeof ino % sizeof h != 0);</span>
+<span class="lineNum">      65 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 770 times"> + </span>]:<span class="lineCov">        770 :   for (i = 1; i &lt; n_words; i++)</span>
+<span class="lineNum">      66 </span>                :<span class="lineNoCov">          0 :     h ^= ino &gt;&gt; CHAR_BIT * sizeof h * i;</span>
 <span class="lineNum">      67 </span>                :            : 
-<span class="lineNum">      68 </span>                :<span class="lineCov">        220 :   return h % table_size;</span>
+<span class="lineNum">      68 </span>                :<span class="lineCov">        770 :   return h % table_size;</span>
 <span class="lineNum">      69 </span>                :            : }
 <span class="lineNum">      70 </span>                :            : 
 <a name="71"><span class="lineNum">      71 </span>                :            : /* Return true if two inode map entries are the same.  */</a>
 <span class="lineNum">      72 </span>                :            : static bool
-<span class="lineNum">      73 </span>                :<span class="lineCov">         14 : ino_compare (void const *x, void const *y)</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">         35 : ino_compare (void const *x, void const *y)</span>
 <span class="lineNum">      74 </span>                :            : {
-<span class="lineNum">      75 </span>                :<span class="lineCov">         14 :   struct ino_map_ent const *a = x;</span>
-<span class="lineNum">      76 </span>                :<span class="lineCov">         14 :   struct ino_map_ent const *b = y;</span>
-<span class="lineNum">      77 </span>                :<span class="lineCov">         14 :   return a-&gt;ino == b-&gt;ino;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">         35 :   struct ino_map_ent const *a = x;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">         35 :   struct ino_map_ent const *b = y;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">         35 :   return a-&gt;ino == b-&gt;ino;</span>
 <span class="lineNum">      78 </span>                :            : }
 <span class="lineNum">      79 </span>                :            : 
 <span class="lineNum">      80 </span>                :            : /* Allocate an inode map that will hand out integers starting with
 <a name="81"><span class="lineNum">      81 </span>                :            :    NEXT_MAPPED_INO.  Return NULL if memory is exhausted.  */</a>
 <span class="lineNum">      82 </span>                :            : struct ino_map *
-<span class="lineNum">      83 </span>                :<span class="lineCov">          4 : ino_map_alloc (size_t next_mapped_ino)</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">         14 : ino_map_alloc (size_t next_mapped_ino)</span>
 <span class="lineNum">      84 </span>                :            : {
-<span class="lineNum">      85 </span>                :<span class="lineCov">          4 :   struct ino_map *im = malloc (sizeof *im);</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">         14 :   struct ino_map *im = malloc (sizeof *im);</span>
 <span class="lineNum">      86 </span>                :            : 
-<span class="lineNum">      87 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :   if (im)</span>
+<span class="lineNum">      87 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         14 :   if (im)</span>
 <span class="lineNum">      88 </span>                :            :     {
 <span class="lineNum">      89 </span>                :            :       enum { INITIAL_INO_MAP_TABLE_SIZE = 1021 };
-<span class="lineNum">      90 </span>                :<span class="lineCov">          4 :       im-&gt;map = hash_initialize (INITIAL_INO_MAP_TABLE_SIZE, NULL,</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">         14 :       im-&gt;map = hash_initialize (INITIAL_INO_MAP_TABLE_SIZE, NULL,</span>
 <span class="lineNum">      91 </span>                :            :                                  ino_hash, ino_compare, free);
-<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          4 :       if (! im-&gt;map)</span>
+<span class="lineNum">      92 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         14 :       if (! im-&gt;map)</span>
 <span class="lineNum">      93 </span>                :            :         {
 <span class="lineNum">      94 </span>                :<span class="lineNoCov">          0 :           free (im);</span>
 <span class="lineNum">      95 </span>                :<span class="lineNoCov">          0 :           return NULL;</span>
 <span class="lineNum">      96 </span>                :            :         }
-<span class="lineNum">      97 </span>                :<span class="lineCov">          4 :       im-&gt;next_mapped_ino = next_mapped_ino;</span>
-<span class="lineNum">      98 </span>                :<span class="lineCov">          4 :       im-&gt;probe = NULL;</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">         14 :       im-&gt;next_mapped_ino = next_mapped_ino;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">         14 :       im-&gt;probe = NULL;</span>
 <span class="lineNum">      99 </span>                :            :     }
 <span class="lineNum">     100 </span>                :            : 
-<span class="lineNum">     101 </span>                :<span class="lineCov">          4 :   return im;</span>
+<span class="lineNum">     101 </span>                :<span class="lineCov">         14 :   return im;</span>
 <span class="lineNum">     102 </span>                :            : }
 <span class="lineNum">     103 </span>                :            : 
 <a name="104"><span class="lineNum">     104 </span>                :            : /* Free an inode map.  */</a>
 <span class="lineNum">     105 </span>                :            : void
-<span class="lineNum">     106 </span>                :<span class="lineCov">          2 : ino_map_free (struct ino_map *map)</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">          7 : ino_map_free (struct ino_map *map)</span>
 <span class="lineNum">     107 </span>                :            : {
-<span class="lineNum">     108 </span>                :<span class="lineCov">          2 :   hash_free (map-&gt;map);</span>
-<span class="lineNum">     109 </span>                :<span class="lineCov">          2 :   free (map-&gt;probe);</span>
-<span class="lineNum">     110 </span>                :<span class="lineCov">          2 :   free (map);</span>
-<span class="lineNum">     111 </span>                :<span class="lineCov">          2 : }</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">          7 :   hash_free (map-&gt;map);</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">          7 :   free (map-&gt;probe);</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">          7 :   free (map);</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">          7 : }</span>
 <span class="lineNum">     112 </span>                :            : 
 <span class="lineNum">     113 </span>                :            : 
 <span class="lineNum">     114 </span>                :            : /* Insert into MAP the inode number INO if it's not there already,
@@ -187,34 +187,34 @@
 <span class="lineNum">     116 </span>                :            :    If INO is already in MAP, return the existing mapped inode number.
 <a name="117"><span class="lineNum">     117 </span>                :            :    Return INO_MAP_INSERT_FAILURE on memory or counter exhaustion.  */</a>
 <span class="lineNum">     118 </span>                :            : size_t
-<span class="lineNum">     119 </span>                :<span class="lineCov">        220 : ino_map_insert (struct ino_map *im, ino_t ino)</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">        770 : ino_map_insert (struct ino_map *im, ino_t ino)</span>
 <span class="lineNum">     120 </span>                :            : {
 <span class="lineNum">     121 </span>                :            :   struct ino_map_ent *ent;
 <span class="lineNum">     122 </span>                :            : 
 <span class="lineNum">     123 </span>                :            :   /* Find space for the probe, reusing the cache if available.  */
-<span class="lineNum">     124 </span>                :<span class="lineCov">        220 :   struct ino_map_ent *probe = im-&gt;probe;</span>
-<span class="lineNum">     125 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 212 times"> + </span>]:<span class="lineCov">        220 :   if (probe)</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">        770 :   struct ino_map_ent *probe = im-&gt;probe;</span>
+<span class="lineNum">     125 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 742 times"> + </span>]:<span class="lineCov">        770 :   if (probe)</span>
 <span class="lineNum">     126 </span>                :            :     {
 <span class="lineNum">     127 </span>                :            :       /* If repeating a recent query, return the cached result.   */
-<span class="lineNum">     128 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :       if (probe-&gt;ino == ino)</span>
+<span class="lineNum">     128 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :       if (probe-&gt;ino == ino)</span>
 <span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 :         return probe-&gt;mapped_ino;</span>
 <span class="lineNum">     130 </span>                :            :     }
 <span class="lineNum">     131 </span>                :            :   else
 <span class="lineNum">     132 </span>                :            :     {
-<span class="lineNum">     133 </span>                :<span class="lineCov">        212 :       im-&gt;probe = probe = malloc (sizeof *probe);</span>
-<span class="lineNum">     134 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 212 times"> + </span>]:<span class="lineCov">        212 :       if (! probe)</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">        742 :       im-&gt;probe = probe = malloc (sizeof *probe);</span>
+<span class="lineNum">     134 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 742 times"> + </span>]:<span class="lineCov">        742 :       if (! probe)</span>
 <span class="lineNum">     135 </span>                :<span class="lineNoCov">          0 :         return INO_MAP_INSERT_FAILURE;</span>
 <span class="lineNum">     136 </span>                :            :     }
 <span class="lineNum">     137 </span>                :            : 
-<span class="lineNum">     138 </span>                :<span class="lineCov">        220 :   probe-&gt;ino = ino;</span>
-<span class="lineNum">     139 </span>                :<span class="lineCov">        220 :   ent = hash_insert (im-&gt;map, probe);</span>
-<span class="lineNum">     140 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 220 times"> + </span>]:<span class="lineCov">        220 :   if (! ent)</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">        770 :   probe-&gt;ino = ino;</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">        770 :   ent = hash_insert (im-&gt;map, probe);</span>
+<span class="lineNum">     140 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 770 times"> + </span>]:<span class="lineCov">        770 :   if (! ent)</span>
 <span class="lineNum">     141 </span>                :<span class="lineNoCov">          0 :     return INO_MAP_INSERT_FAILURE;</span>
 <span class="lineNum">     142 </span>                :            : 
-<span class="lineNum">     143 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 210 times"> + </span>]:<span class="lineCov">        220 :   if (ent != probe)</span>
+<span class="lineNum">     143 </span>        [<span class="branchCov" title="Branch 0 was taken 35 times"> + </span><span class="branchCov" title="Branch 1 was taken 735 times"> + </span>]:<span class="lineCov">        770 :   if (ent != probe)</span>
 <span class="lineNum">     144 </span>                :            :     {
 <span class="lineNum">     145 </span>                :            :       /* Use the existing entry.  */
-<span class="lineNum">     146 </span>                :<span class="lineCov">         10 :       probe-&gt;mapped_ino = ent-&gt;mapped_ino;</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">         35 :       probe-&gt;mapped_ino = ent-&gt;mapped_ino;</span>
 <span class="lineNum">     147 </span>                :            :     }
 <span class="lineNum">     148 </span>                :            :   else
 <span class="lineNum">     149 </span>                :            :     {
@@ -225,13 +225,13 @@
 <span class="lineNum">     154 </span>                :            :       verify (INO_MAP_INSERT_FAILURE + 1 == 0);
 <span class="lineNum">     155 </span>                :            : 
 <span class="lineNum">     156 </span>                :            :       /* Prepare to allocate a new probe next time; this one is in use.  */
-<span class="lineNum">     157 </span>                :<span class="lineCov">        210 :       im-&gt;probe = NULL;</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">        735 :       im-&gt;probe = NULL;</span>
 <span class="lineNum">     158 </span>                :            : 
 <span class="lineNum">     159 </span>                :            :       /* INO is new; allocate a mapped inode number for it.  */
-<span class="lineNum">     160 </span>                :<span class="lineCov">        210 :       probe-&gt;mapped_ino = im-&gt;next_mapped_ino++;</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">        735 :       probe-&gt;mapped_ino = im-&gt;next_mapped_ino++;</span>
 <span class="lineNum">     161 </span>                :            :     }
 <span class="lineNum">     162 </span>                :            : 
-<span class="lineNum">     163 </span>                :<span class="lineCov">        220 :   return probe-&gt;mapped_ino;</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">        770 :   return probe-&gt;mapped_ino;</span>
 <span class="lineNum">     164 </span>                :            : }
 </pre>
       </td>

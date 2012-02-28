@@ -1,0 +1,645 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - coreutils - lib/time.h</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib</a> - time.h<span style="font-size: 80%;"> (source / <a href="time.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coreutils</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-02-28</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* DO NOT EDIT! GENERATED AUTOMATICALLY! */</a>
+<span class="lineNum">       2 </span>                :            : /* A more-standard &lt;time.h&gt;.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    Copyright (C) 2007-2012 Free Software Foundation, Inc.
+<span class="lineNum">       5 </span>                :            : 
+<span class="lineNum">       6 </span>                :            :    This program is free software; you can redistribute it and/or modify
+<span class="lineNum">       7 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       8 </span>                :            :    the Free Software Foundation; either version 3, or (at your option)
+<span class="lineNum">       9 </span>                :            :    any later version.
+<span class="lineNum">      10 </span>                :            : 
+<span class="lineNum">      11 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      12 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      14 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      15 </span>                :            : 
+<span class="lineNum">      16 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      17 </span>                :            :    along with this program; if not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :            : #if __GNUC__ &gt;= 3
+<span class="lineNum">      20 </span>                :            : #pragma GCC system_header
+<span class="lineNum">      21 </span>                :            : #endif
+<span class="lineNum">      22 </span>                :            : 
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :            : /* Don't get in the way of glibc when it includes time.h merely to
+<span class="lineNum">      25 </span>                :            :    declare a few standard symbols, rather than to declare all the
+<span class="lineNum">      26 </span>                :            :    symbols.  Also, Solaris 8 &lt;time.h&gt; eventually includes itself
+<span class="lineNum">      27 </span>                :            :    recursively; if that is happening, just include the system &lt;time.h&gt;
+<span class="lineNum">      28 </span>                :            :    without adding our own declarations.  */
+<span class="lineNum">      29 </span>                :            : #if (defined __need_time_t || defined __need_clock_t \
+<span class="lineNum">      30 </span>                :            :      || defined __need_timespec \
+<span class="lineNum">      31 </span>                :            :      || defined _GL_TIME_H)
+<span class="lineNum">      32 </span>                :            : 
+<span class="lineNum">      33 </span>                :            : # include_next &lt;time.h&gt;
+<span class="lineNum">      34 </span>                :            : 
+<span class="lineNum">      35 </span>                :            : #else
+<span class="lineNum">      36 </span>                :            : 
+<span class="lineNum">      37 </span>                :            : # define _GL_TIME_H
+<span class="lineNum">      38 </span>                :            : 
+<span class="lineNum">      39 </span>                :            : # include_next &lt;time.h&gt;
+<span class="lineNum">      40 </span>                :            : 
+<span class="lineNum">      41 </span>                :            : /* NetBSD 5.0 mis-defines NULL.  */
+<span class="lineNum">      42 </span>                :            : # include &lt;stddef.h&gt;
+<span class="lineNum">      43 </span>                :            : 
+<span class="lineNum">      44 </span>                :            : /* The definitions of _GL_FUNCDECL_RPL etc. are copied here.  */
+<span class="lineNum">      45 </span>                :            : #ifndef _GL_CXXDEFS_H
+<span class="lineNum">      46 </span>                :            : #define _GL_CXXDEFS_H
+<span class="lineNum">      47 </span>                :            : 
+<span class="lineNum">      48 </span>                :            : /* The three most frequent use cases of these macros are:
+<span class="lineNum">      49 </span>                :            : 
+<span class="lineNum">      50 </span>                :            :    * For providing a substitute for a function that is missing on some
+<span class="lineNum">      51 </span>                :            :      platforms, but is declared and works fine on the platforms on which
+<span class="lineNum">      52 </span>                :            :      it exists:
+<span class="lineNum">      53 </span>                :            : 
+<span class="lineNum">      54 </span>                :            :        #if @GNULIB_FOO@
+<span class="lineNum">      55 </span>                :            :        # if !@HAVE_FOO@
+<span class="lineNum">      56 </span>                :            :        _GL_FUNCDECL_SYS (foo, ...);
+<span class="lineNum">      57 </span>                :            :        # endif
+<span class="lineNum">      58 </span>                :            :        _GL_CXXALIAS_SYS (foo, ...);
+<span class="lineNum">      59 </span>                :            :        _GL_CXXALIASWARN (foo);
+<span class="lineNum">      60 </span>                :            :        #elif defined GNULIB_POSIXCHECK
+<span class="lineNum">      61 </span>                :            :        ...
+<span class="lineNum">      62 </span>                :            :        #endif
+<span class="lineNum">      63 </span>                :            : 
+<span class="lineNum">      64 </span>                :            :    * For providing a replacement for a function that exists on all platforms,
+<span class="lineNum">      65 </span>                :            :      but is broken/insufficient and needs to be replaced on some platforms:
+<span class="lineNum">      66 </span>                :            : 
+<span class="lineNum">      67 </span>                :            :        #if @GNULIB_FOO@
+<span class="lineNum">      68 </span>                :            :        # if @REPLACE_FOO@
+<span class="lineNum">      69 </span>                :            :        #  if !(defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE)
+<span class="lineNum">      70 </span>                :            :        #   undef foo
+<span class="lineNum">      71 </span>                :            :        #   define foo rpl_foo
+<span class="lineNum">      72 </span>                :            :        #  endif
+<span class="lineNum">      73 </span>                :            :        _GL_FUNCDECL_RPL (foo, ...);
+<span class="lineNum">      74 </span>                :            :        _GL_CXXALIAS_RPL (foo, ...);
+<span class="lineNum">      75 </span>                :            :        # else
+<span class="lineNum">      76 </span>                :            :        _GL_CXXALIAS_SYS (foo, ...);
+<span class="lineNum">      77 </span>                :            :        # endif
+<span class="lineNum">      78 </span>                :            :        _GL_CXXALIASWARN (foo);
+<span class="lineNum">      79 </span>                :            :        #elif defined GNULIB_POSIXCHECK
+<span class="lineNum">      80 </span>                :            :        ...
+<span class="lineNum">      81 </span>                :            :        #endif
+<span class="lineNum">      82 </span>                :            : 
+<span class="lineNum">      83 </span>                :            :    * For providing a replacement for a function that exists on some platforms
+<span class="lineNum">      84 </span>                :            :      but is broken/insufficient and needs to be replaced on some of them and
+<span class="lineNum">      85 </span>                :            :      is additionally either missing or undeclared on some other platforms:
+<span class="lineNum">      86 </span>                :            : 
+<span class="lineNum">      87 </span>                :            :        #if @GNULIB_FOO@
+<span class="lineNum">      88 </span>                :            :        # if @REPLACE_FOO@
+<span class="lineNum">      89 </span>                :            :        #  if !(defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE)
+<span class="lineNum">      90 </span>                :            :        #   undef foo
+<span class="lineNum">      91 </span>                :            :        #   define foo rpl_foo
+<span class="lineNum">      92 </span>                :            :        #  endif
+<span class="lineNum">      93 </span>                :            :        _GL_FUNCDECL_RPL (foo, ...);
+<span class="lineNum">      94 </span>                :            :        _GL_CXXALIAS_RPL (foo, ...);
+<span class="lineNum">      95 </span>                :            :        # else
+<span class="lineNum">      96 </span>                :            :        #  if !@HAVE_FOO@   or   if !@HAVE_DECL_FOO@
+<span class="lineNum">      97 </span>                :            :        _GL_FUNCDECL_SYS (foo, ...);
+<span class="lineNum">      98 </span>                :            :        #  endif
+<span class="lineNum">      99 </span>                :            :        _GL_CXXALIAS_SYS (foo, ...);
+<span class="lineNum">     100 </span>                :            :        # endif
+<span class="lineNum">     101 </span>                :            :        _GL_CXXALIASWARN (foo);
+<span class="lineNum">     102 </span>                :            :        #elif defined GNULIB_POSIXCHECK
+<span class="lineNum">     103 </span>                :            :        ...
+<span class="lineNum">     104 </span>                :            :        #endif
+<span class="lineNum">     105 </span>                :            : */
+<span class="lineNum">     106 </span>                :            : 
+<span class="lineNum">     107 </span>                :            : /* _GL_EXTERN_C declaration;
+<span class="lineNum">     108 </span>                :            :    performs the declaration with C linkage.  */
+<span class="lineNum">     109 </span>                :            : #if defined __cplusplus
+<span class="lineNum">     110 </span>                :            : # define _GL_EXTERN_C extern &quot;C&quot;
+<span class="lineNum">     111 </span>                :            : #else
+<span class="lineNum">     112 </span>                :            : # define _GL_EXTERN_C extern
+<span class="lineNum">     113 </span>                :            : #endif
+<span class="lineNum">     114 </span>                :            : 
+<span class="lineNum">     115 </span>                :            : /* _GL_FUNCDECL_RPL (func, rettype, parameters_and_attributes);
+<span class="lineNum">     116 </span>                :            :    declares a replacement function, named rpl_func, with the given prototype,
+<span class="lineNum">     117 </span>                :            :    consisting of return type, parameters, and attributes.
+<span class="lineNum">     118 </span>                :            :    Example:
+<span class="lineNum">     119 </span>                :            :      _GL_FUNCDECL_RPL (open, int, (const char *filename, int flags, ...)
+<span class="lineNum">     120 </span>                :            :                                   _GL_ARG_NONNULL ((1)));
+<span class="lineNum">     121 </span>                :            :  */
+<span class="lineNum">     122 </span>                :            : #define _GL_FUNCDECL_RPL(func,rettype,parameters_and_attributes) \
+<span class="lineNum">     123 </span>                :            :   _GL_FUNCDECL_RPL_1 (rpl_##func, rettype, parameters_and_attributes)
+<span class="lineNum">     124 </span>                :            : #define _GL_FUNCDECL_RPL_1(rpl_func,rettype,parameters_and_attributes) \
+<span class="lineNum">     125 </span>                :            :   _GL_EXTERN_C rettype rpl_func parameters_and_attributes
+<span class="lineNum">     126 </span>                :            : 
+<span class="lineNum">     127 </span>                :            : /* _GL_FUNCDECL_SYS (func, rettype, parameters_and_attributes);
+<span class="lineNum">     128 </span>                :            :    declares the system function, named func, with the given prototype,
+<span class="lineNum">     129 </span>                :            :    consisting of return type, parameters, and attributes.
+<span class="lineNum">     130 </span>                :            :    Example:
+<span class="lineNum">     131 </span>                :            :      _GL_FUNCDECL_SYS (open, int, (const char *filename, int flags, ...)
+<span class="lineNum">     132 </span>                :            :                                   _GL_ARG_NONNULL ((1)));
+<span class="lineNum">     133 </span>                :            :  */
+<span class="lineNum">     134 </span>                :            : #define _GL_FUNCDECL_SYS(func,rettype,parameters_and_attributes) \
+<span class="lineNum">     135 </span>                :            :   _GL_EXTERN_C rettype func parameters_and_attributes
+<span class="lineNum">     136 </span>                :            : 
+<span class="lineNum">     137 </span>                :            : /* _GL_CXXALIAS_RPL (func, rettype, parameters);
+<span class="lineNum">     138 </span>                :            :    declares a C++ alias called GNULIB_NAMESPACE::func
+<span class="lineNum">     139 </span>                :            :    that redirects to rpl_func, if GNULIB_NAMESPACE is defined.
+<span class="lineNum">     140 </span>                :            :    Example:
+<span class="lineNum">     141 </span>                :            :      _GL_CXXALIAS_RPL (open, int, (const char *filename, int flags, ...));
+<span class="lineNum">     142 </span>                :            :  */
+<span class="lineNum">     143 </span>                :            : #define _GL_CXXALIAS_RPL(func,rettype,parameters) \
+<span class="lineNum">     144 </span>                :            :   _GL_CXXALIAS_RPL_1 (func, rpl_##func, rettype, parameters)
+<span class="lineNum">     145 </span>                :            : #if defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE
+<span class="lineNum">     146 </span>                :            : # define _GL_CXXALIAS_RPL_1(func,rpl_func,rettype,parameters) \
+<span class="lineNum">     147 </span>                :            :     namespace GNULIB_NAMESPACE                                \
+<span class="lineNum">     148 </span>                :            :     {                                                         \
+<span class="lineNum">     149 </span>                :            :       rettype (*const func) parameters = ::rpl_func;          \
+<span class="lineNum">     150 </span>                :            :     }                                                         \
+<span class="lineNum">     151 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     152 </span>                :            : #else
+<span class="lineNum">     153 </span>                :            : # define _GL_CXXALIAS_RPL_1(func,rpl_func,rettype,parameters) \
+<span class="lineNum">     154 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     155 </span>                :            : #endif
+<span class="lineNum">     156 </span>                :            : 
+<span class="lineNum">     157 </span>                :            : /* _GL_CXXALIAS_RPL_CAST_1 (func, rpl_func, rettype, parameters);
+<span class="lineNum">     158 </span>                :            :    is like  _GL_CXXALIAS_RPL_1 (func, rpl_func, rettype, parameters);
+<span class="lineNum">     159 </span>                :            :    except that the C function rpl_func may have a slightly different
+<span class="lineNum">     160 </span>                :            :    declaration.  A cast is used to silence the &quot;invalid conversion&quot; error
+<span class="lineNum">     161 </span>                :            :    that would otherwise occur.  */
+<span class="lineNum">     162 </span>                :            : #if defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE
+<span class="lineNum">     163 </span>                :            : # define _GL_CXXALIAS_RPL_CAST_1(func,rpl_func,rettype,parameters) \
+<span class="lineNum">     164 </span>                :            :     namespace GNULIB_NAMESPACE                                     \
+<span class="lineNum">     165 </span>                :            :     {                                                              \
+<span class="lineNum">     166 </span>                :            :       rettype (*const func) parameters =                           \
+<span class="lineNum">     167 </span>                :            :         reinterpret_cast&lt;rettype(*)parameters&gt;(::rpl_func);        \
+<span class="lineNum">     168 </span>                :            :     }                                                              \
+<span class="lineNum">     169 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     170 </span>                :            : #else
+<span class="lineNum">     171 </span>                :            : # define _GL_CXXALIAS_RPL_CAST_1(func,rpl_func,rettype,parameters) \
+<span class="lineNum">     172 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     173 </span>                :            : #endif
+<span class="lineNum">     174 </span>                :            : 
+<span class="lineNum">     175 </span>                :            : /* _GL_CXXALIAS_SYS (func, rettype, parameters);
+<span class="lineNum">     176 </span>                :            :    declares a C++ alias called GNULIB_NAMESPACE::func
+<span class="lineNum">     177 </span>                :            :    that redirects to the system provided function func, if GNULIB_NAMESPACE
+<span class="lineNum">     178 </span>                :            :    is defined.
+<span class="lineNum">     179 </span>                :            :    Example:
+<span class="lineNum">     180 </span>                :            :      _GL_CXXALIAS_SYS (open, int, (const char *filename, int flags, ...));
+<span class="lineNum">     181 </span>                :            :  */
+<span class="lineNum">     182 </span>                :            : #if defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE
+<span class="lineNum">     183 </span>                :            :   /* If we were to write
+<span class="lineNum">     184 </span>                :            :        rettype (*const func) parameters = ::func;
+<span class="lineNum">     185 </span>                :            :      like above in _GL_CXXALIAS_RPL_1, the compiler could optimize calls
+<span class="lineNum">     186 </span>                :            :      better (remove an indirection through a 'static' pointer variable),
+<span class="lineNum">     187 </span>                :            :      but then the _GL_CXXALIASWARN macro below would cause a warning not only
+<span class="lineNum">     188 </span>                :            :      for uses of ::func but also for uses of GNULIB_NAMESPACE::func.  */
+<span class="lineNum">     189 </span>                :            : # define _GL_CXXALIAS_SYS(func,rettype,parameters) \
+<span class="lineNum">     190 </span>                :            :     namespace GNULIB_NAMESPACE                     \
+<span class="lineNum">     191 </span>                :            :     {                                              \
+<span class="lineNum">     192 </span>                :            :       static rettype (*func) parameters = ::func;  \
+<span class="lineNum">     193 </span>                :            :     }                                              \
+<span class="lineNum">     194 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     195 </span>                :            : #else
+<span class="lineNum">     196 </span>                :            : # define _GL_CXXALIAS_SYS(func,rettype,parameters) \
+<span class="lineNum">     197 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     198 </span>                :            : #endif
+<span class="lineNum">     199 </span>                :            : 
+<span class="lineNum">     200 </span>                :            : /* _GL_CXXALIAS_SYS_CAST (func, rettype, parameters);
+<span class="lineNum">     201 </span>                :            :    is like  _GL_CXXALIAS_SYS (func, rettype, parameters);
+<span class="lineNum">     202 </span>                :            :    except that the C function func may have a slightly different declaration.
+<span class="lineNum">     203 </span>                :            :    A cast is used to silence the &quot;invalid conversion&quot; error that would
+<span class="lineNum">     204 </span>                :            :    otherwise occur.  */
+<span class="lineNum">     205 </span>                :            : #if defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE
+<span class="lineNum">     206 </span>                :            : # define _GL_CXXALIAS_SYS_CAST(func,rettype,parameters) \
+<span class="lineNum">     207 </span>                :            :     namespace GNULIB_NAMESPACE                          \
+<span class="lineNum">     208 </span>                :            :     {                                                   \
+<span class="lineNum">     209 </span>                :            :       static rettype (*func) parameters =               \
+<span class="lineNum">     210 </span>                :            :         reinterpret_cast&lt;rettype(*)parameters&gt;(::func); \
+<span class="lineNum">     211 </span>                :            :     }                                                   \
+<span class="lineNum">     212 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     213 </span>                :            : #else
+<span class="lineNum">     214 </span>                :            : # define _GL_CXXALIAS_SYS_CAST(func,rettype,parameters) \
+<span class="lineNum">     215 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     216 </span>                :            : #endif
+<span class="lineNum">     217 </span>                :            : 
+<span class="lineNum">     218 </span>                :            : /* _GL_CXXALIAS_SYS_CAST2 (func, rettype, parameters, rettype2, parameters2);
+<span class="lineNum">     219 </span>                :            :    is like  _GL_CXXALIAS_SYS (func, rettype, parameters);
+<span class="lineNum">     220 </span>                :            :    except that the C function is picked among a set of overloaded functions,
+<span class="lineNum">     221 </span>                :            :    namely the one with rettype2 and parameters2.  Two consecutive casts
+<span class="lineNum">     222 </span>                :            :    are used to silence the &quot;cannot find a match&quot; and &quot;invalid conversion&quot;
+<span class="lineNum">     223 </span>                :            :    errors that would otherwise occur.  */
+<span class="lineNum">     224 </span>                :            : #if defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE
+<span class="lineNum">     225 </span>                :            :   /* The outer cast must be a reinterpret_cast.
+<span class="lineNum">     226 </span>                :            :      The inner cast: When the function is defined as a set of overloaded
+<span class="lineNum">     227 </span>                :            :      functions, it works as a static_cast&lt;&gt;, choosing the designated variant.
+<span class="lineNum">     228 </span>                :            :      When the function is defined as a single variant, it works as a
+<span class="lineNum">     229 </span>                :            :      reinterpret_cast&lt;&gt;. The parenthesized cast syntax works both ways.  */
+<span class="lineNum">     230 </span>                :            : # define _GL_CXXALIAS_SYS_CAST2(func,rettype,parameters,rettype2,parameters2) \
+<span class="lineNum">     231 </span>                :            :     namespace GNULIB_NAMESPACE                                                \
+<span class="lineNum">     232 </span>                :            :     {                                                                         \
+<span class="lineNum">     233 </span>                :            :       static rettype (*func) parameters =                                     \
+<span class="lineNum">     234 </span>                :            :         reinterpret_cast&lt;rettype(*)parameters&gt;(                               \
+<span class="lineNum">     235 </span>                :            :           (rettype2(*)parameters2)(::func));                                  \
+<span class="lineNum">     236 </span>                :            :     }                                                                         \
+<span class="lineNum">     237 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     238 </span>                :            : #else
+<span class="lineNum">     239 </span>                :            : # define _GL_CXXALIAS_SYS_CAST2(func,rettype,parameters,rettype2,parameters2) \
+<span class="lineNum">     240 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     241 </span>                :            : #endif
+<span class="lineNum">     242 </span>                :            : 
+<span class="lineNum">     243 </span>                :            : /* _GL_CXXALIASWARN (func);
+<span class="lineNum">     244 </span>                :            :    causes a warning to be emitted when ::func is used but not when
+<span class="lineNum">     245 </span>                :            :    GNULIB_NAMESPACE::func is used.  func must be defined without overloaded
+<span class="lineNum">     246 </span>                :            :    variants.  */
+<span class="lineNum">     247 </span>                :            : #if defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE
+<span class="lineNum">     248 </span>                :            : # define _GL_CXXALIASWARN(func) \
+<span class="lineNum">     249 </span>                :            :    _GL_CXXALIASWARN_1 (func, GNULIB_NAMESPACE)
+<span class="lineNum">     250 </span>                :            : # define _GL_CXXALIASWARN_1(func,namespace) \
+<span class="lineNum">     251 </span>                :            :    _GL_CXXALIASWARN_2 (func, namespace)
+<span class="lineNum">     252 </span>                :            : /* To work around GCC bug &lt;http://gcc.gnu.org/bugzilla/show_bug.cgi?id=43881&gt;,
+<span class="lineNum">     253 </span>                :            :    we enable the warning only when not optimizing.  */
+<span class="lineNum">     254 </span>                :            : # if !__OPTIMIZE__
+<span class="lineNum">     255 </span>                :            : #  define _GL_CXXALIASWARN_2(func,namespace) \
+<span class="lineNum">     256 </span>                :            :     _GL_WARN_ON_USE (func, \
+<span class="lineNum">     257 </span>                :            :                      &quot;The symbol ::&quot; #func &quot; refers to the system function. &quot; \
+<span class="lineNum">     258 </span>                :            :                      &quot;Use &quot; #namespace &quot;::&quot; #func &quot; instead.&quot;)
+<span class="lineNum">     259 </span>                :            : # elif __GNUC__ &gt;= 3 &amp;&amp; GNULIB_STRICT_CHECKING
+<span class="lineNum">     260 </span>                :            : #  define _GL_CXXALIASWARN_2(func,namespace) \
+<span class="lineNum">     261 </span>                :            :      extern __typeof__ (func) func
+<span class="lineNum">     262 </span>                :            : # else
+<span class="lineNum">     263 </span>                :            : #  define _GL_CXXALIASWARN_2(func,namespace) \
+<span class="lineNum">     264 </span>                :            :      _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     265 </span>                :            : # endif
+<span class="lineNum">     266 </span>                :            : #else
+<span class="lineNum">     267 </span>                :            : # define _GL_CXXALIASWARN(func) \
+<span class="lineNum">     268 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     269 </span>                :            : #endif
+<span class="lineNum">     270 </span>                :            : 
+<span class="lineNum">     271 </span>                :            : /* _GL_CXXALIASWARN1 (func, rettype, parameters_and_attributes);
+<span class="lineNum">     272 </span>                :            :    causes a warning to be emitted when the given overloaded variant of ::func
+<span class="lineNum">     273 </span>                :            :    is used but not when GNULIB_NAMESPACE::func is used.  */
+<span class="lineNum">     274 </span>                :            : #if defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE
+<span class="lineNum">     275 </span>                :            : # define _GL_CXXALIASWARN1(func,rettype,parameters_and_attributes) \
+<span class="lineNum">     276 </span>                :            :    _GL_CXXALIASWARN1_1 (func, rettype, parameters_and_attributes, \
+<span class="lineNum">     277 </span>                :            :                         GNULIB_NAMESPACE)
+<span class="lineNum">     278 </span>                :            : # define _GL_CXXALIASWARN1_1(func,rettype,parameters_and_attributes,namespace) \
+<span class="lineNum">     279 </span>                :            :    _GL_CXXALIASWARN1_2 (func, rettype, parameters_and_attributes, namespace)
+<span class="lineNum">     280 </span>                :            : /* To work around GCC bug &lt;http://gcc.gnu.org/bugzilla/show_bug.cgi?id=43881&gt;,
+<span class="lineNum">     281 </span>                :            :    we enable the warning only when not optimizing.  */
+<span class="lineNum">     282 </span>                :            : # if !__OPTIMIZE__
+<span class="lineNum">     283 </span>                :            : #  define _GL_CXXALIASWARN1_2(func,rettype,parameters_and_attributes,namespace) \
+<span class="lineNum">     284 </span>                :            :     _GL_WARN_ON_USE_CXX (func, rettype, parameters_and_attributes, \
+<span class="lineNum">     285 </span>                :            :                          &quot;The symbol ::&quot; #func &quot; refers to the system function. &quot; \
+<span class="lineNum">     286 </span>                :            :                          &quot;Use &quot; #namespace &quot;::&quot; #func &quot; instead.&quot;)
+<span class="lineNum">     287 </span>                :            : # elif __GNUC__ &gt;= 3 &amp;&amp; GNULIB_STRICT_CHECKING
+<span class="lineNum">     288 </span>                :            : #  define _GL_CXXALIASWARN1_2(func,rettype,parameters_and_attributes,namespace) \
+<span class="lineNum">     289 </span>                :            :      extern __typeof__ (func) func
+<span class="lineNum">     290 </span>                :            : # else
+<span class="lineNum">     291 </span>                :            : #  define _GL_CXXALIASWARN1_2(func,rettype,parameters_and_attributes,namespace) \
+<span class="lineNum">     292 </span>                :            :      _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     293 </span>                :            : # endif
+<span class="lineNum">     294 </span>                :            : #else
+<span class="lineNum">     295 </span>                :            : # define _GL_CXXALIASWARN1(func,rettype,parameters_and_attributes) \
+<span class="lineNum">     296 </span>                :            :     _GL_EXTERN_C int _gl_cxxalias_dummy
+<span class="lineNum">     297 </span>                :            : #endif
+<span class="lineNum">     298 </span>                :            : 
+<span class="lineNum">     299 </span>                :            : #endif /* _GL_CXXDEFS_H */
+<span class="lineNum">     300 </span>                :            : 
+<span class="lineNum">     301 </span>                :            : /* The definition of _GL_ARG_NONNULL is copied here.  */
+<span class="lineNum">     302 </span>                :            : /* _GL_ARG_NONNULL((n,...,m)) tells the compiler and static analyzer tools
+<span class="lineNum">     303 </span>                :            :    that the values passed as arguments n, ..., m must be non-NULL pointers.
+<span class="lineNum">     304 </span>                :            :    n = 1 stands for the first argument, n = 2 for the second argument etc.  */
+<span class="lineNum">     305 </span>                :            : #ifndef _GL_ARG_NONNULL
+<span class="lineNum">     306 </span>                :            : # if (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 3) || __GNUC__ &gt; 3
+<span class="lineNum">     307 </span>                :            : #  define _GL_ARG_NONNULL(params) __attribute__ ((__nonnull__ params))
+<span class="lineNum">     308 </span>                :            : # else
+<span class="lineNum">     309 </span>                :            : #  define _GL_ARG_NONNULL(params)
+<span class="lineNum">     310 </span>                :            : # endif
+<span class="lineNum">     311 </span>                :            : #endif
+<span class="lineNum">     312 </span>                :            : 
+<span class="lineNum">     313 </span>                :            : /* The definition of _GL_WARN_ON_USE is copied here.  */
+<span class="lineNum">     314 </span>                :            : #ifndef _GL_WARN_ON_USE
+<span class="lineNum">     315 </span>                :            : 
+<span class="lineNum">     316 </span>                :            : # if 4 &lt; __GNUC__ || (__GNUC__ == 4 &amp;&amp; 3 &lt;= __GNUC_MINOR__)
+<span class="lineNum">     317 </span>                :            : /* A compiler attribute is available in gcc versions 4.3.0 and later.  */
+<span class="lineNum">     318 </span>                :            : #  define _GL_WARN_ON_USE(function, message) \
+<span class="lineNum">     319 </span>                :            : extern __typeof__ (function) function __attribute__ ((__warning__ (message)))
+<span class="lineNum">     320 </span>                :            : # elif __GNUC__ &gt;= 3 &amp;&amp; GNULIB_STRICT_CHECKING
+<span class="lineNum">     321 </span>                :            : /* Verify the existence of the function.  */
+<span class="lineNum">     322 </span>                :            : #  define _GL_WARN_ON_USE(function, message) \
+<span class="lineNum">     323 </span>                :            : extern __typeof__ (function) function
+<span class="lineNum">     324 </span>                :            : # else /* Unsupported.  */
+<span class="lineNum">     325 </span>                :            : #  define _GL_WARN_ON_USE(function, message) \
+<span class="lineNum">     326 </span>                :            : _GL_WARN_EXTERN_C int _gl_warn_on_use
+<span class="lineNum">     327 </span>                :            : # endif
+<span class="lineNum">     328 </span>                :            : #endif
+<span class="lineNum">     329 </span>                :            : 
+<span class="lineNum">     330 </span>                :            : /* _GL_WARN_ON_USE_CXX (function, rettype, parameters_and_attributes, &quot;string&quot;)
+<span class="lineNum">     331 </span>                :            :    is like _GL_WARN_ON_USE (function, &quot;string&quot;), except that the function is
+<span class="lineNum">     332 </span>                :            :    declared with the given prototype, consisting of return type, parameters,
+<span class="lineNum">     333 </span>                :            :    and attributes.
+<span class="lineNum">     334 </span>                :            :    This variant is useful for overloaded functions in C++. _GL_WARN_ON_USE does
+<span class="lineNum">     335 </span>                :            :    not work in this case.  */
+<span class="lineNum">     336 </span>                :            : #ifndef _GL_WARN_ON_USE_CXX
+<span class="lineNum">     337 </span>                :            : # if 4 &lt; __GNUC__ || (__GNUC__ == 4 &amp;&amp; 3 &lt;= __GNUC_MINOR__)
+<span class="lineNum">     338 </span>                :            : #  define _GL_WARN_ON_USE_CXX(function,rettype,parameters_and_attributes,msg) \
+<span class="lineNum">     339 </span>                :            : extern rettype function parameters_and_attributes \
+<span class="lineNum">     340 </span>                :            :      __attribute__ ((__warning__ (msg)))
+<span class="lineNum">     341 </span>                :            : # elif __GNUC__ &gt;= 3 &amp;&amp; GNULIB_STRICT_CHECKING
+<span class="lineNum">     342 </span>                :            : /* Verify the existence of the function.  */
+<span class="lineNum">     343 </span>                :            : #  define _GL_WARN_ON_USE_CXX(function,rettype,parameters_and_attributes,msg) \
+<span class="lineNum">     344 </span>                :            : extern rettype function parameters_and_attributes
+<span class="lineNum">     345 </span>                :            : # else /* Unsupported.  */
+<span class="lineNum">     346 </span>                :            : #  define _GL_WARN_ON_USE_CXX(function,rettype,parameters_and_attributes,msg) \
+<span class="lineNum">     347 </span>                :            : _GL_WARN_EXTERN_C int _gl_warn_on_use
+<span class="lineNum">     348 </span>                :            : # endif
+<span class="lineNum">     349 </span>                :            : #endif
+<span class="lineNum">     350 </span>                :            : 
+<span class="lineNum">     351 </span>                :            : /* _GL_WARN_EXTERN_C declaration;
+<span class="lineNum">     352 </span>                :            :    performs the declaration with C linkage.  */
+<span class="lineNum">     353 </span>                :            : #ifndef _GL_WARN_EXTERN_C
+<span class="lineNum">     354 </span>                :            : # if defined __cplusplus
+<span class="lineNum">     355 </span>                :            : #  define _GL_WARN_EXTERN_C extern &quot;C&quot;
+<span class="lineNum">     356 </span>                :            : # else
+<span class="lineNum">     357 </span>                :            : #  define _GL_WARN_EXTERN_C extern
+<span class="lineNum">     358 </span>                :            : # endif
+<span class="lineNum">     359 </span>                :            : #endif
+<span class="lineNum">     360 </span>                :            : 
+<span class="lineNum">     361 </span>                :            : /* Some systems don't define struct timespec (e.g., AIX 4.1, Ultrix 4.3).
+<span class="lineNum">     362 </span>                :            :    Or they define it with the wrong member names or define it in &lt;sys/time.h&gt;
+<span class="lineNum">     363 </span>                :            :    (e.g., FreeBSD circa 1997).  Stock Mingw does not define it, but the
+<span class="lineNum">     364 </span>                :            :    pthreads-win32 library defines it in &lt;pthread.h&gt;.  */
+<span class="lineNum">     365 </span>                :            : # if ! 1
+<span class="lineNum">     366 </span>                :            : #  if 0
+<span class="lineNum">     367 </span>                :            : #   include &lt;sys/time.h&gt;
+<span class="lineNum">     368 </span>                :            : #  elif 0
+<span class="lineNum">     369 </span>                :            : #   include &lt;pthread.h&gt;
+<span class="lineNum">     370 </span>                :            : /* The pthreads-win32 &lt;pthread.h&gt; also defines a couple of broken macros.  */
+<span class="lineNum">     371 </span>                :            : #   undef asctime_r
+<span class="lineNum">     372 </span>                :            : #   undef ctime_r
+<span class="lineNum">     373 </span>                :            : #   undef gmtime_r
+<span class="lineNum">     374 </span>                :            : #   undef localtime_r
+<span class="lineNum">     375 </span>                :            : #   undef rand_r
+<span class="lineNum">     376 </span>                :            : #   undef strtok_r
+<span class="lineNum">     377 </span>                :            : #  else
+<span class="lineNum">     378 </span>                :            : 
+<span class="lineNum">     379 </span>                :            : #   ifdef __cplusplus
+<span class="lineNum">     380 </span>                :            : extern &quot;C&quot; {
+<span class="lineNum">     381 </span>                :            : #   endif
+<span class="lineNum">     382 </span>                :            : 
+<span class="lineNum">     383 </span>                :            : #   if !GNULIB_defined_struct_timespec
+<span class="lineNum">     384 </span>                :            : #    undef timespec
+<span class="lineNum">     385 </span>                :            : #    define timespec rpl_timespec
+<span class="lineNum">     386 </span>                :            : struct timespec
+<span class="lineNum">     387 </span>                :            : {
+<span class="lineNum">     388 </span>                :            :   time_t tv_sec;
+<span class="lineNum">     389 </span>                :            :   long int tv_nsec;
+<span class="lineNum">     390 </span>                :            : };
+<span class="lineNum">     391 </span>                :            : #    define GNULIB_defined_struct_timespec 1
+<span class="lineNum">     392 </span>                :            : #   endif
+<span class="lineNum">     393 </span>                :            : 
+<span class="lineNum">     394 </span>                :            : #   ifdef __cplusplus
+<span class="lineNum">     395 </span>                :            : }
+<span class="lineNum">     396 </span>                :            : #   endif
+<span class="lineNum">     397 </span>                :            : 
+<span class="lineNum">     398 </span>                :            : #  endif
+<span class="lineNum">     399 </span>                :            : # endif
+<span class="lineNum">     400 </span>                :            : 
+<span class="lineNum">     401 </span>                :            : # if !GNULIB_defined_struct_time_t_must_be_integral
+<span class="lineNum">     402 </span>                :            : /* Per http://austingroupbugs.net/view.php?id=327, POSIX requires
+<span class="lineNum">     403 </span>                :            :    time_t to be an integer type, even though C99 permits floating
+<span class="lineNum">     404 </span>                :            :    point.  We don't know of any implementation that uses floating
+<span class="lineNum">     405 </span>                :            :    point, and it is much easier to write code that doesn't have to
+<span class="lineNum">     406 </span>                :            :    worry about that corner case, so we force the issue.  */
+<span class="lineNum">     407 </span>                :            : struct __time_t_must_be_integral {
+<span class="lineNum">     408 </span>                :            :   unsigned int __floating_time_t_unsupported : (time_t) 1;
+<span class="lineNum">     409 </span>                :            : };
+<span class="lineNum">     410 </span>                :            : #  define GNULIB_defined_struct_time_t_must_be_integral 1
+<span class="lineNum">     411 </span>                :            : # endif
+<span class="lineNum">     412 </span>                :            : 
+<span class="lineNum">     413 </span>                :            : /* Sleep for at least RQTP seconds unless interrupted,  If interrupted,
+<span class="lineNum">     414 </span>                :            :    return -1 and store the remaining time into RMTP.  See
+<span class="lineNum">     415 </span>                :            :    &lt;http://www.opengroup.org/susv3xsh/nanosleep.html&gt;.  */
+<span class="lineNum">     416 </span>                :            : # if 1
+<span class="lineNum">     417 </span>                :            : #  if 1
+<span class="lineNum">     418 </span>                :            : #   if !(defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE)
+<a name="419"><span class="lineNum">     419 </span>                :            : #    define nanosleep rpl_nanosleep</a>
+<span class="lineNum">     420 </span>                :            : #   endif
+<span class="lineNum">     421 </span>                :<span class="lineCov">       1028 : _GL_FUNCDECL_RPL (nanosleep, int,</span>
+<span class="lineNum">     422 </span>                :            :                   (struct timespec const *__rqtp, struct timespec *__rmtp)
+<span class="lineNum">     423 </span>                :            :                   _GL_ARG_NONNULL ((1)));
+<span class="lineNum">     424 </span>                :            : _GL_CXXALIAS_RPL (nanosleep, int,
+<span class="lineNum">     425 </span>                :            :                   (struct timespec const *__rqtp, struct timespec *__rmtp));
+<span class="lineNum">     426 </span>                :            : #  else
+<span class="lineNum">     427 </span>                :            : #   if ! 1
+<span class="lineNum">     428 </span>                :            : _GL_FUNCDECL_SYS (nanosleep, int,
+<span class="lineNum">     429 </span>                :            :                   (struct timespec const *__rqtp, struct timespec *__rmtp)
+<span class="lineNum">     430 </span>                :            :                   _GL_ARG_NONNULL ((1)));
+<span class="lineNum">     431 </span>                :            : #   endif
+<span class="lineNum">     432 </span>                :            : _GL_CXXALIAS_SYS (nanosleep, int,
+<span class="lineNum">     433 </span>                :            :                   (struct timespec const *__rqtp, struct timespec *__rmtp));
+<span class="lineNum">     434 </span>                :            : #  endif
+<span class="lineNum">     435 </span>                :            : _GL_CXXALIASWARN (nanosleep);
+<span class="lineNum">     436 </span>                :            : # endif
+<span class="lineNum">     437 </span>                :            : 
+<span class="lineNum">     438 </span>                :            : /* Return the 'time_t' representation of TP and normalize TP.  */
+<span class="lineNum">     439 </span>                :            : # if 1
+<span class="lineNum">     440 </span>                :            : #  if 0
+<span class="lineNum">     441 </span>                :            : #   if !(defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE)
+<span class="lineNum">     442 </span>                :            : #    define mktime rpl_mktime
+<span class="lineNum">     443 </span>                :            : #   endif
+<span class="lineNum">     444 </span>                :            : _GL_FUNCDECL_RPL (mktime, time_t, (struct tm *__tp) _GL_ARG_NONNULL ((1)));
+<span class="lineNum">     445 </span>                :            : _GL_CXXALIAS_RPL (mktime, time_t, (struct tm *__tp));
+<span class="lineNum">     446 </span>                :            : #  else
+<span class="lineNum">     447 </span>                :            : _GL_CXXALIAS_SYS (mktime, time_t, (struct tm *__tp));
+<span class="lineNum">     448 </span>                :            : #  endif
+<span class="lineNum">     449 </span>                :            : _GL_CXXALIASWARN (mktime);
+<span class="lineNum">     450 </span>                :            : # endif
+<span class="lineNum">     451 </span>                :            : 
+<span class="lineNum">     452 </span>                :            : /* Convert TIMER to RESULT, assuming local time and UTC respectively.  See
+<span class="lineNum">     453 </span>                :            :    &lt;http://www.opengroup.org/susv3xsh/localtime_r.html&gt; and
+<span class="lineNum">     454 </span>                :            :    &lt;http://www.opengroup.org/susv3xsh/gmtime_r.html&gt;.  */
+<span class="lineNum">     455 </span>                :            : # if 1
+<span class="lineNum">     456 </span>                :            : #  if 0
+<span class="lineNum">     457 </span>                :            : #   if !(defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE)
+<span class="lineNum">     458 </span>                :            : #    undef localtime_r
+<span class="lineNum">     459 </span>                :            : #    define localtime_r rpl_localtime_r
+<span class="lineNum">     460 </span>                :            : #   endif
+<span class="lineNum">     461 </span>                :            : _GL_FUNCDECL_RPL (localtime_r, struct tm *, (time_t const *restrict __timer,
+<span class="lineNum">     462 </span>                :            :                                              struct tm *restrict __result)
+<span class="lineNum">     463 </span>                :            :                                             _GL_ARG_NONNULL ((1, 2)));
+<span class="lineNum">     464 </span>                :            : _GL_CXXALIAS_RPL (localtime_r, struct tm *, (time_t const *restrict __timer,
+<span class="lineNum">     465 </span>                :            :                                              struct tm *restrict __result));
+<span class="lineNum">     466 </span>                :            : #  else
+<span class="lineNum">     467 </span>                :            : #   if ! 0
+<span class="lineNum">     468 </span>                :            : _GL_FUNCDECL_SYS (localtime_r, struct tm *, (time_t const *restrict __timer,
+<span class="lineNum">     469 </span>                :            :                                              struct tm *restrict __result)
+<span class="lineNum">     470 </span>                :            :                                             _GL_ARG_NONNULL ((1, 2)));
+<span class="lineNum">     471 </span>                :            : #   endif
+<span class="lineNum">     472 </span>                :            : _GL_CXXALIAS_SYS (localtime_r, struct tm *, (time_t const *restrict __timer,
+<span class="lineNum">     473 </span>                :            :                                              struct tm *restrict __result));
+<span class="lineNum">     474 </span>                :            : #  endif
+<span class="lineNum">     475 </span>                :            : #  if 0
+<span class="lineNum">     476 </span>                :            : _GL_CXXALIASWARN (localtime_r);
+<span class="lineNum">     477 </span>                :            : #  endif
+<span class="lineNum">     478 </span>                :            : #  if 0
+<span class="lineNum">     479 </span>                :            : #   if !(defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE)
+<span class="lineNum">     480 </span>                :            : #    undef gmtime_r
+<span class="lineNum">     481 </span>                :            : #    define gmtime_r rpl_gmtime_r
+<span class="lineNum">     482 </span>                :            : #   endif
+<span class="lineNum">     483 </span>                :            : _GL_FUNCDECL_RPL (gmtime_r, struct tm *, (time_t const *restrict __timer,
+<span class="lineNum">     484 </span>                :            :                                           struct tm *restrict __result)
+<span class="lineNum">     485 </span>                :            :                                          _GL_ARG_NONNULL ((1, 2)));
+<span class="lineNum">     486 </span>                :            : _GL_CXXALIAS_RPL (gmtime_r, struct tm *, (time_t const *restrict __timer,
+<span class="lineNum">     487 </span>                :            :                                           struct tm *restrict __result));
+<span class="lineNum">     488 </span>                :            : #  else
+<span class="lineNum">     489 </span>                :            : #   if ! 0
+<span class="lineNum">     490 </span>                :            : _GL_FUNCDECL_SYS (gmtime_r, struct tm *, (time_t const *restrict __timer,
+<span class="lineNum">     491 </span>                :            :                                           struct tm *restrict __result)
+<span class="lineNum">     492 </span>                :            :                                          _GL_ARG_NONNULL ((1, 2)));
+<span class="lineNum">     493 </span>                :            : #   endif
+<span class="lineNum">     494 </span>                :            : _GL_CXXALIAS_SYS (gmtime_r, struct tm *, (time_t const *restrict __timer,
+<span class="lineNum">     495 </span>                :            :                                           struct tm *restrict __result));
+<span class="lineNum">     496 </span>                :            : #  endif
+<span class="lineNum">     497 </span>                :            : #  if 0
+<span class="lineNum">     498 </span>                :            : _GL_CXXALIASWARN (gmtime_r);
+<span class="lineNum">     499 </span>                :            : #  endif
+<span class="lineNum">     500 </span>                :            : # endif
+<span class="lineNum">     501 </span>                :            : 
+<span class="lineNum">     502 </span>                :            : /* Parse BUF as a time stamp, assuming FORMAT specifies its layout, and store
+<span class="lineNum">     503 </span>                :            :    the resulting broken-down time into TM.  See
+<span class="lineNum">     504 </span>                :            :    &lt;http://www.opengroup.org/susv3xsh/strptime.html&gt;.  */
+<span class="lineNum">     505 </span>                :            : # if 0
+<span class="lineNum">     506 </span>                :            : #  if ! 1
+<span class="lineNum">     507 </span>                :            : _GL_FUNCDECL_SYS (strptime, char *, (char const *restrict __buf,
+<span class="lineNum">     508 </span>                :            :                                      char const *restrict __format,
+<span class="lineNum">     509 </span>                :            :                                      struct tm *restrict __tm)
+<span class="lineNum">     510 </span>                :            :                                     _GL_ARG_NONNULL ((1, 2, 3)));
+<span class="lineNum">     511 </span>                :            : #  endif
+<span class="lineNum">     512 </span>                :            : _GL_CXXALIAS_SYS (strptime, char *, (char const *restrict __buf,
+<span class="lineNum">     513 </span>                :            :                                      char const *restrict __format,
+<span class="lineNum">     514 </span>                :            :                                      struct tm *restrict __tm));
+<span class="lineNum">     515 </span>                :            : _GL_CXXALIASWARN (strptime);
+<span class="lineNum">     516 </span>                :            : # endif
+<span class="lineNum">     517 </span>                :            : 
+<span class="lineNum">     518 </span>                :            : /* Convert TM to a time_t value, assuming UTC.  */
+<span class="lineNum">     519 </span>                :            : # if 0
+<span class="lineNum">     520 </span>                :            : #  if GNULIB_PORTCHECK
+<span class="lineNum">     521 </span>                :            : #   if !(defined __cplusplus &amp;&amp; defined GNULIB_NAMESPACE)
+<span class="lineNum">     522 </span>                :            : #    undef timegm
+<span class="lineNum">     523 </span>                :            : #    define timegm rpl_timegm
+<span class="lineNum">     524 </span>                :            : #   endif
+<span class="lineNum">     525 </span>                :            : _GL_FUNCDECL_RPL (timegm, time_t, (struct tm *__tm) _GL_ARG_NONNULL ((1)));
+<span class="lineNum">     526 </span>                :            : _GL_CXXALIAS_RPL (timegm, time_t, (struct tm *__tm));
+<span class="lineNum">     527 </span>                :            : #  else
+<span class="lineNum">     528 </span>                :            : #   if ! 1
+<span class="lineNum">     529 </span>                :            : _GL_FUNCDECL_SYS (timegm, time_t, (struct tm *__tm) _GL_ARG_NONNULL ((1)));
+<span class="lineNum">     530 </span>                :            : #   endif
+<span class="lineNum">     531 </span>                :            : _GL_CXXALIAS_SYS (timegm, time_t, (struct tm *__tm));
+<span class="lineNum">     532 </span>                :            : #  endif
+<span class="lineNum">     533 </span>                :            : _GL_CXXALIASWARN (timegm);
+<span class="lineNum">     534 </span>                :            : # endif
+<span class="lineNum">     535 </span>                :            : 
+<span class="lineNum">     536 </span>                :            : /* Encourage applications to avoid unsafe functions that can overrun
+<span class="lineNum">     537 </span>                :            :    buffers when given outlandish struct tm values.  Portable
+<span class="lineNum">     538 </span>                :            :    applications should use strftime (or even sprintf) instead.  */
+<span class="lineNum">     539 </span>                :            : # if defined GNULIB_POSIXCHECK
+<span class="lineNum">     540 </span>                :            : #  undef asctime
+<span class="lineNum">     541 </span>                :            : _GL_WARN_ON_USE (asctime, &quot;asctime can overrun buffers in some cases - &quot;
+<span class="lineNum">     542 </span>                :            :                  &quot;better use strftime (or even sprintf) instead&quot;);
+<span class="lineNum">     543 </span>                :            : # endif
+<span class="lineNum">     544 </span>                :            : # if defined GNULIB_POSIXCHECK
+<span class="lineNum">     545 </span>                :            : #  undef asctime_r
+<span class="lineNum">     546 </span>                :            : _GL_WARN_ON_USE (asctime, &quot;asctime_r can overrun buffers in some cases - &quot;
+<span class="lineNum">     547 </span>                :            :                  &quot;better use strftime (or even sprintf) instead&quot;);
+<span class="lineNum">     548 </span>                :            : # endif
+<span class="lineNum">     549 </span>                :            : # if defined GNULIB_POSIXCHECK
+<span class="lineNum">     550 </span>                :            : #  undef ctime
+<span class="lineNum">     551 </span>                :            : _GL_WARN_ON_USE (asctime, &quot;ctime can overrun buffers in some cases - &quot;
+<span class="lineNum">     552 </span>                :            :                  &quot;better use strftime (or even sprintf) instead&quot;);
+<span class="lineNum">     553 </span>                :            : # endif
+<span class="lineNum">     554 </span>                :            : # if defined GNULIB_POSIXCHECK
+<span class="lineNum">     555 </span>                :            : #  undef ctime_r
+<span class="lineNum">     556 </span>                :            : _GL_WARN_ON_USE (asctime, &quot;ctime_r can overrun buffers in some cases - &quot;
+<span class="lineNum">     557 </span>                :            :                  &quot;better use strftime (or even sprintf) instead&quot;);
+<span class="lineNum">     558 </span>                :            : # endif
+<span class="lineNum">     559 </span>                :            : 
+<span class="lineNum">     560 </span>                :            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

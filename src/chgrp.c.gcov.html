@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">78</td>
-            <td class="headerCovTableEntry">96</td>
-            <td class="headerCovTableEntryHi">81.2 %</td>
+            <td class="headerCovTableEntry">79</td>
+            <td class="headerCovTableEntry">97</td>
+            <td class="headerCovTableEntryMed">81.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">39</td>
-            <td class="headerCovTableEntry">51</td>
-            <td class="headerCovTableEntryHi">76.5 %</td>
+            <td class="headerCovTableEntry">40</td>
+            <td class="headerCovTableEntry">53</td>
+            <td class="headerCovTableEntryMed">75.5 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -70,7 +70,7 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* chgrp -- change group ownership of files</a>
-<span class="lineNum">       2 </span>                :            :    Copyright (C) 1989-1991, 1995-2012 Free Software Foundation, Inc.
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 1989-2012 Free Software Foundation, Inc.
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       5 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -146,72 +146,72 @@
 <span class="lineNum">      75 </span>                :            : /* Return the group ID of NAME, or -1 if no name was specified.  */
 <a name="76"><span class="lineNum">      76 </span>                :            : </a>
 <span class="lineNum">      77 </span>                :            : static gid_t
-<span class="lineNum">      78 </span>                :<span class="lineCov">         88 : parse_group (const char *name)</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">        189 : parse_group (const char *name)</span>
 <span class="lineNum">      79 </span>                :            : {
-<span class="lineNum">      80 </span>                :<span class="lineCov">         88 :   gid_t gid = -1;</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">        189 :   gid_t gid = -1;</span>
 <span class="lineNum">      81 </span>                :            : 
-<span class="lineNum">      82 </span>        [<span class="branchCov" title="Branch 0 was taken 84 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">         88 :   if (*name)</span>
+<span class="lineNum">      82 </span>        [<span class="branchCov" title="Branch 0 was taken 181 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">        189 :   if (*name)</span>
 <span class="lineNum">      83 </span>                :            :     {
-<span class="lineNum">      84 </span>                :<span class="lineCov">         84 :       struct group *grp = getgrnam (name);</span>
-<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 84 times"> + </span>]:<span class="lineCov">         84 :       if (grp)</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">        181 :       struct group *grp = getgrnam (name);</span>
+<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 181 times"> + </span>]:<span class="lineCov">        181 :       if (grp)</span>
 <span class="lineNum">      86 </span>                :<span class="lineNoCov">          0 :         gid = grp-&gt;gr_gid;</span>
 <span class="lineNum">      87 </span>                :            :       else
 <span class="lineNum">      88 </span>                :            :         {
 <span class="lineNum">      89 </span>                :            :           unsigned long int tmp;
-<span class="lineNum">      90 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 84 times"> + </span>]:<span class="lineCov">         84 :           if (! (xstrtoul (name, NULL, 10, &amp;tmp, &quot;&quot;) == LONGINT_OK</span>
-<span class="lineNum">      91 </span>                :            :                  &amp;&amp; tmp &lt;= GID_T_MAX))
+<span class="lineNum">      90 </span>[<span class="branchCov" title="Branch 1 was taken 181 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 181 times"> + </span>]:<span class="lineCov">        181 :           if (! (xstrtoul (name, NULL, 10, &amp;tmp, &quot;&quot;) == LONGINT_OK</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">        181 :                  &amp;&amp; tmp &lt;= GID_T_MAX))</span>
 <span class="lineNum">      92 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0, _(&quot;invalid group: %s&quot;), quote (name));</span>
-<span class="lineNum">      93 </span>                :<span class="lineCov">         84 :           gid = tmp;</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">        181 :           gid = tmp;</span>
 <span class="lineNum">      94 </span>                :            :         }
-<span class="lineNum">      95 </span>                :<span class="lineCov">         84 :       endgrent ();              /* Save a file descriptor. */</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">        181 :       endgrent ();              /* Save a file descriptor. */</span>
 <span class="lineNum">      96 </span>                :            :     }
 <span class="lineNum">      97 </span>                :            : 
-<span class="lineNum">      98 </span>                :<span class="lineCov">         88 :   return gid;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">        189 :   return gid;</span>
 <span class="lineNum">      99 </span>                :            : }
 <a name="100"><span class="lineNum">     100 </span>                :            : </a>
 <span class="lineNum">     101 </span>                :            : void
-<span class="lineNum">     102 </span>                :<span class="lineCov">          8 : usage (int status)</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">         28 : usage (int status)</span>
 <span class="lineNum">     103 </span>                :            : {
-<span class="lineNum">     104 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          8 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">     105 </span>                :<span class="lineCov">          2 :     emit_try_help ();</span>
+<span class="lineNum">     104 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         28 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">     105 </span>                :<span class="lineCov">          7 :     emit_try_help ();</span>
 <span class="lineNum">     106 </span>                :            :   else
 <span class="lineNum">     107 </span>                :            :     {
-<span class="lineNum">     108 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">         21 :       printf (_(&quot;\</span>
 <span class="lineNum">     109 </span>                :            : Usage: %s [OPTION]... GROUP FILE...\n\
 <span class="lineNum">     110 </span>                :            :   or:  %s [OPTION]... --reference=RFILE FILE...\n\
 <span class="lineNum">     111 </span>                :            : &quot;),
 <span class="lineNum">     112 </span>                :            :               program_name, program_name);
-<span class="lineNum">     113 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     114 </span>                :            : Change the group of each FILE to GROUP.\n\
 <span class="lineNum">     115 </span>                :            : With --reference, change the group of each FILE to that of RFILE.\n\
 <span class="lineNum">     116 </span>                :            : \n\
 <span class="lineNum">     117 </span>                :            : &quot;), stdout);
-<span class="lineNum">     118 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     119 </span>                :            :   -c, --changes          like verbose but report only when a change is made\n\
 <span class="lineNum">     120 </span>                :            :   -f, --silent, --quiet  suppress most error messages\n\
 <span class="lineNum">     121 </span>                :            :   -v, --verbose          output a diagnostic for every file processed\n\
 <span class="lineNum">     122 </span>                :            : &quot;), stdout);
-<span class="lineNum">     123 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     124 </span>                :            :       --dereference      affect the referent of each symbolic link (this is\n\
 <span class="lineNum">     125 </span>                :            :                          the default), rather than the symbolic link itself\n\
 <span class="lineNum">     126 </span>                :            :   -h, --no-dereference   affect symbolic links instead of any referenced file\n\
 <span class="lineNum">     127 </span>                :            : &quot;), stdout);
-<span class="lineNum">     128 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     128 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     129 </span>                :            :                          (useful only on systems that can change the\n\
 <span class="lineNum">     130 </span>                :            :                          ownership of a symlink)\n\
 <span class="lineNum">     131 </span>                :            : &quot;), stdout);
-<span class="lineNum">     132 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     132 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     133 </span>                :            :       --no-preserve-root  do not treat '/' specially (the default)\n\
 <span class="lineNum">     134 </span>                :            :       --preserve-root    fail to operate recursively on '/'\n\
 <span class="lineNum">     135 </span>                :            : &quot;), stdout);
-<span class="lineNum">     136 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     137 </span>                :            :       --reference=RFILE  use RFILE's group rather than specifying a\n\
 <span class="lineNum">     138 </span>                :            :                          GROUP value\n\
 <span class="lineNum">     139 </span>                :            : &quot;), stdout);
-<span class="lineNum">     140 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     141 </span>                :            :   -R, --recursive        operate on files and directories recursively\n\
 <span class="lineNum">     142 </span>                :            : &quot;), stdout);
-<span class="lineNum">     143 </span>                :<span class="lineCov">          6 :       fputs (_(&quot;\</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
 <span class="lineNum">     144 </span>                :            : \n\
 <span class="lineNum">     145 </span>                :            : The following options modify how a hierarchy is traversed when the -R\n\
 <span class="lineNum">     146 </span>                :            : option is also specified.  If more than one is specified, only the final\n\
@@ -224,128 +224,128 @@
 <span class="lineNum">     153 </span>                :            :   -P                     do not traverse any symbolic links (default)\n\
 <span class="lineNum">     154 </span>                :            : \n\
 <span class="lineNum">     155 </span>                :            : &quot;), stdout);
-<span class="lineNum">     156 </span>                :<span class="lineCov">          6 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     157 </span>                :<span class="lineCov">          6 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">     158 </span>                :<span class="lineCov">          6 :       printf (_(&quot;\</span>
+<span class="lineNum">     156 </span>                :<span class="lineCov">         21 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">         21 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">     158 </span>                :<span class="lineCov">         21 :       printf (_(&quot;\</span>
 <span class="lineNum">     159 </span>                :            : \n\
 <span class="lineNum">     160 </span>                :            : Examples:\n\
 <span class="lineNum">     161 </span>                :            :   %s staff /u      Change the group of /u to \&quot;staff\&quot;.\n\
 <span class="lineNum">     162 </span>                :            :   %s -hR staff /u  Change the group of /u and subfiles to \&quot;staff\&quot;.\n\
 <span class="lineNum">     163 </span>                :            : &quot;),
 <span class="lineNum">     164 </span>                :            :               program_name, program_name);
-<span class="lineNum">     165 </span>                :<span class="lineCov">          6 :       emit_ancillary_info ();</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">         21 :       emit_ancillary_info ();</span>
 <span class="lineNum">     166 </span>                :            :     }
-<span class="lineNum">     167 </span>                :<span class="lineCov">          8 :   exit (status);</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">         28 :   exit (status);</span>
 <span class="lineNum">     168 </span>                :            : }
 <a name="169"><span class="lineNum">     169 </span>                :            : </a>
 <span class="lineNum">     170 </span>                :            : int
-<span class="lineNum">     171 </span>                :<span class="lineCov">        124 : main (int argc, char **argv)</span>
+<span class="lineNum">     171 </span>                :<span class="lineCov">        312 : main (int argc, char **argv)</span>
 <span class="lineNum">     172 </span>                :            : {
-<span class="lineNum">     173 </span>                :<span class="lineCov">        124 :   bool preserve_root = false;</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">        312 :   bool preserve_root = false;</span>
 <span class="lineNum">     174 </span>                :            :   gid_t gid;
 <span class="lineNum">     175 </span>                :            : 
 <span class="lineNum">     176 </span>                :            :   /* Bit flags that control how fts works.  */
-<span class="lineNum">     177 </span>                :<span class="lineCov">        124 :   int bit_flags = FTS_PHYSICAL;</span>
+<span class="lineNum">     177 </span>                :<span class="lineCov">        312 :   int bit_flags = FTS_PHYSICAL;</span>
 <span class="lineNum">     178 </span>                :            : 
 <span class="lineNum">     179 </span>                :            :   /* 1 if --dereference, 0 if --no-dereference, -1 if neither has been
 <span class="lineNum">     180 </span>                :            :      specified.  */
-<span class="lineNum">     181 </span>                :<span class="lineCov">        124 :   int dereference = -1;</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">        312 :   int dereference = -1;</span>
 <span class="lineNum">     182 </span>                :            : 
 <span class="lineNum">     183 </span>                :            :   struct Chown_option chopt;
 <span class="lineNum">     184 </span>                :            :   bool ok;
 <span class="lineNum">     185 </span>                :            :   int optc;
 <span class="lineNum">     186 </span>                :            : 
 <span class="lineNum">     187 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">     188 </span>                :<span class="lineCov">        124 :   set_program_name (argv[0]);</span>
-<span class="lineNum">     189 </span>                :<span class="lineCov">        124 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     190 </span>                :<span class="lineCov">        124 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     191 </span>                :<span class="lineCov">        124 :   textdomain (PACKAGE);</span>
+<span class="lineNum">     188 </span>                :<span class="lineCov">        312 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">        312 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">        312 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">        312 :   textdomain (PACKAGE);</span>
 <span class="lineNum">     192 </span>                :            : 
-<span class="lineNum">     193 </span>                :<span class="lineCov">        124 :   atexit (close_stdout);</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">        312 :   atexit (close_stdout);</span>
 <span class="lineNum">     194 </span>                :            : 
-<span class="lineNum">     195 </span>                :<span class="lineCov">        124 :   chopt_init (&amp;chopt);</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">        312 :   chopt_init (&amp;chopt);</span>
 <span class="lineNum">     196 </span>                :            : 
-<span class="lineNum">     197 </span>        [<span class="branchCov" title="Branch 1 was taken 99 times"> + </span><span class="branchCov" title="Branch 2 was taken 90 times"> + </span>]:<span class="lineCov">        189 :   while ((optc = getopt_long (argc, argv, &quot;HLPRcfhv&quot;, long_options, NULL))</span>
+<span class="lineNum">     197 </span>        [<span class="branchCov" title="Branch 1 was taken 274 times"> + </span><span class="branchCov" title="Branch 2 was taken 193 times"> + </span>]:<span class="lineCov">        467 :   while ((optc = getopt_long (argc, argv, &quot;HLPRcfhv&quot;, long_options, NULL))</span>
 <span class="lineNum">     198 </span>                :            :          != -1)
 <span class="lineNum">     199 </span>                :            :     {
-<span class="lineNum">     200 </span>  [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 12 times"> + </span> :<span class="lineCov">         99 :       switch (optc)</span>
-<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 5 times"> + </span><span class="branchCov" title="Branch 7 was taken 2 times"> + </span><span class="branchCov" title="Branch 8 was taken 32 times"> + </span> 
-<span class="lineNum">         </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span><span class="branchCov" title="Branch 10 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 11 was not taken"> - </span><span class="branchCov" title="Branch 12 was taken 6 times"> + </span><span class="branchCov" title="Branch 13 was taken 26 times"> + </span> 
-<span class="lineNum">         </span>            <span class="branchCov" title="Branch 14 was taken 2 times"> + </span>]
+<span class="lineNum">     200 </span>  [<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 28 times"> + </span> :<span class="lineCov">        274 :       switch (optc)</span>
+<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 16 times"> + </span><span class="branchCov" title="Branch 7 was taken 4 times"> + </span><span class="branchCov" title="Branch 8 was taken 72 times"> + </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span><span class="branchCov" title="Branch 10 was taken 7 times"> + </span><span class="branchNoCov" title="Branch 11 was not taken"> - </span><span class="branchCov" title="Branch 12 was taken 21 times"> + </span><span class="branchCov" title="Branch 13 was taken 91 times"> + </span> 
+<span class="lineNum">         </span>            <span class="branchCov" title="Branch 14 was taken 7 times"> + </span>]
 <span class="lineNum">     201 </span>                :            :         {
 <span class="lineNum">     202 </span>                :            :         case 'H': /* Traverse command-line symlinks-to-directories.  */
-<span class="lineNum">     203 </span>                :<span class="lineCov">          7 :           bit_flags = FTS_COMFOLLOW | FTS_PHYSICAL;</span>
-<span class="lineNum">     204 </span>                :<span class="lineCov">          7 :           break;</span>
+<span class="lineNum">     203 </span>                :<span class="lineCov">         16 :           bit_flags = FTS_COMFOLLOW | FTS_PHYSICAL;</span>
+<span class="lineNum">     204 </span>                :<span class="lineCov">         16 :           break;</span>
 <span class="lineNum">     205 </span>                :            : 
 <span class="lineNum">     206 </span>                :            :         case 'L': /* Traverse all symlinks-to-directories.  */
-<span class="lineNum">     207 </span>                :<span class="lineCov">          3 :           bit_flags = FTS_LOGICAL;</span>
-<span class="lineNum">     208 </span>                :<span class="lineCov">          3 :           break;</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">          8 :           bit_flags = FTS_LOGICAL;</span>
+<span class="lineNum">     208 </span>                :<span class="lineCov">          8 :           break;</span>
 <span class="lineNum">     209 </span>                :            : 
 <span class="lineNum">     210 </span>                :            :         case 'P': /* Traverse no symlinks-to-directories.  */
 <span class="lineNum">     211 </span>                :<span class="lineNoCov">          0 :           bit_flags = FTS_PHYSICAL;</span>
 <span class="lineNum">     212 </span>                :<span class="lineNoCov">          0 :           break;</span>
 <span class="lineNum">     213 </span>                :            : 
 <span class="lineNum">     214 </span>                :            :         case 'h': /* --no-dereference: affect symlinks */
-<span class="lineNum">     215 </span>                :<span class="lineCov">         12 :           dereference = 0;</span>
-<span class="lineNum">     216 </span>                :<span class="lineCov">         12 :           break;</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">         28 :           dereference = 0;</span>
+<span class="lineNum">     216 </span>                :<span class="lineCov">         28 :           break;</span>
 <span class="lineNum">     217 </span>                :            : 
 <span class="lineNum">     218 </span>                :            :         case DEREFERENCE_OPTION: /* --dereference: affect the referent
 <span class="lineNum">     219 </span>                :            :                                     of each symlink */
-<span class="lineNum">     220 </span>                :<span class="lineCov">          2 :           dereference = 1;</span>
-<span class="lineNum">     221 </span>                :<span class="lineCov">          2 :           break;</span>
+<span class="lineNum">     220 </span>                :<span class="lineCov">          4 :           dereference = 1;</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">          4 :           break;</span>
 <span class="lineNum">     222 </span>                :            : 
 <span class="lineNum">     223 </span>                :            :         case NO_PRESERVE_ROOT:
 <span class="lineNum">     224 </span>                :<span class="lineNoCov">          0 :           preserve_root = false;</span>
 <span class="lineNum">     225 </span>                :<span class="lineNoCov">          0 :           break;</span>
 <span class="lineNum">     226 </span>                :            : 
 <span class="lineNum">     227 </span>                :            :         case PRESERVE_ROOT:
-<span class="lineNum">     228 </span>                :<span class="lineCov">          5 :           preserve_root = true;</span>
-<span class="lineNum">     229 </span>                :<span class="lineCov">          5 :           break;</span>
+<span class="lineNum">     228 </span>                :<span class="lineCov">         16 :           preserve_root = true;</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">         16 :           break;</span>
 <span class="lineNum">     230 </span>                :            : 
 <span class="lineNum">     231 </span>                :            :         case REFERENCE_FILE_OPTION:
-<span class="lineNum">     232 </span>                :<span class="lineCov">          2 :           reference_file = optarg;</span>
-<span class="lineNum">     233 </span>                :<span class="lineCov">          2 :           break;</span>
+<span class="lineNum">     232 </span>                :<span class="lineCov">          4 :           reference_file = optarg;</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">          4 :           break;</span>
 <span class="lineNum">     234 </span>                :            : 
 <span class="lineNum">     235 </span>                :            :         case 'R':
-<span class="lineNum">     236 </span>                :<span class="lineCov">         32 :           chopt.recurse = true;</span>
-<span class="lineNum">     237 </span>                :<span class="lineCov">         32 :           break;</span>
+<span class="lineNum">     236 </span>                :<span class="lineCov">         72 :           chopt.recurse = true;</span>
+<span class="lineNum">     237 </span>                :<span class="lineCov">         72 :           break;</span>
 <span class="lineNum">     238 </span>                :            : 
 <span class="lineNum">     239 </span>                :            :         case 'c':
 <span class="lineNum">     240 </span>                :<span class="lineNoCov">          0 :           chopt.verbosity = V_changes_only;</span>
 <span class="lineNum">     241 </span>                :<span class="lineNoCov">          0 :           break;</span>
 <span class="lineNum">     242 </span>                :            : 
 <span class="lineNum">     243 </span>                :            :         case 'f':
-<span class="lineNum">     244 </span>                :<span class="lineCov">          2 :           chopt.force_silent = true;</span>
-<span class="lineNum">     245 </span>                :<span class="lineCov">          2 :           break;</span>
+<span class="lineNum">     244 </span>                :<span class="lineCov">          7 :           chopt.force_silent = true;</span>
+<span class="lineNum">     245 </span>                :<span class="lineCov">          7 :           break;</span>
 <span class="lineNum">     246 </span>                :            : 
 <span class="lineNum">     247 </span>                :            :         case 'v':
 <span class="lineNum">     248 </span>                :<span class="lineNoCov">          0 :           chopt.verbosity = V_high;</span>
 <span class="lineNum">     249 </span>                :<span class="lineNoCov">          0 :           break;</span>
 <span class="lineNum">     250 </span>                :            : 
-<span class="lineNum">     251 </span>                :<span class="lineCov">          6 :         case_GETOPT_HELP_CHAR;</span>
-<span class="lineNum">     252 </span>                :<span class="lineCov">         26 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     251 </span>                :<span class="lineCov">         21 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     252 </span>                :<span class="lineCov">         91 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
 <span class="lineNum">     253 </span>                :            :         default:
-<span class="lineNum">     254 </span>                :<span class="lineCov">          2 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     254 </span>                :<span class="lineCov">          7 :           usage (EXIT_FAILURE);</span>
 <span class="lineNum">     255 </span>                :            :         }
 <span class="lineNum">     256 </span>                :            :     }
 <span class="lineNum">     257 </span>                :            : 
-<span class="lineNum">     258 </span>        [<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchCov" title="Branch 1 was taken 58 times"> + </span>]:<span class="lineCov">         90 :   if (chopt.recurse)</span>
+<span class="lineNum">     258 </span>        [<span class="branchCov" title="Branch 0 was taken 72 times"> + </span><span class="branchCov" title="Branch 1 was taken 121 times"> + </span>]:<span class="lineCov">        193 :   if (chopt.recurse)</span>
 <span class="lineNum">     259 </span>                :            :     {
-<span class="lineNum">     260 </span>        [<span class="branchCov" title="Branch 0 was taken 22 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         32 :       if (bit_flags == FTS_PHYSICAL)</span>
+<span class="lineNum">     260 </span>        [<span class="branchCov" title="Branch 0 was taken 48 times"> + </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         72 :       if (bit_flags == FTS_PHYSICAL)</span>
 <span class="lineNum">     261 </span>                :            :         {
-<span class="lineNum">     262 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :           if (dereference == 1)</span>
+<span class="lineNum">     262 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 48 times"> + </span>]:<span class="lineCov">         48 :           if (dereference == 1)</span>
 <span class="lineNum">     263 </span>                :<span class="lineNoCov">          0 :             error (EXIT_FAILURE, 0,</span>
 <span class="lineNum">     264 </span>                :<span class="lineNoCov">          0 :                    _(&quot;-R --dereference requires either -H or -L&quot;));</span>
-<span class="lineNum">     265 </span>                :<span class="lineCov">         22 :           dereference = 0;</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">         48 :           dereference = 0;</span>
 <span class="lineNum">     266 </span>                :            :         }
 <span class="lineNum">     267 </span>                :            :     }
 <span class="lineNum">     268 </span>                :            :   else
 <span class="lineNum">     269 </span>                :            :     {
-<span class="lineNum">     270 </span>                :<span class="lineCov">         58 :       bit_flags = FTS_PHYSICAL;</span>
+<span class="lineNum">     270 </span>                :<span class="lineCov">        121 :       bit_flags = FTS_PHYSICAL;</span>
 <span class="lineNum">     271 </span>                :            :     }
-<span class="lineNum">     272 </span>                :<span class="lineCov">         90 :   chopt.affect_symlink_referent = (dereference != 0);</span>
+<span class="lineNum">     272 </span>                :<span class="lineCov">        193 :   chopt.affect_symlink_referent = (dereference != 0);</span>
 <span class="lineNum">     273 </span>                :            : 
-<span class="lineNum">     274 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 88 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 90 times"> + </span>]:<span class="lineCov">         90 :   if (argc - optind &lt; (reference_file ? 1 : 2))</span>
+<span class="lineNum">     274 </span>[<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 189 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 193 times"> + </span>]:<span class="lineCov">        193 :   if (argc - optind &lt; (reference_file ? 1 : 2))</span>
 <span class="lineNum">     275 </span>                :            :     {
 <span class="lineNum">     276 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (argc &lt;= optind)</span>
 <span class="lineNum">     277 </span>                :<span class="lineNoCov">          0 :         error (0, 0, _(&quot;missing operand&quot;));</span>
@@ -354,40 +354,40 @@
 <span class="lineNum">     280 </span>                :<span class="lineNoCov">          0 :       usage (EXIT_FAILURE);</span>
 <span class="lineNum">     281 </span>                :            :     }
 <span class="lineNum">     282 </span>                :            : 
-<span class="lineNum">     283 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 88 times"> + </span>]:<span class="lineCov">         90 :   if (reference_file)</span>
+<span class="lineNum">     283 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 189 times"> + </span>]:<span class="lineCov">        193 :   if (reference_file)</span>
 <span class="lineNum">     284 </span>                :            :     {
 <span class="lineNum">     285 </span>                :            :       struct stat ref_stats;
-<span class="lineNum">     286 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :       if (stat (reference_file, &amp;ref_stats))</span>
+<span class="lineNum">     286 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 4 times"> + </span>]:<span class="lineCov">          4 :       if (stat (reference_file, &amp;ref_stats))</span>
 <span class="lineNum">     287 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;failed to get attributes of %s&quot;),</span>
 <span class="lineNum">     288 </span>                :            :                quote (reference_file));
 <span class="lineNum">     289 </span>                :            : 
-<span class="lineNum">     290 </span>                :<span class="lineCov">          2 :       gid = ref_stats.st_gid;</span>
-<span class="lineNum">     291 </span>                :<span class="lineCov">          2 :       chopt.group_name = gid_to_name (ref_stats.st_gid);</span>
+<span class="lineNum">     290 </span>                :<span class="lineCov">          4 :       gid = ref_stats.st_gid;</span>
+<span class="lineNum">     291 </span>                :<span class="lineCov">          4 :       chopt.group_name = gid_to_name (ref_stats.st_gid);</span>
 <span class="lineNum">     292 </span>                :            :     }
 <span class="lineNum">     293 </span>                :            :   else
 <span class="lineNum">     294 </span>                :            :     {
-<span class="lineNum">     295 </span>                :<span class="lineCov">         88 :       char *group_name = argv[optind++];</span>
-<span class="lineNum">     296 </span>        [<span class="branchCov" title="Branch 0 was taken 84 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">         88 :       chopt.group_name = (*group_name ? group_name : NULL);</span>
-<span class="lineNum">     297 </span>                :<span class="lineCov">         88 :       gid = parse_group (group_name);</span>
+<span class="lineNum">     295 </span>                :<span class="lineCov">        189 :       char *group_name = argv[optind++];</span>
+<span class="lineNum">     296 </span>        [<span class="branchCov" title="Branch 0 was taken 181 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">        189 :       chopt.group_name = (*group_name ? group_name : NULL);</span>
+<span class="lineNum">     297 </span>                :<span class="lineCov">        189 :       gid = parse_group (group_name);</span>
 <span class="lineNum">     298 </span>                :            :     }
 <span class="lineNum">     299 </span>                :            : 
-<span class="lineNum">     300 </span>[<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchCov" title="Branch 1 was taken 58 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 5 times"> + </span><span class="branchCov" title="Branch 3 was taken 27 times"> + </span>]:<span class="lineCov">         90 :   if (chopt.recurse &amp;&amp; preserve_root)</span>
+<span class="lineNum">     300 </span>[<span class="branchCov" title="Branch 0 was taken 72 times"> + </span><span class="branchCov" title="Branch 1 was taken 121 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 16 times"> + </span><span class="branchCov" title="Branch 3 was taken 56 times"> + </span>]:<span class="lineCov">        193 :   if (chopt.recurse &amp;&amp; preserve_root)</span>
 <span class="lineNum">     301 </span>                :            :     {
 <span class="lineNum">     302 </span>                :            :       static struct dev_ino dev_ino_buf;
-<span class="lineNum">     303 </span>                :<span class="lineCov">          5 :       chopt.root_dev_ino = get_root_dev_ino (&amp;dev_ino_buf);</span>
-<span class="lineNum">     304 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :       if (chopt.root_dev_ino == NULL)</span>
+<span class="lineNum">     303 </span>                :<span class="lineCov">         16 :       chopt.root_dev_ino = get_root_dev_ino (&amp;dev_ino_buf);</span>
+<span class="lineNum">     304 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">         16 :       if (chopt.root_dev_ino == NULL)</span>
 <span class="lineNum">     305 </span>                :<span class="lineNoCov">          0 :         error (EXIT_FAILURE, errno, _(&quot;failed to get attributes of %s&quot;),</span>
 <span class="lineNum">     306 </span>                :            :                quote (&quot;/&quot;));
 <span class="lineNum">     307 </span>                :            :     }
 <span class="lineNum">     308 </span>                :            : 
-<span class="lineNum">     309 </span>                :<span class="lineCov">         90 :   bit_flags |= FTS_DEFER_STAT;</span>
-<span class="lineNum">     310 </span>                :<span class="lineCov">         90 :   ok = chown_files (argv + optind, bit_flags,</span>
+<span class="lineNum">     309 </span>                :<span class="lineCov">        193 :   bit_flags |= FTS_DEFER_STAT;</span>
+<span class="lineNum">     310 </span>                :<span class="lineCov">        193 :   ok = chown_files (argv + optind, bit_flags,</span>
 <span class="lineNum">     311 </span>                :            :                     (uid_t) -1, gid,
 <span class="lineNum">     312 </span>                :            :                     (uid_t) -1, (gid_t) -1, &amp;chopt);
 <span class="lineNum">     313 </span>                :            : 
-<span class="lineNum">     314 </span>                :<span class="lineCov">         90 :   chopt_free (&amp;chopt);</span>
+<span class="lineNum">     314 </span>                :<span class="lineCov">        193 :   chopt_free (&amp;chopt);</span>
 <span class="lineNum">     315 </span>                :            : 
-<span class="lineNum">     316 </span>        [<span class="branchCov" title="Branch 0 was taken 85 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">         90 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
+<span class="lineNum">     316 </span>        [<span class="branchCov" title="Branch 0 was taken 174 times"> + </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">        193 :   exit (ok ? EXIT_SUCCESS : EXIT_FAILURE);</span>
 <span class="lineNum">     317 </span>                :            : }
 </pre>
       </td>

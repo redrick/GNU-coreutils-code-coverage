@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Bob Jenkins's cryptographic random number generators, ISAAC and ISAAC64.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 1999-2006, 2009-2012 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 1999-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            :    Copyright (C) 1997, 1998, 1999 Colin Plumb.
 <span class="lineNum">       5 </span>                :            : 
 <span class="lineNum">       6 </span>                :            :    This program is free software: you can redistribute it and/or modify
@@ -123,35 +123,35 @@
 <span class="lineNum">      52 </span>                :            :    decent compiler should optimize this function call away to nothing.
 <a name="53"><span class="lineNum">      53 </span>                :            :    But machines with pad bits in integers may need to do more work.  */</a>
 <span class="lineNum">      54 </span>                :            : static inline isaac_word
-<span class="lineNum">      55 </span>                :<span class="lineCov">     636672 : just (isaac_word a)</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">    2166528 : just (isaac_word a)</span>
 <span class="lineNum">      56 </span>                :            : {
-<span class="lineNum">      57 </span>                :<span class="lineCov">     636672 :   isaac_word desired_bits = ((isaac_word) 1 &lt;&lt; 1 &lt;&lt; (ISAAC_BITS - 1)) - 1;</span>
-<span class="lineNum">      58 </span>                :<span class="lineCov">     636672 :   return a &amp; desired_bits;</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">    2166528 :   isaac_word desired_bits = ((isaac_word) 1 &lt;&lt; 1 &lt;&lt; (ISAAC_BITS - 1)) - 1;</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">    2166528 :   return a &amp; desired_bits;</span>
 <span class="lineNum">      59 </span>                :            : }
 <span class="lineNum">      60 </span>                :            : 
 <span class="lineNum">      61 </span>                :            : /* The index operation.  On typical machines whose words are exactly
 <span class="lineNum">      62 </span>                :            :    the right size, this is optimized to a mask, an addition, and an
 <a name="63"><span class="lineNum">      63 </span>                :            :    indirect load.  Atypical machines need more work.  */</a>
 <span class="lineNum">      64 </span>                :            : static inline isaac_word
-<span class="lineNum">      65 </span>                :<span class="lineCov">     536576 : ind (isaac_word const *m, isaac_word x)</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">    1779712 : ind (isaac_word const *m, isaac_word x)</span>
 <span class="lineNum">      66 </span>                :            : {
-<span class="lineNum">      67 </span>                :<span class="lineCov">     536576 :   return (sizeof *m * CHAR_BIT == ISAAC_BITS</span>
-<span class="lineNum">      68 </span>                :<span class="lineCov">     536576 :           ? (* (isaac_word *) ((char *) m</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">    1779712 :   return (sizeof *m * CHAR_BIT == ISAAC_BITS</span>
+<span class="lineNum">      68 </span>                :<span class="lineCov">    1779712 :           ? (* (isaac_word *) ((char *) m</span>
 <span class="lineNum">      69 </span>                :            :                                + (x &amp; ((ISAAC_WORDS - 1) * sizeof *m))))
 <span class="lineNum">      70 </span>                :            :           : m[(x / (ISAAC_BITS / CHAR_BIT)) &amp; (ISAAC_WORDS - 1)]);
 <span class="lineNum">      71 </span>                :            : }
 <span class="lineNum">      72 </span>                :            : 
 <a name="73"><span class="lineNum">      73 </span>                :            : /* Use and update *S to generate random data to fill RESULT.  */</a>
 <span class="lineNum">      74 </span>                :            : void
-<span class="lineNum">      75 </span>                :<span class="lineCov">       1048 : isaac_refill (struct isaac_state *s, isaac_word result[ISAAC_WORDS])</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">       3476 : isaac_refill (struct isaac_state *s, isaac_word result[ISAAC_WORDS])</span>
 <span class="lineNum">      76 </span>                :            : {
 <span class="lineNum">      77 </span>                :            :   /* Caches of S-&gt;a and S-&gt;b.  */
-<span class="lineNum">      78 </span>                :<span class="lineCov">       1048 :   isaac_word a = s-&gt;a;</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">       1048 :   isaac_word b = s-&gt;b + (++s-&gt;c);</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">       3476 :   isaac_word a = s-&gt;a;</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">       3476 :   isaac_word b = s-&gt;b + (++s-&gt;c);</span>
 <span class="lineNum">      80 </span>                :            : 
 <span class="lineNum">      81 </span>                :            :   /* Pointers into state array and into result.  */
-<span class="lineNum">      82 </span>                :<span class="lineCov">       1048 :   isaac_word *m = s-&gt;m;</span>
-<span class="lineNum">      83 </span>                :<span class="lineCov">       1048 :   isaac_word *r = result;</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">       3476 :   isaac_word *m = s-&gt;m;</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">       3476 :   isaac_word *r = result;</span>
 <span class="lineNum">      84 </span>                :            : 
 <span class="lineNum">      85 </span>                :            :   enum { HALF = ISAAC_WORDS / 2 };
 <span class="lineNum">      86 </span>                :            : 
@@ -171,27 +171,27 @@
 <span class="lineNum">     100 </span>                :            : 
 <span class="lineNum">     101 </span>                :            :   do
 <span class="lineNum">     102 </span>                :            :     {
-<span class="lineNum">     103 </span>                :<span class="lineCov">      33536 :       ISAAC_STEP (0, HALF, IF32 (      a  &lt;&lt; 13, ~ (a ^ (a &lt;&lt; 21))));</span>
-<span class="lineNum">     104 </span>                :<span class="lineCov">      33536 :       ISAAC_STEP (1, HALF, IF32 (just (a) &gt;&gt;  6, a ^ (just (a) &gt;&gt;  5)));</span>
-<span class="lineNum">     105 </span>                :<span class="lineCov">      33536 :       ISAAC_STEP (2, HALF, IF32 (      a  &lt;&lt;  2, a ^ (      a  &lt;&lt; 12)));</span>
-<span class="lineNum">     106 </span>                :<span class="lineCov">      33536 :       ISAAC_STEP (3, HALF, IF32 (just (a) &gt;&gt; 16, a ^ (just (a) &gt;&gt; 33)));</span>
-<span class="lineNum">     107 </span>                :<span class="lineCov">      33536 :       r += 4;</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">     111232 :       ISAAC_STEP (0, HALF, IF32 (      a  &lt;&lt; 13, ~ (a ^ (a &lt;&lt; 21))));</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">     111232 :       ISAAC_STEP (1, HALF, IF32 (just (a) &gt;&gt;  6, a ^ (just (a) &gt;&gt;  5)));</span>
+<span class="lineNum">     105 </span>                :<span class="lineCov">     111232 :       ISAAC_STEP (2, HALF, IF32 (      a  &lt;&lt;  2, a ^ (      a  &lt;&lt; 12)));</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">     111232 :       ISAAC_STEP (3, HALF, IF32 (just (a) &gt;&gt; 16, a ^ (just (a) &gt;&gt; 33)));</span>
+<span class="lineNum">     107 </span>                :<span class="lineCov">     111232 :       r += 4;</span>
 <span class="lineNum">     108 </span>                :            :     }
-<span class="lineNum">     109 </span>        [<span class="branchCov" title="Branch 0 was taken 32488 times"> + </span><span class="branchCov" title="Branch 1 was taken 1048 times"> + </span>]:<span class="lineCov">      33536 :   while ((m += 4) &lt; s-&gt;m + HALF);</span>
+<span class="lineNum">     109 </span>        [<span class="branchCov" title="Branch 0 was taken 107756 times"> + </span><span class="branchCov" title="Branch 1 was taken 3476 times"> + </span>]:<span class="lineCov">     111232 :   while ((m += 4) &lt; s-&gt;m + HALF);</span>
 <span class="lineNum">     110 </span>                :            : 
 <span class="lineNum">     111 </span>                :            :   do
 <span class="lineNum">     112 </span>                :            :     {
-<span class="lineNum">     113 </span>                :<span class="lineCov">      33536 :       ISAAC_STEP (0, -HALF, IF32 (      a  &lt;&lt; 13, ~ (a ^ (a &lt;&lt; 21))));</span>
-<span class="lineNum">     114 </span>                :<span class="lineCov">      33536 :       ISAAC_STEP (1, -HALF, IF32 (just (a) &gt;&gt;  6, a ^ (just (a) &gt;&gt;  5)));</span>
-<span class="lineNum">     115 </span>                :<span class="lineCov">      33536 :       ISAAC_STEP (2, -HALF, IF32 (      a  &lt;&lt;  2, a ^ (      a  &lt;&lt; 12)));</span>
-<span class="lineNum">     116 </span>                :<span class="lineCov">      33536 :       ISAAC_STEP (3, -HALF, IF32 (just (a) &gt;&gt; 16, a ^ (just (a) &gt;&gt; 33)));</span>
-<span class="lineNum">     117 </span>                :<span class="lineCov">      33536 :       r += 4;</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">     111232 :       ISAAC_STEP (0, -HALF, IF32 (      a  &lt;&lt; 13, ~ (a ^ (a &lt;&lt; 21))));</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">     111232 :       ISAAC_STEP (1, -HALF, IF32 (just (a) &gt;&gt;  6, a ^ (just (a) &gt;&gt;  5)));</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">     111232 :       ISAAC_STEP (2, -HALF, IF32 (      a  &lt;&lt;  2, a ^ (      a  &lt;&lt; 12)));</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">     111232 :       ISAAC_STEP (3, -HALF, IF32 (just (a) &gt;&gt; 16, a ^ (just (a) &gt;&gt; 33)));</span>
+<span class="lineNum">     117 </span>                :<span class="lineCov">     111232 :       r += 4;</span>
 <span class="lineNum">     118 </span>                :            :     }
-<span class="lineNum">     119 </span>        [<span class="branchCov" title="Branch 0 was taken 32488 times"> + </span><span class="branchCov" title="Branch 1 was taken 1048 times"> + </span>]:<span class="lineCov">      33536 :   while ((m += 4) &lt; s-&gt;m + ISAAC_WORDS);</span>
+<span class="lineNum">     119 </span>        [<span class="branchCov" title="Branch 0 was taken 107756 times"> + </span><span class="branchCov" title="Branch 1 was taken 3476 times"> + </span>]:<span class="lineCov">     111232 :   while ((m += 4) &lt; s-&gt;m + ISAAC_WORDS);</span>
 <span class="lineNum">     120 </span>                :            : 
-<span class="lineNum">     121 </span>                :<span class="lineCov">       1048 :   s-&gt;a = a;</span>
-<span class="lineNum">     122 </span>                :<span class="lineCov">       1048 :   s-&gt;b = b;</span>
-<span class="lineNum">     123 </span>                :<span class="lineCov">       1048 : }</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">       3476 :   s-&gt;a = a;</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">       3476 :   s-&gt;b = b;</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">       3476 : }</span>
 <span class="lineNum">     124 </span>                :            : 
 <span class="lineNum">     125 </span>                :            : /*
 <span class="lineNum">     126 </span>                :            :  * The basic seed-scrambling step for initialization, based on Bob
@@ -301,16 +301,16 @@
 <span class="lineNum">     230 </span>                :            : /* Initialize *S to a somewhat-random value, derived from a seed
 <a name="231"><span class="lineNum">     231 </span>                :            :    stored in S-&gt;m.  */</a>
 <span class="lineNum">     232 </span>                :            : void
-<span class="lineNum">     233 </span>                :<span class="lineCov">        915 : isaac_seed (struct isaac_state *s)</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">       3249 : isaac_seed (struct isaac_state *s)</span>
 <span class="lineNum">     234 </span>                :            : {
-<span class="lineNum">     235 </span>                :<span class="lineCov">        915 :   isaac_word a = IF32 (UINT32_C (0x1367df5a), UINT64_C (0x647c4677a2884b7c));</span>
-<span class="lineNum">     236 </span>                :<span class="lineCov">        915 :   isaac_word b = IF32 (UINT32_C (0x95d90059), UINT64_C (0xb9f8b322c73ac862));</span>
-<span class="lineNum">     237 </span>                :<span class="lineCov">        915 :   isaac_word c = IF32 (UINT32_C (0xc3163e4b), UINT64_C (0x8c0ea5053d4712a0));</span>
-<span class="lineNum">     238 </span>                :<span class="lineCov">        915 :   isaac_word d = IF32 (UINT32_C (0x0f421ad8), UINT64_C (0xb29b2e824a595524));</span>
-<span class="lineNum">     239 </span>                :<span class="lineCov">        915 :   isaac_word e = IF32 (UINT32_C (0xd92a4a78), UINT64_C (0x82f053db8355e0ce));</span>
-<span class="lineNum">     240 </span>                :<span class="lineCov">        915 :   isaac_word f = IF32 (UINT32_C (0xa51a3c49), UINT64_C (0x48fe4a0fa5a09315));</span>
-<span class="lineNum">     241 </span>                :<span class="lineCov">        915 :   isaac_word g = IF32 (UINT32_C (0xc4efea1b), UINT64_C (0xae985bf2cbfc89ed));</span>
-<span class="lineNum">     242 </span>                :<span class="lineCov">        915 :   isaac_word h = IF32 (UINT32_C (0x30609119), UINT64_C (0x98f5704f6c44c0ab));</span>
+<span class="lineNum">     235 </span>                :<span class="lineCov">       3249 :   isaac_word a = IF32 (UINT32_C (0x1367df5a), UINT64_C (0x647c4677a2884b7c));</span>
+<span class="lineNum">     236 </span>                :<span class="lineCov">       3249 :   isaac_word b = IF32 (UINT32_C (0x95d90059), UINT64_C (0xb9f8b322c73ac862));</span>
+<span class="lineNum">     237 </span>                :<span class="lineCov">       3249 :   isaac_word c = IF32 (UINT32_C (0xc3163e4b), UINT64_C (0x8c0ea5053d4712a0));</span>
+<span class="lineNum">     238 </span>                :<span class="lineCov">       3249 :   isaac_word d = IF32 (UINT32_C (0x0f421ad8), UINT64_C (0xb29b2e824a595524));</span>
+<span class="lineNum">     239 </span>                :<span class="lineCov">       3249 :   isaac_word e = IF32 (UINT32_C (0xd92a4a78), UINT64_C (0x82f053db8355e0ce));</span>
+<span class="lineNum">     240 </span>                :<span class="lineCov">       3249 :   isaac_word f = IF32 (UINT32_C (0xa51a3c49), UINT64_C (0x48fe4a0fa5a09315));</span>
+<span class="lineNum">     241 </span>                :<span class="lineCov">       3249 :   isaac_word g = IF32 (UINT32_C (0xc4efea1b), UINT64_C (0xae985bf2cbfc89ed));</span>
+<span class="lineNum">     242 </span>                :<span class="lineCov">       3249 :   isaac_word h = IF32 (UINT32_C (0x30609119), UINT64_C (0x98f5704f6c44c0ab));</span>
 <span class="lineNum">     243 </span>                :            : 
 <span class="lineNum">     244 </span>                :            : #if 0
 <span class="lineNum">     245 </span>                :            :   /* The initialization of a through h is a precomputed form of: */
@@ -322,11 +322,11 @@
 <span class="lineNum">     251 </span>                :            : 
 <span class="lineNum">     252 </span>                :            :   /* Mix S-&gt;m so that every part of the seed affects every part of the
 <span class="lineNum">     253 </span>                :            :      state.  */
-<span class="lineNum">     254 </span>        [<span class="branchCov" title="Branch 4 was taken 29280 times"> + </span><span class="branchCov" title="Branch 5 was taken 915 times"> + </span>]:<span class="lineCov">      30195 :   ISAAC_MIX (s, a, b, c, d, e, f, g, h, s-&gt;m);</span>
-<span class="lineNum">     255 </span>        [<span class="branchCov" title="Branch 4 was taken 29280 times"> + </span><span class="branchCov" title="Branch 5 was taken 915 times"> + </span>]:<span class="lineCov">      30195 :   ISAAC_MIX (s, a, b, c, d, e, f, g, h, s-&gt;m);</span>
+<span class="lineNum">     254 </span>        [<span class="branchCov" title="Branch 4 was taken 103968 times"> + </span><span class="branchCov" title="Branch 5 was taken 3249 times"> + </span>]:<span class="lineCov">     107217 :   ISAAC_MIX (s, a, b, c, d, e, f, g, h, s-&gt;m);</span>
+<span class="lineNum">     255 </span>        [<span class="branchCov" title="Branch 4 was taken 103968 times"> + </span><span class="branchCov" title="Branch 5 was taken 3249 times"> + </span>]:<span class="lineCov">     107217 :   ISAAC_MIX (s, a, b, c, d, e, f, g, h, s-&gt;m);</span>
 <span class="lineNum">     256 </span>                :            : 
-<span class="lineNum">     257 </span>                :<span class="lineCov">        915 :   s-&gt;a = s-&gt;b = s-&gt;c = 0;</span>
-<span class="lineNum">     258 </span>                :<span class="lineCov">        915 : }</span>
+<span class="lineNum">     257 </span>                :<span class="lineCov">       3249 :   s-&gt;a = s-&gt;b = s-&gt;c = 0;</span>
+<span class="lineNum">     258 </span>                :<span class="lineCov">       3249 : }</span>
 </pre>
       </td>
     </tr>

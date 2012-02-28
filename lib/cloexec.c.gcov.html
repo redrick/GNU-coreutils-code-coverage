@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntryHi">87.5 %</td>
+            <td class="headerCovTableEntryMed">87.5 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -107,22 +107,22 @@
 <span class="lineNum">      36 </span>                :            :    non-inheritable in the first place.  */
 <a name="37"><span class="lineNum">      37 </span>                :            : </a>
 <span class="lineNum">      38 </span>                :            : int
-<span class="lineNum">      39 </span>                :<span class="lineCov">     248619 : set_cloexec_flag (int desc, bool value)</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">     975777 : set_cloexec_flag (int desc, bool value)</span>
 <span class="lineNum">      40 </span>                :            : {
 <span class="lineNum">      41 </span>                :            : #ifdef F_SETFD
 <span class="lineNum">      42 </span>                :            : 
-<span class="lineNum">      43 </span>                :<span class="lineCov">     248619 :   int flags = fcntl (desc, F_GETFD, 0);</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">     975777 :   int flags = fcntl (desc, F_GETFD, 0);</span>
 <span class="lineNum">      44 </span>                :            : 
-<span class="lineNum">      45 </span>        [<span class="branchCov" title="Branch 0 was taken 248613 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">     248619 :   if (0 &lt;= flags)</span>
+<span class="lineNum">      45 </span>        [<span class="branchCov" title="Branch 0 was taken 975756 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">     975777 :   if (0 &lt;= flags)</span>
 <span class="lineNum">      46 </span>                :            :     {
-<span class="lineNum">      47 </span>        [<span class="branchCov" title="Branch 0 was taken 248611 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">     248613 :       int newflags = (value ? flags | FD_CLOEXEC : flags &amp; ~FD_CLOEXEC);</span>
+<span class="lineNum">      47 </span>        [<span class="branchCov" title="Branch 0 was taken 975749 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">     975756 :       int newflags = (value ? flags | FD_CLOEXEC : flags &amp; ~FD_CLOEXEC);</span>
 <span class="lineNum">      48 </span>                :            : 
-<span class="lineNum">      49 </span>        [<span class="branchCov" title="Branch 0 was taken 248605 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">     248613 :       if (flags == newflags</span>
-<span class="lineNum">      50 </span>        [<span class="branchCov" title="Branch 1 was taken 248605 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">     248605 :           || fcntl (desc, F_SETFD, newflags) != -1)</span>
-<span class="lineNum">      51 </span>                :<span class="lineCov">     248613 :         return 0;</span>
+<span class="lineNum">      49 </span>        [<span class="branchCov" title="Branch 0 was taken 975728 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">     975756 :       if (flags == newflags</span>
+<span class="lineNum">      50 </span>        [<span class="branchCov" title="Branch 1 was taken 975728 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">     975728 :           || fcntl (desc, F_SETFD, newflags) != -1)</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">     975756 :         return 0;</span>
 <span class="lineNum">      52 </span>                :            :     }
 <span class="lineNum">      53 </span>                :            : 
-<span class="lineNum">      54 </span>                :<span class="lineCov">     248619 :   return -1;</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">     975777 :   return -1;</span>
 <span class="lineNum">      55 </span>                :            : 
 <span class="lineNum">      56 </span>                :            : #else /* !F_SETFD */
 <span class="lineNum">      57 </span>                :            : 
@@ -148,9 +148,9 @@
 <span class="lineNum">      77 </span>                :            :    be duplicated.  */
 <a name="78"><span class="lineNum">      78 </span>                :            : </a>
 <span class="lineNum">      79 </span>                :            : int
-<span class="lineNum">      80 </span>                :<span class="lineCov">         26 : dup_cloexec (int fd)</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">         91 : dup_cloexec (int fd)</span>
 <span class="lineNum">      81 </span>                :            : {
-<span class="lineNum">      82 </span>                :<span class="lineCov">         26 :   return fcntl (fd, F_DUPFD_CLOEXEC, 0);</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">         91 :   return fcntl (fd, F_DUPFD_CLOEXEC, 0);</span>
 <span class="lineNum">      83 </span>                :            : }
 </pre>
       </td>

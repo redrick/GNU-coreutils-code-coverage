@@ -33,11 +33,11 @@
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">10</td>
             <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntryHi">83.3 %</td>
+            <td class="headerCovTableEntryMed">83.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryHi">50.0 %</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -328,19 +328,19 @@
 <span class="lineNum">     257 </span>                :            : 
 <a name="258"><span class="lineNum">     258 </span>                :            : /* Copying a character.  */</a>
 <span class="lineNum">     259 </span>                :            : static inline void
-<span class="lineNum">     260 </span>                :<span class="lineCov">    2000002 : mb_copy (mbchar_t *new_mbc, const mbchar_t *old_mbc)</span>
+<span class="lineNum">     260 </span>                :<span class="lineCov">    7000007 : mb_copy (mbchar_t *new_mbc, const mbchar_t *old_mbc)</span>
 <span class="lineNum">     261 </span>                :            : {
-<span class="lineNum">     262 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2000002 times"> + </span>]:<span class="lineCov">    2000002 :   if (old_mbc-&gt;ptr == &amp;old_mbc-&gt;buf[0])</span>
+<span class="lineNum">     262 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7000007 times"> + </span>]:<span class="lineCov">    7000007 :   if (old_mbc-&gt;ptr == &amp;old_mbc-&gt;buf[0])</span>
 <span class="lineNum">     263 </span>                :            :     {
 <span class="lineNum">     264 </span>                :<span class="lineNoCov">          0 :       memcpy (&amp;new_mbc-&gt;buf[0], &amp;old_mbc-&gt;buf[0], old_mbc-&gt;bytes);</span>
 <span class="lineNum">     265 </span>                :<span class="lineNoCov">          0 :       new_mbc-&gt;ptr = &amp;new_mbc-&gt;buf[0];</span>
 <span class="lineNum">     266 </span>                :            :     }
 <span class="lineNum">     267 </span>                :            :   else
-<span class="lineNum">     268 </span>                :<span class="lineCov">    2000002 :     new_mbc-&gt;ptr = old_mbc-&gt;ptr;</span>
-<span class="lineNum">     269 </span>                :<span class="lineCov">    2000002 :   new_mbc-&gt;bytes = old_mbc-&gt;bytes;</span>
-<span class="lineNum">     270 </span>        [<span class="branchCov" title="Branch 0 was taken 2000002 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    2000002 :   if ((new_mbc-&gt;wc_valid = old_mbc-&gt;wc_valid))</span>
-<span class="lineNum">     271 </span>                :<span class="lineCov">    2000002 :     new_mbc-&gt;wc = old_mbc-&gt;wc;</span>
-<span class="lineNum">     272 </span>                :<span class="lineCov">    2000002 : }</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">    7000007 :     new_mbc-&gt;ptr = old_mbc-&gt;ptr;</span>
+<span class="lineNum">     269 </span>                :<span class="lineCov">    7000007 :   new_mbc-&gt;bytes = old_mbc-&gt;bytes;</span>
+<span class="lineNum">     270 </span>        [<span class="branchCov" title="Branch 0 was taken 7000007 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    7000007 :   if ((new_mbc-&gt;wc_valid = old_mbc-&gt;wc_valid))</span>
+<span class="lineNum">     271 </span>                :<span class="lineCov">    7000007 :     new_mbc-&gt;wc = old_mbc-&gt;wc;</span>
+<span class="lineNum">     272 </span>                :<span class="lineCov">    7000007 : }</span>
 <span class="lineNum">     273 </span>                :            : 
 <span class="lineNum">     274 </span>                :            : 
 <span class="lineNum">     275 </span>                :            : /* is_basic(c) tests whether the single-byte character c is in the
@@ -376,10 +376,10 @@
 <span class="lineNum">     305 </span>                :            : extern const unsigned int is_basic_table[];
 <a name="306"><span class="lineNum">     306 </span>                :            : </a>
 <span class="lineNum">     307 </span>                :            : static inline bool
-<span class="lineNum">     308 </span>                :<span class="lineCov">  211902956 : is_basic (char c)</span>
+<span class="lineNum">     308 </span>                :<span class="lineCov">  741660346 : is_basic (char c)</span>
 <span class="lineNum">     309 </span>                :            : {
-<span class="lineNum">     310 </span>                :<span class="lineCov">  211902956 :   return (is_basic_table [(unsigned char) c &gt;&gt; 5] &gt;&gt; ((unsigned char) c &amp; 31))</span>
-<span class="lineNum">     311 </span>                :<span class="lineCov">  211902956 :          &amp; 1;</span>
+<span class="lineNum">     310 </span>                :<span class="lineCov">  741660346 :   return (is_basic_table [(unsigned char) c &gt;&gt; 5] &gt;&gt; ((unsigned char) c &amp; 31))</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">  741660346 :          &amp; 1;</span>
 <span class="lineNum">     312 </span>                :            : }
 <span class="lineNum">     313 </span>                :            : 
 <span class="lineNum">     314 </span>                :            : #else

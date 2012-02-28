@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">11</td>
             <td class="headerCovTableEntry">14</td>
-            <td class="headerCovTableEntryHi">78.6 %</td>
+            <td class="headerCovTableEntryMed">78.6 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -100,113 +100,112 @@
 <span class="lineNum">      29 </span>                :            : 
 <span class="lineNum">      30 </span>                :            : #include &quot;ftoastr.h&quot;
 <span class="lineNum">      31 </span>                :            : 
-<span class="lineNum">      32 </span>                :            : #include &quot;intprops.h&quot;
-<span class="lineNum">      33 </span>                :            : #include &lt;float.h&gt;
-<span class="lineNum">      34 </span>                :            : #include &lt;stdio.h&gt;
-<span class="lineNum">      35 </span>                :            : #include &lt;stdlib.h&gt;
-<span class="lineNum">      36 </span>                :            : 
-<span class="lineNum">      37 </span>                :            : #if LENGTH == 3
-<span class="lineNum">      38 </span>                :            : # define FLOAT long double
-<span class="lineNum">      39 </span>                :            : # define FLOAT_DIG LDBL_DIG
-<span class="lineNum">      40 </span>                :            : # define FLOAT_MIN LDBL_MIN
-<span class="lineNum">      41 </span>                :            : # define FLOAT_PREC_BOUND _GL_LDBL_PREC_BOUND
-<span class="lineNum">      42 </span>                :            : # define FTOASTR ldtoastr
-<span class="lineNum">      43 </span>                :            : # if HAVE_C99_STRTOLD
-<span class="lineNum">      44 </span>                :            : #  define STRTOF strtold
-<span class="lineNum">      45 </span>                :            : # endif
-<span class="lineNum">      46 </span>                :            : #elif LENGTH == 2
-<span class="lineNum">      47 </span>                :            : # define FLOAT double
-<span class="lineNum">      48 </span>                :            : # define FLOAT_DIG DBL_DIG
-<span class="lineNum">      49 </span>                :            : # define FLOAT_MIN DBL_MIN
-<span class="lineNum">      50 </span>                :            : # define FLOAT_PREC_BOUND _GL_DBL_PREC_BOUND
-<span class="lineNum">      51 </span>                :            : # define FTOASTR dtoastr
-<span class="lineNum">      52 </span>                :            : #else
-<span class="lineNum">      53 </span>                :            : # define LENGTH 1
-<span class="lineNum">      54 </span>                :            : # define FLOAT float
-<span class="lineNum">      55 </span>                :            : # define FLOAT_DIG FLT_DIG
-<span class="lineNum">      56 </span>                :            : # define FLOAT_MIN FLT_MIN
-<span class="lineNum">      57 </span>                :            : # define FLOAT_PREC_BOUND _GL_FLT_PREC_BOUND
-<span class="lineNum">      58 </span>                :            : # define FTOASTR ftoastr
-<span class="lineNum">      59 </span>                :            : # if HAVE_STRTOF
-<span class="lineNum">      60 </span>                :            : #  define STRTOF strtof
-<span class="lineNum">      61 </span>                :            : # endif
-<span class="lineNum">      62 </span>                :            : #endif
-<span class="lineNum">      63 </span>                :            : 
-<span class="lineNum">      64 </span>                :            : /* On pre-C99 hosts, approximate strtof and strtold with strtod.  This
-<span class="lineNum">      65 </span>                :            :    may generate one or two extra digits, but that's better than not
-<span class="lineNum">      66 </span>                :            :    working at all.  */
-<span class="lineNum">      67 </span>                :            : #ifndef STRTOF
-<span class="lineNum">      68 </span>                :            : # define STRTOF strtod
-<span class="lineNum">      69 </span>                :            : #endif
-<span class="lineNum">      70 </span>                :            : 
-<span class="lineNum">      71 </span>                :            : /* On hosts where it's not known that snprintf works, use sprintf to
-<span class="lineNum">      72 </span>                :            :    implement the subset needed here.  Typically BUFSIZE is big enough
-<span class="lineNum">      73 </span>                :            :    and there's little or no performance hit.  */
-<span class="lineNum">      74 </span>                :            : #if ! GNULIB_SNPRINTF
-<span class="lineNum">      75 </span>                :            : # undef snprintf
-<span class="lineNum">      76 </span>                :            : # define snprintf ftoastr_snprintf
-<span class="lineNum">      77 </span>                :            : static int
-<span class="lineNum">      78 </span>                :            : ftoastr_snprintf (char *buf, size_t bufsize, char const *format,
-<span class="lineNum">      79 </span>                :            :                   int width, int prec, FLOAT x)
-<span class="lineNum">      80 </span>                :            : {
-<span class="lineNum">      81 </span>                :            :   char width_0_buffer[LENGTH == 1 ? FLT_BUFSIZE_BOUND
-<span class="lineNum">      82 </span>                :            :                       : LENGTH == 2 ? DBL_BUFSIZE_BOUND
-<span class="lineNum">      83 </span>                :            :                       : LDBL_BUFSIZE_BOUND];
-<span class="lineNum">      84 </span>                :            :   int n = width;
-<span class="lineNum">      85 </span>                :            :   if (bufsize &lt; sizeof width_0_buffer)
-<span class="lineNum">      86 </span>                :            :     {
-<span class="lineNum">      87 </span>                :            :       n = sprintf (width_0_buffer, format, 0, prec, x);
-<span class="lineNum">      88 </span>                :            :       if (n &lt; 0)
-<span class="lineNum">      89 </span>                :            :         return n;
-<span class="lineNum">      90 </span>                :            :       if (n &lt; width)
-<span class="lineNum">      91 </span>                :            :         n = width;
-<span class="lineNum">      92 </span>                :            :     }
-<span class="lineNum">      93 </span>                :            :   if (n &lt; bufsize)
-<span class="lineNum">      94 </span>                :            :     n = sprintf (buf, format, width, prec, x);
-<span class="lineNum">      95 </span>                :            :   return n;
-<span class="lineNum">      96 </span>                :            : }
-<span class="lineNum">      97 </span>                :            : #endif
-<a name="98"><span class="lineNum">      98 </span>                :            : </a>
-<span class="lineNum">      99 </span>                :            : int
-<span class="lineNum">     100 </span>                :<span class="lineCov">       1866 : FTOASTR (char *buf, size_t bufsize, int flags, int width, FLOAT x)</span>
-<span class="lineNum">     101 </span>                :            : {
-<span class="lineNum">     102 </span>                :            :   /* The following method is simple but slow.
-<span class="lineNum">     103 </span>                :            :      For ideas about speeding things up, please see:
-<span class="lineNum">     104 </span>                :            : 
-<span class="lineNum">     105 </span>                :            :      Florian Loitsch, Printing floating-point numbers quickly and accurately
-<span class="lineNum">     106 </span>                :            :      with integers.  ACM SIGPLAN notices 46, 6 (June 2010), 233-243
-<span class="lineNum">     107 </span>                :            :      &lt;http://dx.doi.org/10.1145/1809028.1806623&gt;; also see the
-<span class="lineNum">     108 </span>                :            :      2010-03-21 draft &lt;http://florian.loitsch.com/tmp/article.pdf&gt;.  */
-<span class="lineNum">     109 </span>                :            : 
-<span class="lineNum">     110 </span>                :            :   char format[sizeof &quot;%-+ 0*.*Lg&quot;];
-<span class="lineNum">     111 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 1854 times"> + </span>]:<span class="lineCov">       1866 :   FLOAT abs_x = x &lt; 0 ? -x : x;</span>
-<span class="lineNum">     112 </span>                :            :   int prec;
-<span class="lineNum">     113 </span>                :            : 
-<span class="lineNum">     114 </span>                :<span class="lineCov">       1866 :   char *p = format;</span>
-<span class="lineNum">     115 </span>                :<span class="lineCov">       1866 :   *p++ = '%';</span>
-<span class="lineNum">     116 </span>                :            : 
-<span class="lineNum">     117 </span>                :            :   /* Support flags that generate output parsable by strtof.  */
-<span class="lineNum">     118 </span>                :<span class="lineCov">       1866 :   *p = '-'; p += (flags &amp; FTOASTR_LEFT_JUSTIFY  ) != 0;</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">       1866 :   *p = '+'; p += (flags &amp; FTOASTR_ALWAYS_SIGNED ) != 0;</span>
-<span class="lineNum">     120 </span>                :<span class="lineCov">       1866 :   *p = ' '; p += (flags &amp; FTOASTR_SPACE_POSITIVE) != 0;</span>
-<span class="lineNum">     121 </span>                :<span class="lineCov">       1866 :   *p = '0'; p += (flags &amp; FTOASTR_ZERO_PAD      ) != 0;</span>
-<span class="lineNum">     122 </span>                :            : 
-<span class="lineNum">     123 </span>                :<span class="lineCov">       1866 :   *p++ = '*';</span>
-<span class="lineNum">     124 </span>                :<span class="lineCov">       1866 :   *p++ = '.';</span>
-<span class="lineNum">     125 </span>                :<span class="lineCov">       1866 :   *p++ = '*';</span>
-<span class="lineNum">     126 </span>                :<span class="lineCov">       1866 :   *p = 'L'; p += 2 &lt; LENGTH;</span>
-<span class="lineNum">     127 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1866 times"> + </span>]:<span class="lineCov">       1866 :   *p++ = flags &amp; FTOASTR_UPPER_E ? 'G' : 'g';</span>
-<span class="lineNum">     128 </span>                :<span class="lineCov">       1866 :   *p = '\0';</span>
-<span class="lineNum">     129 </span>                :            : 
-<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 1862 times"> + </span>]:<span class="lineCov">       1866 :   for (prec = abs_x &lt; FLOAT_MIN ? 1 : FLOAT_DIG; ; prec++)</span>
-<span class="lineNum">     131 </span>                :            :     {
-<span class="lineNum">     132 </span>                :<span class="lineCov">       4836 :       int n = snprintf (buf, bufsize, format, width, prec, x);</span>
-<span class="lineNum">     133 </span>        [<span class="branchCov" title="Branch 0 was taken 4836 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       4836 :       if (n &lt; 0</span>
-<span class="lineNum">     134 </span>        [<span class="branchCov" title="Branch 0 was taken 4160 times"> + </span><span class="branchCov" title="Branch 1 was taken 676 times"> + </span>]:<span class="lineCov">       4836 :           || FLOAT_PREC_BOUND &lt;= prec</span>
-<span class="lineNum">     135 </span>[<span class="branchCov" title="Branch 0 was taken 4160 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 1190 times"> + </span><span class="branchCov" title="Branch 4 was taken 2970 times"> + </span>]:<span class="lineCov">       4160 :           || (n &lt; bufsize &amp;&amp; STRTOF (buf, NULL) == x))</span>
-<span class="lineNum">     136 </span>                :<span class="lineCov">       1866 :         return n;</span>
-<span class="lineNum">     137 </span>                :<span class="lineCov">       2970 :     }</span>
-<span class="lineNum">     138 </span>                :            : }
+<span class="lineNum">      32 </span>                :            : #include &lt;float.h&gt;
+<span class="lineNum">      33 </span>                :            : #include &lt;stdio.h&gt;
+<span class="lineNum">      34 </span>                :            : #include &lt;stdlib.h&gt;
+<span class="lineNum">      35 </span>                :            : 
+<span class="lineNum">      36 </span>                :            : #if LENGTH == 3
+<span class="lineNum">      37 </span>                :            : # define FLOAT long double
+<span class="lineNum">      38 </span>                :            : # define FLOAT_DIG LDBL_DIG
+<span class="lineNum">      39 </span>                :            : # define FLOAT_MIN LDBL_MIN
+<span class="lineNum">      40 </span>                :            : # define FLOAT_PREC_BOUND _GL_LDBL_PREC_BOUND
+<span class="lineNum">      41 </span>                :            : # define FTOASTR ldtoastr
+<span class="lineNum">      42 </span>                :            : # if HAVE_C99_STRTOLD
+<span class="lineNum">      43 </span>                :            : #  define STRTOF strtold
+<span class="lineNum">      44 </span>                :            : # endif
+<span class="lineNum">      45 </span>                :            : #elif LENGTH == 2
+<span class="lineNum">      46 </span>                :            : # define FLOAT double
+<span class="lineNum">      47 </span>                :            : # define FLOAT_DIG DBL_DIG
+<span class="lineNum">      48 </span>                :            : # define FLOAT_MIN DBL_MIN
+<span class="lineNum">      49 </span>                :            : # define FLOAT_PREC_BOUND _GL_DBL_PREC_BOUND
+<span class="lineNum">      50 </span>                :            : # define FTOASTR dtoastr
+<span class="lineNum">      51 </span>                :            : #else
+<span class="lineNum">      52 </span>                :            : # define LENGTH 1
+<span class="lineNum">      53 </span>                :            : # define FLOAT float
+<span class="lineNum">      54 </span>                :            : # define FLOAT_DIG FLT_DIG
+<span class="lineNum">      55 </span>                :            : # define FLOAT_MIN FLT_MIN
+<span class="lineNum">      56 </span>                :            : # define FLOAT_PREC_BOUND _GL_FLT_PREC_BOUND
+<span class="lineNum">      57 </span>                :            : # define FTOASTR ftoastr
+<span class="lineNum">      58 </span>                :            : # if HAVE_STRTOF
+<span class="lineNum">      59 </span>                :            : #  define STRTOF strtof
+<span class="lineNum">      60 </span>                :            : # endif
+<span class="lineNum">      61 </span>                :            : #endif
+<span class="lineNum">      62 </span>                :            : 
+<span class="lineNum">      63 </span>                :            : /* On pre-C99 hosts, approximate strtof and strtold with strtod.  This
+<span class="lineNum">      64 </span>                :            :    may generate one or two extra digits, but that's better than not
+<span class="lineNum">      65 </span>                :            :    working at all.  */
+<span class="lineNum">      66 </span>                :            : #ifndef STRTOF
+<span class="lineNum">      67 </span>                :            : # define STRTOF strtod
+<span class="lineNum">      68 </span>                :            : #endif
+<span class="lineNum">      69 </span>                :            : 
+<span class="lineNum">      70 </span>                :            : /* On hosts where it's not known that snprintf works, use sprintf to
+<span class="lineNum">      71 </span>                :            :    implement the subset needed here.  Typically BUFSIZE is big enough
+<span class="lineNum">      72 </span>                :            :    and there's little or no performance hit.  */
+<span class="lineNum">      73 </span>                :            : #if ! GNULIB_SNPRINTF
+<span class="lineNum">      74 </span>                :            : # undef snprintf
+<span class="lineNum">      75 </span>                :            : # define snprintf ftoastr_snprintf
+<span class="lineNum">      76 </span>                :            : static int
+<span class="lineNum">      77 </span>                :            : ftoastr_snprintf (char *buf, size_t bufsize, char const *format,
+<span class="lineNum">      78 </span>                :            :                   int width, int prec, FLOAT x)
+<span class="lineNum">      79 </span>                :            : {
+<span class="lineNum">      80 </span>                :            :   char width_0_buffer[LENGTH == 1 ? FLT_BUFSIZE_BOUND
+<span class="lineNum">      81 </span>                :            :                       : LENGTH == 2 ? DBL_BUFSIZE_BOUND
+<span class="lineNum">      82 </span>                :            :                       : LDBL_BUFSIZE_BOUND];
+<span class="lineNum">      83 </span>                :            :   int n = width;
+<span class="lineNum">      84 </span>                :            :   if (bufsize &lt; sizeof width_0_buffer)
+<span class="lineNum">      85 </span>                :            :     {
+<span class="lineNum">      86 </span>                :            :       n = sprintf (width_0_buffer, format, 0, prec, x);
+<span class="lineNum">      87 </span>                :            :       if (n &lt; 0)
+<span class="lineNum">      88 </span>                :            :         return n;
+<span class="lineNum">      89 </span>                :            :       if (n &lt; width)
+<span class="lineNum">      90 </span>                :            :         n = width;
+<span class="lineNum">      91 </span>                :            :     }
+<span class="lineNum">      92 </span>                :            :   if (n &lt; bufsize)
+<span class="lineNum">      93 </span>                :            :     n = sprintf (buf, format, width, prec, x);
+<span class="lineNum">      94 </span>                :            :   return n;
+<span class="lineNum">      95 </span>                :            : }
+<span class="lineNum">      96 </span>                :            : #endif
+<a name="97"><span class="lineNum">      97 </span>                :            : </a>
+<span class="lineNum">      98 </span>                :            : int
+<span class="lineNum">      99 </span>                :<span class="lineCov">       6237 : FTOASTR (char *buf, size_t bufsize, int flags, int width, FLOAT x)</span>
+<span class="lineNum">     100 </span>                :            : {
+<span class="lineNum">     101 </span>                :            :   /* The following method is simple but slow.
+<span class="lineNum">     102 </span>                :            :      For ideas about speeding things up, please see:
+<span class="lineNum">     103 </span>                :            : 
+<span class="lineNum">     104 </span>                :            :      Florian Loitsch, Printing floating-point numbers quickly and accurately
+<span class="lineNum">     105 </span>                :            :      with integers.  ACM SIGPLAN notices 46, 6 (June 2010), 233-243
+<span class="lineNum">     106 </span>                :            :      &lt;http://dx.doi.org/10.1145/1809028.1806623&gt;; also see the
+<span class="lineNum">     107 </span>                :            :      2010-03-21 draft &lt;http://florian.loitsch.com/tmp/article.pdf&gt;.  */
+<span class="lineNum">     108 </span>                :            : 
+<span class="lineNum">     109 </span>                :            :   char format[sizeof &quot;%-+ 0*.*Lg&quot;];
+<span class="lineNum">     110 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 6195 times"> + </span>]:<span class="lineCov">       6237 :   FLOAT abs_x = x &lt; 0 ? -x : x;</span>
+<span class="lineNum">     111 </span>                :            :   int prec;
+<span class="lineNum">     112 </span>                :            : 
+<span class="lineNum">     113 </span>                :<span class="lineCov">       6237 :   char *p = format;</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">       6237 :   *p++ = '%';</span>
+<span class="lineNum">     115 </span>                :            : 
+<span class="lineNum">     116 </span>                :            :   /* Support flags that generate output parsable by strtof.  */
+<span class="lineNum">     117 </span>                :<span class="lineCov">       6237 :   *p = '-'; p += (flags &amp; FTOASTR_LEFT_JUSTIFY  ) != 0;</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">       6237 :   *p = '+'; p += (flags &amp; FTOASTR_ALWAYS_SIGNED ) != 0;</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">       6237 :   *p = ' '; p += (flags &amp; FTOASTR_SPACE_POSITIVE) != 0;</span>
+<span class="lineNum">     120 </span>                :<span class="lineCov">       6237 :   *p = '0'; p += (flags &amp; FTOASTR_ZERO_PAD      ) != 0;</span>
+<span class="lineNum">     121 </span>                :            : 
+<span class="lineNum">     122 </span>                :<span class="lineCov">       6237 :   *p++ = '*';</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">       6237 :   *p++ = '.';</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">       6237 :   *p++ = '*';</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">       6237 :   *p = 'L'; p += 2 &lt; LENGTH;</span>
+<span class="lineNum">     126 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6237 times"> + </span>]:<span class="lineCov">       6237 :   *p++ = flags &amp; FTOASTR_UPPER_E ? 'G' : 'g';</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">       6237 :   *p = '\0';</span>
+<span class="lineNum">     128 </span>                :            : 
+<span class="lineNum">     129 </span>        [<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 6216 times"> + </span>]:<span class="lineCov">       6237 :   for (prec = abs_x &lt; FLOAT_MIN ? 1 : FLOAT_DIG; ; prec++)</span>
+<span class="lineNum">     130 </span>                :            :     {
+<span class="lineNum">     131 </span>                :<span class="lineCov">      15743 :       int n = snprintf (buf, bufsize, format, width, prec, x);</span>
+<span class="lineNum">     132 </span>        [<span class="branchCov" title="Branch 0 was taken 15743 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      15743 :       if (n &lt; 0</span>
+<span class="lineNum">     133 </span>        [<span class="branchCov" title="Branch 0 was taken 13671 times"> + </span><span class="branchCov" title="Branch 1 was taken 2072 times"> + </span>]:<span class="lineCov">      15743 :           || FLOAT_PREC_BOUND &lt;= prec</span>
+<span class="lineNum">     134 </span>[<span class="branchCov" title="Branch 0 was taken 13671 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 4165 times"> + </span><span class="branchCov" title="Branch 4 was taken 9506 times"> + </span>]:<span class="lineCov">      13671 :           || (n &lt; bufsize &amp;&amp; STRTOF (buf, NULL) == x))</span>
+<span class="lineNum">     135 </span>                :<span class="lineCov">       6237 :         return n;</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">       9506 :     }</span>
+<span class="lineNum">     137 </span>                :            : }
 </pre>
       </td>
     </tr>

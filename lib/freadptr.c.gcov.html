@@ -33,11 +33,11 @@
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntryHi">87.5 %</td>
+            <td class="headerCovTableEntryMed">87.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryHi">75.0 %</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -95,19 +95,19 @@
 <span class="lineNum">      24 </span>                :            : #include &quot;stdio-impl.h&quot;
 <a name="25"><span class="lineNum">      25 </span>                :            : </a>
 <span class="lineNum">      26 </span>                :            : const char *
-<span class="lineNum">      27 </span>                :<span class="lineCov">        662 : freadptr (FILE *fp, size_t *sizep)</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">       2314 : freadptr (FILE *fp, size_t *sizep)</span>
 <span class="lineNum">      28 </span>                :            : {
 <span class="lineNum">      29 </span>                :            :   size_t size;
 <span class="lineNum">      30 </span>                :            : 
 <span class="lineNum">      31 </span>                :            :   /* Keep this code in sync with freadahead!  */
 <span class="lineNum">      32 </span>                :            : #if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-<span class="lineNum">      33 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 662 times"> + </span>]:<span class="lineCov">        662 :   if (fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span>
+<span class="lineNum">      33 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2314 times"> + </span>]:<span class="lineCov">       2314 :   if (fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span>
 <span class="lineNum">      34 </span>                :<span class="lineNoCov">          0 :     return NULL;</span>
-<span class="lineNum">      35 </span>                :<span class="lineCov">        662 :   size = fp-&gt;_IO_read_end - fp-&gt;_IO_read_ptr;</span>
-<span class="lineNum">      36 </span>        [<span class="branchCov" title="Branch 0 was taken 38 times"> + </span><span class="branchCov" title="Branch 1 was taken 624 times"> + </span>]:<span class="lineCov">        662 :   if (size == 0)</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">         38 :     return NULL;</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">        624 :   *sizep = size;</span>
-<span class="lineNum">      39 </span>                :<span class="lineCov">        662 :   return (const char *) fp-&gt;_IO_read_ptr;</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">       2314 :   size = fp-&gt;_IO_read_end - fp-&gt;_IO_read_ptr;</span>
+<span class="lineNum">      36 </span>        [<span class="branchCov" title="Branch 0 was taken 133 times"> + </span><span class="branchCov" title="Branch 1 was taken 2181 times"> + </span>]:<span class="lineCov">       2314 :   if (size == 0)</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">        133 :     return NULL;</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">       2181 :   *sizep = size;</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">       2314 :   return (const char *) fp-&gt;_IO_read_ptr;</span>
 <span class="lineNum">      40 </span>                :            : #elif defined __sferror || defined __DragonFly__ /* FreeBSD, NetBSD, OpenBSD, DragonFly, MacOS X, Cygwin */
 <span class="lineNum">      41 </span>                :            :   if ((fp_-&gt;_flags &amp; __SWR) != 0 || fp_-&gt;_r &lt; 0)
 <span class="lineNum">      42 </span>                :            :     return NULL;
@@ -172,14 +172,21 @@
 <span class="lineNum">     101 </span>                :            :     return NULL;
 <span class="lineNum">     102 </span>                :            :   *sizep = size;
 <span class="lineNum">     103 </span>                :            :   return fp-&gt;__bufp;
-<span class="lineNum">     104 </span>                :            : #elif defined SLOW_BUT_NO_HACKS     /* users can define this */
-<span class="lineNum">     105 </span>                :            :   /* This implementation is correct on any ANSI C platform.  It is just
-<span class="lineNum">     106 </span>                :            :      awfully slow.  */
-<span class="lineNum">     107 </span>                :            :   return NULL;
-<span class="lineNum">     108 </span>                :            : #else
-<span class="lineNum">     109 </span>                :            :  #error &quot;Please port gnulib freadptr.c to your platform! Look at the definition of fflush, fread, getc, getc_unlocked on your system, then report this to bug-gnulib.&quot;
-<span class="lineNum">     110 </span>                :            : #endif
-<span class="lineNum">     111 </span>                :            : }
+<span class="lineNum">     104 </span>                :            : #elif defined EPLAN9                /* Plan9 */
+<span class="lineNum">     105 </span>                :            :   if (fp-&gt;state == 4 /* WR */)
+<span class="lineNum">     106 </span>                :            :     return NULL;
+<span class="lineNum">     107 </span>                :            :   if (fp-&gt;rp &gt;= fp-&gt;wp)
+<span class="lineNum">     108 </span>                :            :     return NULL;
+<span class="lineNum">     109 </span>                :            :   *sizep = fp-&gt;wp - fp-&gt;rp;
+<span class="lineNum">     110 </span>                :            :   return fp-&gt;rp;
+<span class="lineNum">     111 </span>                :            : #elif defined SLOW_BUT_NO_HACKS     /* users can define this */
+<span class="lineNum">     112 </span>                :            :   /* This implementation is correct on any ANSI C platform.  It is just
+<span class="lineNum">     113 </span>                :            :      awfully slow.  */
+<span class="lineNum">     114 </span>                :            :   return NULL;
+<span class="lineNum">     115 </span>                :            : #else
+<span class="lineNum">     116 </span>                :            :  #error &quot;Please port gnulib freadptr.c to your platform! Look at the definition of fflush, fread, getc, getc_unlocked on your system, then report this to bug-gnulib.&quot;
+<span class="lineNum">     117 </span>                :            : #endif
+<span class="lineNum">     118 </span>                :            : }
 </pre>
       </td>
     </tr>

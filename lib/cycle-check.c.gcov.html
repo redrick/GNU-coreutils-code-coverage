@@ -33,11 +33,11 @@
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">14</td>
             <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntryHi">87.5 %</td>
+            <td class="headerCovTableEntryMed">87.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntryHi">58.3 %</td>
+            <td class="headerCovTableEntryLo">58.3 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -105,17 +105,17 @@
 <span class="lineNum">      34 </span>                :            : /* Return true if I is a power of 2, or is zero.  */
 <a name="35"><span class="lineNum">      35 </span>                :            : </a>
 <span class="lineNum">      36 </span>                :            : static inline bool
-<span class="lineNum">      37 </span>                :<span class="lineCov">     114387 : is_zero_or_power_of_two (uintmax_t i)</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">     450289 : is_zero_or_power_of_two (uintmax_t i)</span>
 <span class="lineNum">      38 </span>                :            : {
-<span class="lineNum">      39 </span>                :<span class="lineCov">     114387 :   return (i &amp; (i - 1)) == 0;</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">     450289 :   return (i &amp; (i - 1)) == 0;</span>
 <span class="lineNum">      40 </span>                :            : }
 <a name="41"><span class="lineNum">      41 </span>                :            : </a>
 <span class="lineNum">      42 </span>                :            : void
-<span class="lineNum">      43 </span>                :<span class="lineCov">      30769 : cycle_check_init (struct cycle_check_state *state)</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">     115639 : cycle_check_init (struct cycle_check_state *state)</span>
 <span class="lineNum">      44 </span>                :            : {
-<span class="lineNum">      45 </span>                :<span class="lineCov">      30769 :   state-&gt;chdir_counter = 0;</span>
-<span class="lineNum">      46 </span>                :<span class="lineCov">      30769 :   state-&gt;magic = CC_MAGIC;</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">      30769 : }</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">     115639 :   state-&gt;chdir_counter = 0;</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">     115639 :   state-&gt;magic = CC_MAGIC;</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">     115639 : }</span>
 <span class="lineNum">      48 </span>                :            : 
 <span class="lineNum">      49 </span>                :            : /* In traversing a directory hierarchy, call this function once for each
 <span class="lineNum">      50 </span>                :            :    descending chdir call, with SB corresponding to the chdir operand.
@@ -126,34 +126,34 @@
 <span class="lineNum">      55 </span>                :            :    the cycle is detected.  */
 <a name="56"><span class="lineNum">      56 </span>                :            : </a>
 <span class="lineNum">      57 </span>                :            : bool
-<span class="lineNum">      58 </span>                :<span class="lineCov">     114387 : cycle_check (struct cycle_check_state *state, struct stat const *sb)</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">     450289 : cycle_check (struct cycle_check_state *state, struct stat const *sb)</span>
 <span class="lineNum">      59 </span>                :            : {
-<span class="lineNum">      60 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 114387 times"> + </span>]:<span class="lineCov">     114387 :   assert (state-&gt;magic == CC_MAGIC);</span>
+<span class="lineNum">      60 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 450289 times"> + </span>]:<span class="lineCov">     450289 :   assert (state-&gt;magic == CC_MAGIC);</span>
 <span class="lineNum">      61 </span>                :            : 
 <span class="lineNum">      62 </span>                :            :   /* If the current directory ever happens to be the same
 <span class="lineNum">      63 </span>                :            :      as the one we last recorded for the cycle detection,
 <span class="lineNum">      64 </span>                :            :      then it's obviously part of a cycle.  */
-<span class="lineNum">      65 </span>[<span class="branchCov" title="Branch 0 was taken 107997 times"> + </span><span class="branchCov" title="Branch 1 was taken 6390 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 107997 times"> + </span>]:<span class="lineCov">     114387 :   if (state-&gt;chdir_counter &amp;&amp; SAME_INODE (*sb, state-&gt;dev_ino))</span>
+<span class="lineNum">      65 </span>[<span class="branchCov" title="Branch 0 was taken 425904 times"> + </span><span class="branchCov" title="Branch 1 was taken 24385 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 425904 times"> + </span>]:<span class="lineCov">     450289 :   if (state-&gt;chdir_counter &amp;&amp; SAME_INODE (*sb, state-&gt;dev_ino))</span>
 <span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
 <span class="lineNum">      66 </span>                :<span class="lineNoCov">          0 :     return true;</span>
 <span class="lineNum">      67 </span>                :            : 
 <span class="lineNum">      68 </span>                :            :   /* If the number of &quot;descending&quot; chdir calls is a power of two,
 <span class="lineNum">      69 </span>                :            :      record the dev/ino of the current directory.  */
-<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 1 was taken 7380 times"> + </span><span class="branchCov" title="Branch 2 was taken 107007 times"> + </span>]:<span class="lineCov">     114387 :   if (is_zero_or_power_of_two (++(state-&gt;chdir_counter)))</span>
+<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 1 was taken 27884 times"> + </span><span class="branchCov" title="Branch 2 was taken 422405 times"> + </span>]:<span class="lineCov">     450289 :   if (is_zero_or_power_of_two (++(state-&gt;chdir_counter)))</span>
 <span class="lineNum">      71 </span>                :            :     {
 <span class="lineNum">      72 </span>                :            :       /* On all architectures that we know about, if the counter
 <span class="lineNum">      73 </span>                :            :          overflows then there is a directory cycle here somewhere,
 <span class="lineNum">      74 </span>                :            :          even if we haven't detected it yet.  Typically this happens
 <span class="lineNum">      75 </span>                :            :          only after the counter is incremented 2**64 times, so it's a
 <span class="lineNum">      76 </span>                :            :          fairly theoretical point.  */
-<span class="lineNum">      77 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7380 times"> + </span>]:<span class="lineCov">       7380 :       if (state-&gt;chdir_counter == 0)</span>
+<span class="lineNum">      77 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27884 times"> + </span>]:<span class="lineCov">      27884 :       if (state-&gt;chdir_counter == 0)</span>
 <span class="lineNum">      78 </span>                :<span class="lineNoCov">          0 :         return true;</span>
 <span class="lineNum">      79 </span>                :            : 
-<span class="lineNum">      80 </span>                :<span class="lineCov">       7380 :       state-&gt;dev_ino.st_dev = sb-&gt;st_dev;</span>
-<span class="lineNum">      81 </span>                :<span class="lineCov">       7380 :       state-&gt;dev_ino.st_ino = sb-&gt;st_ino;</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">      27884 :       state-&gt;dev_ino.st_dev = sb-&gt;st_dev;</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">      27884 :       state-&gt;dev_ino.st_ino = sb-&gt;st_ino;</span>
 <span class="lineNum">      82 </span>                :            :     }
 <span class="lineNum">      83 </span>                :            : 
-<span class="lineNum">      84 </span>                :<span class="lineCov">     114387 :   return false;</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">     450289 :   return false;</span>
 <span class="lineNum">      85 </span>                :            : }
 </pre>
       </td>

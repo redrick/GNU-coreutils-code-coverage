@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -126,27 +126,27 @@
 <span class="lineNum">      55 </span>                :            :    When reading, if fewer than COUNT bytes are read, you must examine
 <a name="56"><span class="lineNum">      56 </span>                :            :    errno to distinguish failure from EOF (errno == 0).  */</a>
 <span class="lineNum">      57 </span>                :            : size_t
-<span class="lineNum">      58 </span>                :<span class="lineCov">      25906 : full_rw (int fd, const void *buf, size_t count)</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">     112054 : full_rw (int fd, const void *buf, size_t count)</span>
 <span class="lineNum">      59 </span>                :            : {
-<span class="lineNum">      60 </span>                :<span class="lineCov">      25906 :   size_t total = 0;</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">      25906 :   const char *ptr = (const char *) buf;</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">     112054 :   size_t total = 0;</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">     112054 :   const char *ptr = (const char *) buf;</span>
 <span class="lineNum">      62 </span>                :            : 
-<span class="lineNum">      63 </span>        [<span class="branchCov" title="Branch 0 was taken 26335 times"> + </span><span class="branchCov" title="Branch 1 was taken 25280 times"> + </span>]:<span class="lineCov">      51615 :   while (count &gt; 0)</span>
+<span class="lineNum">      63 </span>        [<span class="branchCov" title="Branch 0 was taken 113792 times"> + </span><span class="branchCov" title="Branch 1 was taken 109635 times"> + </span>]:<span class="lineCov">     223427 :   while (count &gt; 0)</span>
 <span class="lineNum">      64 </span>                :            :     {
-<span class="lineNum">      65 </span>                :<span class="lineCov">      26335 :       size_t n_rw = safe_rw (fd, ptr, count);</span>
-<span class="lineNum">      66 </span>        [<span class="branchCov" title="Branch 0 was taken 26 times"> + </span><span class="branchCov" title="Branch 1 was taken 26309 times"> + </span>]:<span class="lineCov">      26335 :       if (n_rw == (size_t) -1)</span>
-<span class="lineNum">      67 </span>                :<span class="lineCov">         26 :         break;</span>
-<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 600 times"> + </span><span class="branchCov" title="Branch 1 was taken 25709 times"> + </span>]:<span class="lineCov">      26309 :       if (n_rw == 0)</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">     113792 :       size_t n_rw = safe_rw (fd, ptr, count);</span>
+<span class="lineNum">      66 </span>        [<span class="branchCov" title="Branch 0 was taken 91 times"> + </span><span class="branchCov" title="Branch 1 was taken 113701 times"> + </span>]:<span class="lineCov">     113792 :       if (n_rw == (size_t) -1)</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">         91 :         break;</span>
+<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 2328 times"> + </span><span class="branchCov" title="Branch 1 was taken 111373 times"> + </span>]:<span class="lineCov">     113701 :       if (n_rw == 0)</span>
 <span class="lineNum">      69 </span>                :            :         {
-<span class="lineNum">      70 </span>                :<span class="lineCov">        600 :           errno = ZERO_BYTE_TRANSFER_ERRNO;</span>
-<span class="lineNum">      71 </span>                :<span class="lineCov">        600 :           break;</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">       2328 :           errno = ZERO_BYTE_TRANSFER_ERRNO;</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">       2328 :           break;</span>
 <span class="lineNum">      72 </span>                :            :         }
-<span class="lineNum">      73 </span>                :<span class="lineCov">      25709 :       total += n_rw;</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">      25709 :       ptr += n_rw;</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">      25709 :       count -= n_rw;</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">     111373 :       total += n_rw;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">     111373 :       ptr += n_rw;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">     111373 :       count -= n_rw;</span>
 <span class="lineNum">      76 </span>                :            :     }
 <span class="lineNum">      77 </span>                :            : 
-<span class="lineNum">      78 </span>                :<span class="lineCov">      25906 :   return total;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">     112054 :   return total;</span>
 <span class="lineNum">      79 </span>                :            : }
 </pre>
       </td>

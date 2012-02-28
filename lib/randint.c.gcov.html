@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -71,7 +71,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : /* Generate random integers.</a>
 <span class="lineNum">       2 </span>                :            : 
-<span class="lineNum">       3 </span>                :            :    Copyright (C) 2006, 2009-2012 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 2006-2012 Free Software Foundation, Inc.
 <span class="lineNum">       4 </span>                :            : 
 <span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
 <span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
@@ -139,12 +139,12 @@
 <span class="lineNum">      68 </span>                :            : /* Create a new randint_source from SOURCE.  */
 <a name="69"><span class="lineNum">      69 </span>                :            : </a>
 <span class="lineNum">      70 </span>                :            : struct randint_source *
-<span class="lineNum">      71 </span>                :<span class="lineCov">        899 : randint_new (struct randread_source *source)</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">       3189 : randint_new (struct randread_source *source)</span>
 <span class="lineNum">      72 </span>                :            : {
-<span class="lineNum">      73 </span>                :<span class="lineCov">        899 :   struct randint_source *s = xmalloc (sizeof *s);</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">        899 :   s-&gt;source = source;</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">        899 :   s-&gt;randnum = s-&gt;randmax = 0;</span>
-<span class="lineNum">      76 </span>                :<span class="lineCov">        899 :   return s;</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">       3189 :   struct randint_source *s = xmalloc (sizeof *s);</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">       3189 :   s-&gt;source = source;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">       3189 :   s-&gt;randnum = s-&gt;randmax = 0;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">       3189 :   return s;</span>
 <span class="lineNum">      77 </span>                :            : }
 <span class="lineNum">      78 </span>                :            : 
 <span class="lineNum">      79 </span>                :            : /* Create a new randint_source by creating a randread_source from
@@ -152,18 +152,18 @@
 <span class="lineNum">      81 </span>                :            :    unsuccessful.  */
 <a name="82"><span class="lineNum">      82 </span>                :            : </a>
 <span class="lineNum">      83 </span>                :            : struct randint_source *
-<span class="lineNum">      84 </span>                :<span class="lineCov">        899 : randint_all_new (char const *name, size_t bytes_bound)</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">       3189 : randint_all_new (char const *name, size_t bytes_bound)</span>
 <span class="lineNum">      85 </span>                :            : {
-<span class="lineNum">      86 </span>                :<span class="lineCov">        899 :   struct randread_source *source = randread_new (name, bytes_bound);</span>
-<span class="lineNum">      87 </span>        [<span class="branchCov" title="Branch 0 was taken 899 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        899 :   return (source ? randint_new (source) : NULL);</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">       3189 :   struct randread_source *source = randread_new (name, bytes_bound);</span>
+<span class="lineNum">      87 </span>        [<span class="branchCov" title="Branch 0 was taken 3189 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       3189 :   return (source ? randint_new (source) : NULL);</span>
 <span class="lineNum">      88 </span>                :            : }
 <span class="lineNum">      89 </span>                :            : 
 <span class="lineNum">      90 </span>                :            : /* Return the random data source of *S.  */
 <a name="91"><span class="lineNum">      91 </span>                :            : </a>
 <span class="lineNum">      92 </span>                :            : struct randread_source *
-<span class="lineNum">      93 </span>                :<span class="lineCov">         16 : randint_get_source (struct randint_source const *s)</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">         56 : randint_get_source (struct randint_source const *s)</span>
 <span class="lineNum">      94 </span>                :            : {
-<span class="lineNum">      95 </span>                :<span class="lineCov">         16 :   return s-&gt;source;</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">         56 :   return s-&gt;source;</span>
 <span class="lineNum">      96 </span>                :            : }
 <span class="lineNum">      97 </span>                :            : 
 <span class="lineNum">      98 </span>                :            : /* HUGE_BYTES is true on hosts hosts where randint and unsigned char
@@ -172,9 +172,9 @@
 <span class="lineNum">     101 </span>                :            : enum { HUGE_BYTES = RANDINT_MAX == UCHAR_MAX };
 <a name="102"><span class="lineNum">     102 </span>                :            : </a>
 <span class="lineNum">     103 </span>                :            : /* Return X shifted left by CHAR_BIT bits.  */
-<span class="lineNum">     104 </span>                :<span class="lineCov">      68397 : static inline randint shift_left (randint x)</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">     262596 : static inline randint shift_left (randint x)</span>
 <span class="lineNum">     105 </span>                :            : {
-<span class="lineNum">     106 </span>                :<span class="lineCov">      68397 :   return HUGE_BYTES ? 0 : x &lt;&lt; CHAR_BIT;</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">     262596 :   return HUGE_BYTES ? 0 : x &lt;&lt; CHAR_BIT;</span>
 <span class="lineNum">     107 </span>                :            : }
 <span class="lineNum">     108 </span>                :            : 
 <span class="lineNum">     109 </span>                :            : /* Return X shifted right by CHAR_BIT bits.  */
@@ -189,32 +189,32 @@
 <span class="lineNum">     118 </span>                :            :    0 .. GENMAX.  */
 <a name="119"><span class="lineNum">     119 </span>                :            : </a>
 <span class="lineNum">     120 </span>                :            : randint
-<span class="lineNum">     121 </span>                :<span class="lineCov">      17722 : randint_genmax (struct randint_source *s, randint genmax)</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">      67190 : randint_genmax (struct randint_source *s, randint genmax)</span>
 <span class="lineNum">     122 </span>                :            : {
-<span class="lineNum">     123 </span>                :<span class="lineCov">      17722 :   struct randread_source *source = s-&gt;source;</span>
-<span class="lineNum">     124 </span>                :<span class="lineCov">      17722 :   randint randnum = s-&gt;randnum;</span>
-<span class="lineNum">     125 </span>                :<span class="lineCov">      17722 :   randint randmax = s-&gt;randmax;</span>
-<span class="lineNum">     126 </span>                :<span class="lineCov">      17722 :   randint choices = genmax + 1;</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">      67190 :   struct randread_source *source = s-&gt;source;</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">      67190 :   randint randnum = s-&gt;randnum;</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">      67190 :   randint randmax = s-&gt;randmax;</span>
+<span class="lineNum">     126 </span>                :<span class="lineCov">      67190 :   randint choices = genmax + 1;</span>
 <span class="lineNum">     127 </span>                :            : 
 <span class="lineNum">     128 </span>                :            :   while (1)
 <span class="lineNum">     129 </span>                :            :     {
-<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 17730 times"> + </span><span class="branchCov" title="Branch 1 was taken 1279 times"> + </span>]:<span class="lineCov">      19009 :       if (randmax &lt; genmax)</span>
+<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 67536 times"> + </span><span class="branchCov" title="Branch 1 was taken 4557 times"> + </span>]:<span class="lineCov">      72093 :       if (randmax &lt; genmax)</span>
 <span class="lineNum">     131 </span>                :            :         {
 <span class="lineNum">     132 </span>                :            :           /* Calculate how many input bytes will be needed, and read
 <span class="lineNum">     133 </span>                :            :              the bytes.  */
 <span class="lineNum">     134 </span>                :            : 
-<span class="lineNum">     135 </span>                :<span class="lineCov">      17730 :           size_t i = 0;</span>
-<span class="lineNum">     136 </span>                :<span class="lineCov">      17730 :           randint rmax = randmax;</span>
+<span class="lineNum">     135 </span>                :<span class="lineCov">      67536 :           size_t i = 0;</span>
+<span class="lineNum">     136 </span>                :<span class="lineCov">      67536 :           randint rmax = randmax;</span>
 <span class="lineNum">     137 </span>                :            :           unsigned char buf[sizeof randnum];
 <span class="lineNum">     138 </span>                :            : 
 <span class="lineNum">     139 </span>                :            :           do
 <span class="lineNum">     140 </span>                :            :             {
-<span class="lineNum">     141 </span>                :<span class="lineCov">      22799 :               rmax = shift_left (rmax) + UCHAR_MAX;</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">      22799 :               i++;</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">      87532 :               rmax = shift_left (rmax) + UCHAR_MAX;</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">      87532 :               i++;</span>
 <span class="lineNum">     143 </span>                :            :             }
-<span class="lineNum">     144 </span>        [<span class="branchCov" title="Branch 0 was taken 5069 times"> + </span><span class="branchCov" title="Branch 1 was taken 17730 times"> + </span>]:<span class="lineCov">      22799 :           while (rmax &lt; genmax);</span>
+<span class="lineNum">     144 </span>        [<span class="branchCov" title="Branch 0 was taken 19996 times"> + </span><span class="branchCov" title="Branch 1 was taken 67536 times"> + </span>]:<span class="lineCov">      87532 :           while (rmax &lt; genmax);</span>
 <span class="lineNum">     145 </span>                :            : 
-<span class="lineNum">     146 </span>                :<span class="lineCov">      17730 :           randread (source, buf, i);</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">      67536 :           randread (source, buf, i);</span>
 <span class="lineNum">     147 </span>                :            : 
 <span class="lineNum">     148 </span>                :            :           /* Increase RANDMAX by appending random bytes to RANDNUM and
 <span class="lineNum">     149 </span>                :            :              UCHAR_MAX to RANDMAX until RANDMAX is no less than
@@ -223,21 +223,21 @@
 <span class="lineNum">     152 </span>                :            :              worth the programming hassle of saving these bits since
 <span class="lineNum">     153 </span>                :            :              GENMAX is rarely that large in practice.  */
 <span class="lineNum">     154 </span>                :            : 
-<span class="lineNum">     155 </span>                :<span class="lineCov">      17730 :           i = 0;</span>
+<span class="lineNum">     155 </span>                :<span class="lineCov">      67536 :           i = 0;</span>
 <span class="lineNum">     156 </span>                :            : 
 <span class="lineNum">     157 </span>                :            :           do
 <span class="lineNum">     158 </span>                :            :             {
-<span class="lineNum">     159 </span>                :<span class="lineCov">      22799 :               randnum = shift_left (randnum) + buf[i];</span>
-<span class="lineNum">     160 </span>                :<span class="lineCov">      22799 :               randmax = shift_left (randmax) + UCHAR_MAX;</span>
-<span class="lineNum">     161 </span>                :<span class="lineCov">      22799 :               i++;</span>
+<span class="lineNum">     159 </span>                :<span class="lineCov">      87532 :               randnum = shift_left (randnum) + buf[i];</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">      87532 :               randmax = shift_left (randmax) + UCHAR_MAX;</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">      87532 :               i++;</span>
 <span class="lineNum">     162 </span>                :            :             }
-<span class="lineNum">     163 </span>        [<span class="branchCov" title="Branch 0 was taken 5069 times"> + </span><span class="branchCov" title="Branch 1 was taken 17730 times"> + </span>]:<span class="lineCov">      22799 :           while (randmax &lt; genmax);</span>
+<span class="lineNum">     163 </span>        [<span class="branchCov" title="Branch 0 was taken 19996 times"> + </span><span class="branchCov" title="Branch 1 was taken 67536 times"> + </span>]:<span class="lineCov">      87532 :           while (randmax &lt; genmax);</span>
 <span class="lineNum">     164 </span>                :            :         }
 <span class="lineNum">     165 </span>                :            : 
-<span class="lineNum">     166 </span>        [<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchCov" title="Branch 1 was taken 18990 times"> + </span>]:<span class="lineCov">      19009 :       if (randmax == genmax)</span>
+<span class="lineNum">     166 </span>        [<span class="branchCov" title="Branch 0 was taken 71 times"> + </span><span class="branchCov" title="Branch 1 was taken 72022 times"> + </span>]:<span class="lineCov">      72093 :       if (randmax == genmax)</span>
 <span class="lineNum">     167 </span>                :            :         {
-<span class="lineNum">     168 </span>                :<span class="lineCov">         19 :           s-&gt;randnum = s-&gt;randmax = 0;</span>
-<span class="lineNum">     169 </span>                :<span class="lineCov">         19 :           return randnum;</span>
+<span class="lineNum">     168 </span>                :<span class="lineCov">         71 :           s-&gt;randnum = s-&gt;randmax = 0;</span>
+<span class="lineNum">     169 </span>                :<span class="lineCov">         71 :           return randnum;</span>
 <span class="lineNum">     170 </span>                :            :         }
 <span class="lineNum">     171 </span>                :            :       else
 <span class="lineNum">     172 </span>                :            :         {
@@ -251,46 +251,46 @@
 <span class="lineNum">     180 </span>                :            :              zero and there is no need to worry about dividing by
 <span class="lineNum">     181 </span>                :            :              zero.  */
 <span class="lineNum">     182 </span>                :            : 
-<span class="lineNum">     183 </span>                :<span class="lineCov">      18990 :           randint excess_choices = randmax - genmax;</span>
-<span class="lineNum">     184 </span>                :<span class="lineCov">      18990 :           randint unusable_choices = excess_choices % choices;</span>
-<span class="lineNum">     185 </span>                :<span class="lineCov">      18990 :           randint last_usable_choice = randmax - unusable_choices;</span>
-<span class="lineNum">     186 </span>                :<span class="lineCov">      18990 :           randint reduced_randnum = randnum % choices;</span>
+<span class="lineNum">     183 </span>                :<span class="lineCov">      72022 :           randint excess_choices = randmax - genmax;</span>
+<span class="lineNum">     184 </span>                :<span class="lineCov">      72022 :           randint unusable_choices = excess_choices % choices;</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">      72022 :           randint last_usable_choice = randmax - unusable_choices;</span>
+<span class="lineNum">     186 </span>                :<span class="lineCov">      72022 :           randint reduced_randnum = randnum % choices;</span>
 <span class="lineNum">     187 </span>                :            : 
-<span class="lineNum">     188 </span>        [<span class="branchCov" title="Branch 0 was taken 17703 times"> + </span><span class="branchCov" title="Branch 1 was taken 1287 times"> + </span>]:<span class="lineCov">      18990 :           if (randnum &lt;= last_usable_choice)</span>
+<span class="lineNum">     188 </span>        [<span class="branchCov" title="Branch 0 was taken 67119 times"> + </span><span class="branchCov" title="Branch 1 was taken 4903 times"> + </span>]:<span class="lineCov">      72022 :           if (randnum &lt;= last_usable_choice)</span>
 <span class="lineNum">     189 </span>                :            :             {
-<span class="lineNum">     190 </span>                :<span class="lineCov">      17703 :               s-&gt;randnum = randnum / choices;</span>
-<span class="lineNum">     191 </span>                :<span class="lineCov">      17703 :               s-&gt;randmax = excess_choices / choices;</span>
-<span class="lineNum">     192 </span>                :<span class="lineCov">      17703 :               return reduced_randnum;</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">      67119 :               s-&gt;randnum = randnum / choices;</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">      67119 :               s-&gt;randmax = excess_choices / choices;</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">      67119 :               return reduced_randnum;</span>
 <span class="lineNum">     193 </span>                :            :             }
 <span class="lineNum">     194 </span>                :            : 
 <span class="lineNum">     195 </span>                :            :           /* Retry, but retain the randomness from the fact that RANDNUM fell
 <span class="lineNum">     196 </span>                :            :              into the range LAST_USABLE_CHOICE+1 .. RANDMAX.  */
-<span class="lineNum">     197 </span>                :<span class="lineCov">       1287 :           randnum = reduced_randnum;</span>
-<span class="lineNum">     198 </span>                :<span class="lineCov">       1287 :           randmax = unusable_choices - 1;</span>
+<span class="lineNum">     197 </span>                :<span class="lineCov">       4903 :           randnum = reduced_randnum;</span>
+<span class="lineNum">     198 </span>                :<span class="lineCov">       4903 :           randmax = unusable_choices - 1;</span>
 <span class="lineNum">     199 </span>                :            :         }
-<span class="lineNum">     200 </span>                :<span class="lineCov">      19009 :     }</span>
+<span class="lineNum">     200 </span>                :<span class="lineCov">      72093 :     }</span>
 <span class="lineNum">     201 </span>                :            : }
 <span class="lineNum">     202 </span>                :            : 
 <span class="lineNum">     203 </span>                :            : /* Clear *S so that it no longer contains undelivered random data.  */
 <a name="204"><span class="lineNum">     204 </span>                :            : </a>
 <span class="lineNum">     205 </span>                :            : void
-<span class="lineNum">     206 </span>                :<span class="lineCov">        876 : randint_free (struct randint_source *s)</span>
+<span class="lineNum">     206 </span>                :<span class="lineCov">       3108 : randint_free (struct randint_source *s)</span>
 <span class="lineNum">     207 </span>                :            : {
-<span class="lineNum">     208 </span>                :<span class="lineCov">        876 :   memset (s, 0, sizeof *s);</span>
-<span class="lineNum">     209 </span>                :<span class="lineCov">        876 :   free (s);</span>
-<span class="lineNum">     210 </span>                :<span class="lineCov">        876 : }</span>
+<span class="lineNum">     208 </span>                :<span class="lineCov">       3108 :   memset (s, 0, sizeof *s);</span>
+<span class="lineNum">     209 </span>                :<span class="lineCov">       3108 :   free (s);</span>
+<span class="lineNum">     210 </span>                :<span class="lineCov">       3108 : }</span>
 <span class="lineNum">     211 </span>                :            : 
 <span class="lineNum">     212 </span>                :            : /* Likewise, but also clear the underlying randread object.  Return
 <span class="lineNum">     213 </span>                :            :    0 if successful, -1 (setting errno) otherwise.  */
 <a name="214"><span class="lineNum">     214 </span>                :            : </a>
 <span class="lineNum">     215 </span>                :            : int
-<span class="lineNum">     216 </span>                :<span class="lineCov">        876 : randint_all_free (struct randint_source *s)</span>
+<span class="lineNum">     216 </span>                :<span class="lineCov">       3108 : randint_all_free (struct randint_source *s)</span>
 <span class="lineNum">     217 </span>                :            : {
-<span class="lineNum">     218 </span>                :<span class="lineCov">        876 :   int r = randread_free (s-&gt;source);</span>
-<span class="lineNum">     219 </span>                :<span class="lineCov">        876 :   int e = errno;</span>
-<span class="lineNum">     220 </span>                :<span class="lineCov">        876 :   randint_free (s);</span>
-<span class="lineNum">     221 </span>                :<span class="lineCov">        876 :   errno = e;</span>
-<span class="lineNum">     222 </span>                :<span class="lineCov">        876 :   return r;</span>
+<span class="lineNum">     218 </span>                :<span class="lineCov">       3108 :   int r = randread_free (s-&gt;source);</span>
+<span class="lineNum">     219 </span>                :<span class="lineCov">       3108 :   int e = errno;</span>
+<span class="lineNum">     220 </span>                :<span class="lineCov">       3108 :   randint_free (s);</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">       3108 :   errno = e;</span>
+<span class="lineNum">     222 </span>                :<span class="lineCov">       3108 :   return r;</span>
 <span class="lineNum">     223 </span>                :            : }
 </pre>
       </td>

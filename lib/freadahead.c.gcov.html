@@ -33,11 +33,11 @@
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryHi">80.0 %</td>
+            <td class="headerCovTableEntryMed">80.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryHi">75.0 %</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -94,13 +94,13 @@
 <span class="lineNum">      23 </span>                :            : #include &quot;stdio-impl.h&quot;
 <a name="24"><span class="lineNum">      24 </span>                :            : </a>
 <span class="lineNum">      25 </span>                :            : size_t
-<span class="lineNum">      26 </span>                :<span class="lineCov">       9940 : freadahead (FILE *fp)</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">      35887 : freadahead (FILE *fp)</span>
 <span class="lineNum">      27 </span>                :            : {
 <span class="lineNum">      28 </span>                :            : #if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9940 times"> + </span>]:<span class="lineCov">       9940 :   if (fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span>
+<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 35887 times"> + </span>]:<span class="lineCov">      35887 :   if (fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span>
 <span class="lineNum">      30 </span>                :<span class="lineNoCov">          0 :     return 0;</span>
-<span class="lineNum">      31 </span>                :<span class="lineCov">       9940 :   return (fp-&gt;_IO_read_end - fp-&gt;_IO_read_ptr)</span>
-<span class="lineNum">      32 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 9932 times"> + </span>]:<span class="lineCov">       9940 :          + (fp-&gt;_flags &amp; _IO_IN_BACKUP ? fp-&gt;_IO_save_end - fp-&gt;_IO_save_base :</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">      35887 :   return (fp-&gt;_IO_read_end - fp-&gt;_IO_read_ptr)</span>
+<span class="lineNum">      32 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 35859 times"> + </span>]:<span class="lineCov">      35887 :          + (fp-&gt;_flags &amp; _IO_IN_BACKUP ? fp-&gt;_IO_save_end - fp-&gt;_IO_save_base :</span>
 <span class="lineNum">      33 </span>                :            :             0);
 <span class="lineNum">      34 </span>                :            : #elif defined __sferror || defined __DragonFly__ /* FreeBSD, NetBSD, OpenBSD, DragonFly, MacOS X, Cygwin */
 <span class="lineNum">      35 </span>                :            :   if ((fp_-&gt;_flags &amp; __SWR) != 0 || fp_-&gt;_r &lt; 0)
@@ -151,13 +151,17 @@
 <span class="lineNum">      80 </span>                :            :   return (fp-&gt;__pushed_back
 <span class="lineNum">      81 </span>                :            :           ? fp-&gt;__get_limit - fp-&gt;__pushback_bufp + 1
 <span class="lineNum">      82 </span>                :            :           : fp-&gt;__get_limit - fp-&gt;__bufp);
-<span class="lineNum">      83 </span>                :            : #elif defined SLOW_BUT_NO_HACKS     /* users can define this */
-<span class="lineNum">      84 </span>                :            :   abort ();
-<span class="lineNum">      85 </span>                :            :   return 0;
-<span class="lineNum">      86 </span>                :            : #else
-<span class="lineNum">      87 </span>                :            :  #error &quot;Please port gnulib freadahead.c to your platform! Look at the definition of fflush, fread, ungetc on your system, then report this to bug-gnulib.&quot;
-<span class="lineNum">      88 </span>                :            : #endif
-<span class="lineNum">      89 </span>                :            : }
+<span class="lineNum">      83 </span>                :            : #elif defined EPLAN9                /* Plan9 */
+<span class="lineNum">      84 </span>                :            :   if (fp-&gt;state == 4 /* WR */ || fp-&gt;rp &gt;= fp-&gt;wp)
+<span class="lineNum">      85 </span>                :            :     return 0;
+<span class="lineNum">      86 </span>                :            :   return fp-&gt;wp - fp-&gt;rp;
+<span class="lineNum">      87 </span>                :            : #elif defined SLOW_BUT_NO_HACKS     /* users can define this */
+<span class="lineNum">      88 </span>                :            :   abort ();
+<span class="lineNum">      89 </span>                :            :   return 0;
+<span class="lineNum">      90 </span>                :            : #else
+<span class="lineNum">      91 </span>                :            :  #error &quot;Please port gnulib freadahead.c to your platform! Look at the definition of fflush, fread, ungetc on your system, then report this to bug-gnulib.&quot;
+<span class="lineNum">      92 </span>                :            : #endif
+<span class="lineNum">      93 </span>                :            : }
 </pre>
       </td>
     </tr>

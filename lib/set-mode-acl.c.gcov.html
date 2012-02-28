@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryHi">75.0 %</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -105,12 +105,12 @@
 <span class="lineNum">      34 </span>                :            :    Return 0 if successful.  Return -1 and set errno upon failure.  */
 <a name="35"><span class="lineNum">      35 </span>                :            : </a>
 <span class="lineNum">      36 </span>                :            : int
-<span class="lineNum">      37 </span>                :<span class="lineCov">      38296 : chmod_or_fchmod (const char *name, int desc, mode_t mode)</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">     153070 : chmod_or_fchmod (const char *name, int desc, mode_t mode)</span>
 <span class="lineNum">      38 </span>                :            : {
-<span class="lineNum">      39 </span>        [<span class="branchCov" title="Branch 0 was taken 4314 times"> + </span><span class="branchCov" title="Branch 1 was taken 33982 times"> + </span>]:<span class="lineCov">      38296 :   if (HAVE_FCHMOD &amp;&amp; desc != -1)</span>
-<span class="lineNum">      40 </span>                :<span class="lineCov">       4314 :     return fchmod (desc, mode);</span>
+<span class="lineNum">      39 </span>        [<span class="branchCov" title="Branch 0 was taken 17178 times"> + </span><span class="branchCov" title="Branch 1 was taken 135892 times"> + </span>]:<span class="lineCov">     153070 :   if (HAVE_FCHMOD &amp;&amp; desc != -1)</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">      17178 :     return fchmod (desc, mode);</span>
 <span class="lineNum">      41 </span>                :            :   else
-<span class="lineNum">      42 </span>                :<span class="lineCov">      38296 :     return chmod (name, mode);</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">     153070 :     return chmod (name, mode);</span>
 <span class="lineNum">      43 </span>                :            : }
 <span class="lineNum">      44 </span>                :            : 
 <span class="lineNum">      45 </span>                :            : /* Set the access control lists of a file. If DESC is a valid file
@@ -122,7 +122,7 @@
 <span class="lineNum">      51 </span>                :            :    Return 0 if successful.  Return -1 and set errno upon failure.  */
 <a name="52"><span class="lineNum">      52 </span>                :            : </a>
 <span class="lineNum">      53 </span>                :            : int
-<span class="lineNum">      54 </span>                :<span class="lineCov">      38296 : qset_acl (char const *name, int desc, mode_t mode)</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">     153070 : qset_acl (char const *name, int desc, mode_t mode)</span>
 <span class="lineNum">      55 </span>                :            : {
 <span class="lineNum">      56 </span>                :            : #if USE_ACL
 <span class="lineNum">      57 </span>                :            : # if HAVE_ACL_GET_FILE
@@ -739,19 +739,19 @@
 <span class="lineNum">     668 </span>                :            :   return chmod_or_fchmod (name, desc, mode);
 <span class="lineNum">     669 </span>                :            : # endif
 <span class="lineNum">     670 </span>                :            : #else /* !USE_ACL */
-<span class="lineNum">     671 </span>                :<span class="lineCov">      38296 :   return chmod_or_fchmod (name, desc, mode);</span>
+<span class="lineNum">     671 </span>                :<span class="lineCov">     153070 :   return chmod_or_fchmod (name, desc, mode);</span>
 <span class="lineNum">     672 </span>                :            : #endif
 <span class="lineNum">     673 </span>                :            : }
 <span class="lineNum">     674 </span>                :            : 
 <span class="lineNum">     675 </span>                :            : /* As with qset_acl, but also output a diagnostic on failure.  */
 <a name="676"><span class="lineNum">     676 </span>                :            : </a>
 <span class="lineNum">     677 </span>                :            : int
-<span class="lineNum">     678 </span>                :<span class="lineCov">         43 : set_acl (char const *name, int desc, mode_t mode)</span>
+<span class="lineNum">     678 </span>                :<span class="lineCov">        148 : set_acl (char const *name, int desc, mode_t mode)</span>
 <span class="lineNum">     679 </span>                :            : {
-<span class="lineNum">     680 </span>                :<span class="lineCov">         43 :   int r = qset_acl (name, desc, mode);</span>
-<span class="lineNum">     681 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 43 times"> + </span>]:<span class="lineCov">         43 :   if (r != 0)</span>
+<span class="lineNum">     680 </span>                :<span class="lineCov">        148 :   int ret = qset_acl (name, desc, mode);</span>
+<span class="lineNum">     681 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 148 times"> + </span>]:<span class="lineCov">        148 :   if (ret != 0)</span>
 <span class="lineNum">     682 </span>                :<span class="lineNoCov">          0 :     error (0, errno, _(&quot;setting permissions for %s&quot;), quote (name));</span>
-<span class="lineNum">     683 </span>                :<span class="lineCov">         43 :   return r;</span>
+<span class="lineNum">     683 </span>                :<span class="lineCov">        148 :   return ret;</span>
 <span class="lineNum">     684 </span>                :            : }
 </pre>
       </td>

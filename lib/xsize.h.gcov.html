@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryHi">50.0 %</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -84,99 +84,98 @@
 <span class="lineNum">      13 </span>                :            :    GNU General Public License for more details.
 <span class="lineNum">      14 </span>                :            : 
 <span class="lineNum">      15 </span>                :            :    You should have received a copy of the GNU General Public License
-<span class="lineNum">      16 </span>                :            :    along with this program; if not, write to the Free Software Foundation,
-<span class="lineNum">      17 </span>                :            :    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
-<span class="lineNum">      18 </span>                :            : 
-<span class="lineNum">      19 </span>                :            : #ifndef _XSIZE_H
-<span class="lineNum">      20 </span>                :            : #define _XSIZE_H
-<span class="lineNum">      21 </span>                :            : 
-<span class="lineNum">      22 </span>                :            : /* Get size_t.  */
-<span class="lineNum">      23 </span>                :            : #include &lt;stddef.h&gt;
-<span class="lineNum">      24 </span>                :            : 
-<span class="lineNum">      25 </span>                :            : /* Get SIZE_MAX.  */
-<span class="lineNum">      26 </span>                :            : #include &lt;limits.h&gt;
-<span class="lineNum">      27 </span>                :            : #if HAVE_STDINT_H
-<span class="lineNum">      28 </span>                :            : # include &lt;stdint.h&gt;
-<span class="lineNum">      29 </span>                :            : #endif
-<span class="lineNum">      30 </span>                :            : 
-<span class="lineNum">      31 </span>                :            : /* The size of memory objects is often computed through expressions of
-<span class="lineNum">      32 </span>                :            :    type size_t. Example:
-<span class="lineNum">      33 </span>                :            :       void* p = malloc (header_size + n * element_size).
-<span class="lineNum">      34 </span>                :            :    These computations can lead to overflow.  When this happens, malloc()
-<span class="lineNum">      35 </span>                :            :    returns a piece of memory that is way too small, and the program then
-<span class="lineNum">      36 </span>                :            :    crashes while attempting to fill the memory.
-<span class="lineNum">      37 </span>                :            :    To avoid this, the functions and macros in this file check for overflow.
-<span class="lineNum">      38 </span>                :            :    The convention is that SIZE_MAX represents overflow.
-<span class="lineNum">      39 </span>                :            :    malloc (SIZE_MAX) is not guaranteed to fail -- think of a malloc
-<span class="lineNum">      40 </span>                :            :    implementation that uses mmap --, it's recommended to use size_overflow_p()
-<span class="lineNum">      41 </span>                :            :    or size_in_bounds_p() before invoking malloc().
-<span class="lineNum">      42 </span>                :            :    The example thus becomes:
-<span class="lineNum">      43 </span>                :            :       size_t size = xsum (header_size, xtimes (n, element_size));
-<span class="lineNum">      44 </span>                :            :       void *p = (size_in_bounds_p (size) ? malloc (size) : NULL);
-<span class="lineNum">      45 </span>                :            : */
-<span class="lineNum">      46 </span>                :            : 
-<span class="lineNum">      47 </span>                :            : /* Convert an arbitrary value &gt;= 0 to type size_t.  */
-<span class="lineNum">      48 </span>                :            : #define xcast_size_t(N) \
-<span class="lineNum">      49 </span>                :            :   ((N) &lt;= SIZE_MAX ? (size_t) (N) : SIZE_MAX)
-<span class="lineNum">      50 </span>                :            : 
-<span class="lineNum">      51 </span>                :            : /* Sum of two sizes, with overflow check.  */
-<span class="lineNum">      52 </span>                :            : static inline size_t
-<span class="lineNum">      53 </span>                :            : #if __GNUC__ &gt;= 3
-<a name="54"><span class="lineNum">      54 </span>                :            : __attribute__ ((__pure__))</a>
-<span class="lineNum">      55 </span>                :            : #endif
-<span class="lineNum">      56 </span>                :<span class="lineCov">     243060 : xsum (size_t size1, size_t size2)</span>
-<span class="lineNum">      57 </span>                :            : {
-<span class="lineNum">      58 </span>                :<span class="lineCov">     243060 :   size_t sum = size1 + size2;</span>
-<span class="lineNum">      59 </span>        [<span class="branchCov" title="Branch 0 was taken 243060 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     243060 :   return (sum &gt;= size1 ? sum : SIZE_MAX);</span>
-<span class="lineNum">      60 </span>                :            : }
-<span class="lineNum">      61 </span>                :            : 
-<span class="lineNum">      62 </span>                :            : /* Sum of three sizes, with overflow check.  */
-<span class="lineNum">      63 </span>                :            : static inline size_t
-<span class="lineNum">      64 </span>                :            : #if __GNUC__ &gt;= 3
-<span class="lineNum">      65 </span>                :            : __attribute__ ((__pure__))
-<span class="lineNum">      66 </span>                :            : #endif
-<span class="lineNum">      67 </span>                :            : xsum3 (size_t size1, size_t size2, size_t size3)
-<span class="lineNum">      68 </span>                :            : {
-<span class="lineNum">      69 </span>                :            :   return xsum (xsum (size1, size2), size3);
-<span class="lineNum">      70 </span>                :            : }
-<span class="lineNum">      71 </span>                :            : 
-<span class="lineNum">      72 </span>                :            : /* Sum of four sizes, with overflow check.  */
-<span class="lineNum">      73 </span>                :            : static inline size_t
-<span class="lineNum">      74 </span>                :            : #if __GNUC__ &gt;= 3
-<a name="75"><span class="lineNum">      75 </span>                :            : __attribute__ ((__pure__))</a>
-<span class="lineNum">      76 </span>                :            : #endif
-<span class="lineNum">      77 </span>                :<span class="lineCov">      46453 : xsum4 (size_t size1, size_t size2, size_t size3, size_t size4)</span>
-<span class="lineNum">      78 </span>                :            : {
-<span class="lineNum">      79 </span>                :<span class="lineCov">      46453 :   return xsum (xsum (xsum (size1, size2), size3), size4);</span>
-<span class="lineNum">      80 </span>                :            : }
-<span class="lineNum">      81 </span>                :            : 
-<span class="lineNum">      82 </span>                :            : /* Maximum of two sizes, with overflow check.  */
-<span class="lineNum">      83 </span>                :            : static inline size_t
-<span class="lineNum">      84 </span>                :            : #if __GNUC__ &gt;= 3
-<a name="85"><span class="lineNum">      85 </span>                :            : __attribute__ ((__pure__))</a>
-<span class="lineNum">      86 </span>                :            : #endif
-<span class="lineNum">      87 </span>                :<span class="lineCov">       1857 : xmax (size_t size1, size_t size2)</span>
-<span class="lineNum">      88 </span>                :            : {
-<span class="lineNum">      89 </span>                :            :   /* No explicit check is needed here, because for any n:
-<span class="lineNum">      90 </span>                :            :      max (SIZE_MAX, n) == SIZE_MAX and max (n, SIZE_MAX) == SIZE_MAX.  */
-<span class="lineNum">      91 </span>                :<span class="lineCov">       1857 :   return (size1 &gt;= size2 ? size1 : size2);</span>
-<span class="lineNum">      92 </span>                :            : }
-<span class="lineNum">      93 </span>                :            : 
-<span class="lineNum">      94 </span>                :            : /* Multiplication of a count with an element size, with overflow check.
-<span class="lineNum">      95 </span>                :            :    The count must be &gt;= 0 and the element size must be &gt; 0.
-<span class="lineNum">      96 </span>                :            :    This is a macro, not an inline function, so that it works correctly even
-<span class="lineNum">      97 </span>                :            :    when N is of a wider type and N &gt; SIZE_MAX.  */
-<span class="lineNum">      98 </span>                :            : #define xtimes(N, ELSIZE) \
-<span class="lineNum">      99 </span>                :            :   ((N) &lt;= SIZE_MAX / (ELSIZE) ? (size_t) (N) * (ELSIZE) : SIZE_MAX)
-<span class="lineNum">     100 </span>                :            : 
-<span class="lineNum">     101 </span>                :            : /* Check for overflow.  */
-<span class="lineNum">     102 </span>                :            : #define size_overflow_p(SIZE) \
-<span class="lineNum">     103 </span>                :            :   ((SIZE) == SIZE_MAX)
-<span class="lineNum">     104 </span>                :            : /* Check against overflow.  */
-<span class="lineNum">     105 </span>                :            : #define size_in_bounds_p(SIZE) \
-<span class="lineNum">     106 </span>                :            :   ((SIZE) != SIZE_MAX)
-<span class="lineNum">     107 </span>                :            : 
-<span class="lineNum">     108 </span>                :            : #endif /* _XSIZE_H */
+<span class="lineNum">      16 </span>                :            :    along with this program; if not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      17 </span>                :            : 
+<span class="lineNum">      18 </span>                :            : #ifndef _XSIZE_H
+<span class="lineNum">      19 </span>                :            : #define _XSIZE_H
+<span class="lineNum">      20 </span>                :            : 
+<span class="lineNum">      21 </span>                :            : /* Get size_t.  */
+<span class="lineNum">      22 </span>                :            : #include &lt;stddef.h&gt;
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :            : /* Get SIZE_MAX.  */
+<span class="lineNum">      25 </span>                :            : #include &lt;limits.h&gt;
+<span class="lineNum">      26 </span>                :            : #if HAVE_STDINT_H
+<span class="lineNum">      27 </span>                :            : # include &lt;stdint.h&gt;
+<span class="lineNum">      28 </span>                :            : #endif
+<span class="lineNum">      29 </span>                :            : 
+<span class="lineNum">      30 </span>                :            : /* The size of memory objects is often computed through expressions of
+<span class="lineNum">      31 </span>                :            :    type size_t. Example:
+<span class="lineNum">      32 </span>                :            :       void* p = malloc (header_size + n * element_size).
+<span class="lineNum">      33 </span>                :            :    These computations can lead to overflow.  When this happens, malloc()
+<span class="lineNum">      34 </span>                :            :    returns a piece of memory that is way too small, and the program then
+<span class="lineNum">      35 </span>                :            :    crashes while attempting to fill the memory.
+<span class="lineNum">      36 </span>                :            :    To avoid this, the functions and macros in this file check for overflow.
+<span class="lineNum">      37 </span>                :            :    The convention is that SIZE_MAX represents overflow.
+<span class="lineNum">      38 </span>                :            :    malloc (SIZE_MAX) is not guaranteed to fail -- think of a malloc
+<span class="lineNum">      39 </span>                :            :    implementation that uses mmap --, it's recommended to use size_overflow_p()
+<span class="lineNum">      40 </span>                :            :    or size_in_bounds_p() before invoking malloc().
+<span class="lineNum">      41 </span>                :            :    The example thus becomes:
+<span class="lineNum">      42 </span>                :            :       size_t size = xsum (header_size, xtimes (n, element_size));
+<span class="lineNum">      43 </span>                :            :       void *p = (size_in_bounds_p (size) ? malloc (size) : NULL);
+<span class="lineNum">      44 </span>                :            : */
+<span class="lineNum">      45 </span>                :            : 
+<span class="lineNum">      46 </span>                :            : /* Convert an arbitrary value &gt;= 0 to type size_t.  */
+<span class="lineNum">      47 </span>                :            : #define xcast_size_t(N) \
+<span class="lineNum">      48 </span>                :            :   ((N) &lt;= SIZE_MAX ? (size_t) (N) : SIZE_MAX)
+<span class="lineNum">      49 </span>                :            : 
+<span class="lineNum">      50 </span>                :            : /* Sum of two sizes, with overflow check.  */
+<span class="lineNum">      51 </span>                :            : static inline size_t
+<span class="lineNum">      52 </span>                :            : #if __GNUC__ &gt;= 3
+<a name="53"><span class="lineNum">      53 </span>                :            : __attribute__ ((__pure__))</a>
+<span class="lineNum">      54 </span>                :            : #endif
+<span class="lineNum">      55 </span>                :<span class="lineCov">     814252 : xsum (size_t size1, size_t size2)</span>
+<span class="lineNum">      56 </span>                :            : {
+<span class="lineNum">      57 </span>                :<span class="lineCov">     814252 :   size_t sum = size1 + size2;</span>
+<span class="lineNum">      58 </span>        [<span class="branchCov" title="Branch 0 was taken 814252 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     814252 :   return (sum &gt;= size1 ? sum : SIZE_MAX);</span>
+<span class="lineNum">      59 </span>                :            : }
+<span class="lineNum">      60 </span>                :            : 
+<span class="lineNum">      61 </span>                :            : /* Sum of three sizes, with overflow check.  */
+<span class="lineNum">      62 </span>                :            : static inline size_t
+<span class="lineNum">      63 </span>                :            : #if __GNUC__ &gt;= 3
+<span class="lineNum">      64 </span>                :            : __attribute__ ((__pure__))
+<span class="lineNum">      65 </span>                :            : #endif
+<span class="lineNum">      66 </span>                :            : xsum3 (size_t size1, size_t size2, size_t size3)
+<span class="lineNum">      67 </span>                :            : {
+<span class="lineNum">      68 </span>                :            :   return xsum (xsum (size1, size2), size3);
+<span class="lineNum">      69 </span>                :            : }
+<span class="lineNum">      70 </span>                :            : 
+<span class="lineNum">      71 </span>                :            : /* Sum of four sizes, with overflow check.  */
+<span class="lineNum">      72 </span>                :            : static inline size_t
+<span class="lineNum">      73 </span>                :            : #if __GNUC__ &gt;= 3
+<a name="74"><span class="lineNum">      74 </span>                :            : __attribute__ ((__pure__))</a>
+<span class="lineNum">      75 </span>                :            : #endif
+<span class="lineNum">      76 </span>                :<span class="lineCov">     155276 : xsum4 (size_t size1, size_t size2, size_t size3, size_t size4)</span>
+<span class="lineNum">      77 </span>                :            : {
+<span class="lineNum">      78 </span>                :<span class="lineCov">     155276 :   return xsum (xsum (xsum (size1, size2), size3), size4);</span>
+<span class="lineNum">      79 </span>                :            : }
+<span class="lineNum">      80 </span>                :            : 
+<span class="lineNum">      81 </span>                :            : /* Maximum of two sizes, with overflow check.  */
+<span class="lineNum">      82 </span>                :            : static inline size_t
+<span class="lineNum">      83 </span>                :            : #if __GNUC__ &gt;= 3
+<a name="84"><span class="lineNum">      84 </span>                :            : __attribute__ ((__pure__))</a>
+<span class="lineNum">      85 </span>                :            : #endif
+<span class="lineNum">      86 </span>                :<span class="lineCov">       6519 : xmax (size_t size1, size_t size2)</span>
+<span class="lineNum">      87 </span>                :            : {
+<span class="lineNum">      88 </span>                :            :   /* No explicit check is needed here, because for any n:
+<span class="lineNum">      89 </span>                :            :      max (SIZE_MAX, n) == SIZE_MAX and max (n, SIZE_MAX) == SIZE_MAX.  */
+<span class="lineNum">      90 </span>                :<span class="lineCov">       6519 :   return (size1 &gt;= size2 ? size1 : size2);</span>
+<span class="lineNum">      91 </span>                :            : }
+<span class="lineNum">      92 </span>                :            : 
+<span class="lineNum">      93 </span>                :            : /* Multiplication of a count with an element size, with overflow check.
+<span class="lineNum">      94 </span>                :            :    The count must be &gt;= 0 and the element size must be &gt; 0.
+<span class="lineNum">      95 </span>                :            :    This is a macro, not an inline function, so that it works correctly even
+<span class="lineNum">      96 </span>                :            :    when N is of a wider type and N &gt; SIZE_MAX.  */
+<span class="lineNum">      97 </span>                :            : #define xtimes(N, ELSIZE) \
+<span class="lineNum">      98 </span>                :            :   ((N) &lt;= SIZE_MAX / (ELSIZE) ? (size_t) (N) * (ELSIZE) : SIZE_MAX)
+<span class="lineNum">      99 </span>                :            : 
+<span class="lineNum">     100 </span>                :            : /* Check for overflow.  */
+<span class="lineNum">     101 </span>                :            : #define size_overflow_p(SIZE) \
+<span class="lineNum">     102 </span>                :            :   ((SIZE) == SIZE_MAX)
+<span class="lineNum">     103 </span>                :            : /* Check against overflow.  */
+<span class="lineNum">     104 </span>                :            : #define size_in_bounds_p(SIZE) \
+<span class="lineNum">     105 </span>                :            :   ((SIZE) != SIZE_MAX)
+<span class="lineNum">     106 </span>                :            : 
+<span class="lineNum">     107 </span>                :            : #endif /* _XSIZE_H */
 </pre>
       </td>
     </tr>

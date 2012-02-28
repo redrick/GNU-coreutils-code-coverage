@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -95,13 +95,13 @@
 <span class="lineNum">      24 </span>                :            : #include &quot;stdio-impl.h&quot;
 <a name="25"><span class="lineNum">      25 </span>                :            : </a>
 <span class="lineNum">      26 </span>                :            : void
-<span class="lineNum">      27 </span>                :<span class="lineCov">          2 : fseterr (FILE *fp)</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">          7 : fseterr (FILE *fp)</span>
 <span class="lineNum">      28 </span>                :            : {
 <span class="lineNum">      29 </span>                :            :   /* Most systems provide FILE as a struct and the necessary bitmask in
 <span class="lineNum">      30 </span>                :            :      &lt;stdio.h&gt;, because they need it for implementing getc() and putc() as
 <span class="lineNum">      31 </span>                :            :      fast macros.  */
 <span class="lineNum">      32 </span>                :            : #if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-<span class="lineNum">      33 </span>                :<span class="lineCov">          2 :   fp-&gt;_flags |= _IO_ERR_SEEN;</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">          7 :   fp-&gt;_flags |= _IO_ERR_SEEN;</span>
 <span class="lineNum">      34 </span>                :            : #elif defined __sferror || defined __DragonFly__ /* FreeBSD, NetBSD, OpenBSD, DragonFly, MacOS X, Cygwin */
 <span class="lineNum">      35 </span>                :            :   fp_-&gt;_flags |= __SERR;
 <span class="lineNum">      36 </span>                :            : #elif defined __EMX__               /* emx+gcc */
@@ -116,35 +116,38 @@
 <span class="lineNum">      45 </span>                :            :   fp-&gt;_Mode |= 0x200 /* _MERR */;
 <span class="lineNum">      46 </span>                :            : #elif defined __MINT__              /* Atari FreeMiNT */
 <span class="lineNum">      47 </span>                :            :   fp-&gt;__error = 1;
-<span class="lineNum">      48 </span>                :            : #elif 0                             /* unknown  */
-<span class="lineNum">      49 </span>                :            :   /* Portable fallback, based on an idea by Rich Felker.
-<span class="lineNum">      50 </span>                :            :      Wow! 6 system calls for something that is just a bit operation!
-<span class="lineNum">      51 </span>                :            :      Not activated on any system, because there is no way to repair FP when
-<span class="lineNum">      52 </span>                :            :      the sequence of system calls fails, and library code should not call
-<span class="lineNum">      53 </span>                :            :      abort().  */
-<span class="lineNum">      54 </span>                :            :   int saved_errno;
-<span class="lineNum">      55 </span>                :            :   int fd;
-<span class="lineNum">      56 </span>                :            :   int fd2;
-<span class="lineNum">      57 </span>                :            : 
-<span class="lineNum">      58 </span>                :            :   saved_errno = errno;
-<span class="lineNum">      59 </span>                :            :   fflush (fp);
-<span class="lineNum">      60 </span>                :            :   fd = fileno (fp);
-<span class="lineNum">      61 </span>                :            :   fd2 = dup (fd);
-<span class="lineNum">      62 </span>                :            :   if (fd2 &gt;= 0)
-<span class="lineNum">      63 </span>                :            :     {
-<span class="lineNum">      64 </span>                :            :       close (fd);
-<span class="lineNum">      65 </span>                :            :       fputc ('\0', fp); /* This should set the error indicator.  */
-<span class="lineNum">      66 </span>                :            :       fflush (fp);      /* Or this.  */
-<span class="lineNum">      67 </span>                :            :       if (dup2 (fd2, fd) &lt; 0)
-<span class="lineNum">      68 </span>                :            :         /* Whee... we botched the stream and now cannot restore it!  */
-<span class="lineNum">      69 </span>                :            :         abort ();
-<span class="lineNum">      70 </span>                :            :       close (fd2);
-<span class="lineNum">      71 </span>                :            :     }
-<span class="lineNum">      72 </span>                :            :   errno = saved_errno;
-<span class="lineNum">      73 </span>                :            : #else
-<span class="lineNum">      74 </span>                :            :  #error &quot;Please port gnulib fseterr.c to your platform! Look at the definitions of ferror and clearerr on your system, then report this to bug-gnulib.&quot;
-<span class="lineNum">      75 </span>                :            : #endif
-<span class="lineNum">      76 </span>                :<span class="lineCov">          2 : }</span>
+<span class="lineNum">      48 </span>                :            : #elif defined EPLAN9                /* Plan9 */
+<span class="lineNum">      49 </span>                :            :   if (fp-&gt;state != 0 /* CLOSED */)
+<span class="lineNum">      50 </span>                :            :     fp-&gt;state = 5 /* ERR */;
+<span class="lineNum">      51 </span>                :            : #elif 0                             /* unknown  */
+<span class="lineNum">      52 </span>                :            :   /* Portable fallback, based on an idea by Rich Felker.
+<span class="lineNum">      53 </span>                :            :      Wow! 6 system calls for something that is just a bit operation!
+<span class="lineNum">      54 </span>                :            :      Not activated on any system, because there is no way to repair FP when
+<span class="lineNum">      55 </span>                :            :      the sequence of system calls fails, and library code should not call
+<span class="lineNum">      56 </span>                :            :      abort().  */
+<span class="lineNum">      57 </span>                :            :   int saved_errno;
+<span class="lineNum">      58 </span>                :            :   int fd;
+<span class="lineNum">      59 </span>                :            :   int fd2;
+<span class="lineNum">      60 </span>                :            : 
+<span class="lineNum">      61 </span>                :            :   saved_errno = errno;
+<span class="lineNum">      62 </span>                :            :   fflush (fp);
+<span class="lineNum">      63 </span>                :            :   fd = fileno (fp);
+<span class="lineNum">      64 </span>                :            :   fd2 = dup (fd);
+<span class="lineNum">      65 </span>                :            :   if (fd2 &gt;= 0)
+<span class="lineNum">      66 </span>                :            :     {
+<span class="lineNum">      67 </span>                :            :       close (fd);
+<span class="lineNum">      68 </span>                :            :       fputc ('\0', fp); /* This should set the error indicator.  */
+<span class="lineNum">      69 </span>                :            :       fflush (fp);      /* Or this.  */
+<span class="lineNum">      70 </span>                :            :       if (dup2 (fd2, fd) &lt; 0)
+<span class="lineNum">      71 </span>                :            :         /* Whee... we botched the stream and now cannot restore it!  */
+<span class="lineNum">      72 </span>                :            :         abort ();
+<span class="lineNum">      73 </span>                :            :       close (fd2);
+<span class="lineNum">      74 </span>                :            :     }
+<span class="lineNum">      75 </span>                :            :   errno = saved_errno;
+<span class="lineNum">      76 </span>                :            : #else
+<span class="lineNum">      77 </span>                :            :  #error &quot;Please port gnulib fseterr.c to your platform! Look at the definitions of ferror and clearerr on your system, then report this to bug-gnulib.&quot;
+<span class="lineNum">      78 </span>                :            : #endif
+<span class="lineNum">      79 </span>                :<span class="lineCov">          7 : }</span>
 </pre>
       </td>
     </tr>

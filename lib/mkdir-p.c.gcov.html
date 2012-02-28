@@ -33,11 +33,11 @@
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">47</td>
             <td class="headerCovTableEntry">60</td>
-            <td class="headerCovTableEntryHi">78.3 %</td>
+            <td class="headerCovTableEntryMed">78.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-01-13</td>
+            <td class="headerValue">2012-02-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -51,7 +51,7 @@
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">38</td>
             <td class="headerCovTableEntry">72</td>
-            <td class="headerCovTableEntryHi">52.8 %</td>
+            <td class="headerCovTableEntryLo">52.8 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -154,7 +154,7 @@
 <span class="lineNum">      83 </span>                :            :    '\0' into *DIR if an ancestor directory had problems.  */
 <a name="84"><span class="lineNum">      84 </span>                :            : </a>
 <span class="lineNum">      85 </span>                :            : bool
-<span class="lineNum">      86 </span>                :<span class="lineCov">      15955 : make_dir_parents (char *dir,</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">      62849 : make_dir_parents (char *dir,</span>
 <span class="lineNum">      87 </span>                :            :                   struct savewd *wd,
 <span class="lineNum">      88 </span>                :            :                   int (*make_ancestor) (char const *, char const *, void *),
 <span class="lineNum">      89 </span>                :            :                   void *options,
@@ -165,83 +165,83 @@
 <span class="lineNum">      94 </span>                :            :                   gid_t group,
 <span class="lineNum">      95 </span>                :            :                   bool preserve_existing)
 <span class="lineNum">      96 </span>                :            : {
-<span class="lineNum">      97 </span>        [<span class="branchCov" title="Branch 0 was taken 15913 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">      15955 :   int mkdir_errno = (IS_ABSOLUTE_FILE_NAME (dir) ? 0 : savewd_errno (wd));</span>
+<span class="lineNum">      97 </span>        [<span class="branchCov" title="Branch 0 was taken 62700 times"> + </span><span class="branchCov" title="Branch 1 was taken 149 times"> + </span>]:<span class="lineCov">      62849 :   int mkdir_errno = (IS_ABSOLUTE_FILE_NAME (dir) ? 0 : savewd_errno (wd));</span>
 <span class="lineNum">      98 </span>                :            : 
-<span class="lineNum">      99 </span>        [<span class="branchCov" title="Branch 0 was taken 15955 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      15955 :   if (mkdir_errno == 0)</span>
+<span class="lineNum">      99 </span>        [<span class="branchCov" title="Branch 0 was taken 62849 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      62849 :   if (mkdir_errno == 0)</span>
 <span class="lineNum">     100 </span>                :            :     {
-<span class="lineNum">     101 </span>                :<span class="lineCov">      15955 :       ptrdiff_t prefix_len = 0;</span>
-<span class="lineNum">     102 </span>                :<span class="lineCov">      15955 :       int savewd_chdir_options = (HAVE_FCHMOD ? SAVEWD_CHDIR_SKIP_READABLE : 0);</span>
+<span class="lineNum">     101 </span>                :<span class="lineCov">      62849 :       ptrdiff_t prefix_len = 0;</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">      62849 :       int savewd_chdir_options = (HAVE_FCHMOD ? SAVEWD_CHDIR_SKIP_READABLE : 0);</span>
 <span class="lineNum">     103 </span>                :            : 
-<span class="lineNum">     104 </span>        [<span class="branchCov" title="Branch 0 was taken 395 times"> + </span><span class="branchCov" title="Branch 1 was taken 15560 times"> + </span>]:<span class="lineCov">      15955 :       if (make_ancestor)</span>
+<span class="lineNum">     104 </span>        [<span class="branchCov" title="Branch 0 was taken 1443 times"> + </span><span class="branchCov" title="Branch 1 was taken 61406 times"> + </span>]:<span class="lineCov">      62849 :       if (make_ancestor)</span>
 <span class="lineNum">     105 </span>                :            :         {
-<span class="lineNum">     106 </span>                :<span class="lineCov">        395 :           prefix_len = mkancesdirs (dir, wd, make_ancestor, options);</span>
-<span class="lineNum">     107 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 387 times"> + </span>]:<span class="lineCov">        395 :           if (prefix_len &lt; 0)</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">       1443 :           prefix_len = mkancesdirs (dir, wd, make_ancestor, options);</span>
+<span class="lineNum">     107 </span>        [<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchCov" title="Branch 1 was taken 1411 times"> + </span>]:<span class="lineCov">       1443 :           if (prefix_len &lt; 0)</span>
 <span class="lineNum">     108 </span>                :            :             {
-<span class="lineNum">     109 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          8 :               if (prefix_len &lt; -1)</span>
-<span class="lineNum">     110 </span>                :<span class="lineCov">          6 :                 return true;</span>
-<span class="lineNum">     111 </span>                :<span class="lineCov">          2 :               mkdir_errno = errno;</span>
+<span class="lineNum">     109 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">         32 :               if (prefix_len &lt; -1)</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">         24 :                 return true;</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">          8 :               mkdir_errno = errno;</span>
 <span class="lineNum">     112 </span>                :            :             }
 <span class="lineNum">     113 </span>                :            :         }
 <span class="lineNum">     114 </span>                :            : 
-<span class="lineNum">     115 </span>        [<span class="branchCov" title="Branch 0 was taken 15947 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">      15949 :       if (0 &lt;= prefix_len)</span>
+<span class="lineNum">     115 </span>        [<span class="branchCov" title="Branch 0 was taken 62817 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">      62825 :       if (0 &lt;= prefix_len)</span>
 <span class="lineNum">     116 </span>                :            :         {
 <span class="lineNum">     117 </span>                :            :           /* If the ownership might change, or if the directory will be
-<span class="lineNum">     118 </span>                :            :              writeable to other users and its special mode bits may
+<span class="lineNum">     118 </span>                :            :              writable to other users and its special mode bits may
 <span class="lineNum">     119 </span>                :            :              change after the directory is created, create it with
 <span class="lineNum">     120 </span>                :            :              more restrictive permissions at first, so unauthorized
 <span class="lineNum">     121 </span>                :            :              users cannot nip in before the directory is ready.  */
-<span class="lineNum">     122 </span>[<span class="branchCov" title="Branch 0 was taken 15947 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 15947 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">      15947 :           bool keep_owner = owner == (uid_t) -1 &amp;&amp; group == (gid_t) -1;</span>
-<span class="lineNum">     123 </span>                :<span class="lineCov">      15947 :           bool keep_special_mode_bits =</span>
-<span class="lineNum">     124 </span>                :<span class="lineCov">      15947 :             ((mode_bits &amp; (S_ISUID | S_ISGID)) | (mode &amp; S_ISVTX)) == 0;</span>
-<span class="lineNum">     125 </span>                :<span class="lineCov">      15947 :           mode_t mkdir_mode = mode;</span>
-<span class="lineNum">     126 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15947 times"> + </span>]:<span class="lineCov">      15947 :           if (! keep_owner)</span>
+<span class="lineNum">     122 </span>[<span class="branchCov" title="Branch 0 was taken 62817 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 62817 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">      62817 :           bool keep_owner = owner == (uid_t) -1 &amp;&amp; group == (gid_t) -1;</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">      62817 :           bool keep_special_mode_bits =</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">      62817 :             ((mode_bits &amp; (S_ISUID | S_ISGID)) | (mode &amp; S_ISVTX)) == 0;</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">      62817 :           mode_t mkdir_mode = mode;</span>
+<span class="lineNum">     126 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 62817 times"> + </span>]:<span class="lineCov">      62817 :           if (! keep_owner)</span>
 <span class="lineNum">     127 </span>                :<span class="lineNoCov">          0 :             mkdir_mode &amp;= ~ (S_IRWXG | S_IRWXO);</span>
-<span class="lineNum">     128 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 15927 times"> + </span>]:<span class="lineCov">      15947 :           else if (! keep_special_mode_bits)</span>
-<span class="lineNum">     129 </span>                :<span class="lineCov">         20 :             mkdir_mode &amp;= ~ (S_IWGRP | S_IWOTH);</span>
+<span class="lineNum">     128 </span>        [<span class="branchCov" title="Branch 0 was taken 73 times"> + </span><span class="branchCov" title="Branch 1 was taken 62744 times"> + </span>]:<span class="lineCov">      62817 :           else if (! keep_special_mode_bits)</span>
+<span class="lineNum">     129 </span>                :<span class="lineCov">         73 :             mkdir_mode &amp;= ~ (S_IWGRP | S_IWOTH);</span>
 <span class="lineNum">     130 </span>                :            : 
-<span class="lineNum">     131 </span>        [<span class="branchCov" title="Branch 1 was taken 15932 times"> + </span><span class="branchCov" title="Branch 2 was taken 15 times"> + </span>]:<span class="lineCov">      15947 :           if (mkdir (dir + prefix_len, mkdir_mode) == 0)</span>
+<span class="lineNum">     131 </span>        [<span class="branchCov" title="Branch 1 was taken 62764 times"> + </span><span class="branchCov" title="Branch 2 was taken 53 times"> + </span>]:<span class="lineCov">      62817 :           if (mkdir (dir + prefix_len, mkdir_mode) == 0)</span>
 <span class="lineNum">     132 </span>                :            :             {
-<span class="lineNum">     133 </span>                :<span class="lineCov">      15932 :               announce (dir, options);</span>
-<span class="lineNum">     134 </span>                :<span class="lineCov">      15932 :               preserve_existing = keep_owner &amp; keep_special_mode_bits;</span>
-<span class="lineNum">     135 </span>                :<span class="lineCov">      15932 :               savewd_chdir_options |=</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">      62764 :               announce (dir, options);</span>
+<span class="lineNum">     134 </span>                :<span class="lineCov">      62764 :               preserve_existing = keep_owner &amp; keep_special_mode_bits;</span>
+<span class="lineNum">     135 </span>                :<span class="lineCov">      62764 :               savewd_chdir_options |=</span>
 <span class="lineNum">     136 </span>                :            :                 (SAVEWD_CHDIR_NOFOLLOW
-<span class="lineNum">     137 </span>        [<span class="branchCov" title="Branch 0 was taken 15914 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">      15932 :                  | (mode &amp; S_IRUSR ? SAVEWD_CHDIR_READABLE : 0));</span>
+<span class="lineNum">     137 </span>        [<span class="branchCov" title="Branch 0 was taken 62700 times"> + </span><span class="branchCov" title="Branch 1 was taken 64 times"> + </span>]:<span class="lineCov">      62764 :                  | (mode &amp; S_IRUSR ? SAVEWD_CHDIR_READABLE : 0));</span>
 <span class="lineNum">     138 </span>                :            :             }
 <span class="lineNum">     139 </span>                :            :           else
 <span class="lineNum">     140 </span>                :            :             {
-<span class="lineNum">     141 </span>                :<span class="lineCov">         15 :               mkdir_errno = errno;</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">         15 :               mkdir_mode = -1;</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">         53 :               mkdir_errno = errno;</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">         53 :               mkdir_mode = -1;</span>
 <span class="lineNum">     143 </span>                :            :             }
 <span class="lineNum">     144 </span>                :            : 
-<span class="lineNum">     145 </span>        [<span class="branchCov" title="Branch 0 was taken 15929 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">      15947 :           if (preserve_existing)</span>
+<span class="lineNum">     145 </span>        [<span class="branchCov" title="Branch 0 was taken 62751 times"> + </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>]:<span class="lineCov">      62817 :           if (preserve_existing)</span>
 <span class="lineNum">     146 </span>                :            :             {
 <span class="lineNum">     147 </span>                :            :               struct stat st;
-<span class="lineNum">     148 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 15919 times"> + </span>]:<span class="lineCov">      15929 :               if (mkdir_errno == 0</span>
-<span class="lineNum">     149 </span>[<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 6 times"> + </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">         10 :                   || (mkdir_errno != ENOENT &amp;&amp; make_ancestor</span>
-<span class="lineNum">     150 </span>        [<span class="branchCov" title="Branch 1 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          6 :                       &amp;&amp; stat (dir + prefix_len, &amp;st) == 0</span>
-<span class="lineNum">     151 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          6 :                       &amp;&amp; S_ISDIR (st.st_mode)))</span>
-<span class="lineNum">     152 </span>                :<span class="lineCov">      15925 :                 return true;</span>
+<span class="lineNum">     148 </span>        [<span class="branchCov" title="Branch 0 was taken 35 times"> + </span><span class="branchCov" title="Branch 1 was taken 62716 times"> + </span>]:<span class="lineCov">      62751 :               if (mkdir_errno == 0</span>
+<span class="lineNum">     149 </span>[<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 21 times"> + </span><span class="branchCov" title="Branch 3 was taken 7 times"> + </span>]:<span class="lineCov">         35 :                   || (mkdir_errno != ENOENT &amp;&amp; make_ancestor</span>
+<span class="lineNum">     150 </span>        [<span class="branchCov" title="Branch 1 was taken 21 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">         21 :                       &amp;&amp; stat (dir + prefix_len, &amp;st) == 0</span>
+<span class="lineNum">     151 </span>        [<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         21 :                       &amp;&amp; S_ISDIR (st.st_mode)))</span>
+<span class="lineNum">     152 </span>                :<span class="lineCov">      62737 :                 return true;</span>
 <span class="lineNum">     153 </span>                :            :             }
 <span class="lineNum">     154 </span>                :            :           else
 <span class="lineNum">     155 </span>                :            :             {
 <span class="lineNum">     156 </span>                :            :               int open_result[2];
-<span class="lineNum">     157 </span>                :<span class="lineCov">         18 :               int chdir_result =</span>
-<span class="lineNum">     158 </span>                :<span class="lineCov">         18 :                 savewd_chdir (wd, dir + prefix_len,</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">         66 :               int chdir_result =</span>
+<span class="lineNum">     158 </span>                :<span class="lineCov">         66 :                 savewd_chdir (wd, dir + prefix_len,</span>
 <span class="lineNum">     159 </span>                :            :                               savewd_chdir_options, open_result);
-<span class="lineNum">     160 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         18 :               if (chdir_result &lt; -1)</span>
+<span class="lineNum">     160 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>]:<span class="lineCov">         66 :               if (chdir_result &lt; -1)</span>
 <span class="lineNum">     161 </span>                :<span class="lineNoCov">          0 :                 return true;</span>
 <span class="lineNum">     162 </span>                :            :               else
 <span class="lineNum">     163 </span>                :            :                 {
-<span class="lineNum">     164 </span>                :<span class="lineCov">         18 :                   bool chdir_ok = (chdir_result == 0);</span>
-<span class="lineNum">     165 </span>                :<span class="lineCov">         18 :                   int chdir_errno = errno;</span>
-<span class="lineNum">     166 </span>                :<span class="lineCov">         18 :                   int fd = open_result[0];</span>
-<span class="lineNum">     167 </span>                :<span class="lineCov">         18 :                   bool chdir_failed_unexpectedly =</span>
+<span class="lineNum">     164 </span>                :<span class="lineCov">         66 :                   bool chdir_ok = (chdir_result == 0);</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">         66 :                   int chdir_errno = errno;</span>
+<span class="lineNum">     166 </span>                :<span class="lineCov">         66 :                   int fd = open_result[0];</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">         66 :                   bool chdir_failed_unexpectedly =</span>
 <span class="lineNum">     168 </span>                :            :                     (mkdir_errno == 0
-<span class="lineNum">     169 </span>[<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 13 times"> + </span>]:<span class="lineCov">         31 :                      &amp;&amp; ((! chdir_ok &amp;&amp; (mode &amp; S_IXUSR))</span>
-<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
-<span class="lineNum">     170 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         13 :                          || (fd &lt; 0 &amp;&amp; (mode &amp; S_IRUSR))));</span>
+<span class="lineNum">     169 </span>[<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 48 times"> + </span>][<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]:<span class="lineCov">        114 :                      &amp;&amp; ((! chdir_ok &amp;&amp; (mode &amp; S_IXUSR))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 0 was taken 48 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]
+<span class="lineNum">     170 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 48 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         48 :                          || (fd &lt; 0 &amp;&amp; (mode &amp; S_IRUSR))));</span>
 <span class="lineNum">     171 </span>                :            : 
-<span class="lineNum">     172 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         18 :                   if (chdir_failed_unexpectedly)</span>
+<span class="lineNum">     172 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>]:<span class="lineCov">         66 :                   if (chdir_failed_unexpectedly)</span>
 <span class="lineNum">     173 </span>                :            :                     {
 <span class="lineNum">     174 </span>                :            :                       /* No need to save errno here; it's irrelevant.  */
 <span class="lineNum">     175 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                       if (0 &lt;= fd)</span>
@@ -249,11 +249,11 @@
 <span class="lineNum">     177 </span>                :            :                     }
 <span class="lineNum">     178 </span>                :            :                   else
 <span class="lineNum">     179 </span>                :            :                     {
-<span class="lineNum">     180 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         18 :                       char const *subdir = (chdir_ok ? &quot;.&quot; : dir + prefix_len);</span>
-<span class="lineNum">     181 </span>        [<span class="branchCov" title="Branch 1 was taken 18 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">         18 :                       if (dirchownmod (fd, subdir, mkdir_mode, owner, group,</span>
+<span class="lineNum">     180 </span>        [<span class="branchCov" title="Branch 0 was taken 66 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         66 :                       char const *subdir = (chdir_ok ? &quot;.&quot; : dir + prefix_len);</span>
+<span class="lineNum">     181 </span>        [<span class="branchCov" title="Branch 1 was taken 66 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">         66 :                       if (dirchownmod (fd, subdir, mkdir_mode, owner, group,</span>
 <span class="lineNum">     182 </span>                :            :                                        mode, mode_bits)
 <span class="lineNum">     183 </span>                :            :                           == 0)
-<span class="lineNum">     184 </span>                :<span class="lineCov">         18 :                         return true;</span>
+<span class="lineNum">     184 </span>                :<span class="lineCov">         66 :                         return true;</span>
 <span class="lineNum">     185 </span>                :            :                     }
 <span class="lineNum">     186 </span>                :            : 
 <span class="lineNum">     187 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                   if (mkdir_errno == 0</span>
@@ -275,8 +275,8 @@
 <span class="lineNum">     203 </span>                :            :         }
 <span class="lineNum">     204 </span>                :            :     }
 <span class="lineNum">     205 </span>                :            : 
-<span class="lineNum">     206 </span>                :<span class="lineCov">          6 :   error (0, mkdir_errno, _(&quot;cannot create directory %s&quot;), quote (dir));</span>
-<span class="lineNum">     207 </span>                :<span class="lineCov">      15955 :   return false;</span>
+<span class="lineNum">     206 </span>                :<span class="lineCov">         22 :   error (0, mkdir_errno, _(&quot;cannot create directory %s&quot;), quote (dir));</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">      62849 :   return false;</span>
 <span class="lineNum">     208 </span>                :            : }
 </pre>
       </td>
