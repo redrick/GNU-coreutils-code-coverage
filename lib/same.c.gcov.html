@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -119,18 +119,18 @@
 <span class="lineNum">      48 </span>                :            :    directory.  */
 <a name="49"><span class="lineNum">      49 </span>                :            : </a>
 <span class="lineNum">      50 </span>                :            : bool
-<span class="lineNum">      51 </span>                :<span class="lineCov">        350 : same_name (const char *source, const char *dest)</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">         59 : same_name (const char *source, const char *dest)</span>
 <span class="lineNum">      52 </span>                :            : {
 <span class="lineNum">      53 </span>                :            :   /* Compare the basenames.  */
-<span class="lineNum">      54 </span>                :<span class="lineCov">        350 :   char const *source_basename = last_component (source);</span>
-<span class="lineNum">      55 </span>                :<span class="lineCov">        350 :   char const *dest_basename = last_component (dest);</span>
-<span class="lineNum">      56 </span>                :<span class="lineCov">        350 :   size_t source_baselen = base_len (source_basename);</span>
-<span class="lineNum">      57 </span>                :<span class="lineCov">        350 :   size_t dest_baselen = base_len (dest_basename);</span>
-<span class="lineNum">      58 </span>                :<span class="lineCov">        350 :   bool identical_basenames =</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">         59 :   char const *source_basename = last_component (source);</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">         59 :   char const *dest_basename = last_component (dest);</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">         59 :   size_t source_baselen = base_len (source_basename);</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">         59 :   size_t dest_baselen = base_len (dest_basename);</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">         59 :   bool identical_basenames =</span>
 <span class="lineNum">      59 </span>                :            :     (source_baselen == dest_baselen
-<span class="lineNum">      60 </span>[<span class="branchCov" title="Branch 2 was taken 120 times"> + </span><span class="branchCov" title="Branch 3 was taken 188 times"> + </span>][<span class="branchCov" title="Branch 0 was taken 308 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">        350 :      &amp;&amp; memcmp (source_basename, dest_basename, dest_baselen) == 0);</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">        350 :   bool compare_dirs = identical_basenames;</span>
-<span class="lineNum">      62 </span>                :<span class="lineCov">        350 :   bool same = false;</span>
+<span class="lineNum">      60 </span>[<span class="branchCov" title="Branch 0 was taken 53 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 32 times"> + </span><span class="branchCov" title="Branch 3 was taken 21 times"> + </span>]:<span class="lineCov">         59 :      &amp;&amp; memcmp (source_basename, dest_basename, dest_baselen) == 0);</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">         59 :   bool compare_dirs = identical_basenames;</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">         59 :   bool same = false;</span>
 <span class="lineNum">      63 </span>                :            : 
 <span class="lineNum">      64 </span>                :            : #if ! _POSIX_NO_TRUNC &amp;&amp; HAVE_PATHCONF &amp;&amp; defined _PC_NAME_MAX
 <span class="lineNum">      65 </span>                :            :   /* This implementation silently truncates components of file names.  If
@@ -143,29 +143,29 @@
 <span class="lineNum">      72 </span>                :            :     compare_dirs = true;
 <span class="lineNum">      73 </span>                :            : #endif
 <span class="lineNum">      74 </span>                :            : 
-<span class="lineNum">      75 </span>        [<span class="branchCov" title="Branch 0 was taken 120 times"> + </span><span class="branchCov" title="Branch 1 was taken 230 times"> + </span>]:<span class="lineCov">        350 :   if (compare_dirs)</span>
+<span class="lineNum">      75 </span>        [<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span>]:<span class="lineCov">         59 :   if (compare_dirs)</span>
 <span class="lineNum">      76 </span>                :            :     {
 <span class="lineNum">      77 </span>                :            :       struct stat source_dir_stats;
 <span class="lineNum">      78 </span>                :            :       struct stat dest_dir_stats;
 <span class="lineNum">      79 </span>                :            :       char *source_dirname, *dest_dirname;
 <span class="lineNum">      80 </span>                :            : 
 <span class="lineNum">      81 </span>                :            :       /* Compare the parent directories (via the device and inode numbers).  */
-<span class="lineNum">      82 </span>                :<span class="lineCov">        120 :       source_dirname = dir_name (source);</span>
-<span class="lineNum">      83 </span>                :<span class="lineCov">        120 :       dest_dirname = dir_name (dest);</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">         21 :       source_dirname = dir_name (source);</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">         21 :       dest_dirname = dir_name (dest);</span>
 <span class="lineNum">      84 </span>                :            : 
-<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 120 times"> + </span>]:<span class="lineCov">        120 :       if (stat (source_dirname, &amp;source_dir_stats))</span>
+<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         21 :       if (stat (source_dirname, &amp;source_dir_stats))</span>
 <span class="lineNum">      86 </span>                :            :         {
 <span class="lineNum">      87 </span>                :            :           /* Shouldn't happen.  */
 <span class="lineNum">      88 </span>                :<span class="lineNoCov">          0 :           error (1, errno, &quot;%s&quot;, source_dirname);</span>
 <span class="lineNum">      89 </span>                :            :         }
 <span class="lineNum">      90 </span>                :            : 
-<span class="lineNum">      91 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 120 times"> + </span>]:<span class="lineCov">        120 :       if (stat (dest_dirname, &amp;dest_dir_stats))</span>
+<span class="lineNum">      91 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         21 :       if (stat (dest_dirname, &amp;dest_dir_stats))</span>
 <span class="lineNum">      92 </span>                :            :         {
 <span class="lineNum">      93 </span>                :            :           /* Shouldn't happen.  */
 <span class="lineNum">      94 </span>                :<span class="lineNoCov">          0 :           error (1, errno, &quot;%s&quot;, dest_dirname);</span>
 <span class="lineNum">      95 </span>                :            :         }
 <span class="lineNum">      96 </span>                :            : 
-<span class="lineNum">      97 </span>[<span class="branchCov" title="Branch 0 was taken 113 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 113 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        120 :       same = SAME_INODE (source_dir_stats, dest_dir_stats);</span>
+<span class="lineNum">      97 </span>[<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 20 times"> + </span>]:<span class="lineCov">         21 :       same = SAME_INODE (source_dir_stats, dest_dir_stats);</span>
 <span class="lineNum">      98 </span>                :            : 
 <span class="lineNum">      99 </span>                :            : #if ! _POSIX_NO_TRUNC &amp;&amp; HAVE_PATHCONF &amp;&amp; defined _PC_NAME_MAX
 <span class="lineNum">     100 </span>                :            :       if (same &amp;&amp; ! identical_basenames)
@@ -186,11 +186,11 @@
 <span class="lineNum">     115 </span>                :            :         }
 <span class="lineNum">     116 </span>                :            : #endif
 <span class="lineNum">     117 </span>                :            : 
-<span class="lineNum">     118 </span>                :<span class="lineCov">        120 :       free (source_dirname);</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">        120 :       free (dest_dirname);</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">         21 :       free (source_dirname);</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">         21 :       free (dest_dirname);</span>
 <span class="lineNum">     120 </span>                :            :     }
 <span class="lineNum">     121 </span>                :            : 
-<span class="lineNum">     122 </span>                :<span class="lineCov">        350 :   return same;</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">         59 :   return same;</span>
 <span class="lineNum">     123 </span>                :            : }
 </pre>
       </td>

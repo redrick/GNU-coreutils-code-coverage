@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">70</td>
+            <td class="headerCovTableEntry">58</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
@@ -50,7 +50,7 @@
             <td></td>
             <td class="headerItem">Branches:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntry">44</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -112,15 +112,15 @@
 <span class="lineNum">      41 </span>                :            : {
 <span class="lineNum">      42 </span>                :            :   int fd;
 <span class="lineNum">      43 </span>                :            : };
-<a name="44"><span class="lineNum">      44 </span>                :            : </a>
+<span class="lineNum">      44 </span>                :            : 
 <span class="lineNum">      45 </span>                :            : static inline void
-<span class="lineNum">      46 </span>                :<span class="lineNoCov">          0 : cdb_init (struct cd_buf *cdb)</span>
+<a name="46"><span class="lineNum">      46 </span>                :            : cdb_init (struct cd_buf *cdb)</a>
 <span class="lineNum">      47 </span>                :            : {
 <span class="lineNum">      48 </span>                :<span class="lineNoCov">          0 :   cdb-&gt;fd = AT_FDCWD;</span>
-<span class="lineNum">      49 </span>                :<span class="lineNoCov">          0 : }</span>
-<a name="50"><span class="lineNum">      50 </span>                :            : </a>
+<span class="lineNum">      49 </span>                :            : }
+<span class="lineNum">      50 </span>                :            : 
 <span class="lineNum">      51 </span>                :            : static inline int
-<span class="lineNum">      52 </span>                :<span class="lineNoCov">          0 : cdb_fchdir (struct cd_buf const *cdb)</span>
+<span class="lineNum">      52 </span>                :            : cdb_fchdir (struct cd_buf const *cdb)
 <span class="lineNum">      53 </span>                :            : {
 <span class="lineNum">      54 </span>                :<span class="lineNoCov">          0 :   return fchdir (cdb-&gt;fd);</span>
 <span class="lineNum">      55 </span>                :            : }
@@ -145,7 +145,7 @@
 <span class="lineNum">      74 </span>                :<span class="lineNoCov">          0 :   int new_fd = openat (cdb-&gt;fd, dir,</span>
 <span class="lineNum">      75 </span>                :            :                        O_SEARCH | O_DIRECTORY | O_NOCTTY | O_NONBLOCK);
 <span class="lineNum">      76 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (new_fd &lt; 0)</span>
-<span class="lineNum">      77 </span>                :<span class="lineNoCov">          0 :     return -1;</span>
+<span class="lineNum">      77 </span>                :            :     return -1;
 <span class="lineNum">      78 </span>                :            : 
 <span class="lineNum">      79 </span>                :<span class="lineNoCov">          0 :   cdb_free (cdb);</span>
 <span class="lineNum">      80 </span>                :<span class="lineNoCov">          0 :   cdb-&gt;fd = new_fd;</span>
@@ -153,9 +153,9 @@
 <span class="lineNum">      82 </span>                :<span class="lineNoCov">          0 :   return 0;</span>
 <span class="lineNum">      83 </span>                :            : }
 <span class="lineNum">      84 </span>                :            : 
-<a name="85"><span class="lineNum">      85 </span>                :            : /* Return a pointer to the first non-slash in S.  */</a>
+<span class="lineNum">      85 </span>                :            : /* Return a pointer to the first non-slash in S.  */
 <span class="lineNum">      86 </span>                :            : static inline char * _GL_ATTRIBUTE_PURE
-<span class="lineNum">      87 </span>                :<span class="lineNoCov">          0 : find_non_slash (char const *s)</span>
+<span class="lineNum">      87 </span>                :            : find_non_slash (char const *s)
 <span class="lineNum">      88 </span>                :            : {
 <span class="lineNum">      89 </span>                :<span class="lineNoCov">          0 :   size_t n_slash = strspn (s, &quot;/&quot;);</span>
 <span class="lineNum">      90 </span>                :<span class="lineNoCov">          0 :   return (char *) s + n_slash;</span>
@@ -175,13 +175,13 @@
 <span class="lineNum">     104 </span>                :            :    only if the specified directory name contains a component that is long
 <span class="lineNum">     105 </span>                :            :    enough to provoke such a failure all by itself (e.g. if the component
 <span class="lineNum">     106 </span>                :            :    has length PATH_MAX or greater on systems that define PATH_MAX).  */
-<a name="107"><span class="lineNum">     107 </span>                :            : </a>
+<span class="lineNum">     107 </span>                :            : 
 <span class="lineNum">     108 </span>                :            : int
 <span class="lineNum">     109 </span>                :<span class="lineNoCov">          0 : chdir_long (char *dir)</span>
 <span class="lineNum">     110 </span>                :            : {
 <span class="lineNum">     111 </span>                :<span class="lineNoCov">          0 :   int e = chdir (dir);</span>
-<span class="lineNum">     112 </span>[<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>][<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (e == 0 || errno != ENAMETOOLONG)</span>
-<span class="lineNum">     113 </span>                :<span class="lineNoCov">          0 :     return e;</span>
+<span class="lineNum">     112 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (e == 0 || errno != ENAMETOOLONG)</span>
+<span class="lineNum">     113 </span>                :            :     return e;
 <span class="lineNum">     114 </span>                :            : 
 <span class="lineNum">     115 </span>                :            :   {
 <span class="lineNum">     116 </span>                :<span class="lineNoCov">          0 :     size_t len = strlen (dir);</span>
@@ -189,7 +189,7 @@
 <span class="lineNum">     118 </span>                :            :     struct cd_buf cdb;
 <span class="lineNum">     119 </span>                :            :     size_t n_leading_slash;
 <span class="lineNum">     120 </span>                :            : 
-<span class="lineNum">     121 </span>                :<span class="lineNoCov">          0 :     cdb_init (&amp;cdb);</span>
+<span class="lineNum">     121 </span>                :            :     cdb_init (&amp;cdb);
 <span class="lineNum">     122 </span>                :            : 
 <span class="lineNum">     123 </span>                :            :     /* If DIR is the empty string, then the chdir above
 <span class="lineNum">     124 </span>                :            :        must have failed and set errno to ENOENT.  */
@@ -197,7 +197,7 @@
 <span class="lineNum">     126 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     assert (PATH_MAX &lt;= len);</span>
 <span class="lineNum">     127 </span>                :            : 
 <span class="lineNum">     128 </span>                :            :     /* Count leading slashes.  */
-<span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 :     n_leading_slash = strspn (dir, &quot;/&quot;);</span>
+<span class="lineNum">     129 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     n_leading_slash = strspn (dir, &quot;/&quot;);</span>
 <span class="lineNum">     130 </span>                :            : 
 <span class="lineNum">     131 </span>                :            :     /* Handle any leading slashes as well as any name that matches
 <span class="lineNum">     132 </span>                :            :        the regular expression, m!^//hostname[/]*! .  Handling this
@@ -219,13 +219,13 @@
 <span class="lineNum">     148 </span>                :<span class="lineNoCov">          0 :         err = cdb_advance_fd (&amp;cdb, dir);</span>
 <span class="lineNum">     149 </span>                :<span class="lineNoCov">          0 :         *slash = '/';</span>
 <span class="lineNum">     150 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if (err != 0)</span>
-<span class="lineNum">     151 </span>                :<span class="lineNoCov">          0 :           goto Fail;</span>
+<span class="lineNum">     151 </span>                :            :           goto Fail;
 <span class="lineNum">     152 </span>                :<span class="lineNoCov">          0 :         dir = find_non_slash (slash + 1);</span>
 <span class="lineNum">     153 </span>                :            :       }
 <span class="lineNum">     154 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     else if (n_leading_slash)</span>
 <span class="lineNum">     155 </span>                :            :       {
 <span class="lineNum">     156 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if (cdb_advance_fd (&amp;cdb, &quot;/&quot;) != 0)</span>
-<span class="lineNum">     157 </span>                :<span class="lineNoCov">          0 :           goto Fail;</span>
+<span class="lineNum">     157 </span>                :            :           goto Fail;
 <span class="lineNum">     158 </span>                :<span class="lineNoCov">          0 :         dir += n_leading_slash;</span>
 <span class="lineNum">     159 </span>                :            :       }
 <span class="lineNum">     160 </span>                :            : 
@@ -250,7 +250,7 @@
 <span class="lineNum">     179 </span>                :<span class="lineNoCov">          0 :         err = cdb_advance_fd (&amp;cdb, dir);</span>
 <span class="lineNum">     180 </span>                :<span class="lineNoCov">          0 :         *slash = '/';</span>
 <span class="lineNum">     181 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if (err != 0)</span>
-<span class="lineNum">     182 </span>                :<span class="lineNoCov">          0 :           goto Fail;</span>
+<span class="lineNum">     182 </span>                :            :           goto Fail;
 <span class="lineNum">     183 </span>                :            : 
 <span class="lineNum">     184 </span>                :<span class="lineNoCov">          0 :         dir = find_non_slash (slash + 1);</span>
 <span class="lineNum">     185 </span>                :            :       }
@@ -258,11 +258,11 @@
 <span class="lineNum">     187 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (dir &lt; dir_end)</span>
 <span class="lineNum">     188 </span>                :            :       {
 <span class="lineNum">     189 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if (cdb_advance_fd (&amp;cdb, dir) != 0)</span>
-<span class="lineNum">     190 </span>                :<span class="lineNoCov">          0 :           goto Fail;</span>
+<span class="lineNum">     190 </span>                :            :           goto Fail;
 <span class="lineNum">     191 </span>                :            :       }
 <span class="lineNum">     192 </span>                :            : 
-<span class="lineNum">     193 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (cdb_fchdir (&amp;cdb) != 0)</span>
-<span class="lineNum">     194 </span>                :<span class="lineNoCov">          0 :       goto Fail;</span>
+<span class="lineNum">     193 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (cdb_fchdir (&amp;cdb) != 0)</span>
+<span class="lineNum">     194 </span>                :            :       goto Fail;
 <span class="lineNum">     195 </span>                :            : 
 <span class="lineNum">     196 </span>                :<span class="lineNoCov">          0 :     cdb_free (&amp;cdb);</span>
 <span class="lineNum">     197 </span>                :<span class="lineNoCov">          0 :     return 0;</span>

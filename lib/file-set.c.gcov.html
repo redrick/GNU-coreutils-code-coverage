@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">17</td>
             <td class="headerCovTableEntry">18</td>
-            <td class="headerCovTableEntry">19</td>
-            <td class="headerCovTableEntryHi">94.7 %</td>
+            <td class="headerCovTableEntryHi">94.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -97,31 +97,31 @@
 <span class="lineNum">      26 </span>                :            :    If HT is NULL, return immediately.
 <a name="27"><span class="lineNum">      27 </span>                :            :    If memory allocation fails, exit immediately.  */</a>
 <span class="lineNum">      28 </span>                :            : void
-<span class="lineNum">      29 </span>                :<span class="lineCov">      51787 : record_file (Hash_table *ht, char const *file, struct stat const *stats)</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">      11388 : record_file (Hash_table *ht, char const *file, struct stat const *stats)</span>
 <span class="lineNum">      30 </span>                :            : {
 <span class="lineNum">      31 </span>                :            :   struct F_triple *ent;
 <span class="lineNum">      32 </span>                :            : 
-<span class="lineNum">      33 </span>        [<span class="branchCov" title="Branch 0 was taken 34565 times"> + </span><span class="branchCov" title="Branch 1 was taken 17222 times"> + </span>]:<span class="lineCov">      51787 :   if (ht == NULL)</span>
-<span class="lineNum">      34 </span>                :<span class="lineCov">      51787 :     return;</span>
+<span class="lineNum">      33 </span>        [<span class="branchCov" title="Branch 0 was taken 4167 times"> + </span><span class="branchCov" title="Branch 1 was taken 7221 times"> + </span>]:<span class="lineCov">      11388 :   if (ht == NULL)</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">      11388 :     return;</span>
 <span class="lineNum">      35 </span>                :            : 
-<span class="lineNum">      36 </span>                :<span class="lineCov">      17222 :   ent = xmalloc (sizeof *ent);</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">      17222 :   ent-&gt;name = xstrdup (file);</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">      17222 :   ent-&gt;st_ino = stats-&gt;st_ino;</span>
-<span class="lineNum">      39 </span>                :<span class="lineCov">      17222 :   ent-&gt;st_dev = stats-&gt;st_dev;</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">       4167 :   ent = xmalloc (sizeof *ent);</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">       4167 :   ent-&gt;name = xstrdup (file);</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">       4167 :   ent-&gt;st_ino = stats-&gt;st_ino;</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">       4167 :   ent-&gt;st_dev = stats-&gt;st_dev;</span>
 <span class="lineNum">      40 </span>                :            : 
 <span class="lineNum">      41 </span>                :            :   {
-<span class="lineNum">      42 </span>                :<span class="lineCov">      17222 :     struct F_triple *ent_from_table = hash_insert (ht, ent);</span>
-<span class="lineNum">      43 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17222 times"> + </span>]:<span class="lineCov">      17222 :     if (ent_from_table == NULL)</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">       4167 :     struct F_triple *ent_from_table = hash_insert (ht, ent);</span>
+<span class="lineNum">      43 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4167 times"> + </span>]:<span class="lineCov">       4167 :     if (ent_from_table == NULL)</span>
 <span class="lineNum">      44 </span>                :            :       {
 <span class="lineNum">      45 </span>                :            :         /* Insertion failed due to lack of memory.  */
 <span class="lineNum">      46 </span>                :<span class="lineNoCov">          0 :         xalloc_die ();</span>
 <span class="lineNum">      47 </span>                :            :       }
 <span class="lineNum">      48 </span>                :            : 
-<span class="lineNum">      49 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 17214 times"> + </span>]:<span class="lineCov">      17222 :     if (ent_from_table != ent)</span>
+<span class="lineNum">      49 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 4165 times"> + </span>]:<span class="lineCov">       4167 :     if (ent_from_table != ent)</span>
 <span class="lineNum">      50 </span>                :            :       {
 <span class="lineNum">      51 </span>                :            :         /* There was alread a matching entry in the table, so ENT was
 <span class="lineNum">      52 </span>                :            :            not inserted.  Free it.  */
-<span class="lineNum">      53 </span>                :<span class="lineCov">          8 :         triple_free (ent);</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">          2 :         triple_free (ent);</span>
 <span class="lineNum">      54 </span>                :            :       }
 <span class="lineNum">      55 </span>                :            :   }
 <span class="lineNum">      56 </span>                :            : }
@@ -129,19 +129,19 @@
 <span class="lineNum">      58 </span>                :            : /* Return true if there is an entry in hash table, HT,
 <a name="59"><span class="lineNum">      59 </span>                :            :    for the file described by FILE and STATS.  */</a>
 <span class="lineNum">      60 </span>                :            : bool
-<span class="lineNum">      61 </span>                :<span class="lineCov">      17398 : seen_file (Hash_table const *ht, char const *file,</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">       3346 : seen_file (Hash_table const *ht, char const *file,</span>
 <span class="lineNum">      62 </span>                :            :            struct stat const *stats)
 <span class="lineNum">      63 </span>                :            : {
 <span class="lineNum">      64 </span>                :            :   struct F_triple new_ent;
 <span class="lineNum">      65 </span>                :            : 
-<span class="lineNum">      66 </span>        [<span class="branchCov" title="Branch 0 was taken 15953 times"> + </span><span class="branchCov" title="Branch 1 was taken 1445 times"> + </span>]:<span class="lineCov">      17398 :   if (ht == NULL)</span>
-<span class="lineNum">      67 </span>                :<span class="lineCov">      15953 :     return false;</span>
+<span class="lineNum">      66 </span>        [<span class="branchCov" title="Branch 0 was taken 237 times"> + </span><span class="branchCov" title="Branch 1 was taken 3109 times"> + </span>]:<span class="lineCov">       3346 :   if (ht == NULL)</span>
+<span class="lineNum">      67 </span>                :            :     return false;
 <span class="lineNum">      68 </span>                :            : 
-<span class="lineNum">      69 </span>                :<span class="lineCov">       1445 :   new_ent.name = (char *) file;</span>
-<span class="lineNum">      70 </span>                :<span class="lineCov">       1445 :   new_ent.st_ino = stats-&gt;st_ino;</span>
-<span class="lineNum">      71 </span>                :<span class="lineCov">       1445 :   new_ent.st_dev = stats-&gt;st_dev;</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">        237 :   new_ent.name = (char *) file;</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">        237 :   new_ent.st_ino = stats-&gt;st_ino;</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">        237 :   new_ent.st_dev = stats-&gt;st_dev;</span>
 <span class="lineNum">      72 </span>                :            : 
-<span class="lineNum">      73 </span>                :<span class="lineCov">      17398 :   return !!hash_lookup (ht, &amp;new_ent);</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">       3346 :   return !!hash_lookup (ht, &amp;new_ent);</span>
 <span class="lineNum">      74 </span>                :            : }
 </pre>
       </td>

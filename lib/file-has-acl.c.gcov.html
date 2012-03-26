@@ -31,27 +31,27 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr>
             <td></td>
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntryHi">-</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryLo">25.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -120,9 +120,9 @@
 <span class="lineNum">      49 </span>                :            : /* ACL is an ACL, from a file, stored as type ACL_TYPE_ACCESS.
 <span class="lineNum">      50 </span>                :            :    Return 1 if the given ACL is non-trivial.
 <span class="lineNum">      51 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.
-<span class="lineNum">      52 </span>                :            :    Return -1 and set errno upon failure to determine it.  */
+<a name="52"><span class="lineNum">      52 </span>                :            :    Return -1 and set errno upon failure to determine it.  */</a>
 <span class="lineNum">      53 </span>                :            : int
-<span class="lineNum">      54 </span>                :            : acl_access_nontrivial (acl_t acl)
+<span class="lineNum">      54 </span>                :<span class="lineNoCov">          0 : acl_access_nontrivial (acl_t acl)</span>
 <span class="lineNum">      55 </span>                :            : {
 <span class="lineNum">      56 </span>                :            :   /* acl is non-trivial if it has some entries other than for &quot;user::&quot;,
 <span class="lineNum">      57 </span>                :            :      &quot;group::&quot;, and &quot;other::&quot;.  Normally these three should be present
@@ -134,14 +134,14 @@
 <span class="lineNum">      63 </span>                :            :   acl_entry_t ace;
 <span class="lineNum">      64 </span>                :            :   int got_one;
 <span class="lineNum">      65 </span>                :            : 
-<span class="lineNum">      66 </span>                :            :   for (got_one = acl_get_entry (acl, ACL_FIRST_ENTRY, &amp;ace);
+<span class="lineNum">      66 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :   for (got_one = acl_get_entry (acl, ACL_FIRST_ENTRY, &amp;ace);</span>
 <span class="lineNum">      67 </span>                :            :        got_one &gt; 0;
-<span class="lineNum">      68 </span>                :            :        got_one = acl_get_entry (acl, ACL_NEXT_ENTRY, &amp;ace))
+<span class="lineNum">      68 </span>                :<span class="lineNoCov">          0 :        got_one = acl_get_entry (acl, ACL_NEXT_ENTRY, &amp;ace))</span>
 <span class="lineNum">      69 </span>                :            :     {
 <span class="lineNum">      70 </span>                :            :       acl_tag_t tag;
-<span class="lineNum">      71 </span>                :            :       if (acl_get_tag_type (ace, &amp;tag) &lt; 0)
+<span class="lineNum">      71 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (acl_get_tag_type (ace, &amp;tag) &lt; 0)</span>
 <span class="lineNum">      72 </span>                :            :         return -1;
-<span class="lineNum">      73 </span>                :            :       if (!(tag == ACL_USER_OBJ || tag == ACL_GROUP_OBJ || tag == ACL_OTHER))
+<span class="lineNum">      73 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (!(tag == ACL_USER_OBJ || tag == ACL_GROUP_OBJ || tag == ACL_OTHER))</span>
 <span class="lineNum">      74 </span>                :            :         return 1;
 <span class="lineNum">      75 </span>                :            :     }
 <span class="lineNum">      76 </span>                :            :   return got_one;
@@ -225,695 +225,769 @@
 <span class="lineNum">     154 </span>                :            : 
 <span class="lineNum">     155 </span>                :            : # ifdef ACE_GETACL
 <span class="lineNum">     156 </span>                :            : 
-<span class="lineNum">     157 </span>                :            : /* Test an ACL retrieved with ACE_GETACL.
-<span class="lineNum">     158 </span>                :            :    Return 1 if the given ACL, consisting of COUNT entries, is non-trivial.
-<span class="lineNum">     159 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
-<span class="lineNum">     160 </span>                :            : int
-<span class="lineNum">     161 </span>                :            : acl_ace_nontrivial (int count, ace_t *entries)
-<span class="lineNum">     162 </span>                :            : {
-<span class="lineNum">     163 </span>                :            :   int i;
-<span class="lineNum">     164 </span>                :            : 
-<span class="lineNum">     165 </span>                :            :   /* The flags in the ace_t structure changed in a binary incompatible way
-<span class="lineNum">     166 </span>                :            :      when ACL_NO_TRIVIAL etc. were introduced in &lt;sys/acl.h&gt; version 1.15.
-<span class="lineNum">     167 </span>                :            :      How to distinguish the two conventions at runtime?
-<span class="lineNum">     168 </span>                :            :      In the old convention, usually three ACEs have a_flags = ACE_OWNER /
-<span class="lineNum">     169 </span>                :            :      ACE_GROUP / ACE_OTHER, in the range 0x0100..0x0400.  In the new
-<span class="lineNum">     170 </span>                :            :      convention, these values are not used.  */
-<span class="lineNum">     171 </span>                :            :   int old_convention = 0;
-<span class="lineNum">     172 </span>                :            : 
-<span class="lineNum">     173 </span>                :            :   for (i = 0; i &lt; count; i++)
-<span class="lineNum">     174 </span>                :            :     if (entries[i].a_flags &amp; (OLD_ACE_OWNER | OLD_ACE_GROUP | OLD_ACE_OTHER))
-<span class="lineNum">     175 </span>                :            :       {
-<span class="lineNum">     176 </span>                :            :         old_convention = 1;
-<span class="lineNum">     177 </span>                :            :         break;
-<span class="lineNum">     178 </span>                :            :       }
-<span class="lineNum">     179 </span>                :            : 
-<span class="lineNum">     180 </span>                :            :   if (old_convention)
-<span class="lineNum">     181 </span>                :            :     /* Running on Solaris 10.  */
-<span class="lineNum">     182 </span>                :            :     for (i = 0; i &lt; count; i++)
-<span class="lineNum">     183 </span>                :            :       {
-<span class="lineNum">     184 </span>                :            :         ace_t *ace = &amp;entries[i];
-<span class="lineNum">     185 </span>                :            : 
-<span class="lineNum">     186 </span>                :            :         /* Note:
-<span class="lineNum">     187 </span>                :            :            If ace-&gt;a_flags = ACE_OWNER, ace-&gt;a_who is the st_uid from stat().
-<span class="lineNum">     188 </span>                :            :            If ace-&gt;a_flags = ACE_GROUP, ace-&gt;a_who is the st_gid from stat().
-<span class="lineNum">     189 </span>                :            :            We don't need to check ace-&gt;a_who in these cases.  */
-<span class="lineNum">     190 </span>                :            :         if (!(ace-&gt;a_type == OLD_ALLOW
-<span class="lineNum">     191 </span>                :            :               &amp;&amp; (ace-&gt;a_flags == OLD_ACE_OWNER
-<span class="lineNum">     192 </span>                :            :                   || ace-&gt;a_flags == OLD_ACE_GROUP
-<span class="lineNum">     193 </span>                :            :                   || ace-&gt;a_flags == OLD_ACE_OTHER)))
-<span class="lineNum">     194 </span>                :            :           return 1;
-<span class="lineNum">     195 </span>                :            :       }
-<span class="lineNum">     196 </span>                :            :   else
-<span class="lineNum">     197 </span>                :            :     {
-<span class="lineNum">     198 </span>                :            :       /* Running on Solaris 10 (newer version) or Solaris 11.  */
-<span class="lineNum">     199 </span>                :            :       unsigned int access_masks[6] =
-<span class="lineNum">     200 </span>                :            :         {
-<span class="lineNum">     201 </span>                :            :           0, /* owner@ deny */
-<span class="lineNum">     202 </span>                :            :           0, /* owner@ allow */
-<span class="lineNum">     203 </span>                :            :           0, /* group@ deny */
-<span class="lineNum">     204 </span>                :            :           0, /* group@ allow */
-<span class="lineNum">     205 </span>                :            :           0, /* everyone@ deny */
-<span class="lineNum">     206 </span>                :            :           0  /* everyone@ allow */
-<span class="lineNum">     207 </span>                :            :         };
-<span class="lineNum">     208 </span>                :            : 
-<span class="lineNum">     209 </span>                :            :       for (i = 0; i &lt; count; i++)
-<span class="lineNum">     210 </span>                :            :         {
-<span class="lineNum">     211 </span>                :            :           ace_t *ace = &amp;entries[i];
-<span class="lineNum">     212 </span>                :            :           unsigned int index1;
-<span class="lineNum">     213 </span>                :            :           unsigned int index2;
-<span class="lineNum">     214 </span>                :            : 
-<span class="lineNum">     215 </span>                :            :           if (ace-&gt;a_type == NEW_ACE_ACCESS_ALLOWED_ACE_TYPE)
-<span class="lineNum">     216 </span>                :            :             index1 = 1;
-<span class="lineNum">     217 </span>                :            :           else if (ace-&gt;a_type == NEW_ACE_ACCESS_DENIED_ACE_TYPE)
-<span class="lineNum">     218 </span>                :            :             index1 = 0;
-<span class="lineNum">     219 </span>                :            :           else
-<span class="lineNum">     220 </span>                :            :             return 1;
-<span class="lineNum">     221 </span>                :            : 
-<span class="lineNum">     222 </span>                :            :           if (ace-&gt;a_flags == NEW_ACE_OWNER)
-<span class="lineNum">     223 </span>                :            :             index2 = 0;
-<span class="lineNum">     224 </span>                :            :           else if (ace-&gt;a_flags == (NEW_ACE_GROUP | NEW_ACE_IDENTIFIER_GROUP))
-<span class="lineNum">     225 </span>                :            :             index2 = 2;
-<span class="lineNum">     226 </span>                :            :           else if (ace-&gt;a_flags == NEW_ACE_EVERYONE)
-<span class="lineNum">     227 </span>                :            :             index2 = 4;
-<span class="lineNum">     228 </span>                :            :           else
-<span class="lineNum">     229 </span>                :            :             return 1;
-<span class="lineNum">     230 </span>                :            : 
-<span class="lineNum">     231 </span>                :            :           access_masks[index1 + index2] |= ace-&gt;a_access_mask;
-<span class="lineNum">     232 </span>                :            :         }
+<span class="lineNum">     157 </span>                :            : /* A shortcut for a bitmask.  */
+<span class="lineNum">     158 </span>                :            : #  define NEW_ACE_WRITEA_DATA (NEW_ACE_WRITE_DATA | NEW_ACE_APPEND_DATA)
+<span class="lineNum">     159 </span>                :            : 
+<span class="lineNum">     160 </span>                :            : /* Test an ACL retrieved with ACE_GETACL.
+<span class="lineNum">     161 </span>                :            :    Return 1 if the given ACL, consisting of COUNT entries, is non-trivial.
+<span class="lineNum">     162 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
+<span class="lineNum">     163 </span>                :            : int
+<span class="lineNum">     164 </span>                :            : acl_ace_nontrivial (int count, ace_t *entries)
+<span class="lineNum">     165 </span>                :            : {
+<span class="lineNum">     166 </span>                :            :   int i;
+<span class="lineNum">     167 </span>                :            : 
+<span class="lineNum">     168 </span>                :            :   /* The flags in the ace_t structure changed in a binary incompatible way
+<span class="lineNum">     169 </span>                :            :      when ACL_NO_TRIVIAL etc. were introduced in &lt;sys/acl.h&gt; version 1.15.
+<span class="lineNum">     170 </span>                :            :      How to distinguish the two conventions at runtime?
+<span class="lineNum">     171 </span>                :            :      In the old convention, usually three ACEs have a_flags = ACE_OWNER /
+<span class="lineNum">     172 </span>                :            :      ACE_GROUP / ACE_OTHER, in the range 0x0100..0x0400.  In the new
+<span class="lineNum">     173 </span>                :            :      convention, these values are not used.  */
+<span class="lineNum">     174 </span>                :            :   int old_convention = 0;
+<span class="lineNum">     175 </span>                :            : 
+<span class="lineNum">     176 </span>                :            :   for (i = 0; i &lt; count; i++)
+<span class="lineNum">     177 </span>                :            :     if (entries[i].a_flags &amp; (OLD_ACE_OWNER | OLD_ACE_GROUP | OLD_ACE_OTHER))
+<span class="lineNum">     178 </span>                :            :       {
+<span class="lineNum">     179 </span>                :            :         old_convention = 1;
+<span class="lineNum">     180 </span>                :            :         break;
+<span class="lineNum">     181 </span>                :            :       }
+<span class="lineNum">     182 </span>                :            : 
+<span class="lineNum">     183 </span>                :            :   if (old_convention)
+<span class="lineNum">     184 </span>                :            :     /* Running on Solaris 10.  */
+<span class="lineNum">     185 </span>                :            :     for (i = 0; i &lt; count; i++)
+<span class="lineNum">     186 </span>                :            :       {
+<span class="lineNum">     187 </span>                :            :         ace_t *ace = &amp;entries[i];
+<span class="lineNum">     188 </span>                :            : 
+<span class="lineNum">     189 </span>                :            :         /* Note:
+<span class="lineNum">     190 </span>                :            :            If ace-&gt;a_flags = ACE_OWNER, ace-&gt;a_who is the st_uid from stat().
+<span class="lineNum">     191 </span>                :            :            If ace-&gt;a_flags = ACE_GROUP, ace-&gt;a_who is the st_gid from stat().
+<span class="lineNum">     192 </span>                :            :            We don't need to check ace-&gt;a_who in these cases.  */
+<span class="lineNum">     193 </span>                :            :         if (!(ace-&gt;a_type == OLD_ALLOW
+<span class="lineNum">     194 </span>                :            :               &amp;&amp; (ace-&gt;a_flags == OLD_ACE_OWNER
+<span class="lineNum">     195 </span>                :            :                   || ace-&gt;a_flags == OLD_ACE_GROUP
+<span class="lineNum">     196 </span>                :            :                   || ace-&gt;a_flags == OLD_ACE_OTHER)))
+<span class="lineNum">     197 </span>                :            :           return 1;
+<span class="lineNum">     198 </span>                :            :       }
+<span class="lineNum">     199 </span>                :            :   else
+<span class="lineNum">     200 </span>                :            :     {
+<span class="lineNum">     201 </span>                :            :       /* Running on Solaris 10 (newer version) or Solaris 11.  */
+<span class="lineNum">     202 </span>                :            :       unsigned int access_masks[6] =
+<span class="lineNum">     203 </span>                :            :         {
+<span class="lineNum">     204 </span>                :            :           0, /* owner@ deny */
+<span class="lineNum">     205 </span>                :            :           0, /* owner@ allow */
+<span class="lineNum">     206 </span>                :            :           0, /* group@ deny */
+<span class="lineNum">     207 </span>                :            :           0, /* group@ allow */
+<span class="lineNum">     208 </span>                :            :           0, /* everyone@ deny */
+<span class="lineNum">     209 </span>                :            :           0  /* everyone@ allow */
+<span class="lineNum">     210 </span>                :            :         };
+<span class="lineNum">     211 </span>                :            : 
+<span class="lineNum">     212 </span>                :            :       for (i = 0; i &lt; count; i++)
+<span class="lineNum">     213 </span>                :            :         {
+<span class="lineNum">     214 </span>                :            :           ace_t *ace = &amp;entries[i];
+<span class="lineNum">     215 </span>                :            :           unsigned int index1;
+<span class="lineNum">     216 </span>                :            :           unsigned int index2;
+<span class="lineNum">     217 </span>                :            : 
+<span class="lineNum">     218 </span>                :            :           if (ace-&gt;a_type == NEW_ACE_ACCESS_ALLOWED_ACE_TYPE)
+<span class="lineNum">     219 </span>                :            :             index1 = 1;
+<span class="lineNum">     220 </span>                :            :           else if (ace-&gt;a_type == NEW_ACE_ACCESS_DENIED_ACE_TYPE)
+<span class="lineNum">     221 </span>                :            :             index1 = 0;
+<span class="lineNum">     222 </span>                :            :           else
+<span class="lineNum">     223 </span>                :            :             return 1;
+<span class="lineNum">     224 </span>                :            : 
+<span class="lineNum">     225 </span>                :            :           if (ace-&gt;a_flags == NEW_ACE_OWNER)
+<span class="lineNum">     226 </span>                :            :             index2 = 0;
+<span class="lineNum">     227 </span>                :            :           else if (ace-&gt;a_flags == (NEW_ACE_GROUP | NEW_ACE_IDENTIFIER_GROUP))
+<span class="lineNum">     228 </span>                :            :             index2 = 2;
+<span class="lineNum">     229 </span>                :            :           else if (ace-&gt;a_flags == NEW_ACE_EVERYONE)
+<span class="lineNum">     230 </span>                :            :             index2 = 4;
+<span class="lineNum">     231 </span>                :            :           else
+<span class="lineNum">     232 </span>                :            :             return 1;
 <span class="lineNum">     233 </span>                :            : 
-<span class="lineNum">     234 </span>                :            :       /* The same bit shouldn't be both allowed and denied.  */
-<span class="lineNum">     235 </span>                :            :       if (access_masks[0] &amp; access_masks[1])
-<span class="lineNum">     236 </span>                :            :         return 1;
-<span class="lineNum">     237 </span>                :            :       if (access_masks[2] &amp; access_masks[3])
-<span class="lineNum">     238 </span>                :            :         return 1;
-<span class="lineNum">     239 </span>                :            :       if (access_masks[4] &amp; access_masks[5])
-<span class="lineNum">     240 </span>                :            :         return 1;
-<span class="lineNum">     241 </span>                :            : 
-<span class="lineNum">     242 </span>                :            :       /* Check minimum masks.  */
-<span class="lineNum">     243 </span>                :            :       if ((NEW_ACE_WRITE_NAMED_ATTRS
-<span class="lineNum">     244 </span>                :            :            | NEW_ACE_WRITE_ATTRIBUTES
-<span class="lineNum">     245 </span>                :            :            | NEW_ACE_WRITE_ACL
-<span class="lineNum">     246 </span>                :            :            | NEW_ACE_WRITE_OWNER)
-<span class="lineNum">     247 </span>                :            :           &amp; ~ access_masks[1])
-<span class="lineNum">     248 </span>                :            :         return 1;
-<span class="lineNum">     249 </span>                :            :       access_masks[1] &amp;= ~(NEW_ACE_WRITE_NAMED_ATTRS
-<span class="lineNum">     250 </span>                :            :                            | NEW_ACE_WRITE_ATTRIBUTES
-<span class="lineNum">     251 </span>                :            :                            | NEW_ACE_WRITE_ACL
-<span class="lineNum">     252 </span>                :            :                            | NEW_ACE_WRITE_OWNER);
-<span class="lineNum">     253 </span>                :            :       if ((NEW_ACE_WRITE_NAMED_ATTRS
-<span class="lineNum">     254 </span>                :            :            | NEW_ACE_WRITE_ATTRIBUTES
-<span class="lineNum">     255 </span>                :            :            | NEW_ACE_WRITE_ACL
-<span class="lineNum">     256 </span>                :            :            | NEW_ACE_WRITE_OWNER)
-<span class="lineNum">     257 </span>                :            :           &amp; ~ access_masks[4])
-<span class="lineNum">     258 </span>                :            :         return 1;
-<span class="lineNum">     259 </span>                :            :       access_masks[4] &amp;= ~(NEW_ACE_WRITE_NAMED_ATTRS
-<span class="lineNum">     260 </span>                :            :                            | NEW_ACE_WRITE_ATTRIBUTES
-<span class="lineNum">     261 </span>                :            :                            | NEW_ACE_WRITE_ACL
-<span class="lineNum">     262 </span>                :            :                            | NEW_ACE_WRITE_OWNER);
-<span class="lineNum">     263 </span>                :            :       if ((NEW_ACE_READ_NAMED_ATTRS
-<span class="lineNum">     264 </span>                :            :            | NEW_ACE_READ_ATTRIBUTES
-<span class="lineNum">     265 </span>                :            :            | NEW_ACE_READ_ACL
-<span class="lineNum">     266 </span>                :            :            | NEW_ACE_SYNCHRONIZE)
-<span class="lineNum">     267 </span>                :            :           &amp; ~ access_masks[5])
-<span class="lineNum">     268 </span>                :            :         return 1;
-<span class="lineNum">     269 </span>                :            :       access_masks[5] &amp;= ~(NEW_ACE_READ_NAMED_ATTRS
-<span class="lineNum">     270 </span>                :            :                            | NEW_ACE_READ_ATTRIBUTES
-<span class="lineNum">     271 </span>                :            :                            | NEW_ACE_READ_ACL
-<span class="lineNum">     272 </span>                :            :                            | NEW_ACE_SYNCHRONIZE);
-<span class="lineNum">     273 </span>                :            : 
-<span class="lineNum">     274 </span>                :            :       /* Check the allowed or denied bits.  */
-<span class="lineNum">     275 </span>                :            :       if ((access_masks[0] | access_masks[1])
-<span class="lineNum">     276 </span>                :            :           != (NEW_ACE_READ_DATA
-<span class="lineNum">     277 </span>                :            :               | NEW_ACE_WRITE_DATA | NEW_ACE_APPEND_DATA
-<span class="lineNum">     278 </span>                :            :               | NEW_ACE_EXECUTE))
-<span class="lineNum">     279 </span>                :            :         return 1;
-<span class="lineNum">     280 </span>                :            :       if ((access_masks[2] | access_masks[3])
-<span class="lineNum">     281 </span>                :            :           != (NEW_ACE_READ_DATA
-<span class="lineNum">     282 </span>                :            :               | NEW_ACE_WRITE_DATA | NEW_ACE_APPEND_DATA
-<span class="lineNum">     283 </span>                :            :               | NEW_ACE_EXECUTE))
-<span class="lineNum">     284 </span>                :            :         return 1;
-<span class="lineNum">     285 </span>                :            :       if ((access_masks[4] | access_masks[5])
-<span class="lineNum">     286 </span>                :            :           != (NEW_ACE_READ_DATA
-<span class="lineNum">     287 </span>                :            :               | NEW_ACE_WRITE_DATA | NEW_ACE_APPEND_DATA
-<span class="lineNum">     288 </span>                :            :               | NEW_ACE_EXECUTE))
-<span class="lineNum">     289 </span>                :            :         return 1;
-<span class="lineNum">     290 </span>                :            : 
-<span class="lineNum">     291 </span>                :            :       /* Check that the NEW_ACE_WRITE_DATA and NEW_ACE_APPEND_DATA bits are
-<span class="lineNum">     292 </span>                :            :          either both allowed or both denied.  */
-<span class="lineNum">     293 </span>                :            :       if (((access_masks[0] &amp; NEW_ACE_WRITE_DATA) != 0)
-<span class="lineNum">     294 </span>                :            :           != ((access_masks[0] &amp; NEW_ACE_APPEND_DATA) != 0))
-<span class="lineNum">     295 </span>                :            :         return 1;
-<span class="lineNum">     296 </span>                :            :       if (((access_masks[2] &amp; NEW_ACE_WRITE_DATA) != 0)
-<span class="lineNum">     297 </span>                :            :           != ((access_masks[2] &amp; NEW_ACE_APPEND_DATA) != 0))
-<span class="lineNum">     298 </span>                :            :         return 1;
-<span class="lineNum">     299 </span>                :            :       if (((access_masks[4] &amp; NEW_ACE_WRITE_DATA) != 0)
-<span class="lineNum">     300 </span>                :            :           != ((access_masks[4] &amp; NEW_ACE_APPEND_DATA) != 0))
-<span class="lineNum">     301 </span>                :            :         return 1;
-<span class="lineNum">     302 </span>                :            :     }
-<span class="lineNum">     303 </span>                :            : 
-<span class="lineNum">     304 </span>                :            :   return 0;
-<span class="lineNum">     305 </span>                :            : }
-<span class="lineNum">     306 </span>                :            : 
-<span class="lineNum">     307 </span>                :            : # endif
-<span class="lineNum">     308 </span>                :            : 
-<span class="lineNum">     309 </span>                :            : #elif USE_ACL &amp;&amp; HAVE_GETACL /* HP-UX */
-<span class="lineNum">     310 </span>                :            : 
-<span class="lineNum">     311 </span>                :            : /* Return 1 if the given ACL is non-trivial.
-<span class="lineNum">     312 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
-<span class="lineNum">     313 </span>                :            : int
-<span class="lineNum">     314 </span>                :            : acl_nontrivial (int count, struct acl_entry *entries, struct stat *sb)
-<span class="lineNum">     315 </span>                :            : {
-<span class="lineNum">     316 </span>                :            :   int i;
-<span class="lineNum">     317 </span>                :            : 
-<span class="lineNum">     318 </span>                :            :   for (i = 0; i &lt; count; i++)
-<span class="lineNum">     319 </span>                :            :     {
-<span class="lineNum">     320 </span>                :            :       struct acl_entry *ace = &amp;entries[i];
-<span class="lineNum">     321 </span>                :            : 
-<span class="lineNum">     322 </span>                :            :       if (!((ace-&gt;uid == sb-&gt;st_uid &amp;&amp; ace-&gt;gid == ACL_NSGROUP)
-<span class="lineNum">     323 </span>                :            :             || (ace-&gt;uid == ACL_NSUSER &amp;&amp; ace-&gt;gid == sb-&gt;st_gid)
-<span class="lineNum">     324 </span>                :            :             || (ace-&gt;uid == ACL_NSUSER &amp;&amp; ace-&gt;gid == ACL_NSGROUP)))
-<span class="lineNum">     325 </span>                :            :         return 1;
-<span class="lineNum">     326 </span>                :            :     }
-<span class="lineNum">     327 </span>                :            :   return 0;
-<span class="lineNum">     328 </span>                :            : }
-<span class="lineNum">     329 </span>                :            : 
-<span class="lineNum">     330 </span>                :            : # if HAVE_ACLV_H /* HP-UX &gt;= 11.11 */
-<span class="lineNum">     331 </span>                :            : 
-<span class="lineNum">     332 </span>                :            : /* Return 1 if the given ACL is non-trivial.
-<span class="lineNum">     333 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
-<span class="lineNum">     334 </span>                :            : int
-<span class="lineNum">     335 </span>                :            : aclv_nontrivial (int count, struct acl *entries)
-<span class="lineNum">     336 </span>                :            : {
-<span class="lineNum">     337 </span>                :            :   int i;
+<span class="lineNum">     234 </span>                :            :           access_masks[index1 + index2] |= ace-&gt;a_access_mask;
+<span class="lineNum">     235 </span>                :            :         }
+<span class="lineNum">     236 </span>                :            : 
+<span class="lineNum">     237 </span>                :            :       /* The same bit shouldn't be both allowed and denied.  */
+<span class="lineNum">     238 </span>                :            :       if (access_masks[0] &amp; access_masks[1])
+<span class="lineNum">     239 </span>                :            :         return 1;
+<span class="lineNum">     240 </span>                :            :       if (access_masks[2] &amp; access_masks[3])
+<span class="lineNum">     241 </span>                :            :         return 1;
+<span class="lineNum">     242 </span>                :            :       if (access_masks[4] &amp; access_masks[5])
+<span class="lineNum">     243 </span>                :            :         return 1;
+<span class="lineNum">     244 </span>                :            : 
+<span class="lineNum">     245 </span>                :            :       /* Check minimum masks.  */
+<span class="lineNum">     246 </span>                :            :       if ((NEW_ACE_WRITE_NAMED_ATTRS
+<span class="lineNum">     247 </span>                :            :            | NEW_ACE_WRITE_ATTRIBUTES
+<span class="lineNum">     248 </span>                :            :            | NEW_ACE_WRITE_ACL
+<span class="lineNum">     249 </span>                :            :            | NEW_ACE_WRITE_OWNER)
+<span class="lineNum">     250 </span>                :            :           &amp; ~ access_masks[1])
+<span class="lineNum">     251 </span>                :            :         return 1;
+<span class="lineNum">     252 </span>                :            :       access_masks[1] &amp;= ~(NEW_ACE_WRITE_NAMED_ATTRS
+<span class="lineNum">     253 </span>                :            :                            | NEW_ACE_WRITE_ATTRIBUTES
+<span class="lineNum">     254 </span>                :            :                            | NEW_ACE_WRITE_ACL
+<span class="lineNum">     255 </span>                :            :                            | NEW_ACE_WRITE_OWNER);
+<span class="lineNum">     256 </span>                :            :       if ((NEW_ACE_READ_NAMED_ATTRS
+<span class="lineNum">     257 </span>                :            :            | NEW_ACE_READ_ATTRIBUTES
+<span class="lineNum">     258 </span>                :            :            | NEW_ACE_READ_ACL
+<span class="lineNum">     259 </span>                :            :            | NEW_ACE_SYNCHRONIZE)
+<span class="lineNum">     260 </span>                :            :           &amp; ~ access_masks[5])
+<span class="lineNum">     261 </span>                :            :         return 1;
+<span class="lineNum">     262 </span>                :            :       access_masks[5] &amp;= ~(NEW_ACE_READ_NAMED_ATTRS
+<span class="lineNum">     263 </span>                :            :                            | NEW_ACE_READ_ATTRIBUTES
+<span class="lineNum">     264 </span>                :            :                            | NEW_ACE_READ_ACL
+<span class="lineNum">     265 </span>                :            :                            | NEW_ACE_SYNCHRONIZE);
+<span class="lineNum">     266 </span>                :            : 
+<span class="lineNum">     267 </span>                :            :       /* Check the allowed or denied bits.  */
+<span class="lineNum">     268 </span>                :            :       switch ((access_masks[0] | access_masks[1])
+<span class="lineNum">     269 </span>                :            :               &amp; ~(NEW_ACE_READ_NAMED_ATTRS
+<span class="lineNum">     270 </span>                :            :                   | NEW_ACE_READ_ATTRIBUTES
+<span class="lineNum">     271 </span>                :            :                   | NEW_ACE_READ_ACL
+<span class="lineNum">     272 </span>                :            :                   | NEW_ACE_SYNCHRONIZE))
+<span class="lineNum">     273 </span>                :            :         {
+<span class="lineNum">     274 </span>                :            :         case 0:
+<span class="lineNum">     275 </span>                :            :         case NEW_ACE_READ_DATA:
+<span class="lineNum">     276 </span>                :            :         case                     NEW_ACE_WRITEA_DATA:
+<span class="lineNum">     277 </span>                :            :         case NEW_ACE_READ_DATA | NEW_ACE_WRITEA_DATA:
+<span class="lineNum">     278 </span>                :            :         case                                           NEW_ACE_EXECUTE:
+<span class="lineNum">     279 </span>                :            :         case NEW_ACE_READ_DATA |                       NEW_ACE_EXECUTE:
+<span class="lineNum">     280 </span>                :            :         case                     NEW_ACE_WRITEA_DATA | NEW_ACE_EXECUTE:
+<span class="lineNum">     281 </span>                :            :         case NEW_ACE_READ_DATA | NEW_ACE_WRITEA_DATA | NEW_ACE_EXECUTE:
+<span class="lineNum">     282 </span>                :            :           break;
+<span class="lineNum">     283 </span>                :            :         default:
+<span class="lineNum">     284 </span>                :            :           return 1;
+<span class="lineNum">     285 </span>                :            :         }
+<span class="lineNum">     286 </span>                :            :       switch ((access_masks[2] | access_masks[3])
+<span class="lineNum">     287 </span>                :            :               &amp; ~(NEW_ACE_READ_NAMED_ATTRS
+<span class="lineNum">     288 </span>                :            :                   | NEW_ACE_READ_ATTRIBUTES
+<span class="lineNum">     289 </span>                :            :                   | NEW_ACE_READ_ACL
+<span class="lineNum">     290 </span>                :            :                   | NEW_ACE_SYNCHRONIZE))
+<span class="lineNum">     291 </span>                :            :         {
+<span class="lineNum">     292 </span>                :            :         case 0:
+<span class="lineNum">     293 </span>                :            :         case NEW_ACE_READ_DATA:
+<span class="lineNum">     294 </span>                :            :         case                     NEW_ACE_WRITEA_DATA:
+<span class="lineNum">     295 </span>                :            :         case NEW_ACE_READ_DATA | NEW_ACE_WRITEA_DATA:
+<span class="lineNum">     296 </span>                :            :         case                                           NEW_ACE_EXECUTE:
+<span class="lineNum">     297 </span>                :            :         case NEW_ACE_READ_DATA |                       NEW_ACE_EXECUTE:
+<span class="lineNum">     298 </span>                :            :         case                     NEW_ACE_WRITEA_DATA | NEW_ACE_EXECUTE:
+<span class="lineNum">     299 </span>                :            :         case NEW_ACE_READ_DATA | NEW_ACE_WRITEA_DATA | NEW_ACE_EXECUTE:
+<span class="lineNum">     300 </span>                :            :           break;
+<span class="lineNum">     301 </span>                :            :         default:
+<span class="lineNum">     302 </span>                :            :           return 1;
+<span class="lineNum">     303 </span>                :            :         }
+<span class="lineNum">     304 </span>                :            :       switch ((access_masks[4] | access_masks[5])
+<span class="lineNum">     305 </span>                :            :               &amp; ~(NEW_ACE_WRITE_NAMED_ATTRS
+<span class="lineNum">     306 </span>                :            :                   | NEW_ACE_WRITE_ATTRIBUTES
+<span class="lineNum">     307 </span>                :            :                   | NEW_ACE_WRITE_ACL
+<span class="lineNum">     308 </span>                :            :                   | NEW_ACE_WRITE_OWNER))
+<span class="lineNum">     309 </span>                :            :         {
+<span class="lineNum">     310 </span>                :            :         case 0:
+<span class="lineNum">     311 </span>                :            :         case NEW_ACE_READ_DATA:
+<span class="lineNum">     312 </span>                :            :         case                     NEW_ACE_WRITEA_DATA:
+<span class="lineNum">     313 </span>                :            :         case NEW_ACE_READ_DATA | NEW_ACE_WRITEA_DATA:
+<span class="lineNum">     314 </span>                :            :         case                                           NEW_ACE_EXECUTE:
+<span class="lineNum">     315 </span>                :            :         case NEW_ACE_READ_DATA |                       NEW_ACE_EXECUTE:
+<span class="lineNum">     316 </span>                :            :         case                     NEW_ACE_WRITEA_DATA | NEW_ACE_EXECUTE:
+<span class="lineNum">     317 </span>                :            :         case NEW_ACE_READ_DATA | NEW_ACE_WRITEA_DATA | NEW_ACE_EXECUTE:
+<span class="lineNum">     318 </span>                :            :           break;
+<span class="lineNum">     319 </span>                :            :         default:
+<span class="lineNum">     320 </span>                :            :           return 1;
+<span class="lineNum">     321 </span>                :            :         }
+<span class="lineNum">     322 </span>                :            : 
+<span class="lineNum">     323 </span>                :            :       /* Check that the NEW_ACE_WRITE_DATA and NEW_ACE_APPEND_DATA bits are
+<span class="lineNum">     324 </span>                :            :          either both allowed or both denied.  */
+<span class="lineNum">     325 </span>                :            :       if (((access_masks[0] &amp; NEW_ACE_WRITE_DATA) != 0)
+<span class="lineNum">     326 </span>                :            :           != ((access_masks[0] &amp; NEW_ACE_APPEND_DATA) != 0))
+<span class="lineNum">     327 </span>                :            :         return 1;
+<span class="lineNum">     328 </span>                :            :       if (((access_masks[2] &amp; NEW_ACE_WRITE_DATA) != 0)
+<span class="lineNum">     329 </span>                :            :           != ((access_masks[2] &amp; NEW_ACE_APPEND_DATA) != 0))
+<span class="lineNum">     330 </span>                :            :         return 1;
+<span class="lineNum">     331 </span>                :            :       if (((access_masks[4] &amp; NEW_ACE_WRITE_DATA) != 0)
+<span class="lineNum">     332 </span>                :            :           != ((access_masks[4] &amp; NEW_ACE_APPEND_DATA) != 0))
+<span class="lineNum">     333 </span>                :            :         return 1;
+<span class="lineNum">     334 </span>                :            :     }
+<span class="lineNum">     335 </span>                :            : 
+<span class="lineNum">     336 </span>                :            :   return 0;
+<span class="lineNum">     337 </span>                :            : }
 <span class="lineNum">     338 </span>                :            : 
-<span class="lineNum">     339 </span>                :            :   for (i = 0; i &lt; count; i++)
-<span class="lineNum">     340 </span>                :            :     {
-<span class="lineNum">     341 </span>                :            :       struct acl *ace = &amp;entries[i];
+<span class="lineNum">     339 </span>                :            : # endif
+<span class="lineNum">     340 </span>                :            : 
+<span class="lineNum">     341 </span>                :            : #elif USE_ACL &amp;&amp; HAVE_GETACL /* HP-UX */
 <span class="lineNum">     342 </span>                :            : 
-<span class="lineNum">     343 </span>                :            :       /* Note: If ace-&gt;a_type = USER_OBJ, ace-&gt;a_id is the st_uid from stat().
-<span class="lineNum">     344 </span>                :            :          If ace-&gt;a_type = GROUP_OBJ, ace-&gt;a_id is the st_gid from stat().
-<span class="lineNum">     345 </span>                :            :          We don't need to check ace-&gt;a_id in these cases.  */
-<span class="lineNum">     346 </span>                :            :       if (!(ace-&gt;a_type == USER_OBJ /* no need to check ace-&gt;a_id here */
-<span class="lineNum">     347 </span>                :            :             || ace-&gt;a_type == GROUP_OBJ /* no need to check ace-&gt;a_id here */
-<span class="lineNum">     348 </span>                :            :             || ace-&gt;a_type == CLASS_OBJ
-<span class="lineNum">     349 </span>                :            :             || ace-&gt;a_type == OTHER_OBJ))
-<span class="lineNum">     350 </span>                :            :         return 1;
-<span class="lineNum">     351 </span>                :            :     }
-<span class="lineNum">     352 </span>                :            :   return 0;
-<span class="lineNum">     353 </span>                :            : }
-<span class="lineNum">     354 </span>                :            : 
-<span class="lineNum">     355 </span>                :            : # endif
-<span class="lineNum">     356 </span>                :            : 
-<span class="lineNum">     357 </span>                :            : #elif USE_ACL &amp;&amp; (HAVE_ACLX_GET || HAVE_STATACL) /* AIX */
-<span class="lineNum">     358 </span>                :            : 
-<span class="lineNum">     359 </span>                :            : /* Return 1 if the given ACL is non-trivial.
-<span class="lineNum">     360 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
-<span class="lineNum">     361 </span>                :            : int
-<span class="lineNum">     362 </span>                :            : acl_nontrivial (struct acl *a)
-<span class="lineNum">     363 </span>                :            : {
-<span class="lineNum">     364 </span>                :            :   /* The normal way to iterate through an ACL is like this:
-<span class="lineNum">     365 </span>                :            :        struct acl_entry *ace;
-<span class="lineNum">     366 </span>                :            :        for (ace = a-&gt;acl_ext; ace != acl_last (a); ace = acl_nxt (ace))
-<span class="lineNum">     367 </span>                :            :          {
-<span class="lineNum">     368 </span>                :            :            struct ace_id *aei;
-<span class="lineNum">     369 </span>                :            :            switch (ace-&gt;ace_type)
-<span class="lineNum">     370 </span>                :            :              {
-<span class="lineNum">     371 </span>                :            :              case ACC_PERMIT:
-<span class="lineNum">     372 </span>                :            :              case ACC_DENY:
-<span class="lineNum">     373 </span>                :            :              case ACC_SPECIFY:
-<span class="lineNum">     374 </span>                :            :                ...;
-<span class="lineNum">     375 </span>                :            :              }
-<span class="lineNum">     376 </span>                :            :            for (aei = ace-&gt;ace_id; aei != id_last (ace); aei = id_nxt (aei))
-<span class="lineNum">     377 </span>                :            :              ...
-<span class="lineNum">     378 </span>                :            :          }
-<span class="lineNum">     379 </span>                :            :    */
-<span class="lineNum">     380 </span>                :            :   return (acl_last (a) != a-&gt;acl_ext ? 1 : 0);
-<span class="lineNum">     381 </span>                :            : }
-<span class="lineNum">     382 </span>                :            : 
-<span class="lineNum">     383 </span>                :            : # if HAVE_ACLX_GET &amp;&amp; defined ACL_AIX_WIP /* newer AIX */
-<span class="lineNum">     384 </span>                :            : 
-<span class="lineNum">     385 </span>                :            : /* Return 1 if the given ACL is non-trivial.
-<span class="lineNum">     386 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
-<span class="lineNum">     387 </span>                :            : int
-<span class="lineNum">     388 </span>                :            : acl_nfs4_nontrivial (nfs4_acl_int_t *a)
-<span class="lineNum">     389 </span>                :            : {
-<span class="lineNum">     390 </span>                :            : #  if 1 /* let's try this first */
-<span class="lineNum">     391 </span>                :            :   return (a-&gt;aclEntryN &gt; 0 ? 1 : 0);
-<span class="lineNum">     392 </span>                :            : #  else
-<span class="lineNum">     393 </span>                :            :   int count = a-&gt;aclEntryN;
-<span class="lineNum">     394 </span>                :            :   int i;
-<span class="lineNum">     395 </span>                :            : 
-<span class="lineNum">     396 </span>                :            :   for (i = 0; i &lt; count; i++)
-<span class="lineNum">     397 </span>                :            :     {
-<span class="lineNum">     398 </span>                :            :       nfs4_ace_int_t *ace = &amp;a-&gt;aclEntry[i];
-<span class="lineNum">     399 </span>                :            : 
-<span class="lineNum">     400 </span>                :            :       if (!((ace-&gt;flags &amp; ACE4_ID_SPECIAL) != 0
-<span class="lineNum">     401 </span>                :            :             &amp;&amp; (ace-&gt;aceWho.special_whoid == ACE4_WHO_OWNER
-<span class="lineNum">     402 </span>                :            :                 || ace-&gt;aceWho.special_whoid == ACE4_WHO_GROUP
-<span class="lineNum">     403 </span>                :            :                 || ace-&gt;aceWho.special_whoid == ACE4_WHO_EVERYONE)
-<span class="lineNum">     404 </span>                :            :             &amp;&amp; ace-&gt;aceType == ACE4_ACCESS_ALLOWED_ACE_TYPE
-<span class="lineNum">     405 </span>                :            :             &amp;&amp; ace-&gt;aceFlags == 0
-<span class="lineNum">     406 </span>                :            :             &amp;&amp; (ace-&gt;aceMask &amp; ~(ACE4_READ_DATA | ACE4_LIST_DIRECTORY
-<span class="lineNum">     407 </span>                :            :                                  | ACE4_WRITE_DATA | ACE4_ADD_FILE
-<span class="lineNum">     408 </span>                :            :                                  | ACE4_EXECUTE)) == 0))
-<span class="lineNum">     409 </span>                :            :         return 1;
-<span class="lineNum">     410 </span>                :            :     }
-<span class="lineNum">     411 </span>                :            :   return 0;
-<span class="lineNum">     412 </span>                :            : #  endif
+<span class="lineNum">     343 </span>                :            : /* Return 1 if the given ACL is non-trivial.
+<span class="lineNum">     344 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
+<span class="lineNum">     345 </span>                :            : int
+<span class="lineNum">     346 </span>                :            : acl_nontrivial (int count, struct acl_entry *entries, struct stat *sb)
+<span class="lineNum">     347 </span>                :            : {
+<span class="lineNum">     348 </span>                :            :   int i;
+<span class="lineNum">     349 </span>                :            : 
+<span class="lineNum">     350 </span>                :            :   for (i = 0; i &lt; count; i++)
+<span class="lineNum">     351 </span>                :            :     {
+<span class="lineNum">     352 </span>                :            :       struct acl_entry *ace = &amp;entries[i];
+<span class="lineNum">     353 </span>                :            : 
+<span class="lineNum">     354 </span>                :            :       if (!((ace-&gt;uid == sb-&gt;st_uid &amp;&amp; ace-&gt;gid == ACL_NSGROUP)
+<span class="lineNum">     355 </span>                :            :             || (ace-&gt;uid == ACL_NSUSER &amp;&amp; ace-&gt;gid == sb-&gt;st_gid)
+<span class="lineNum">     356 </span>                :            :             || (ace-&gt;uid == ACL_NSUSER &amp;&amp; ace-&gt;gid == ACL_NSGROUP)))
+<span class="lineNum">     357 </span>                :            :         return 1;
+<span class="lineNum">     358 </span>                :            :     }
+<span class="lineNum">     359 </span>                :            :   return 0;
+<span class="lineNum">     360 </span>                :            : }
+<span class="lineNum">     361 </span>                :            : 
+<span class="lineNum">     362 </span>                :            : # if HAVE_ACLV_H /* HP-UX &gt;= 11.11 */
+<span class="lineNum">     363 </span>                :            : 
+<span class="lineNum">     364 </span>                :            : /* Return 1 if the given ACL is non-trivial.
+<span class="lineNum">     365 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
+<span class="lineNum">     366 </span>                :            : int
+<span class="lineNum">     367 </span>                :            : aclv_nontrivial (int count, struct acl *entries)
+<span class="lineNum">     368 </span>                :            : {
+<span class="lineNum">     369 </span>                :            :   int i;
+<span class="lineNum">     370 </span>                :            : 
+<span class="lineNum">     371 </span>                :            :   for (i = 0; i &lt; count; i++)
+<span class="lineNum">     372 </span>                :            :     {
+<span class="lineNum">     373 </span>                :            :       struct acl *ace = &amp;entries[i];
+<span class="lineNum">     374 </span>                :            : 
+<span class="lineNum">     375 </span>                :            :       /* Note: If ace-&gt;a_type = USER_OBJ, ace-&gt;a_id is the st_uid from stat().
+<span class="lineNum">     376 </span>                :            :          If ace-&gt;a_type = GROUP_OBJ, ace-&gt;a_id is the st_gid from stat().
+<span class="lineNum">     377 </span>                :            :          We don't need to check ace-&gt;a_id in these cases.  */
+<span class="lineNum">     378 </span>                :            :       if (!(ace-&gt;a_type == USER_OBJ /* no need to check ace-&gt;a_id here */
+<span class="lineNum">     379 </span>                :            :             || ace-&gt;a_type == GROUP_OBJ /* no need to check ace-&gt;a_id here */
+<span class="lineNum">     380 </span>                :            :             || ace-&gt;a_type == CLASS_OBJ
+<span class="lineNum">     381 </span>                :            :             || ace-&gt;a_type == OTHER_OBJ))
+<span class="lineNum">     382 </span>                :            :         return 1;
+<span class="lineNum">     383 </span>                :            :     }
+<span class="lineNum">     384 </span>                :            :   return 0;
+<span class="lineNum">     385 </span>                :            : }
+<span class="lineNum">     386 </span>                :            : 
+<span class="lineNum">     387 </span>                :            : # endif
+<span class="lineNum">     388 </span>                :            : 
+<span class="lineNum">     389 </span>                :            : #elif USE_ACL &amp;&amp; (HAVE_ACLX_GET || HAVE_STATACL) /* AIX */
+<span class="lineNum">     390 </span>                :            : 
+<span class="lineNum">     391 </span>                :            : /* Return 1 if the given ACL is non-trivial.
+<span class="lineNum">     392 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
+<span class="lineNum">     393 </span>                :            : int
+<span class="lineNum">     394 </span>                :            : acl_nontrivial (struct acl *a)
+<span class="lineNum">     395 </span>                :            : {
+<span class="lineNum">     396 </span>                :            :   /* The normal way to iterate through an ACL is like this:
+<span class="lineNum">     397 </span>                :            :        struct acl_entry *ace;
+<span class="lineNum">     398 </span>                :            :        for (ace = a-&gt;acl_ext; ace != acl_last (a); ace = acl_nxt (ace))
+<span class="lineNum">     399 </span>                :            :          {
+<span class="lineNum">     400 </span>                :            :            struct ace_id *aei;
+<span class="lineNum">     401 </span>                :            :            switch (ace-&gt;ace_type)
+<span class="lineNum">     402 </span>                :            :              {
+<span class="lineNum">     403 </span>                :            :              case ACC_PERMIT:
+<span class="lineNum">     404 </span>                :            :              case ACC_DENY:
+<span class="lineNum">     405 </span>                :            :              case ACC_SPECIFY:
+<span class="lineNum">     406 </span>                :            :                ...;
+<span class="lineNum">     407 </span>                :            :              }
+<span class="lineNum">     408 </span>                :            :            for (aei = ace-&gt;ace_id; aei != id_last (ace); aei = id_nxt (aei))
+<span class="lineNum">     409 </span>                :            :              ...
+<span class="lineNum">     410 </span>                :            :          }
+<span class="lineNum">     411 </span>                :            :    */
+<span class="lineNum">     412 </span>                :            :   return (acl_last (a) != a-&gt;acl_ext ? 1 : 0);
 <span class="lineNum">     413 </span>                :            : }
 <span class="lineNum">     414 </span>                :            : 
-<span class="lineNum">     415 </span>                :            : # endif
+<span class="lineNum">     415 </span>                :            : # if HAVE_ACLX_GET &amp;&amp; defined ACL_AIX_WIP /* newer AIX */
 <span class="lineNum">     416 </span>                :            : 
-<span class="lineNum">     417 </span>                :            : #elif USE_ACL &amp;&amp; HAVE_ACLSORT /* NonStop Kernel */
-<span class="lineNum">     418 </span>                :            : 
-<span class="lineNum">     419 </span>                :            : /* Test an ACL retrieved with ACL_GET.
-<span class="lineNum">     420 </span>                :            :    Return 1 if the given ACL, consisting of COUNT entries, is non-trivial.
-<span class="lineNum">     421 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
-<span class="lineNum">     422 </span>                :            : int
-<span class="lineNum">     423 </span>                :            : acl_nontrivial (int count, struct acl *entries)
-<span class="lineNum">     424 </span>                :            : {
-<span class="lineNum">     425 </span>                :            :   int i;
-<span class="lineNum">     426 </span>                :            : 
-<span class="lineNum">     427 </span>                :            :   for (i = 0; i &lt; count; i++)
-<span class="lineNum">     428 </span>                :            :     {
-<span class="lineNum">     429 </span>                :            :       struct acl *ace = &amp;entries[i];
-<span class="lineNum">     430 </span>                :            : 
-<span class="lineNum">     431 </span>                :            :       /* Note: If ace-&gt;a_type = USER_OBJ, ace-&gt;a_id is the st_uid from stat().
-<span class="lineNum">     432 </span>                :            :          If ace-&gt;a_type = GROUP_OBJ, ace-&gt;a_id is the st_gid from stat().
-<span class="lineNum">     433 </span>                :            :          We don't need to check ace-&gt;a_id in these cases.  */
-<span class="lineNum">     434 </span>                :            :       if (!(ace-&gt;a_type == USER_OBJ /* no need to check ace-&gt;a_id here */
-<span class="lineNum">     435 </span>                :            :             || ace-&gt;a_type == GROUP_OBJ /* no need to check ace-&gt;a_id here */
-<span class="lineNum">     436 </span>                :            :             || ace-&gt;a_type == CLASS_OBJ
-<span class="lineNum">     437 </span>                :            :             || ace-&gt;a_type == OTHER_OBJ))
-<span class="lineNum">     438 </span>                :            :         return 1;
-<span class="lineNum">     439 </span>                :            :     }
-<span class="lineNum">     440 </span>                :            :   return 0;
-<span class="lineNum">     441 </span>                :            : }
-<span class="lineNum">     442 </span>                :            : 
-<span class="lineNum">     443 </span>                :            : #endif
-<span class="lineNum">     444 </span>                :            : 
-<span class="lineNum">     445 </span>                :            : 
-<span class="lineNum">     446 </span>                :            : /* Return 1 if NAME has a nontrivial access control list, 0 if NAME
-<span class="lineNum">     447 </span>                :            :    only has no or a base access control list, and -1 (setting errno)
-<span class="lineNum">     448 </span>                :            :    on error.  SB must be set to the stat buffer of NAME, obtained
-<span class="lineNum">     449 </span>                :            :    through stat() or lstat().  */
-<a name="450"><span class="lineNum">     450 </span>                :            : </a>
-<span class="lineNum">     451 </span>                :            : int
-<span class="lineNum">     452 </span>                :<span class="lineCov">       9964 : file_has_acl (char const *name, struct stat const *sb)</span>
-<span class="lineNum">     453 </span>                :            : {
-<span class="lineNum">     454 </span>                :            : #if USE_ACL
-<span class="lineNum">     455 </span>                :            :   if (! S_ISLNK (sb-&gt;st_mode))
-<span class="lineNum">     456 </span>                :            :     {
-<span class="lineNum">     457 </span>                :            : # if HAVE_ACL_GET_FILE
+<span class="lineNum">     417 </span>                :            : /* Return 1 if the given ACL is non-trivial.
+<span class="lineNum">     418 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
+<span class="lineNum">     419 </span>                :            : int
+<span class="lineNum">     420 </span>                :            : acl_nfs4_nontrivial (nfs4_acl_int_t *a)
+<span class="lineNum">     421 </span>                :            : {
+<span class="lineNum">     422 </span>                :            : #  if 1 /* let's try this first */
+<span class="lineNum">     423 </span>                :            :   return (a-&gt;aclEntryN &gt; 0 ? 1 : 0);
+<span class="lineNum">     424 </span>                :            : #  else
+<span class="lineNum">     425 </span>                :            :   int count = a-&gt;aclEntryN;
+<span class="lineNum">     426 </span>                :            :   int i;
+<span class="lineNum">     427 </span>                :            : 
+<span class="lineNum">     428 </span>                :            :   for (i = 0; i &lt; count; i++)
+<span class="lineNum">     429 </span>                :            :     {
+<span class="lineNum">     430 </span>                :            :       nfs4_ace_int_t *ace = &amp;a-&gt;aclEntry[i];
+<span class="lineNum">     431 </span>                :            : 
+<span class="lineNum">     432 </span>                :            :       if (!((ace-&gt;flags &amp; ACE4_ID_SPECIAL) != 0
+<span class="lineNum">     433 </span>                :            :             &amp;&amp; (ace-&gt;aceWho.special_whoid == ACE4_WHO_OWNER
+<span class="lineNum">     434 </span>                :            :                 || ace-&gt;aceWho.special_whoid == ACE4_WHO_GROUP
+<span class="lineNum">     435 </span>                :            :                 || ace-&gt;aceWho.special_whoid == ACE4_WHO_EVERYONE)
+<span class="lineNum">     436 </span>                :            :             &amp;&amp; ace-&gt;aceType == ACE4_ACCESS_ALLOWED_ACE_TYPE
+<span class="lineNum">     437 </span>                :            :             &amp;&amp; ace-&gt;aceFlags == 0
+<span class="lineNum">     438 </span>                :            :             &amp;&amp; (ace-&gt;aceMask &amp; ~(ACE4_READ_DATA | ACE4_LIST_DIRECTORY
+<span class="lineNum">     439 </span>                :            :                                  | ACE4_WRITE_DATA | ACE4_ADD_FILE
+<span class="lineNum">     440 </span>                :            :                                  | ACE4_EXECUTE)) == 0))
+<span class="lineNum">     441 </span>                :            :         return 1;
+<span class="lineNum">     442 </span>                :            :     }
+<span class="lineNum">     443 </span>                :            :   return 0;
+<span class="lineNum">     444 </span>                :            : #  endif
+<span class="lineNum">     445 </span>                :            : }
+<span class="lineNum">     446 </span>                :            : 
+<span class="lineNum">     447 </span>                :            : # endif
+<span class="lineNum">     448 </span>                :            : 
+<span class="lineNum">     449 </span>                :            : #elif USE_ACL &amp;&amp; HAVE_ACLSORT /* NonStop Kernel */
+<span class="lineNum">     450 </span>                :            : 
+<span class="lineNum">     451 </span>                :            : /* Test an ACL retrieved with ACL_GET.
+<span class="lineNum">     452 </span>                :            :    Return 1 if the given ACL, consisting of COUNT entries, is non-trivial.
+<span class="lineNum">     453 </span>                :            :    Return 0 if it is trivial, i.e. equivalent to a simple stat() mode.  */
+<span class="lineNum">     454 </span>                :            : int
+<span class="lineNum">     455 </span>                :            : acl_nontrivial (int count, struct acl *entries)
+<span class="lineNum">     456 </span>                :            : {
+<span class="lineNum">     457 </span>                :            :   int i;
 <span class="lineNum">     458 </span>                :            : 
-<span class="lineNum">     459 </span>                :            :       /* POSIX 1003.1e (draft 17 -- abandoned) specific version.  */
-<span class="lineNum">     460 </span>                :            :       /* Linux, FreeBSD, MacOS X, IRIX, Tru64 */
-<span class="lineNum">     461 </span>                :            :       int ret;
+<span class="lineNum">     459 </span>                :            :   for (i = 0; i &lt; count; i++)
+<span class="lineNum">     460 </span>                :            :     {
+<span class="lineNum">     461 </span>                :            :       struct acl *ace = &amp;entries[i];
 <span class="lineNum">     462 </span>                :            : 
-<span class="lineNum">     463 </span>                :            :       if (HAVE_ACL_EXTENDED_FILE) /* Linux */
-<span class="lineNum">     464 </span>                :            :         {
-<span class="lineNum">     465 </span>                :            :           /* On Linux, acl_extended_file is an optimized function: It only
-<span class="lineNum">     466 </span>                :            :              makes two calls to getxattr(), one for ACL_TYPE_ACCESS, one for
-<span class="lineNum">     467 </span>                :            :              ACL_TYPE_DEFAULT.  */
-<span class="lineNum">     468 </span>                :            :           ret = acl_extended_file (name);
-<span class="lineNum">     469 </span>                :            :         }
-<span class="lineNum">     470 </span>                :            :       else /* FreeBSD, MacOS X, IRIX, Tru64 */
-<span class="lineNum">     471 </span>                :            :         {
-<span class="lineNum">     472 </span>                :            : #  if HAVE_ACL_TYPE_EXTENDED /* MacOS X */
-<span class="lineNum">     473 </span>                :            :           /* On MacOS X, acl_get_file (name, ACL_TYPE_ACCESS)
-<span class="lineNum">     474 </span>                :            :              and acl_get_file (name, ACL_TYPE_DEFAULT)
-<span class="lineNum">     475 </span>                :            :              always return NULL / EINVAL.  There is no point in making
-<span class="lineNum">     476 </span>                :            :              these two useless calls.  The real ACL is retrieved through
-<span class="lineNum">     477 </span>                :            :              acl_get_file (name, ACL_TYPE_EXTENDED).  */
-<span class="lineNum">     478 </span>                :            :           acl_t acl = acl_get_file (name, ACL_TYPE_EXTENDED);
-<span class="lineNum">     479 </span>                :            :           if (acl)
-<span class="lineNum">     480 </span>                :            :             {
-<span class="lineNum">     481 </span>                :            :               ret = acl_extended_nontrivial (acl);
-<span class="lineNum">     482 </span>                :            :               acl_free (acl);
-<span class="lineNum">     483 </span>                :            :             }
-<span class="lineNum">     484 </span>                :            :           else
-<span class="lineNum">     485 </span>                :            :             ret = -1;
-<span class="lineNum">     486 </span>                :            : #  else /* FreeBSD, IRIX, Tru64 */
-<span class="lineNum">     487 </span>                :            :           acl_t acl = acl_get_file (name, ACL_TYPE_ACCESS);
-<span class="lineNum">     488 </span>                :            :           if (acl)
-<span class="lineNum">     489 </span>                :            :             {
-<span class="lineNum">     490 </span>                :            :               int saved_errno;
-<span class="lineNum">     491 </span>                :            : 
-<span class="lineNum">     492 </span>                :            :               ret = acl_access_nontrivial (acl);
-<span class="lineNum">     493 </span>                :            :               saved_errno = errno;
-<span class="lineNum">     494 </span>                :            :               acl_free (acl);
-<span class="lineNum">     495 </span>                :            :               errno = saved_errno;
-<span class="lineNum">     496 </span>                :            : #   if HAVE_ACL_FREE_TEXT /* Tru64 */
-<span class="lineNum">     497 </span>                :            :               /* On OSF/1, acl_get_file (name, ACL_TYPE_DEFAULT) always
-<span class="lineNum">     498 </span>                :            :                  returns NULL with errno not set.  There is no point in
-<span class="lineNum">     499 </span>                :            :                  making this call.  */
-<span class="lineNum">     500 </span>                :            : #   else /* FreeBSD, IRIX */
-<span class="lineNum">     501 </span>                :            :               /* On Linux, FreeBSD, IRIX, acl_get_file (name, ACL_TYPE_ACCESS)
-<span class="lineNum">     502 </span>                :            :                  and acl_get_file (name, ACL_TYPE_DEFAULT) on a directory
-<span class="lineNum">     503 </span>                :            :                  either both succeed or both fail; it depends on the
-<span class="lineNum">     504 </span>                :            :                  file system.  Therefore there is no point in making the second
-<span class="lineNum">     505 </span>                :            :                  call if the first one already failed.  */
-<span class="lineNum">     506 </span>                :            :               if (ret == 0 &amp;&amp; S_ISDIR (sb-&gt;st_mode))
-<span class="lineNum">     507 </span>                :            :                 {
-<span class="lineNum">     508 </span>                :            :                   acl = acl_get_file (name, ACL_TYPE_DEFAULT);
-<span class="lineNum">     509 </span>                :            :                   if (acl)
-<span class="lineNum">     510 </span>                :            :                     {
-<span class="lineNum">     511 </span>                :            :                       ret = (0 &lt; acl_entries (acl));
-<span class="lineNum">     512 </span>                :            :                       acl_free (acl);
-<span class="lineNum">     513 </span>                :            :                     }
-<span class="lineNum">     514 </span>                :            :                   else
-<span class="lineNum">     515 </span>                :            :                     ret = -1;
-<span class="lineNum">     516 </span>                :            :                 }
-<span class="lineNum">     517 </span>                :            : #   endif
-<span class="lineNum">     518 </span>                :            :             }
-<span class="lineNum">     519 </span>                :            :           else
-<span class="lineNum">     520 </span>                :            :             ret = -1;
-<span class="lineNum">     521 </span>                :            : #  endif
-<span class="lineNum">     522 </span>                :            :         }
-<span class="lineNum">     523 </span>                :            :       if (ret &lt; 0)
-<span class="lineNum">     524 </span>                :            :         return ACL_NOT_WELL_SUPPORTED (errno) ? 0 : -1;
-<span class="lineNum">     525 </span>                :            :       return ret;
-<span class="lineNum">     526 </span>                :            : 
-<span class="lineNum">     527 </span>                :            : # elif HAVE_FACL &amp;&amp; defined GETACLCNT /* Solaris, Cygwin, not HP-UX */
-<span class="lineNum">     528 </span>                :            : 
-<span class="lineNum">     529 </span>                :            : #  if defined ACL_NO_TRIVIAL
-<span class="lineNum">     530 </span>                :            : 
-<span class="lineNum">     531 </span>                :            :       /* Solaris 10 (newer version), which has additional API declared in
-<span class="lineNum">     532 </span>                :            :          &lt;sys/acl.h&gt; (acl_t) and implemented in libsec (acl_set, acl_trivial,
-<span class="lineNum">     533 </span>                :            :          acl_fromtext, ...).  */
-<span class="lineNum">     534 </span>                :            :       return acl_trivial (name);
-<span class="lineNum">     535 </span>                :            : 
-<span class="lineNum">     536 </span>                :            : #  else /* Solaris, Cygwin, general case */
-<span class="lineNum">     537 </span>                :            : 
-<span class="lineNum">     538 </span>                :            :       /* Solaris 2.5 through Solaris 10, Cygwin, and contemporaneous versions
-<span class="lineNum">     539 </span>                :            :          of Unixware.  The acl() call returns the access and default ACL both
-<span class="lineNum">     540 </span>                :            :          at once.  */
-<span class="lineNum">     541 </span>                :            :       int count;
-<span class="lineNum">     542 </span>                :            :       {
-<span class="lineNum">     543 </span>                :            :         aclent_t *entries;
-<span class="lineNum">     544 </span>                :            : 
-<span class="lineNum">     545 </span>                :            :         for (;;)
-<span class="lineNum">     546 </span>                :            :           {
-<span class="lineNum">     547 </span>                :            :             count = acl (name, GETACLCNT, 0, NULL);
-<span class="lineNum">     548 </span>                :            : 
-<span class="lineNum">     549 </span>                :            :             if (count &lt; 0)
-<span class="lineNum">     550 </span>                :            :               {
-<span class="lineNum">     551 </span>                :            :                 if (errno == ENOSYS || errno == ENOTSUP)
-<span class="lineNum">     552 </span>                :            :                   break;
-<span class="lineNum">     553 </span>                :            :                 else
-<span class="lineNum">     554 </span>                :            :                   return -1;
-<span class="lineNum">     555 </span>                :            :               }
-<span class="lineNum">     556 </span>                :            : 
-<span class="lineNum">     557 </span>                :            :             if (count == 0)
-<span class="lineNum">     558 </span>                :            :               break;
-<span class="lineNum">     559 </span>                :            : 
-<span class="lineNum">     560 </span>                :            :             /* Don't use MIN_ACL_ENTRIES:  It's set to 4 on Cygwin, but Cygwin
-<span class="lineNum">     561 </span>                :            :                returns only 3 entries for files with no ACL.  But this is safe:
-<span class="lineNum">     562 </span>                :            :                If there are more than 4 entries, there cannot be only the
-<span class="lineNum">     563 </span>                :            :                &quot;user::&quot;, &quot;group::&quot;, &quot;other:&quot;, and &quot;mask:&quot; entries.  */
-<span class="lineNum">     564 </span>                :            :             if (count &gt; 4)
-<span class="lineNum">     565 </span>                :            :               return 1;
-<span class="lineNum">     566 </span>                :            : 
-<span class="lineNum">     567 </span>                :            :             entries = (aclent_t *) malloc (count * sizeof (aclent_t));
-<span class="lineNum">     568 </span>                :            :             if (entries == NULL)
-<span class="lineNum">     569 </span>                :            :               {
-<span class="lineNum">     570 </span>                :            :                 errno = ENOMEM;
-<span class="lineNum">     571 </span>                :            :                 return -1;
-<span class="lineNum">     572 </span>                :            :               }
-<span class="lineNum">     573 </span>                :            :             if (acl (name, GETACL, count, entries) == count)
-<span class="lineNum">     574 </span>                :            :               {
-<span class="lineNum">     575 </span>                :            :                 if (acl_nontrivial (count, entries))
-<span class="lineNum">     576 </span>                :            :                   {
-<span class="lineNum">     577 </span>                :            :                     free (entries);
-<span class="lineNum">     578 </span>                :            :                     return 1;
-<span class="lineNum">     579 </span>                :            :                   }
-<span class="lineNum">     580 </span>                :            :                 free (entries);
-<span class="lineNum">     581 </span>                :            :                 break;
-<span class="lineNum">     582 </span>                :            :               }
-<span class="lineNum">     583 </span>                :            :             /* Huh? The number of ACL entries changed since the last call.
-<span class="lineNum">     584 </span>                :            :                Repeat.  */
-<span class="lineNum">     585 </span>                :            :             free (entries);
-<span class="lineNum">     586 </span>                :            :           }
-<span class="lineNum">     587 </span>                :            :       }
-<span class="lineNum">     588 </span>                :            : 
-<span class="lineNum">     589 </span>                :            : #   ifdef ACE_GETACL
-<span class="lineNum">     590 </span>                :            :       /* Solaris also has a different variant of ACLs, used in ZFS and NFSv4
-<span class="lineNum">     591 </span>                :            :          file systems (whereas the other ones are used in UFS file systems).  */
-<span class="lineNum">     592 </span>                :            :       {
-<span class="lineNum">     593 </span>                :            :         ace_t *entries;
-<span class="lineNum">     594 </span>                :            : 
-<span class="lineNum">     595 </span>                :            :         for (;;)
-<span class="lineNum">     596 </span>                :            :           {
-<span class="lineNum">     597 </span>                :            :             count = acl (name, ACE_GETACLCNT, 0, NULL);
-<span class="lineNum">     598 </span>                :            : 
-<span class="lineNum">     599 </span>                :            :             if (count &lt; 0)
-<span class="lineNum">     600 </span>                :            :               {
-<span class="lineNum">     601 </span>                :            :                 if (errno == ENOSYS || errno == EINVAL)
-<span class="lineNum">     602 </span>                :            :                   break;
-<span class="lineNum">     603 </span>                :            :                 else
-<span class="lineNum">     604 </span>                :            :                   return -1;
-<span class="lineNum">     605 </span>                :            :               }
-<span class="lineNum">     606 </span>                :            : 
-<span class="lineNum">     607 </span>                :            :             if (count == 0)
-<span class="lineNum">     608 </span>                :            :               break;
-<span class="lineNum">     609 </span>                :            : 
-<span class="lineNum">     610 </span>                :            :             /* In the old (original Solaris 10) convention:
-<span class="lineNum">     611 </span>                :            :                If there are more than 3 entries, there cannot be only the
-<span class="lineNum">     612 </span>                :            :                ACE_OWNER, ACE_GROUP, ACE_OTHER entries.
-<span class="lineNum">     613 </span>                :            :                In the newer Solaris 10 and Solaris 11 convention:
-<span class="lineNum">     614 </span>                :            :                If there are more than 6 entries, there cannot be only the
-<span class="lineNum">     615 </span>                :            :                ACE_OWNER, ACE_GROUP, ACE_EVERYONE entries, each once with
-<span class="lineNum">     616 </span>                :            :                NEW_ACE_ACCESS_ALLOWED_ACE_TYPE and once with
-<span class="lineNum">     617 </span>                :            :                NEW_ACE_ACCESS_DENIED_ACE_TYPE.  */
-<span class="lineNum">     618 </span>                :            :             if (count &gt; 6)
-<span class="lineNum">     619 </span>                :            :               return 1;
-<span class="lineNum">     620 </span>                :            : 
-<span class="lineNum">     621 </span>                :            :             entries = (ace_t *) malloc (count * sizeof (ace_t));
-<span class="lineNum">     622 </span>                :            :             if (entries == NULL)
-<span class="lineNum">     623 </span>                :            :               {
-<span class="lineNum">     624 </span>                :            :                 errno = ENOMEM;
-<span class="lineNum">     625 </span>                :            :                 return -1;
-<span class="lineNum">     626 </span>                :            :               }
-<span class="lineNum">     627 </span>                :            :             if (acl (name, ACE_GETACL, count, entries) == count)
-<span class="lineNum">     628 </span>                :            :               {
-<span class="lineNum">     629 </span>                :            :                 if (acl_ace_nontrivial (count, entries))
-<span class="lineNum">     630 </span>                :            :                   {
-<span class="lineNum">     631 </span>                :            :                     free (entries);
-<span class="lineNum">     632 </span>                :            :                     return 1;
-<span class="lineNum">     633 </span>                :            :                   }
-<span class="lineNum">     634 </span>                :            :                 free (entries);
-<span class="lineNum">     635 </span>                :            :                 break;
-<span class="lineNum">     636 </span>                :            :               }
-<span class="lineNum">     637 </span>                :            :             /* Huh? The number of ACL entries changed since the last call.
-<span class="lineNum">     638 </span>                :            :                Repeat.  */
-<span class="lineNum">     639 </span>                :            :             free (entries);
-<span class="lineNum">     640 </span>                :            :           }
-<span class="lineNum">     641 </span>                :            :       }
-<span class="lineNum">     642 </span>                :            : #   endif
-<span class="lineNum">     643 </span>                :            : 
-<span class="lineNum">     644 </span>                :            :       return 0;
-<span class="lineNum">     645 </span>                :            : #  endif
-<span class="lineNum">     646 </span>                :            : 
-<span class="lineNum">     647 </span>                :            : # elif HAVE_GETACL /* HP-UX */
-<span class="lineNum">     648 </span>                :            : 
-<span class="lineNum">     649 </span>                :            :       for (;;)
-<span class="lineNum">     650 </span>                :            :         {
-<span class="lineNum">     651 </span>                :            :           int count;
-<span class="lineNum">     652 </span>                :            :           struct acl_entry entries[NACLENTRIES];
-<span class="lineNum">     653 </span>                :            : 
-<span class="lineNum">     654 </span>                :            :           count = getacl (name, 0, NULL);
-<span class="lineNum">     655 </span>                :            : 
-<span class="lineNum">     656 </span>                :            :           if (count &lt; 0)
-<span class="lineNum">     657 </span>                :            :             {
-<span class="lineNum">     658 </span>                :            :               /* ENOSYS is seen on newer HP-UX versions.
-<span class="lineNum">     659 </span>                :            :                  EOPNOTSUPP is typically seen on NFS mounts.
-<span class="lineNum">     660 </span>                :            :                  ENOTSUP was seen on Quantum StorNext file systems (cvfs).  */
-<span class="lineNum">     661 </span>                :            :               if (errno == ENOSYS || errno == EOPNOTSUPP || errno == ENOTSUP)
-<span class="lineNum">     662 </span>                :            :                 break;
-<span class="lineNum">     663 </span>                :            :               else
-<span class="lineNum">     664 </span>                :            :                 return -1;
-<span class="lineNum">     665 </span>                :            :             }
-<span class="lineNum">     666 </span>                :            : 
-<span class="lineNum">     667 </span>                :            :           if (count == 0)
-<span class="lineNum">     668 </span>                :            :             return 0;
-<span class="lineNum">     669 </span>                :            : 
-<span class="lineNum">     670 </span>                :            :           if (count &gt; NACLENTRIES)
-<span class="lineNum">     671 </span>                :            :             /* If NACLENTRIES cannot be trusted, use dynamic memory
-<span class="lineNum">     672 </span>                :            :                allocation.  */
-<span class="lineNum">     673 </span>                :            :             abort ();
-<span class="lineNum">     674 </span>                :            : 
-<span class="lineNum">     675 </span>                :            :           /* If there are more than 3 entries, there cannot be only the
-<span class="lineNum">     676 </span>                :            :              (uid,%), (%,gid), (%,%) entries.  */
-<span class="lineNum">     677 </span>                :            :           if (count &gt; 3)
-<span class="lineNum">     678 </span>                :            :             return 1;
-<span class="lineNum">     679 </span>                :            : 
-<span class="lineNum">     680 </span>                :            :           if (getacl (name, count, entries) == count)
-<span class="lineNum">     681 </span>                :            :             {
-<span class="lineNum">     682 </span>                :            :               struct stat statbuf;
-<span class="lineNum">     683 </span>                :            : 
-<span class="lineNum">     684 </span>                :            :               if (stat (name, &amp;statbuf) &lt; 0)
-<span class="lineNum">     685 </span>                :            :                 return -1;
-<span class="lineNum">     686 </span>                :            : 
-<span class="lineNum">     687 </span>                :            :               return acl_nontrivial (count, entries, &amp;statbuf);
-<span class="lineNum">     688 </span>                :            :             }
-<span class="lineNum">     689 </span>                :            :           /* Huh? The number of ACL entries changed since the last call.
-<span class="lineNum">     690 </span>                :            :              Repeat.  */
-<span class="lineNum">     691 </span>                :            :         }
-<span class="lineNum">     692 </span>                :            : 
-<span class="lineNum">     693 </span>                :            : #  if HAVE_ACLV_H /* HP-UX &gt;= 11.11 */
-<span class="lineNum">     694 </span>                :            : 
-<span class="lineNum">     695 </span>                :            :       for (;;)
-<span class="lineNum">     696 </span>                :            :         {
-<span class="lineNum">     697 </span>                :            :           int count;
-<span class="lineNum">     698 </span>                :            :           struct acl entries[NACLVENTRIES];
-<span class="lineNum">     699 </span>                :            : 
-<span class="lineNum">     700 </span>                :            :           count = acl ((char *) name, ACL_CNT, NACLVENTRIES, entries);
-<span class="lineNum">     701 </span>                :            : 
-<span class="lineNum">     702 </span>                :            :           if (count &lt; 0)
-<span class="lineNum">     703 </span>                :            :             {
-<span class="lineNum">     704 </span>                :            :               /* EOPNOTSUPP is seen on NFS in HP-UX 11.11, 11.23.
-<span class="lineNum">     705 </span>                :            :                  EINVAL is seen on NFS in HP-UX 11.31.  */
-<span class="lineNum">     706 </span>                :            :               if (errno == ENOSYS || errno == EOPNOTSUPP || errno == EINVAL)
-<span class="lineNum">     707 </span>                :            :                 break;
-<span class="lineNum">     708 </span>                :            :               else
-<span class="lineNum">     709 </span>                :            :                 return -1;
-<span class="lineNum">     710 </span>                :            :             }
-<span class="lineNum">     711 </span>                :            : 
-<span class="lineNum">     712 </span>                :            :           if (count == 0)
-<span class="lineNum">     713 </span>                :            :             return 0;
-<span class="lineNum">     714 </span>                :            : 
-<span class="lineNum">     715 </span>                :            :           if (count &gt; NACLVENTRIES)
-<span class="lineNum">     716 </span>                :            :             /* If NACLVENTRIES cannot be trusted, use dynamic memory
-<span class="lineNum">     717 </span>                :            :                allocation.  */
-<span class="lineNum">     718 </span>                :            :             abort ();
-<span class="lineNum">     719 </span>                :            : 
-<span class="lineNum">     720 </span>                :            :           /* If there are more than 4 entries, there cannot be only the
-<span class="lineNum">     721 </span>                :            :              four base ACL entries.  */
-<span class="lineNum">     722 </span>                :            :           if (count &gt; 4)
-<span class="lineNum">     723 </span>                :            :             return 1;
-<span class="lineNum">     724 </span>                :            : 
-<span class="lineNum">     725 </span>                :            :           if (acl ((char *) name, ACL_GET, count, entries) == count)
-<span class="lineNum">     726 </span>                :            :             return aclv_nontrivial (count, entries);
-<span class="lineNum">     727 </span>                :            :           /* Huh? The number of ACL entries changed since the last call.
-<span class="lineNum">     728 </span>                :            :              Repeat.  */
-<span class="lineNum">     729 </span>                :            :         }
+<span class="lineNum">     463 </span>                :            :       /* Note: If ace-&gt;a_type = USER_OBJ, ace-&gt;a_id is the st_uid from stat().
+<span class="lineNum">     464 </span>                :            :          If ace-&gt;a_type = GROUP_OBJ, ace-&gt;a_id is the st_gid from stat().
+<span class="lineNum">     465 </span>                :            :          We don't need to check ace-&gt;a_id in these cases.  */
+<span class="lineNum">     466 </span>                :            :       if (!(ace-&gt;a_type == USER_OBJ /* no need to check ace-&gt;a_id here */
+<span class="lineNum">     467 </span>                :            :             || ace-&gt;a_type == GROUP_OBJ /* no need to check ace-&gt;a_id here */
+<span class="lineNum">     468 </span>                :            :             || ace-&gt;a_type == CLASS_OBJ
+<span class="lineNum">     469 </span>                :            :             || ace-&gt;a_type == OTHER_OBJ))
+<span class="lineNum">     470 </span>                :            :         return 1;
+<span class="lineNum">     471 </span>                :            :     }
+<span class="lineNum">     472 </span>                :            :   return 0;
+<span class="lineNum">     473 </span>                :            : }
+<span class="lineNum">     474 </span>                :            : 
+<span class="lineNum">     475 </span>                :            : #endif
+<span class="lineNum">     476 </span>                :            : 
+<span class="lineNum">     477 </span>                :            : 
+<span class="lineNum">     478 </span>                :            : /* Return 1 if NAME has a nontrivial access control list, 0 if NAME
+<span class="lineNum">     479 </span>                :            :    only has no or a base access control list, and -1 (setting errno)
+<span class="lineNum">     480 </span>                :            :    on error.  SB must be set to the stat buffer of NAME, obtained
+<span class="lineNum">     481 </span>                :            :    through stat() or lstat().  */
+<a name="482"><span class="lineNum">     482 </span>                :            : </a>
+<span class="lineNum">     483 </span>                :            : int
+<span class="lineNum">     484 </span>                :<span class="lineCov">       1487 : file_has_acl (char const *name, struct stat const *sb)</span>
+<span class="lineNum">     485 </span>                :            : {
+<span class="lineNum">     486 </span>                :            : #if USE_ACL
+<span class="lineNum">     487 </span>        [<span class="branchCov" title="Branch 0 was taken 1380 times"> + </span><span class="branchCov" title="Branch 1 was taken 107 times"> + </span>]:<span class="lineCov">       1487 :   if (! S_ISLNK (sb-&gt;st_mode))</span>
+<span class="lineNum">     488 </span>                :            :     {
+<span class="lineNum">     489 </span>                :            : # if HAVE_ACL_GET_FILE
+<span class="lineNum">     490 </span>                :            : 
+<span class="lineNum">     491 </span>                :            :       /* POSIX 1003.1e (draft 17 -- abandoned) specific version.  */
+<span class="lineNum">     492 </span>                :            :       /* Linux, FreeBSD, MacOS X, IRIX, Tru64 */
+<span class="lineNum">     493 </span>                :            :       int ret;
+<span class="lineNum">     494 </span>                :            : 
+<span class="lineNum">     495 </span>                :            :       if (HAVE_ACL_EXTENDED_FILE) /* Linux */
+<span class="lineNum">     496 </span>                :            :         {
+<span class="lineNum">     497 </span>                :            :           /* On Linux, acl_extended_file is an optimized function: It only
+<span class="lineNum">     498 </span>                :            :              makes two calls to getxattr(), one for ACL_TYPE_ACCESS, one for
+<span class="lineNum">     499 </span>                :            :              ACL_TYPE_DEFAULT.  */
+<span class="lineNum">     500 </span>                :<span class="lineCov">       1380 :           ret = acl_extended_file (name);</span>
+<span class="lineNum">     501 </span>                :            :         }
+<span class="lineNum">     502 </span>                :            :       else /* FreeBSD, MacOS X, IRIX, Tru64 */
+<span class="lineNum">     503 </span>                :            :         {
+<span class="lineNum">     504 </span>                :            : #  if HAVE_ACL_TYPE_EXTENDED /* MacOS X */
+<span class="lineNum">     505 </span>                :            :           /* On MacOS X, acl_get_file (name, ACL_TYPE_ACCESS)
+<span class="lineNum">     506 </span>                :            :              and acl_get_file (name, ACL_TYPE_DEFAULT)
+<span class="lineNum">     507 </span>                :            :              always return NULL / EINVAL.  There is no point in making
+<span class="lineNum">     508 </span>                :            :              these two useless calls.  The real ACL is retrieved through
+<span class="lineNum">     509 </span>                :            :              acl_get_file (name, ACL_TYPE_EXTENDED).  */
+<span class="lineNum">     510 </span>                :            :           acl_t acl = acl_get_file (name, ACL_TYPE_EXTENDED);
+<span class="lineNum">     511 </span>                :            :           if (acl)
+<span class="lineNum">     512 </span>                :            :             {
+<span class="lineNum">     513 </span>                :            :               ret = acl_extended_nontrivial (acl);
+<span class="lineNum">     514 </span>                :            :               acl_free (acl);
+<span class="lineNum">     515 </span>                :            :             }
+<span class="lineNum">     516 </span>                :            :           else
+<span class="lineNum">     517 </span>                :            :             ret = -1;
+<span class="lineNum">     518 </span>                :            : #  else /* FreeBSD, IRIX, Tru64 */
+<span class="lineNum">     519 </span>                :            :           acl_t acl = acl_get_file (name, ACL_TYPE_ACCESS);
+<span class="lineNum">     520 </span>                :            :           if (acl)
+<span class="lineNum">     521 </span>                :            :             {
+<span class="lineNum">     522 </span>                :            :               int saved_errno;
+<span class="lineNum">     523 </span>                :            : 
+<span class="lineNum">     524 </span>                :            :               ret = acl_access_nontrivial (acl);
+<span class="lineNum">     525 </span>                :            :               saved_errno = errno;
+<span class="lineNum">     526 </span>                :            :               acl_free (acl);
+<span class="lineNum">     527 </span>                :            :               errno = saved_errno;
+<span class="lineNum">     528 </span>                :            : #   if HAVE_ACL_FREE_TEXT /* Tru64 */
+<span class="lineNum">     529 </span>                :            :               /* On OSF/1, acl_get_file (name, ACL_TYPE_DEFAULT) always
+<span class="lineNum">     530 </span>                :            :                  returns NULL with errno not set.  There is no point in
+<span class="lineNum">     531 </span>                :            :                  making this call.  */
+<span class="lineNum">     532 </span>                :            : #   else /* FreeBSD, IRIX */
+<span class="lineNum">     533 </span>                :            :               /* On Linux, FreeBSD, IRIX, acl_get_file (name, ACL_TYPE_ACCESS)
+<span class="lineNum">     534 </span>                :            :                  and acl_get_file (name, ACL_TYPE_DEFAULT) on a directory
+<span class="lineNum">     535 </span>                :            :                  either both succeed or both fail; it depends on the
+<span class="lineNum">     536 </span>                :            :                  file system.  Therefore there is no point in making the second
+<span class="lineNum">     537 </span>                :            :                  call if the first one already failed.  */
+<span class="lineNum">     538 </span>                :            :               if (ret == 0 &amp;&amp; S_ISDIR (sb-&gt;st_mode))
+<span class="lineNum">     539 </span>                :            :                 {
+<span class="lineNum">     540 </span>                :            :                   acl = acl_get_file (name, ACL_TYPE_DEFAULT);
+<span class="lineNum">     541 </span>                :            :                   if (acl)
+<span class="lineNum">     542 </span>                :            :                     {
+<span class="lineNum">     543 </span>                :            :                       ret = (0 &lt; acl_entries (acl));
+<span class="lineNum">     544 </span>                :            :                       acl_free (acl);
+<span class="lineNum">     545 </span>                :            :                     }
+<span class="lineNum">     546 </span>                :            :                   else
+<span class="lineNum">     547 </span>                :            :                     ret = -1;
+<span class="lineNum">     548 </span>                :            :                 }
+<span class="lineNum">     549 </span>                :            : #   endif
+<span class="lineNum">     550 </span>                :            :             }
+<span class="lineNum">     551 </span>                :            :           else
+<span class="lineNum">     552 </span>                :            :             ret = -1;
+<span class="lineNum">     553 </span>                :            : #  endif
+<span class="lineNum">     554 </span>                :            :         }
+<span class="lineNum">     555 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1378 times"> + </span>]:<span class="lineCov">       1380 :       if (ret &lt; 0)</span>
+<span class="lineNum">     556 </span>[<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]:<span class="lineCov">       1487 :         return ACL_NOT_WELL_SUPPORTED (errno) ? 0 : -1;</span>
+<span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 7 was not executed"> # </span><span class="branchNoExec" title="Branch 8 was not executed"> # </span>][<span class="branchNoExec" title="Branch 10 was not executed"> # </span><span class="branchNoExec" title="Branch 11 was not executed"> # </span>]
+<span class="lineNum">     557 </span>                :            :       return ret;
+<span class="lineNum">     558 </span>                :            : 
+<span class="lineNum">     559 </span>                :            : # elif HAVE_FACL &amp;&amp; defined GETACL /* Solaris, Cygwin, not HP-UX */
+<span class="lineNum">     560 </span>                :            : 
+<span class="lineNum">     561 </span>                :            : #  if defined ACL_NO_TRIVIAL
+<span class="lineNum">     562 </span>                :            : 
+<span class="lineNum">     563 </span>                :            :       /* Solaris 10 (newer version), which has additional API declared in
+<span class="lineNum">     564 </span>                :            :          &lt;sys/acl.h&gt; (acl_t) and implemented in libsec (acl_set, acl_trivial,
+<span class="lineNum">     565 </span>                :            :          acl_fromtext, ...).  */
+<span class="lineNum">     566 </span>                :            :       return acl_trivial (name);
+<span class="lineNum">     567 </span>                :            : 
+<span class="lineNum">     568 </span>                :            : #  else /* Solaris, Cygwin, general case */
+<span class="lineNum">     569 </span>                :            : 
+<span class="lineNum">     570 </span>                :            :       /* Solaris 2.5 through Solaris 10, Cygwin, and contemporaneous versions
+<span class="lineNum">     571 </span>                :            :          of Unixware.  The acl() call returns the access and default ACL both
+<span class="lineNum">     572 </span>                :            :          at once.  */
+<span class="lineNum">     573 </span>                :            :       {
+<span class="lineNum">     574 </span>                :            :         /* Initially, try to read the entries into a stack-allocated buffer.
+<span class="lineNum">     575 </span>                :            :            Use malloc if it does not fit.  */
+<span class="lineNum">     576 </span>                :            :         enum
+<span class="lineNum">     577 </span>                :            :           {
+<span class="lineNum">     578 </span>                :            :             alloc_init = 4000 / sizeof (aclent_t), /* &gt;= 3 */
+<span class="lineNum">     579 </span>                :            :             alloc_max = MIN (INT_MAX, SIZE_MAX / sizeof (aclent_t))
+<span class="lineNum">     580 </span>                :            :           };
+<span class="lineNum">     581 </span>                :            :         aclent_t buf[alloc_init];
+<span class="lineNum">     582 </span>                :            :         size_t alloc = alloc_init;
+<span class="lineNum">     583 </span>                :            :         aclent_t *entries = buf;
+<span class="lineNum">     584 </span>                :            :         aclent_t *malloced = NULL;
+<span class="lineNum">     585 </span>                :            :         int count;
+<span class="lineNum">     586 </span>                :            : 
+<span class="lineNum">     587 </span>                :            :         for (;;)
+<span class="lineNum">     588 </span>                :            :           {
+<span class="lineNum">     589 </span>                :            :             count = acl (name, GETACL, alloc, entries);
+<span class="lineNum">     590 </span>                :            :             if (count &lt; 0 &amp;&amp; errno == ENOSPC)
+<span class="lineNum">     591 </span>                :            :               {
+<span class="lineNum">     592 </span>                :            :                 /* Increase the size of the buffer.  */
+<span class="lineNum">     593 </span>                :            :                 free (malloced);
+<span class="lineNum">     594 </span>                :            :                 if (alloc &gt; alloc_max / 2)
+<span class="lineNum">     595 </span>                :            :                   {
+<span class="lineNum">     596 </span>                :            :                     errno = ENOMEM;
+<span class="lineNum">     597 </span>                :            :                     return -1;
+<span class="lineNum">     598 </span>                :            :                   }
+<span class="lineNum">     599 </span>                :            :                 alloc = 2 * alloc; /* &lt;= alloc_max */
+<span class="lineNum">     600 </span>                :            :                 entries = malloced =
+<span class="lineNum">     601 </span>                :            :                   (aclent_t *) malloc (alloc * sizeof (aclent_t));
+<span class="lineNum">     602 </span>                :            :                 if (entries == NULL)
+<span class="lineNum">     603 </span>                :            :                   {
+<span class="lineNum">     604 </span>                :            :                     errno = ENOMEM;
+<span class="lineNum">     605 </span>                :            :                     return -1;
+<span class="lineNum">     606 </span>                :            :                   }
+<span class="lineNum">     607 </span>                :            :                 continue;
+<span class="lineNum">     608 </span>                :            :               }
+<span class="lineNum">     609 </span>                :            :             break;
+<span class="lineNum">     610 </span>                :            :           }
+<span class="lineNum">     611 </span>                :            :         if (count &lt; 0)
+<span class="lineNum">     612 </span>                :            :           {
+<span class="lineNum">     613 </span>                :            :             if (errno == ENOSYS || errno == ENOTSUP)
+<span class="lineNum">     614 </span>                :            :               ;
+<span class="lineNum">     615 </span>                :            :             else
+<span class="lineNum">     616 </span>                :            :               {
+<span class="lineNum">     617 </span>                :            :                 int saved_errno = errno;
+<span class="lineNum">     618 </span>                :            :                 free (malloced);
+<span class="lineNum">     619 </span>                :            :                 errno = saved_errno;
+<span class="lineNum">     620 </span>                :            :                 return -1;
+<span class="lineNum">     621 </span>                :            :               }
+<span class="lineNum">     622 </span>                :            :           }
+<span class="lineNum">     623 </span>                :            :         else if (count == 0)
+<span class="lineNum">     624 </span>                :            :           ;
+<span class="lineNum">     625 </span>                :            :         else
+<span class="lineNum">     626 </span>                :            :           {
+<span class="lineNum">     627 </span>                :            :             /* Don't use MIN_ACL_ENTRIES:  It's set to 4 on Cygwin, but Cygwin
+<span class="lineNum">     628 </span>                :            :                returns only 3 entries for files with no ACL.  But this is safe:
+<span class="lineNum">     629 </span>                :            :                If there are more than 4 entries, there cannot be only the
+<span class="lineNum">     630 </span>                :            :                &quot;user::&quot;, &quot;group::&quot;, &quot;other:&quot;, and &quot;mask:&quot; entries.  */
+<span class="lineNum">     631 </span>                :            :             if (count &gt; 4)
+<span class="lineNum">     632 </span>                :            :               {
+<span class="lineNum">     633 </span>                :            :                 free (malloced);
+<span class="lineNum">     634 </span>                :            :                 return 1;
+<span class="lineNum">     635 </span>                :            :               }
+<span class="lineNum">     636 </span>                :            : 
+<span class="lineNum">     637 </span>                :            :             if (acl_nontrivial (count, entries))
+<span class="lineNum">     638 </span>                :            :               {
+<span class="lineNum">     639 </span>                :            :                 free (malloced);
+<span class="lineNum">     640 </span>                :            :                 return 1;
+<span class="lineNum">     641 </span>                :            :               }
+<span class="lineNum">     642 </span>                :            :           }
+<span class="lineNum">     643 </span>                :            :         free (malloced);
+<span class="lineNum">     644 </span>                :            :       }
+<span class="lineNum">     645 </span>                :            : 
+<span class="lineNum">     646 </span>                :            : #   ifdef ACE_GETACL
+<span class="lineNum">     647 </span>                :            :       /* Solaris also has a different variant of ACLs, used in ZFS and NFSv4
+<span class="lineNum">     648 </span>                :            :          file systems (whereas the other ones are used in UFS file systems).  */
+<span class="lineNum">     649 </span>                :            :       {
+<span class="lineNum">     650 </span>                :            :         /* Initially, try to read the entries into a stack-allocated buffer.
+<span class="lineNum">     651 </span>                :            :            Use malloc if it does not fit.  */
+<span class="lineNum">     652 </span>                :            :         enum
+<span class="lineNum">     653 </span>                :            :           {
+<span class="lineNum">     654 </span>                :            :             alloc_init = 4000 / sizeof (ace_t), /* &gt;= 3 */
+<span class="lineNum">     655 </span>                :            :             alloc_max = MIN (INT_MAX, SIZE_MAX / sizeof (ace_t))
+<span class="lineNum">     656 </span>                :            :           };
+<span class="lineNum">     657 </span>                :            :         ace_t buf[alloc_init];
+<span class="lineNum">     658 </span>                :            :         size_t alloc = alloc_init;
+<span class="lineNum">     659 </span>                :            :         ace_t *entries = buf;
+<span class="lineNum">     660 </span>                :            :         ace_t *malloced = NULL;
+<span class="lineNum">     661 </span>                :            :         int count;
+<span class="lineNum">     662 </span>                :            : 
+<span class="lineNum">     663 </span>                :            :         for (;;)
+<span class="lineNum">     664 </span>                :            :           {
+<span class="lineNum">     665 </span>                :            :             count = acl (name, ACE_GETACL, alloc, entries);
+<span class="lineNum">     666 </span>                :            :             if (count &lt; 0 &amp;&amp; errno == ENOSPC)
+<span class="lineNum">     667 </span>                :            :               {
+<span class="lineNum">     668 </span>                :            :                 /* Increase the size of the buffer.  */
+<span class="lineNum">     669 </span>                :            :                 free (malloced);
+<span class="lineNum">     670 </span>                :            :                 if (alloc &gt; alloc_max / 2)
+<span class="lineNum">     671 </span>                :            :                   {
+<span class="lineNum">     672 </span>                :            :                     errno = ENOMEM;
+<span class="lineNum">     673 </span>                :            :                     return -1;
+<span class="lineNum">     674 </span>                :            :                   }
+<span class="lineNum">     675 </span>                :            :                 alloc = 2 * alloc; /* &lt;= alloc_max */
+<span class="lineNum">     676 </span>                :            :                 entries = malloced = (ace_t *) malloc (alloc * sizeof (ace_t));
+<span class="lineNum">     677 </span>                :            :                 if (entries == NULL)
+<span class="lineNum">     678 </span>                :            :                   {
+<span class="lineNum">     679 </span>                :            :                     errno = ENOMEM;
+<span class="lineNum">     680 </span>                :            :                     return -1;
+<span class="lineNum">     681 </span>                :            :                   }
+<span class="lineNum">     682 </span>                :            :                 continue;
+<span class="lineNum">     683 </span>                :            :               }
+<span class="lineNum">     684 </span>                :            :             break;
+<span class="lineNum">     685 </span>                :            :           }
+<span class="lineNum">     686 </span>                :            :         if (count &lt; 0)
+<span class="lineNum">     687 </span>                :            :           {
+<span class="lineNum">     688 </span>                :            :             if (errno == ENOSYS || errno == EINVAL)
+<span class="lineNum">     689 </span>                :            :               ;
+<span class="lineNum">     690 </span>                :            :             else
+<span class="lineNum">     691 </span>                :            :               {
+<span class="lineNum">     692 </span>                :            :                 int saved_errno = errno;
+<span class="lineNum">     693 </span>                :            :                 free (malloced);
+<span class="lineNum">     694 </span>                :            :                 errno = saved_errno;
+<span class="lineNum">     695 </span>                :            :                 return -1;
+<span class="lineNum">     696 </span>                :            :               }
+<span class="lineNum">     697 </span>                :            :           }
+<span class="lineNum">     698 </span>                :            :         else if (count == 0)
+<span class="lineNum">     699 </span>                :            :           ;
+<span class="lineNum">     700 </span>                :            :         else
+<span class="lineNum">     701 </span>                :            :           {
+<span class="lineNum">     702 </span>                :            :             /* In the old (original Solaris 10) convention:
+<span class="lineNum">     703 </span>                :            :                If there are more than 3 entries, there cannot be only the
+<span class="lineNum">     704 </span>                :            :                ACE_OWNER, ACE_GROUP, ACE_OTHER entries.
+<span class="lineNum">     705 </span>                :            :                In the newer Solaris 10 and Solaris 11 convention:
+<span class="lineNum">     706 </span>                :            :                If there are more than 6 entries, there cannot be only the
+<span class="lineNum">     707 </span>                :            :                ACE_OWNER, ACE_GROUP, ACE_EVERYONE entries, each once with
+<span class="lineNum">     708 </span>                :            :                NEW_ACE_ACCESS_ALLOWED_ACE_TYPE and once with
+<span class="lineNum">     709 </span>                :            :                NEW_ACE_ACCESS_DENIED_ACE_TYPE.  */
+<span class="lineNum">     710 </span>                :            :             if (count &gt; 6)
+<span class="lineNum">     711 </span>                :            :               {
+<span class="lineNum">     712 </span>                :            :                 free (malloced);
+<span class="lineNum">     713 </span>                :            :                 return 1;
+<span class="lineNum">     714 </span>                :            :               }
+<span class="lineNum">     715 </span>                :            : 
+<span class="lineNum">     716 </span>                :            :             if (acl_ace_nontrivial (count, entries))
+<span class="lineNum">     717 </span>                :            :               {
+<span class="lineNum">     718 </span>                :            :                 free (malloced);
+<span class="lineNum">     719 </span>                :            :                 return 1;
+<span class="lineNum">     720 </span>                :            :               }
+<span class="lineNum">     721 </span>                :            :           }
+<span class="lineNum">     722 </span>                :            :         free (malloced);
+<span class="lineNum">     723 </span>                :            :       }
+<span class="lineNum">     724 </span>                :            : #   endif
+<span class="lineNum">     725 </span>                :            : 
+<span class="lineNum">     726 </span>                :            :       return 0;
+<span class="lineNum">     727 </span>                :            : #  endif
+<span class="lineNum">     728 </span>                :            : 
+<span class="lineNum">     729 </span>                :            : # elif HAVE_GETACL /* HP-UX */
 <span class="lineNum">     730 </span>                :            : 
-<span class="lineNum">     731 </span>                :            : #  endif
-<span class="lineNum">     732 </span>                :            : 
-<span class="lineNum">     733 </span>                :            : # elif HAVE_ACLX_GET &amp;&amp; defined ACL_AIX_WIP /* AIX */
+<span class="lineNum">     731 </span>                :            :       {
+<span class="lineNum">     732 </span>                :            :         struct acl_entry entries[NACLENTRIES];
+<span class="lineNum">     733 </span>                :            :         int count;
 <span class="lineNum">     734 </span>                :            : 
-<span class="lineNum">     735 </span>                :            :       acl_type_t type;
-<span class="lineNum">     736 </span>                :            :       char aclbuf[1024];
-<span class="lineNum">     737 </span>                :            :       void *acl = aclbuf;
-<span class="lineNum">     738 </span>                :            :       size_t aclsize = sizeof (aclbuf);
-<span class="lineNum">     739 </span>                :            :       mode_t mode;
-<span class="lineNum">     740 </span>                :            : 
-<span class="lineNum">     741 </span>                :            :       for (;;)
-<span class="lineNum">     742 </span>                :            :         {
-<span class="lineNum">     743 </span>                :            :           /* The docs say that type being 0 is equivalent to ACL_ANY, but it
-<span class="lineNum">     744 </span>                :            :              is not true, in AIX 5.3.  */
-<span class="lineNum">     745 </span>                :            :           type.u64 = ACL_ANY;
-<span class="lineNum">     746 </span>                :            :           if (aclx_get (name, 0, &amp;type, aclbuf, &amp;aclsize, &amp;mode) &gt;= 0)
-<span class="lineNum">     747 </span>                :            :             break;
-<span class="lineNum">     748 </span>                :            :           if (errno == ENOSYS)
-<span class="lineNum">     749 </span>                :            :             return 0;
-<span class="lineNum">     750 </span>                :            :           if (errno != ENOSPC)
-<span class="lineNum">     751 </span>                :            :             {
-<span class="lineNum">     752 </span>                :            :               if (acl != aclbuf)
-<span class="lineNum">     753 </span>                :            :                 {
-<span class="lineNum">     754 </span>                :            :                   int saved_errno = errno;
-<span class="lineNum">     755 </span>                :            :                   free (acl);
-<span class="lineNum">     756 </span>                :            :                   errno = saved_errno;
-<span class="lineNum">     757 </span>                :            :                 }
-<span class="lineNum">     758 </span>                :            :               return -1;
-<span class="lineNum">     759 </span>                :            :             }
-<span class="lineNum">     760 </span>                :            :           aclsize = 2 * aclsize;
-<span class="lineNum">     761 </span>                :            :           if (acl != aclbuf)
-<span class="lineNum">     762 </span>                :            :             free (acl);
-<span class="lineNum">     763 </span>                :            :           acl = malloc (aclsize);
-<span class="lineNum">     764 </span>                :            :           if (acl == NULL)
-<span class="lineNum">     765 </span>                :            :             {
-<span class="lineNum">     766 </span>                :            :               errno = ENOMEM;
-<span class="lineNum">     767 </span>                :            :               return -1;
+<span class="lineNum">     735 </span>                :            :         count = getacl (name, NACLENTRIES, entries);
+<span class="lineNum">     736 </span>                :            : 
+<span class="lineNum">     737 </span>                :            :         if (count &lt; 0)
+<span class="lineNum">     738 </span>                :            :           {
+<span class="lineNum">     739 </span>                :            :             /* ENOSYS is seen on newer HP-UX versions.
+<span class="lineNum">     740 </span>                :            :                EOPNOTSUPP is typically seen on NFS mounts.
+<span class="lineNum">     741 </span>                :            :                ENOTSUP was seen on Quantum StorNext file systems (cvfs).  */
+<span class="lineNum">     742 </span>                :            :             if (errno == ENOSYS || errno == EOPNOTSUPP || errno == ENOTSUP)
+<span class="lineNum">     743 </span>                :            :               ;
+<span class="lineNum">     744 </span>                :            :             else
+<span class="lineNum">     745 </span>                :            :               return -1;
+<span class="lineNum">     746 </span>                :            :           }
+<span class="lineNum">     747 </span>                :            :         else if (count == 0)
+<span class="lineNum">     748 </span>                :            :           return 0;
+<span class="lineNum">     749 </span>                :            :         else /* count &gt; 0 */
+<span class="lineNum">     750 </span>                :            :           {
+<span class="lineNum">     751 </span>                :            :             if (count &gt; NACLENTRIES)
+<span class="lineNum">     752 </span>                :            :               /* If NACLENTRIES cannot be trusted, use dynamic memory
+<span class="lineNum">     753 </span>                :            :                  allocation.  */
+<span class="lineNum">     754 </span>                :            :               abort ();
+<span class="lineNum">     755 </span>                :            : 
+<span class="lineNum">     756 </span>                :            :             /* If there are more than 3 entries, there cannot be only the
+<span class="lineNum">     757 </span>                :            :                (uid,%), (%,gid), (%,%) entries.  */
+<span class="lineNum">     758 </span>                :            :             if (count &gt; 3)
+<span class="lineNum">     759 </span>                :            :               return 1;
+<span class="lineNum">     760 </span>                :            : 
+<span class="lineNum">     761 </span>                :            :             {
+<span class="lineNum">     762 </span>                :            :               struct stat statbuf;
+<span class="lineNum">     763 </span>                :            : 
+<span class="lineNum">     764 </span>                :            :               if (stat (name, &amp;statbuf) &lt; 0)
+<span class="lineNum">     765 </span>                :            :                 return -1;
+<span class="lineNum">     766 </span>                :            : 
+<span class="lineNum">     767 </span>                :            :               return acl_nontrivial (count, entries, &amp;statbuf);
 <span class="lineNum">     768 </span>                :            :             }
-<span class="lineNum">     769 </span>                :            :         }
-<span class="lineNum">     770 </span>                :            : 
-<span class="lineNum">     771 </span>                :            :       if (type.u64 == ACL_AIXC)
-<span class="lineNum">     772 </span>                :            :         {
-<span class="lineNum">     773 </span>                :            :           int result = acl_nontrivial ((struct acl *) acl);
-<span class="lineNum">     774 </span>                :            :           if (acl != aclbuf)
-<span class="lineNum">     775 </span>                :            :             free (acl);
-<span class="lineNum">     776 </span>                :            :           return result;
-<span class="lineNum">     777 </span>                :            :         }
-<span class="lineNum">     778 </span>                :            :       else if (type.u64 == ACL_NFS4)
-<span class="lineNum">     779 </span>                :            :         {
-<span class="lineNum">     780 </span>                :            :           int result = acl_nfs4_nontrivial ((nfs4_acl_int_t *) acl);
-<span class="lineNum">     781 </span>                :            :           if (acl != aclbuf)
-<span class="lineNum">     782 </span>                :            :             free (acl);
-<span class="lineNum">     783 </span>                :            :           return result;
-<span class="lineNum">     784 </span>                :            :         }
-<span class="lineNum">     785 </span>                :            :       else
-<span class="lineNum">     786 </span>                :            :         {
-<span class="lineNum">     787 </span>                :            :           /* A newer type of ACL has been introduced in the system.
-<span class="lineNum">     788 </span>                :            :              We should better support it.  */
-<span class="lineNum">     789 </span>                :            :           if (acl != aclbuf)
-<span class="lineNum">     790 </span>                :            :             free (acl);
-<span class="lineNum">     791 </span>                :            :           errno = EINVAL;
-<span class="lineNum">     792 </span>                :            :           return -1;
-<span class="lineNum">     793 </span>                :            :         }
-<span class="lineNum">     794 </span>                :            : 
-<span class="lineNum">     795 </span>                :            : # elif HAVE_STATACL /* older AIX */
-<span class="lineNum">     796 </span>                :            : 
-<span class="lineNum">     797 </span>                :            :       union { struct acl a; char room[4096]; } u;
-<span class="lineNum">     798 </span>                :            : 
-<span class="lineNum">     799 </span>                :            :       if (statacl (name, STX_NORMAL, &amp;u.a, sizeof (u)) &lt; 0)
-<span class="lineNum">     800 </span>                :            :         return -1;
-<span class="lineNum">     801 </span>                :            : 
-<span class="lineNum">     802 </span>                :            :       return acl_nontrivial (&amp;u.a);
-<span class="lineNum">     803 </span>                :            : 
-<span class="lineNum">     804 </span>                :            : # elif HAVE_ACLSORT /* NonStop Kernel */
-<span class="lineNum">     805 </span>                :            : 
-<span class="lineNum">     806 </span>                :            :       int count;
-<span class="lineNum">     807 </span>                :            :       struct acl entries[NACLENTRIES];
+<span class="lineNum">     769 </span>                :            :           }
+<span class="lineNum">     770 </span>                :            :       }
+<span class="lineNum">     771 </span>                :            : 
+<span class="lineNum">     772 </span>                :            : #  if HAVE_ACLV_H /* HP-UX &gt;= 11.11 */
+<span class="lineNum">     773 </span>                :            : 
+<span class="lineNum">     774 </span>                :            :       {
+<span class="lineNum">     775 </span>                :            :         struct acl entries[NACLVENTRIES];
+<span class="lineNum">     776 </span>                :            :         int count;
+<span class="lineNum">     777 </span>                :            : 
+<span class="lineNum">     778 </span>                :            :         count = acl ((char *) name, ACL_GET, NACLVENTRIES, entries);
+<span class="lineNum">     779 </span>                :            : 
+<span class="lineNum">     780 </span>                :            :         if (count &lt; 0)
+<span class="lineNum">     781 </span>                :            :           {
+<span class="lineNum">     782 </span>                :            :             /* EOPNOTSUPP is seen on NFS in HP-UX 11.11, 11.23.
+<span class="lineNum">     783 </span>                :            :                EINVAL is seen on NFS in HP-UX 11.31.  */
+<span class="lineNum">     784 </span>                :            :             if (errno == ENOSYS || errno == EOPNOTSUPP || errno == EINVAL)
+<span class="lineNum">     785 </span>                :            :               ;
+<span class="lineNum">     786 </span>                :            :             else
+<span class="lineNum">     787 </span>                :            :               return -1;
+<span class="lineNum">     788 </span>                :            :           }
+<span class="lineNum">     789 </span>                :            :         else if (count == 0)
+<span class="lineNum">     790 </span>                :            :           return 0;
+<span class="lineNum">     791 </span>                :            :         else /* count &gt; 0 */
+<span class="lineNum">     792 </span>                :            :           {
+<span class="lineNum">     793 </span>                :            :             if (count &gt; NACLVENTRIES)
+<span class="lineNum">     794 </span>                :            :               /* If NACLVENTRIES cannot be trusted, use dynamic memory
+<span class="lineNum">     795 </span>                :            :                  allocation.  */
+<span class="lineNum">     796 </span>                :            :               abort ();
+<span class="lineNum">     797 </span>                :            : 
+<span class="lineNum">     798 </span>                :            :             /* If there are more than 4 entries, there cannot be only the
+<span class="lineNum">     799 </span>                :            :                four base ACL entries.  */
+<span class="lineNum">     800 </span>                :            :             if (count &gt; 4)
+<span class="lineNum">     801 </span>                :            :               return 1;
+<span class="lineNum">     802 </span>                :            : 
+<span class="lineNum">     803 </span>                :            :             return aclv_nontrivial (count, entries);
+<span class="lineNum">     804 </span>                :            :           }
+<span class="lineNum">     805 </span>                :            :       }
+<span class="lineNum">     806 </span>                :            : 
+<span class="lineNum">     807 </span>                :            : #  endif
 <span class="lineNum">     808 </span>                :            : 
-<span class="lineNum">     809 </span>                :            :       for (;;)
-<span class="lineNum">     810 </span>                :            :         {
-<span class="lineNum">     811 </span>                :            :           count = acl ((char *) name, ACL_CNT, NACLENTRIES, NULL);
-<span class="lineNum">     812 </span>                :            : 
-<span class="lineNum">     813 </span>                :            :           if (count &lt; 0)
-<span class="lineNum">     814 </span>                :            :             {
-<span class="lineNum">     815 </span>                :            :               if (errno == ENOSYS || errno == ENOTSUP)
-<span class="lineNum">     816 </span>                :            :                 break;
-<span class="lineNum">     817 </span>                :            :               else
-<span class="lineNum">     818 </span>                :            :                 return -1;
-<span class="lineNum">     819 </span>                :            :             }
-<span class="lineNum">     820 </span>                :            : 
-<span class="lineNum">     821 </span>                :            :           if (count == 0)
-<span class="lineNum">     822 </span>                :            :             return 0;
-<span class="lineNum">     823 </span>                :            : 
-<span class="lineNum">     824 </span>                :            :           if (count &gt; NACLENTRIES)
-<span class="lineNum">     825 </span>                :            :             /* If NACLENTRIES cannot be trusted, use dynamic memory
-<span class="lineNum">     826 </span>                :            :                allocation.  */
-<span class="lineNum">     827 </span>                :            :             abort ();
-<span class="lineNum">     828 </span>                :            : 
-<span class="lineNum">     829 </span>                :            :           /* If there are more than 4 entries, there cannot be only the
-<span class="lineNum">     830 </span>                :            :              four base ACL entries.  */
-<span class="lineNum">     831 </span>                :            :           if (count &gt; 4)
-<span class="lineNum">     832 </span>                :            :             return 1;
-<span class="lineNum">     833 </span>                :            : 
-<span class="lineNum">     834 </span>                :            :           if (acl ((char *) name, ACL_GET, count, entries) == count)
-<span class="lineNum">     835 </span>                :            :             return acl_nontrivial (count, entries);
-<span class="lineNum">     836 </span>                :            :           /* Huh? The number of ACL entries changed since the last call.
-<span class="lineNum">     837 </span>                :            :              Repeat.  */
-<span class="lineNum">     838 </span>                :            :         }
-<span class="lineNum">     839 </span>                :            : 
-<span class="lineNum">     840 </span>                :            : # endif
-<span class="lineNum">     841 </span>                :            :     }
-<span class="lineNum">     842 </span>                :            : #endif
-<span class="lineNum">     843 </span>                :            : 
-<span class="lineNum">     844 </span>                :<span class="lineCov">       9964 :   return 0;</span>
-<span class="lineNum">     845 </span>                :            : }
+<span class="lineNum">     809 </span>                :            : # elif HAVE_ACLX_GET &amp;&amp; defined ACL_AIX_WIP /* AIX */
+<span class="lineNum">     810 </span>                :            : 
+<span class="lineNum">     811 </span>                :            :       acl_type_t type;
+<span class="lineNum">     812 </span>                :            :       char aclbuf[1024];
+<span class="lineNum">     813 </span>                :            :       void *acl = aclbuf;
+<span class="lineNum">     814 </span>                :            :       size_t aclsize = sizeof (aclbuf);
+<span class="lineNum">     815 </span>                :            :       mode_t mode;
+<span class="lineNum">     816 </span>                :            : 
+<span class="lineNum">     817 </span>                :            :       for (;;)
+<span class="lineNum">     818 </span>                :            :         {
+<span class="lineNum">     819 </span>                :            :           /* The docs say that type being 0 is equivalent to ACL_ANY, but it
+<span class="lineNum">     820 </span>                :            :              is not true, in AIX 5.3.  */
+<span class="lineNum">     821 </span>                :            :           type.u64 = ACL_ANY;
+<span class="lineNum">     822 </span>                :            :           if (aclx_get (name, 0, &amp;type, aclbuf, &amp;aclsize, &amp;mode) &gt;= 0)
+<span class="lineNum">     823 </span>                :            :             break;
+<span class="lineNum">     824 </span>                :            :           if (errno == ENOSYS)
+<span class="lineNum">     825 </span>                :            :             return 0;
+<span class="lineNum">     826 </span>                :            :           if (errno != ENOSPC)
+<span class="lineNum">     827 </span>                :            :             {
+<span class="lineNum">     828 </span>                :            :               if (acl != aclbuf)
+<span class="lineNum">     829 </span>                :            :                 {
+<span class="lineNum">     830 </span>                :            :                   int saved_errno = errno;
+<span class="lineNum">     831 </span>                :            :                   free (acl);
+<span class="lineNum">     832 </span>                :            :                   errno = saved_errno;
+<span class="lineNum">     833 </span>                :            :                 }
+<span class="lineNum">     834 </span>                :            :               return -1;
+<span class="lineNum">     835 </span>                :            :             }
+<span class="lineNum">     836 </span>                :            :           aclsize = 2 * aclsize;
+<span class="lineNum">     837 </span>                :            :           if (acl != aclbuf)
+<span class="lineNum">     838 </span>                :            :             free (acl);
+<span class="lineNum">     839 </span>                :            :           acl = malloc (aclsize);
+<span class="lineNum">     840 </span>                :            :           if (acl == NULL)
+<span class="lineNum">     841 </span>                :            :             {
+<span class="lineNum">     842 </span>                :            :               errno = ENOMEM;
+<span class="lineNum">     843 </span>                :            :               return -1;
+<span class="lineNum">     844 </span>                :            :             }
+<span class="lineNum">     845 </span>                :            :         }
+<span class="lineNum">     846 </span>                :            : 
+<span class="lineNum">     847 </span>                :            :       if (type.u64 == ACL_AIXC)
+<span class="lineNum">     848 </span>                :            :         {
+<span class="lineNum">     849 </span>                :            :           int result = acl_nontrivial ((struct acl *) acl);
+<span class="lineNum">     850 </span>                :            :           if (acl != aclbuf)
+<span class="lineNum">     851 </span>                :            :             free (acl);
+<span class="lineNum">     852 </span>                :            :           return result;
+<span class="lineNum">     853 </span>                :            :         }
+<span class="lineNum">     854 </span>                :            :       else if (type.u64 == ACL_NFS4)
+<span class="lineNum">     855 </span>                :            :         {
+<span class="lineNum">     856 </span>                :            :           int result = acl_nfs4_nontrivial ((nfs4_acl_int_t *) acl);
+<span class="lineNum">     857 </span>                :            :           if (acl != aclbuf)
+<span class="lineNum">     858 </span>                :            :             free (acl);
+<span class="lineNum">     859 </span>                :            :           return result;
+<span class="lineNum">     860 </span>                :            :         }
+<span class="lineNum">     861 </span>                :            :       else
+<span class="lineNum">     862 </span>                :            :         {
+<span class="lineNum">     863 </span>                :            :           /* A newer type of ACL has been introduced in the system.
+<span class="lineNum">     864 </span>                :            :              We should better support it.  */
+<span class="lineNum">     865 </span>                :            :           if (acl != aclbuf)
+<span class="lineNum">     866 </span>                :            :             free (acl);
+<span class="lineNum">     867 </span>                :            :           errno = EINVAL;
+<span class="lineNum">     868 </span>                :            :           return -1;
+<span class="lineNum">     869 </span>                :            :         }
+<span class="lineNum">     870 </span>                :            : 
+<span class="lineNum">     871 </span>                :            : # elif HAVE_STATACL /* older AIX */
+<span class="lineNum">     872 </span>                :            : 
+<span class="lineNum">     873 </span>                :            :       union { struct acl a; char room[4096]; } u;
+<span class="lineNum">     874 </span>                :            : 
+<span class="lineNum">     875 </span>                :            :       if (statacl (name, STX_NORMAL, &amp;u.a, sizeof (u)) &lt; 0)
+<span class="lineNum">     876 </span>                :            :         return -1;
+<span class="lineNum">     877 </span>                :            : 
+<span class="lineNum">     878 </span>                :            :       return acl_nontrivial (&amp;u.a);
+<span class="lineNum">     879 </span>                :            : 
+<span class="lineNum">     880 </span>                :            : # elif HAVE_ACLSORT /* NonStop Kernel */
+<span class="lineNum">     881 </span>                :            : 
+<span class="lineNum">     882 </span>                :            :       {
+<span class="lineNum">     883 </span>                :            :         struct acl entries[NACLENTRIES];
+<span class="lineNum">     884 </span>                :            :         int count;
+<span class="lineNum">     885 </span>                :            : 
+<span class="lineNum">     886 </span>                :            :         count = acl ((char *) name, ACL_GET, NACLENTRIES, entries);
+<span class="lineNum">     887 </span>                :            : 
+<span class="lineNum">     888 </span>                :            :         if (count &lt; 0)
+<span class="lineNum">     889 </span>                :            :           {
+<span class="lineNum">     890 </span>                :            :             if (errno == ENOSYS || errno == ENOTSUP)
+<span class="lineNum">     891 </span>                :            :               ;
+<span class="lineNum">     892 </span>                :            :             else
+<span class="lineNum">     893 </span>                :            :               return -1;
+<span class="lineNum">     894 </span>                :            :           }
+<span class="lineNum">     895 </span>                :            :         else if (count == 0)
+<span class="lineNum">     896 </span>                :            :           return 0;
+<span class="lineNum">     897 </span>                :            :         else /* count &gt; 0 */
+<span class="lineNum">     898 </span>                :            :           {
+<span class="lineNum">     899 </span>                :            :             if (count &gt; NACLENTRIES)
+<span class="lineNum">     900 </span>                :            :               /* If NACLENTRIES cannot be trusted, use dynamic memory
+<span class="lineNum">     901 </span>                :            :                  allocation.  */
+<span class="lineNum">     902 </span>                :            :               abort ();
+<span class="lineNum">     903 </span>                :            : 
+<span class="lineNum">     904 </span>                :            :             /* If there are more than 4 entries, there cannot be only the
+<span class="lineNum">     905 </span>                :            :                four base ACL entries.  */
+<span class="lineNum">     906 </span>                :            :             if (count &gt; 4)
+<span class="lineNum">     907 </span>                :            :               return 1;
+<span class="lineNum">     908 </span>                :            : 
+<span class="lineNum">     909 </span>                :            :             return acl_nontrivial (count, entries);
+<span class="lineNum">     910 </span>                :            :           }
+<span class="lineNum">     911 </span>                :            :       }
+<span class="lineNum">     912 </span>                :            : 
+<span class="lineNum">     913 </span>                :            : # endif
+<span class="lineNum">     914 </span>                :            :     }
+<span class="lineNum">     915 </span>                :            : #endif
+<span class="lineNum">     916 </span>                :            : 
+<span class="lineNum">     917 </span>                :            :   return 0;
+<span class="lineNum">     918 </span>                :            : }
 </pre>
       </td>
     </tr>

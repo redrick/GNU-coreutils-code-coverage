@@ -1,0 +1,778 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - coreutils - lib/unistr.h</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib</a> - unistr.h<span style="font-size: 80%;"> (source / <a href="unistr.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coreutils</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-03-26</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* DO NOT EDIT! GENERATED AUTOMATICALLY! */</a>
+<span class="lineNum">       2 </span>                :            : /* Elementary Unicode string functions.
+<span class="lineNum">       3 </span>                :            :    Copyright (C) 2001-2002, 2005-2012 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>                :            : 
+<span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify it
+<span class="lineNum">       6 </span>                :            :    under the terms of the GNU General Public License as published
+<span class="lineNum">       7 </span>                :            :    by the Free Software Foundation; either version 3 of the License, or
+<span class="lineNum">       8 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       9 </span>                :            : 
+<span class="lineNum">      10 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      11 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      12 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<span class="lineNum">      13 </span>                :            :    General Public License for more details.
+<span class="lineNum">      14 </span>                :            : 
+<span class="lineNum">      15 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      16 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      17 </span>                :            : 
+<span class="lineNum">      18 </span>                :            : #ifndef _UNISTR_H
+<span class="lineNum">      19 </span>                :            : #define _UNISTR_H
+<span class="lineNum">      20 </span>                :            : 
+<span class="lineNum">      21 </span>                :            : #include &quot;unitypes.h&quot;
+<span class="lineNum">      22 </span>                :            : 
+<span class="lineNum">      23 </span>                :            : /* Get common macros for C.  */
+<span class="lineNum">      24 </span>                :            : #include &quot;unused-parameter.h&quot;
+<span class="lineNum">      25 </span>                :            : 
+<span class="lineNum">      26 </span>                :            : /* Get bool.  */
+<span class="lineNum">      27 </span>                :            : #include &lt;stdbool.h&gt;
+<span class="lineNum">      28 </span>                :            : 
+<span class="lineNum">      29 </span>                :            : /* Get size_t.  */
+<span class="lineNum">      30 </span>                :            : #include &lt;stddef.h&gt;
+<span class="lineNum">      31 </span>                :            : 
+<span class="lineNum">      32 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">      33 </span>                :            : extern &quot;C&quot; {
+<span class="lineNum">      34 </span>                :            : #endif
+<span class="lineNum">      35 </span>                :            : 
+<span class="lineNum">      36 </span>                :            : 
+<span class="lineNum">      37 </span>                :            : /* Conventions:
+<span class="lineNum">      38 </span>                :            : 
+<span class="lineNum">      39 </span>                :            :    All functions prefixed with u8_ operate on UTF-8 encoded strings.
+<span class="lineNum">      40 </span>                :            :    Their unit is an uint8_t (1 byte).
+<span class="lineNum">      41 </span>                :            : 
+<span class="lineNum">      42 </span>                :            :    All functions prefixed with u16_ operate on UTF-16 encoded strings.
+<span class="lineNum">      43 </span>                :            :    Their unit is an uint16_t (a 2-byte word).
+<span class="lineNum">      44 </span>                :            : 
+<span class="lineNum">      45 </span>                :            :    All functions prefixed with u32_ operate on UCS-4 encoded strings.
+<span class="lineNum">      46 </span>                :            :    Their unit is an uint32_t (a 4-byte word).
+<span class="lineNum">      47 </span>                :            : 
+<span class="lineNum">      48 </span>                :            :    All argument pairs (s, n) denote a Unicode string s[0..n-1] with exactly
+<span class="lineNum">      49 </span>                :            :    n units.
+<span class="lineNum">      50 </span>                :            : 
+<span class="lineNum">      51 </span>                :            :    All arguments starting with &quot;str&quot; and the arguments of functions starting
+<span class="lineNum">      52 </span>                :            :    with u8_str/u16_str/u32_str denote a NUL terminated string, i.e. a string
+<span class="lineNum">      53 </span>                :            :    which terminates at the first NUL unit.  This termination unit is
+<span class="lineNum">      54 </span>                :            :    considered part of the string for all memory allocation purposes, but
+<span class="lineNum">      55 </span>                :            :    is not considered part of the string for all other logical purposes.
+<span class="lineNum">      56 </span>                :            : 
+<span class="lineNum">      57 </span>                :            :    Functions returning a string result take a (resultbuf, lengthp) argument
+<span class="lineNum">      58 </span>                :            :    pair.  If resultbuf is not NULL and the result fits into *lengthp units,
+<span class="lineNum">      59 </span>                :            :    it is put in resultbuf, and resultbuf is returned.  Otherwise, a freshly
+<span class="lineNum">      60 </span>                :            :    allocated string is returned.  In both cases, *lengthp is set to the
+<span class="lineNum">      61 </span>                :            :    length (number of units) of the returned string.  In case of error,
+<span class="lineNum">      62 </span>                :            :    NULL is returned and errno is set.  */
+<span class="lineNum">      63 </span>                :            : 
+<span class="lineNum">      64 </span>                :            : 
+<span class="lineNum">      65 </span>                :            : /* Elementary string checks.  */
+<span class="lineNum">      66 </span>                :            : 
+<span class="lineNum">      67 </span>                :            : /* Check whether an UTF-8 string is well-formed.
+<span class="lineNum">      68 </span>                :            :    Return NULL if valid, or a pointer to the first invalid unit otherwise.  */
+<span class="lineNum">      69 </span>                :            : extern const uint8_t *
+<span class="lineNum">      70 </span>                :            :        u8_check (const uint8_t *s, size_t n);
+<span class="lineNum">      71 </span>                :            : 
+<span class="lineNum">      72 </span>                :            : /* Check whether an UTF-16 string is well-formed.
+<span class="lineNum">      73 </span>                :            :    Return NULL if valid, or a pointer to the first invalid unit otherwise.  */
+<span class="lineNum">      74 </span>                :            : extern const uint16_t *
+<span class="lineNum">      75 </span>                :            :        u16_check (const uint16_t *s, size_t n);
+<span class="lineNum">      76 </span>                :            : 
+<span class="lineNum">      77 </span>                :            : /* Check whether an UCS-4 string is well-formed.
+<span class="lineNum">      78 </span>                :            :    Return NULL if valid, or a pointer to the first invalid unit otherwise.  */
+<span class="lineNum">      79 </span>                :            : extern const uint32_t *
+<span class="lineNum">      80 </span>                :            :        u32_check (const uint32_t *s, size_t n);
+<span class="lineNum">      81 </span>                :            : 
+<span class="lineNum">      82 </span>                :            : 
+<span class="lineNum">      83 </span>                :            : /* Elementary string conversions.  */
+<span class="lineNum">      84 </span>                :            : 
+<span class="lineNum">      85 </span>                :            : /* Convert an UTF-8 string to an UTF-16 string.  */
+<span class="lineNum">      86 </span>                :            : extern uint16_t *
+<span class="lineNum">      87 </span>                :            :        u8_to_u16 (const uint8_t *s, size_t n, uint16_t *resultbuf,
+<span class="lineNum">      88 </span>                :            :                   size_t *lengthp);
+<span class="lineNum">      89 </span>                :            : 
+<span class="lineNum">      90 </span>                :            : /* Convert an UTF-8 string to an UCS-4 string.  */
+<span class="lineNum">      91 </span>                :            : extern uint32_t *
+<span class="lineNum">      92 </span>                :            :        u8_to_u32 (const uint8_t *s, size_t n, uint32_t *resultbuf,
+<span class="lineNum">      93 </span>                :            :                   size_t *lengthp);
+<span class="lineNum">      94 </span>                :            : 
+<span class="lineNum">      95 </span>                :            : /* Convert an UTF-16 string to an UTF-8 string.  */
+<span class="lineNum">      96 </span>                :            : extern uint8_t *
+<span class="lineNum">      97 </span>                :            :        u16_to_u8 (const uint16_t *s, size_t n, uint8_t *resultbuf,
+<span class="lineNum">      98 </span>                :            :                   size_t *lengthp);
+<span class="lineNum">      99 </span>                :            : 
+<span class="lineNum">     100 </span>                :            : /* Convert an UTF-16 string to an UCS-4 string.  */
+<span class="lineNum">     101 </span>                :            : extern uint32_t *
+<span class="lineNum">     102 </span>                :            :        u16_to_u32 (const uint16_t *s, size_t n, uint32_t *resultbuf,
+<span class="lineNum">     103 </span>                :            :                    size_t *lengthp);
+<span class="lineNum">     104 </span>                :            : 
+<span class="lineNum">     105 </span>                :            : /* Convert an UCS-4 string to an UTF-8 string.  */
+<span class="lineNum">     106 </span>                :            : extern uint8_t *
+<span class="lineNum">     107 </span>                :            :        u32_to_u8 (const uint32_t *s, size_t n, uint8_t *resultbuf,
+<span class="lineNum">     108 </span>                :            :                   size_t *lengthp);
+<span class="lineNum">     109 </span>                :            : 
+<span class="lineNum">     110 </span>                :            : /* Convert an UCS-4 string to an UTF-16 string.  */
+<span class="lineNum">     111 </span>                :            : extern uint16_t *
+<span class="lineNum">     112 </span>                :            :        u32_to_u16 (const uint32_t *s, size_t n, uint16_t *resultbuf,
+<span class="lineNum">     113 </span>                :            :                    size_t *lengthp);
+<span class="lineNum">     114 </span>                :            : 
+<span class="lineNum">     115 </span>                :            : 
+<span class="lineNum">     116 </span>                :            : /* Elementary string functions.  */
+<span class="lineNum">     117 </span>                :            : 
+<span class="lineNum">     118 </span>                :            : /* Return the length (number of units) of the first character in S, which is
+<span class="lineNum">     119 </span>                :            :    no longer than N.  Return 0 if it is the NUL character.  Return -1 upon
+<span class="lineNum">     120 </span>                :            :    failure.  */
+<span class="lineNum">     121 </span>                :            : /* Similar to mblen(), except that s must not be NULL.  */
+<span class="lineNum">     122 </span>                :            : extern int
+<span class="lineNum">     123 </span>                :            :        u8_mblen (const uint8_t *s, size_t n);
+<span class="lineNum">     124 </span>                :            : extern int
+<span class="lineNum">     125 </span>                :            :        u16_mblen (const uint16_t *s, size_t n);
+<span class="lineNum">     126 </span>                :            : extern int
+<span class="lineNum">     127 </span>                :            :        u32_mblen (const uint32_t *s, size_t n);
+<span class="lineNum">     128 </span>                :            : 
+<span class="lineNum">     129 </span>                :            : /* Return the length (number of units) of the first character in S, putting
+<span class="lineNum">     130 </span>                :            :    its 'ucs4_t' representation in *PUC.  Upon failure, *PUC is set to 0xfffd,
+<span class="lineNum">     131 </span>                :            :    and an appropriate number of units is returned.
+<span class="lineNum">     132 </span>                :            :    The number of available units, N, must be &gt; 0.  */
+<span class="lineNum">     133 </span>                :            : /* Similar to mbtowc(), except that puc and s must not be NULL, n must be &gt; 0,
+<span class="lineNum">     134 </span>                :            :    and the NUL character is not treated specially.  */
+<span class="lineNum">     135 </span>                :            : /* The variants with _safe suffix are safe, even if the library is compiled
+<span class="lineNum">     136 </span>                :            :    without --enable-safety.  */
+<span class="lineNum">     137 </span>                :            : 
+<span class="lineNum">     138 </span>                :            : #if GNULIB_UNISTR_U8_MBTOUC_UNSAFE || HAVE_LIBUNISTRING
+<span class="lineNum">     139 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     140 </span>                :            : extern int
+<span class="lineNum">     141 </span>                :            :        u8_mbtouc_unsafe (ucs4_t *puc, const uint8_t *s, size_t n);
+<span class="lineNum">     142 </span>                :            : # else
+<span class="lineNum">     143 </span>                :            : extern int
+<span class="lineNum">     144 </span>                :            :        u8_mbtouc_unsafe_aux (ucs4_t *puc, const uint8_t *s, size_t n);
+<span class="lineNum">     145 </span>                :            : static inline int
+<span class="lineNum">     146 </span>                :            : u8_mbtouc_unsafe (ucs4_t *puc, const uint8_t *s, size_t n)
+<span class="lineNum">     147 </span>                :            : {
+<span class="lineNum">     148 </span>                :            :   uint8_t c = *s;
+<span class="lineNum">     149 </span>                :            : 
+<span class="lineNum">     150 </span>                :            :   if (c &lt; 0x80)
+<span class="lineNum">     151 </span>                :            :     {
+<span class="lineNum">     152 </span>                :            :       *puc = c;
+<span class="lineNum">     153 </span>                :            :       return 1;
+<span class="lineNum">     154 </span>                :            :     }
+<span class="lineNum">     155 </span>                :            :   else
+<span class="lineNum">     156 </span>                :            :     return u8_mbtouc_unsafe_aux (puc, s, n);
+<span class="lineNum">     157 </span>                :            : }
+<span class="lineNum">     158 </span>                :            : # endif
+<span class="lineNum">     159 </span>                :            : #endif
+<span class="lineNum">     160 </span>                :            : 
+<span class="lineNum">     161 </span>                :            : #if GNULIB_UNISTR_U16_MBTOUC_UNSAFE || HAVE_LIBUNISTRING
+<span class="lineNum">     162 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     163 </span>                :            : extern int
+<span class="lineNum">     164 </span>                :            :        u16_mbtouc_unsafe (ucs4_t *puc, const uint16_t *s, size_t n);
+<span class="lineNum">     165 </span>                :            : # else
+<span class="lineNum">     166 </span>                :            : extern int
+<span class="lineNum">     167 </span>                :            :        u16_mbtouc_unsafe_aux (ucs4_t *puc, const uint16_t *s, size_t n);
+<span class="lineNum">     168 </span>                :            : static inline int
+<span class="lineNum">     169 </span>                :            : u16_mbtouc_unsafe (ucs4_t *puc, const uint16_t *s, size_t n)
+<span class="lineNum">     170 </span>                :            : {
+<span class="lineNum">     171 </span>                :            :   uint16_t c = *s;
+<span class="lineNum">     172 </span>                :            : 
+<span class="lineNum">     173 </span>                :            :   if (c &lt; 0xd800 || c &gt;= 0xe000)
+<span class="lineNum">     174 </span>                :            :     {
+<span class="lineNum">     175 </span>                :            :       *puc = c;
+<span class="lineNum">     176 </span>                :            :       return 1;
+<span class="lineNum">     177 </span>                :            :     }
+<span class="lineNum">     178 </span>                :            :   else
+<span class="lineNum">     179 </span>                :            :     return u16_mbtouc_unsafe_aux (puc, s, n);
+<span class="lineNum">     180 </span>                :            : }
+<span class="lineNum">     181 </span>                :            : # endif
+<span class="lineNum">     182 </span>                :            : #endif
+<span class="lineNum">     183 </span>                :            : 
+<span class="lineNum">     184 </span>                :            : #if GNULIB_UNISTR_U32_MBTOUC_UNSAFE || HAVE_LIBUNISTRING
+<span class="lineNum">     185 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     186 </span>                :            : extern int
+<span class="lineNum">     187 </span>                :            :        u32_mbtouc_unsafe (ucs4_t *puc, const uint32_t *s, size_t n);
+<span class="lineNum">     188 </span>                :            : # else
+<span class="lineNum">     189 </span>                :            : static inline int
+<span class="lineNum">     190 </span>                :            : u32_mbtouc_unsafe (ucs4_t *puc,
+<span class="lineNum">     191 </span>                :            :                    const uint32_t *s, size_t n _GL_UNUSED_PARAMETER)
+<span class="lineNum">     192 </span>                :            : {
+<span class="lineNum">     193 </span>                :            :   uint32_t c = *s;
+<span class="lineNum">     194 </span>                :            : 
+<span class="lineNum">     195 </span>                :            : #  if CONFIG_UNICODE_SAFETY
+<span class="lineNum">     196 </span>                :            :   if (c &lt; 0xd800 || (c &gt;= 0xe000 &amp;&amp; c &lt; 0x110000))
+<span class="lineNum">     197 </span>                :            : #  endif
+<span class="lineNum">     198 </span>                :            :     *puc = c;
+<span class="lineNum">     199 </span>                :            : #  if CONFIG_UNICODE_SAFETY
+<span class="lineNum">     200 </span>                :            :   else
+<span class="lineNum">     201 </span>                :            :     /* invalid multibyte character */
+<span class="lineNum">     202 </span>                :            :     *puc = 0xfffd;
+<span class="lineNum">     203 </span>                :            : #  endif
+<span class="lineNum">     204 </span>                :            :   return 1;
+<span class="lineNum">     205 </span>                :            : }
+<span class="lineNum">     206 </span>                :            : # endif
+<span class="lineNum">     207 </span>                :            : #endif
+<span class="lineNum">     208 </span>                :            : 
+<span class="lineNum">     209 </span>                :            : #if GNULIB_UNISTR_U8_MBTOUC || HAVE_LIBUNISTRING
+<span class="lineNum">     210 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     211 </span>                :            : extern int
+<span class="lineNum">     212 </span>                :            :        u8_mbtouc (ucs4_t *puc, const uint8_t *s, size_t n);
+<span class="lineNum">     213 </span>                :            : # else
+<span class="lineNum">     214 </span>                :            : extern int
+<span class="lineNum">     215 </span>                :            :        u8_mbtouc_aux (ucs4_t *puc, const uint8_t *s, size_t n);
+<span class="lineNum">     216 </span>                :            : static inline int
+<span class="lineNum">     217 </span>                :            : u8_mbtouc (ucs4_t *puc, const uint8_t *s, size_t n)
+<span class="lineNum">     218 </span>                :            : {
+<span class="lineNum">     219 </span>                :            :   uint8_t c = *s;
+<span class="lineNum">     220 </span>                :            : 
+<span class="lineNum">     221 </span>                :            :   if (c &lt; 0x80)
+<span class="lineNum">     222 </span>                :            :     {
+<span class="lineNum">     223 </span>                :            :       *puc = c;
+<span class="lineNum">     224 </span>                :            :       return 1;
+<span class="lineNum">     225 </span>                :            :     }
+<span class="lineNum">     226 </span>                :            :   else
+<span class="lineNum">     227 </span>                :            :     return u8_mbtouc_aux (puc, s, n);
+<span class="lineNum">     228 </span>                :            : }
+<span class="lineNum">     229 </span>                :            : # endif
+<span class="lineNum">     230 </span>                :            : #endif
+<span class="lineNum">     231 </span>                :            : 
+<span class="lineNum">     232 </span>                :            : #if GNULIB_UNISTR_U16_MBTOUC || HAVE_LIBUNISTRING
+<span class="lineNum">     233 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     234 </span>                :            : extern int
+<span class="lineNum">     235 </span>                :            :        u16_mbtouc (ucs4_t *puc, const uint16_t *s, size_t n);
+<span class="lineNum">     236 </span>                :            : # else
+<span class="lineNum">     237 </span>                :            : extern int
+<span class="lineNum">     238 </span>                :            :        u16_mbtouc_aux (ucs4_t *puc, const uint16_t *s, size_t n);
+<span class="lineNum">     239 </span>                :            : static inline int
+<span class="lineNum">     240 </span>                :            : u16_mbtouc (ucs4_t *puc, const uint16_t *s, size_t n)
+<span class="lineNum">     241 </span>                :            : {
+<span class="lineNum">     242 </span>                :            :   uint16_t c = *s;
+<span class="lineNum">     243 </span>                :            : 
+<span class="lineNum">     244 </span>                :            :   if (c &lt; 0xd800 || c &gt;= 0xe000)
+<span class="lineNum">     245 </span>                :            :     {
+<span class="lineNum">     246 </span>                :            :       *puc = c;
+<span class="lineNum">     247 </span>                :            :       return 1;
+<span class="lineNum">     248 </span>                :            :     }
+<span class="lineNum">     249 </span>                :            :   else
+<span class="lineNum">     250 </span>                :            :     return u16_mbtouc_aux (puc, s, n);
+<span class="lineNum">     251 </span>                :            : }
+<span class="lineNum">     252 </span>                :            : # endif
+<span class="lineNum">     253 </span>                :            : #endif
+<span class="lineNum">     254 </span>                :            : 
+<span class="lineNum">     255 </span>                :            : #if GNULIB_UNISTR_U32_MBTOUC || HAVE_LIBUNISTRING
+<span class="lineNum">     256 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     257 </span>                :            : extern int
+<span class="lineNum">     258 </span>                :            :        u32_mbtouc (ucs4_t *puc, const uint32_t *s, size_t n);
+<span class="lineNum">     259 </span>                :            : # else
+<span class="lineNum">     260 </span>                :            : static inline int
+<span class="lineNum">     261 </span>                :            : u32_mbtouc (ucs4_t *puc, const uint32_t *s, size_t n _GL_UNUSED_PARAMETER)
+<span class="lineNum">     262 </span>                :            : {
+<span class="lineNum">     263 </span>                :            :   uint32_t c = *s;
+<span class="lineNum">     264 </span>                :            : 
+<span class="lineNum">     265 </span>                :            :   if (c &lt; 0xd800 || (c &gt;= 0xe000 &amp;&amp; c &lt; 0x110000))
+<span class="lineNum">     266 </span>                :            :     *puc = c;
+<span class="lineNum">     267 </span>                :            :   else
+<span class="lineNum">     268 </span>                :            :     /* invalid multibyte character */
+<span class="lineNum">     269 </span>                :            :     *puc = 0xfffd;
+<span class="lineNum">     270 </span>                :            :   return 1;
+<span class="lineNum">     271 </span>                :            : }
+<span class="lineNum">     272 </span>                :            : # endif
+<span class="lineNum">     273 </span>                :            : #endif
+<span class="lineNum">     274 </span>                :            : 
+<span class="lineNum">     275 </span>                :            : /* Return the length (number of units) of the first character in S, putting
+<span class="lineNum">     276 </span>                :            :    its 'ucs4_t' representation in *PUC.  Upon failure, *PUC is set to 0xfffd,
+<span class="lineNum">     277 </span>                :            :    and -1 is returned for an invalid sequence of units, -2 is returned for an
+<span class="lineNum">     278 </span>                :            :    incomplete sequence of units.
+<span class="lineNum">     279 </span>                :            :    The number of available units, N, must be &gt; 0.  */
+<span class="lineNum">     280 </span>                :            : /* Similar to u*_mbtouc(), except that the return value gives more details
+<span class="lineNum">     281 </span>                :            :    about the failure, similar to mbrtowc().  */
+<span class="lineNum">     282 </span>                :            : 
+<span class="lineNum">     283 </span>                :            : #if GNULIB_UNISTR_U8_MBTOUCR || HAVE_LIBUNISTRING
+<span class="lineNum">     284 </span>                :            : extern int
+<span class="lineNum">     285 </span>                :            :        u8_mbtoucr (ucs4_t *puc, const uint8_t *s, size_t n);
+<span class="lineNum">     286 </span>                :            : #endif
+<span class="lineNum">     287 </span>                :            : 
+<span class="lineNum">     288 </span>                :            : #if GNULIB_UNISTR_U16_MBTOUCR || HAVE_LIBUNISTRING
+<span class="lineNum">     289 </span>                :            : extern int
+<span class="lineNum">     290 </span>                :            :        u16_mbtoucr (ucs4_t *puc, const uint16_t *s, size_t n);
+<span class="lineNum">     291 </span>                :            : #endif
+<span class="lineNum">     292 </span>                :            : 
+<span class="lineNum">     293 </span>                :            : #if GNULIB_UNISTR_U32_MBTOUCR || HAVE_LIBUNISTRING
+<span class="lineNum">     294 </span>                :            : extern int
+<span class="lineNum">     295 </span>                :            :        u32_mbtoucr (ucs4_t *puc, const uint32_t *s, size_t n);
+<span class="lineNum">     296 </span>                :            : #endif
+<span class="lineNum">     297 </span>                :            : 
+<span class="lineNum">     298 </span>                :            : /* Put the multibyte character represented by UC in S, returning its
+<span class="lineNum">     299 </span>                :            :    length.  Return -1 upon failure, -2 if the number of available units, N,
+<span class="lineNum">     300 </span>                :            :    is too small.  The latter case cannot occur if N &gt;= 6/2/1, respectively.  */
+<span class="lineNum">     301 </span>                :            : /* Similar to wctomb(), except that s must not be NULL, and the argument n
+<span class="lineNum">     302 </span>                :            :    must be specified.  */
+<span class="lineNum">     303 </span>                :            : 
+<span class="lineNum">     304 </span>                :            : #if GNULIB_UNISTR_U8_UCTOMB || HAVE_LIBUNISTRING
+<span class="lineNum">     305 </span>                :            : /* Auxiliary function, also used by u8_chr, u8_strchr, u8_strrchr.  */
+<span class="lineNum">     306 </span>                :            : extern int
+<span class="lineNum">     307 </span>                :            :        u8_uctomb_aux (uint8_t *s, ucs4_t uc, int n);
+<span class="lineNum">     308 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     309 </span>                :            : extern int
+<span class="lineNum">     310 </span>                :            :        u8_uctomb (uint8_t *s, ucs4_t uc, int n);
+<span class="lineNum">     311 </span>                :            : # else
+<span class="lineNum">     312 </span>                :            : static inline int
+<span class="lineNum">     313 </span>                :            : u8_uctomb (uint8_t *s, ucs4_t uc, int n)
+<span class="lineNum">     314 </span>                :            : {
+<span class="lineNum">     315 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (uc &lt; 0x80 &amp;&amp; n &gt; 0)</span>
+<span class="lineNum">     316 </span>                :            :     {
+<span class="lineNum">     317 </span>                :<span class="lineNoCov">          0 :       s[0] = uc;</span>
+<span class="lineNum">     318 </span>                :            :       return 1;
+<span class="lineNum">     319 </span>                :            :     }
+<span class="lineNum">     320 </span>                :            :   else
+<span class="lineNum">     321 </span>                :<span class="lineNoCov">          0 :     return u8_uctomb_aux (s, uc, n);</span>
+<span class="lineNum">     322 </span>                :            : }
+<span class="lineNum">     323 </span>                :            : # endif
+<span class="lineNum">     324 </span>                :            : #endif
+<span class="lineNum">     325 </span>                :            : 
+<span class="lineNum">     326 </span>                :            : #if GNULIB_UNISTR_U16_UCTOMB || HAVE_LIBUNISTRING
+<span class="lineNum">     327 </span>                :            : /* Auxiliary function, also used by u16_chr, u16_strchr, u16_strrchr.  */
+<span class="lineNum">     328 </span>                :            : extern int
+<span class="lineNum">     329 </span>                :            :        u16_uctomb_aux (uint16_t *s, ucs4_t uc, int n);
+<span class="lineNum">     330 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     331 </span>                :            : extern int
+<span class="lineNum">     332 </span>                :            :        u16_uctomb (uint16_t *s, ucs4_t uc, int n);
+<span class="lineNum">     333 </span>                :            : # else
+<span class="lineNum">     334 </span>                :            : static inline int
+<span class="lineNum">     335 </span>                :            : u16_uctomb (uint16_t *s, ucs4_t uc, int n)
+<span class="lineNum">     336 </span>                :            : {
+<span class="lineNum">     337 </span>                :            :   if (uc &lt; 0xd800 &amp;&amp; n &gt; 0)
+<span class="lineNum">     338 </span>                :            :     {
+<span class="lineNum">     339 </span>                :            :       s[0] = uc;
+<span class="lineNum">     340 </span>                :            :       return 1;
+<span class="lineNum">     341 </span>                :            :     }
+<span class="lineNum">     342 </span>                :            :   else
+<span class="lineNum">     343 </span>                :            :     return u16_uctomb_aux (s, uc, n);
+<span class="lineNum">     344 </span>                :            : }
+<span class="lineNum">     345 </span>                :            : # endif
+<span class="lineNum">     346 </span>                :            : #endif
+<span class="lineNum">     347 </span>                :            : 
+<span class="lineNum">     348 </span>                :            : #if GNULIB_UNISTR_U32_UCTOMB || HAVE_LIBUNISTRING
+<span class="lineNum">     349 </span>                :            : # if !HAVE_INLINE
+<span class="lineNum">     350 </span>                :            : extern int
+<span class="lineNum">     351 </span>                :            :        u32_uctomb (uint32_t *s, ucs4_t uc, int n);
+<span class="lineNum">     352 </span>                :            : # else
+<span class="lineNum">     353 </span>                :            : static inline int
+<span class="lineNum">     354 </span>                :            : u32_uctomb (uint32_t *s, ucs4_t uc, int n)
+<span class="lineNum">     355 </span>                :            : {
+<span class="lineNum">     356 </span>                :            :   if (uc &lt; 0xd800 || (uc &gt;= 0xe000 &amp;&amp; uc &lt; 0x110000))
+<span class="lineNum">     357 </span>                :            :     {
+<span class="lineNum">     358 </span>                :            :       if (n &gt; 0)
+<span class="lineNum">     359 </span>                :            :         {
+<span class="lineNum">     360 </span>                :            :           *s = uc;
+<span class="lineNum">     361 </span>                :            :           return 1;
+<span class="lineNum">     362 </span>                :            :         }
+<span class="lineNum">     363 </span>                :            :       else
+<span class="lineNum">     364 </span>                :            :         return -2;
+<span class="lineNum">     365 </span>                :            :     }
+<span class="lineNum">     366 </span>                :            :   else
+<span class="lineNum">     367 </span>                :            :     return -1;
+<span class="lineNum">     368 </span>                :            : }
+<span class="lineNum">     369 </span>                :            : # endif
+<span class="lineNum">     370 </span>                :            : #endif
+<span class="lineNum">     371 </span>                :            : 
+<span class="lineNum">     372 </span>                :            : /* Copy N units from SRC to DEST.  */
+<span class="lineNum">     373 </span>                :            : /* Similar to memcpy().  */
+<span class="lineNum">     374 </span>                :            : extern uint8_t *
+<span class="lineNum">     375 </span>                :            :        u8_cpy (uint8_t *dest, const uint8_t *src, size_t n);
+<span class="lineNum">     376 </span>                :            : extern uint16_t *
+<span class="lineNum">     377 </span>                :            :        u16_cpy (uint16_t *dest, const uint16_t *src, size_t n);
+<span class="lineNum">     378 </span>                :            : extern uint32_t *
+<span class="lineNum">     379 </span>                :            :        u32_cpy (uint32_t *dest, const uint32_t *src, size_t n);
+<span class="lineNum">     380 </span>                :            : 
+<span class="lineNum">     381 </span>                :            : /* Copy N units from SRC to DEST, guaranteeing correct behavior for
+<span class="lineNum">     382 </span>                :            :    overlapping memory areas.  */
+<span class="lineNum">     383 </span>                :            : /* Similar to memmove().  */
+<span class="lineNum">     384 </span>                :            : extern uint8_t *
+<span class="lineNum">     385 </span>                :            :        u8_move (uint8_t *dest, const uint8_t *src, size_t n);
+<span class="lineNum">     386 </span>                :            : extern uint16_t *
+<span class="lineNum">     387 </span>                :            :        u16_move (uint16_t *dest, const uint16_t *src, size_t n);
+<span class="lineNum">     388 </span>                :            : extern uint32_t *
+<span class="lineNum">     389 </span>                :            :        u32_move (uint32_t *dest, const uint32_t *src, size_t n);
+<span class="lineNum">     390 </span>                :            : 
+<span class="lineNum">     391 </span>                :            : /* Set the first N characters of S to UC.  UC should be a character that
+<span class="lineNum">     392 </span>                :            :    occupies only 1 unit.  */
+<span class="lineNum">     393 </span>                :            : /* Similar to memset().  */
+<span class="lineNum">     394 </span>                :            : extern uint8_t *
+<span class="lineNum">     395 </span>                :            :        u8_set (uint8_t *s, ucs4_t uc, size_t n);
+<span class="lineNum">     396 </span>                :            : extern uint16_t *
+<span class="lineNum">     397 </span>                :            :        u16_set (uint16_t *s, ucs4_t uc, size_t n);
+<span class="lineNum">     398 </span>                :            : extern uint32_t *
+<span class="lineNum">     399 </span>                :            :        u32_set (uint32_t *s, ucs4_t uc, size_t n);
+<span class="lineNum">     400 </span>                :            : 
+<span class="lineNum">     401 </span>                :            : /* Compare S1 and S2, each of length N.  */
+<span class="lineNum">     402 </span>                :            : /* Similar to memcmp().  */
+<span class="lineNum">     403 </span>                :            : extern int
+<span class="lineNum">     404 </span>                :            :        u8_cmp (const uint8_t *s1, const uint8_t *s2, size_t n);
+<span class="lineNum">     405 </span>                :            : extern int
+<span class="lineNum">     406 </span>                :            :        u16_cmp (const uint16_t *s1, const uint16_t *s2, size_t n);
+<span class="lineNum">     407 </span>                :            : extern int
+<span class="lineNum">     408 </span>                :            :        u32_cmp (const uint32_t *s1, const uint32_t *s2, size_t n);
+<span class="lineNum">     409 </span>                :            : 
+<span class="lineNum">     410 </span>                :            : /* Compare S1 and S2.  */
+<span class="lineNum">     411 </span>                :            : /* Similar to the gnulib function memcmp2().  */
+<span class="lineNum">     412 </span>                :            : extern int
+<span class="lineNum">     413 </span>                :            :        u8_cmp2 (const uint8_t *s1, size_t n1, const uint8_t *s2, size_t n2);
+<span class="lineNum">     414 </span>                :            : extern int
+<span class="lineNum">     415 </span>                :            :        u16_cmp2 (const uint16_t *s1, size_t n1, const uint16_t *s2, size_t n2);
+<span class="lineNum">     416 </span>                :            : extern int
+<span class="lineNum">     417 </span>                :            :        u32_cmp2 (const uint32_t *s1, size_t n1, const uint32_t *s2, size_t n2);
+<span class="lineNum">     418 </span>                :            : 
+<span class="lineNum">     419 </span>                :            : /* Search the string at S for UC.  */
+<span class="lineNum">     420 </span>                :            : /* Similar to memchr().  */
+<span class="lineNum">     421 </span>                :            : extern uint8_t *
+<span class="lineNum">     422 </span>                :            :        u8_chr (const uint8_t *s, size_t n, ucs4_t uc);
+<span class="lineNum">     423 </span>                :            : extern uint16_t *
+<span class="lineNum">     424 </span>                :            :        u16_chr (const uint16_t *s, size_t n, ucs4_t uc);
+<span class="lineNum">     425 </span>                :            : extern uint32_t *
+<span class="lineNum">     426 </span>                :            :        u32_chr (const uint32_t *s, size_t n, ucs4_t uc);
+<span class="lineNum">     427 </span>                :            : 
+<span class="lineNum">     428 </span>                :            : /* Count the number of Unicode characters in the N units from S.  */
+<span class="lineNum">     429 </span>                :            : /* Similar to mbsnlen().  */
+<span class="lineNum">     430 </span>                :            : extern size_t
+<span class="lineNum">     431 </span>                :            :        u8_mbsnlen (const uint8_t *s, size_t n);
+<span class="lineNum">     432 </span>                :            : extern size_t
+<span class="lineNum">     433 </span>                :            :        u16_mbsnlen (const uint16_t *s, size_t n);
+<span class="lineNum">     434 </span>                :            : extern size_t
+<span class="lineNum">     435 </span>                :            :        u32_mbsnlen (const uint32_t *s, size_t n);
+<span class="lineNum">     436 </span>                :            : 
+<span class="lineNum">     437 </span>                :            : /* Elementary string functions with memory allocation.  */
+<span class="lineNum">     438 </span>                :            : 
+<span class="lineNum">     439 </span>                :            : /* Make a freshly allocated copy of S, of length N.  */
+<span class="lineNum">     440 </span>                :            : extern uint8_t *
+<span class="lineNum">     441 </span>                :            :        u8_cpy_alloc (const uint8_t *s, size_t n);
+<span class="lineNum">     442 </span>                :            : extern uint16_t *
+<span class="lineNum">     443 </span>                :            :        u16_cpy_alloc (const uint16_t *s, size_t n);
+<span class="lineNum">     444 </span>                :            : extern uint32_t *
+<span class="lineNum">     445 </span>                :            :        u32_cpy_alloc (const uint32_t *s, size_t n);
+<span class="lineNum">     446 </span>                :            : 
+<span class="lineNum">     447 </span>                :            : /* Elementary string functions on NUL terminated strings.  */
+<span class="lineNum">     448 </span>                :            : 
+<span class="lineNum">     449 </span>                :            : /* Return the length (number of units) of the first character in S.
+<span class="lineNum">     450 </span>                :            :    Return 0 if it is the NUL character.  Return -1 upon failure.  */
+<span class="lineNum">     451 </span>                :            : extern int
+<span class="lineNum">     452 </span>                :            :        u8_strmblen (const uint8_t *s);
+<span class="lineNum">     453 </span>                :            : extern int
+<span class="lineNum">     454 </span>                :            :        u16_strmblen (const uint16_t *s);
+<span class="lineNum">     455 </span>                :            : extern int
+<span class="lineNum">     456 </span>                :            :        u32_strmblen (const uint32_t *s);
+<span class="lineNum">     457 </span>                :            : 
+<span class="lineNum">     458 </span>                :            : /* Return the length (number of units) of the first character in S, putting
+<span class="lineNum">     459 </span>                :            :    its 'ucs4_t' representation in *PUC.  Return 0 if it is the NUL
+<span class="lineNum">     460 </span>                :            :    character.  Return -1 upon failure.  */
+<span class="lineNum">     461 </span>                :            : extern int
+<span class="lineNum">     462 </span>                :            :        u8_strmbtouc (ucs4_t *puc, const uint8_t *s);
+<span class="lineNum">     463 </span>                :            : extern int
+<span class="lineNum">     464 </span>                :            :        u16_strmbtouc (ucs4_t *puc, const uint16_t *s);
+<span class="lineNum">     465 </span>                :            : extern int
+<span class="lineNum">     466 </span>                :            :        u32_strmbtouc (ucs4_t *puc, const uint32_t *s);
+<span class="lineNum">     467 </span>                :            : 
+<span class="lineNum">     468 </span>                :            : /* Forward iteration step.  Advances the pointer past the next character,
+<span class="lineNum">     469 </span>                :            :    or returns NULL if the end of the string has been reached.  Puts the
+<span class="lineNum">     470 </span>                :            :    character's 'ucs4_t' representation in *PUC.  */
+<span class="lineNum">     471 </span>                :            : extern const uint8_t *
+<span class="lineNum">     472 </span>                :            :        u8_next (ucs4_t *puc, const uint8_t *s);
+<span class="lineNum">     473 </span>                :            : extern const uint16_t *
+<span class="lineNum">     474 </span>                :            :        u16_next (ucs4_t *puc, const uint16_t *s);
+<span class="lineNum">     475 </span>                :            : extern const uint32_t *
+<span class="lineNum">     476 </span>                :            :        u32_next (ucs4_t *puc, const uint32_t *s);
+<span class="lineNum">     477 </span>                :            : 
+<span class="lineNum">     478 </span>                :            : /* Backward iteration step.  Advances the pointer to point to the previous
+<span class="lineNum">     479 </span>                :            :    character, or returns NULL if the beginning of the string had been reached.
+<span class="lineNum">     480 </span>                :            :    Puts the character's 'ucs4_t' representation in *PUC.  */
+<span class="lineNum">     481 </span>                :            : extern const uint8_t *
+<span class="lineNum">     482 </span>                :            :        u8_prev (ucs4_t *puc, const uint8_t *s, const uint8_t *start);
+<span class="lineNum">     483 </span>                :            : extern const uint16_t *
+<span class="lineNum">     484 </span>                :            :        u16_prev (ucs4_t *puc, const uint16_t *s, const uint16_t *start);
+<span class="lineNum">     485 </span>                :            : extern const uint32_t *
+<span class="lineNum">     486 </span>                :            :        u32_prev (ucs4_t *puc, const uint32_t *s, const uint32_t *start);
+<span class="lineNum">     487 </span>                :            : 
+<span class="lineNum">     488 </span>                :            : /* Return the number of units in S.  */
+<span class="lineNum">     489 </span>                :            : /* Similar to strlen(), wcslen().  */
+<span class="lineNum">     490 </span>                :            : extern size_t
+<span class="lineNum">     491 </span>                :            :        u8_strlen (const uint8_t *s);
+<span class="lineNum">     492 </span>                :            : extern size_t
+<span class="lineNum">     493 </span>                :            :        u16_strlen (const uint16_t *s);
+<span class="lineNum">     494 </span>                :            : extern size_t
+<span class="lineNum">     495 </span>                :            :        u32_strlen (const uint32_t *s);
+<span class="lineNum">     496 </span>                :            : 
+<span class="lineNum">     497 </span>                :            : /* Return the number of units in S, but at most MAXLEN.  */
+<span class="lineNum">     498 </span>                :            : /* Similar to strnlen(), wcsnlen().  */
+<span class="lineNum">     499 </span>                :            : extern size_t
+<span class="lineNum">     500 </span>                :            :        u8_strnlen (const uint8_t *s, size_t maxlen);
+<span class="lineNum">     501 </span>                :            : extern size_t
+<span class="lineNum">     502 </span>                :            :        u16_strnlen (const uint16_t *s, size_t maxlen);
+<span class="lineNum">     503 </span>                :            : extern size_t
+<span class="lineNum">     504 </span>                :            :        u32_strnlen (const uint32_t *s, size_t maxlen);
+<span class="lineNum">     505 </span>                :            : 
+<span class="lineNum">     506 </span>                :            : /* Copy SRC to DEST.  */
+<span class="lineNum">     507 </span>                :            : /* Similar to strcpy(), wcscpy().  */
+<span class="lineNum">     508 </span>                :            : extern uint8_t *
+<span class="lineNum">     509 </span>                :            :        u8_strcpy (uint8_t *dest, const uint8_t *src);
+<span class="lineNum">     510 </span>                :            : extern uint16_t *
+<span class="lineNum">     511 </span>                :            :        u16_strcpy (uint16_t *dest, const uint16_t *src);
+<span class="lineNum">     512 </span>                :            : extern uint32_t *
+<span class="lineNum">     513 </span>                :            :        u32_strcpy (uint32_t *dest, const uint32_t *src);
+<span class="lineNum">     514 </span>                :            : 
+<span class="lineNum">     515 </span>                :            : /* Copy SRC to DEST, returning the address of the terminating NUL in DEST.  */
+<span class="lineNum">     516 </span>                :            : /* Similar to stpcpy().  */
+<span class="lineNum">     517 </span>                :            : extern uint8_t *
+<span class="lineNum">     518 </span>                :            :        u8_stpcpy (uint8_t *dest, const uint8_t *src);
+<span class="lineNum">     519 </span>                :            : extern uint16_t *
+<span class="lineNum">     520 </span>                :            :        u16_stpcpy (uint16_t *dest, const uint16_t *src);
+<span class="lineNum">     521 </span>                :            : extern uint32_t *
+<span class="lineNum">     522 </span>                :            :        u32_stpcpy (uint32_t *dest, const uint32_t *src);
+<span class="lineNum">     523 </span>                :            : 
+<span class="lineNum">     524 </span>                :            : /* Copy no more than N units of SRC to DEST.  */
+<span class="lineNum">     525 </span>                :            : /* Similar to strncpy(), wcsncpy().  */
+<span class="lineNum">     526 </span>                :            : extern uint8_t *
+<span class="lineNum">     527 </span>                :            :        u8_strncpy (uint8_t *dest, const uint8_t *src, size_t n);
+<span class="lineNum">     528 </span>                :            : extern uint16_t *
+<span class="lineNum">     529 </span>                :            :        u16_strncpy (uint16_t *dest, const uint16_t *src, size_t n);
+<span class="lineNum">     530 </span>                :            : extern uint32_t *
+<span class="lineNum">     531 </span>                :            :        u32_strncpy (uint32_t *dest, const uint32_t *src, size_t n);
+<span class="lineNum">     532 </span>                :            : 
+<span class="lineNum">     533 </span>                :            : /* Copy no more than N units of SRC to DEST.  Return a pointer past the last
+<span class="lineNum">     534 </span>                :            :    non-NUL unit written into DEST.  */
+<span class="lineNum">     535 </span>                :            : /* Similar to stpncpy().  */
+<span class="lineNum">     536 </span>                :            : extern uint8_t *
+<span class="lineNum">     537 </span>                :            :        u8_stpncpy (uint8_t *dest, const uint8_t *src, size_t n);
+<span class="lineNum">     538 </span>                :            : extern uint16_t *
+<span class="lineNum">     539 </span>                :            :        u16_stpncpy (uint16_t *dest, const uint16_t *src, size_t n);
+<span class="lineNum">     540 </span>                :            : extern uint32_t *
+<span class="lineNum">     541 </span>                :            :        u32_stpncpy (uint32_t *dest, const uint32_t *src, size_t n);
+<span class="lineNum">     542 </span>                :            : 
+<span class="lineNum">     543 </span>                :            : /* Append SRC onto DEST.  */
+<span class="lineNum">     544 </span>                :            : /* Similar to strcat(), wcscat().  */
+<span class="lineNum">     545 </span>                :            : extern uint8_t *
+<span class="lineNum">     546 </span>                :            :        u8_strcat (uint8_t *dest, const uint8_t *src);
+<span class="lineNum">     547 </span>                :            : extern uint16_t *
+<span class="lineNum">     548 </span>                :            :        u16_strcat (uint16_t *dest, const uint16_t *src);
+<span class="lineNum">     549 </span>                :            : extern uint32_t *
+<span class="lineNum">     550 </span>                :            :        u32_strcat (uint32_t *dest, const uint32_t *src);
+<span class="lineNum">     551 </span>                :            : 
+<span class="lineNum">     552 </span>                :            : /* Append no more than N units of SRC onto DEST.  */
+<span class="lineNum">     553 </span>                :            : /* Similar to strncat(), wcsncat().  */
+<span class="lineNum">     554 </span>                :            : extern uint8_t *
+<span class="lineNum">     555 </span>                :            :        u8_strncat (uint8_t *dest, const uint8_t *src, size_t n);
+<span class="lineNum">     556 </span>                :            : extern uint16_t *
+<span class="lineNum">     557 </span>                :            :        u16_strncat (uint16_t *dest, const uint16_t *src, size_t n);
+<span class="lineNum">     558 </span>                :            : extern uint32_t *
+<span class="lineNum">     559 </span>                :            :        u32_strncat (uint32_t *dest, const uint32_t *src, size_t n);
+<span class="lineNum">     560 </span>                :            : 
+<span class="lineNum">     561 </span>                :            : /* Compare S1 and S2.  */
+<span class="lineNum">     562 </span>                :            : /* Similar to strcmp(), wcscmp().  */
+<span class="lineNum">     563 </span>                :            : #ifdef __sun
+<span class="lineNum">     564 </span>                :            : /* Avoid a collision with the u8_strcmp() function in Solaris 11 libc.  */
+<span class="lineNum">     565 </span>                :            : extern int
+<span class="lineNum">     566 </span>                :            :        u8_strcmp_gnu (const uint8_t *s1, const uint8_t *s2);
+<span class="lineNum">     567 </span>                :            : # define u8_strcmp u8_strcmp_gnu
+<span class="lineNum">     568 </span>                :            : #else
+<span class="lineNum">     569 </span>                :            : extern int
+<span class="lineNum">     570 </span>                :            :        u8_strcmp (const uint8_t *s1, const uint8_t *s2);
+<span class="lineNum">     571 </span>                :            : #endif
+<span class="lineNum">     572 </span>                :            : extern int
+<span class="lineNum">     573 </span>                :            :        u16_strcmp (const uint16_t *s1, const uint16_t *s2);
+<span class="lineNum">     574 </span>                :            : extern int
+<span class="lineNum">     575 </span>                :            :        u32_strcmp (const uint32_t *s1, const uint32_t *s2);
+<span class="lineNum">     576 </span>                :            : 
+<span class="lineNum">     577 </span>                :            : /* Compare S1 and S2 using the collation rules of the current locale.
+<span class="lineNum">     578 </span>                :            :    Return -1 if S1 &lt; S2, 0 if S1 = S2, 1 if S1 &gt; S2.
+<span class="lineNum">     579 </span>                :            :    Upon failure, set errno and return any value.  */
+<span class="lineNum">     580 </span>                :            : /* Similar to strcoll(), wcscoll().  */
+<span class="lineNum">     581 </span>                :            : extern int
+<span class="lineNum">     582 </span>                :            :        u8_strcoll (const uint8_t *s1, const uint8_t *s2);
+<span class="lineNum">     583 </span>                :            : extern int
+<span class="lineNum">     584 </span>                :            :        u16_strcoll (const uint16_t *s1, const uint16_t *s2);
+<span class="lineNum">     585 </span>                :            : extern int
+<span class="lineNum">     586 </span>                :            :        u32_strcoll (const uint32_t *s1, const uint32_t *s2);
+<span class="lineNum">     587 </span>                :            : 
+<span class="lineNum">     588 </span>                :            : /* Compare no more than N units of S1 and S2.  */
+<span class="lineNum">     589 </span>                :            : /* Similar to strncmp(), wcsncmp().  */
+<span class="lineNum">     590 </span>                :            : extern int
+<span class="lineNum">     591 </span>                :            :        u8_strncmp (const uint8_t *s1, const uint8_t *s2, size_t n);
+<span class="lineNum">     592 </span>                :            : extern int
+<span class="lineNum">     593 </span>                :            :        u16_strncmp (const uint16_t *s1, const uint16_t *s2, size_t n);
+<span class="lineNum">     594 </span>                :            : extern int
+<span class="lineNum">     595 </span>                :            :        u32_strncmp (const uint32_t *s1, const uint32_t *s2, size_t n);
+<span class="lineNum">     596 </span>                :            : 
+<span class="lineNum">     597 </span>                :            : /* Duplicate S, returning an identical malloc'd string.  */
+<span class="lineNum">     598 </span>                :            : /* Similar to strdup(), wcsdup().  */
+<span class="lineNum">     599 </span>                :            : extern uint8_t *
+<span class="lineNum">     600 </span>                :            :        u8_strdup (const uint8_t *s);
+<span class="lineNum">     601 </span>                :            : extern uint16_t *
+<span class="lineNum">     602 </span>                :            :        u16_strdup (const uint16_t *s);
+<span class="lineNum">     603 </span>                :            : extern uint32_t *
+<span class="lineNum">     604 </span>                :            :        u32_strdup (const uint32_t *s);
+<span class="lineNum">     605 </span>                :            : 
+<span class="lineNum">     606 </span>                :            : /* Find the first occurrence of UC in STR.  */
+<span class="lineNum">     607 </span>                :            : /* Similar to strchr(), wcschr().  */
+<span class="lineNum">     608 </span>                :            : extern uint8_t *
+<span class="lineNum">     609 </span>                :            :        u8_strchr (const uint8_t *str, ucs4_t uc);
+<span class="lineNum">     610 </span>                :            : extern uint16_t *
+<span class="lineNum">     611 </span>                :            :        u16_strchr (const uint16_t *str, ucs4_t uc);
+<span class="lineNum">     612 </span>                :            : extern uint32_t *
+<span class="lineNum">     613 </span>                :            :        u32_strchr (const uint32_t *str, ucs4_t uc);
+<span class="lineNum">     614 </span>                :            : 
+<span class="lineNum">     615 </span>                :            : /* Find the last occurrence of UC in STR.  */
+<span class="lineNum">     616 </span>                :            : /* Similar to strrchr(), wcsrchr().  */
+<span class="lineNum">     617 </span>                :            : extern uint8_t *
+<span class="lineNum">     618 </span>                :            :        u8_strrchr (const uint8_t *str, ucs4_t uc);
+<span class="lineNum">     619 </span>                :            : extern uint16_t *
+<span class="lineNum">     620 </span>                :            :        u16_strrchr (const uint16_t *str, ucs4_t uc);
+<span class="lineNum">     621 </span>                :            : extern uint32_t *
+<span class="lineNum">     622 </span>                :            :        u32_strrchr (const uint32_t *str, ucs4_t uc);
+<span class="lineNum">     623 </span>                :            : 
+<span class="lineNum">     624 </span>                :            : /* Return the length of the initial segment of STR which consists entirely
+<span class="lineNum">     625 </span>                :            :    of Unicode characters not in REJECT.  */
+<span class="lineNum">     626 </span>                :            : /* Similar to strcspn(), wcscspn().  */
+<span class="lineNum">     627 </span>                :            : extern size_t
+<span class="lineNum">     628 </span>                :            :        u8_strcspn (const uint8_t *str, const uint8_t *reject);
+<span class="lineNum">     629 </span>                :            : extern size_t
+<span class="lineNum">     630 </span>                :            :        u16_strcspn (const uint16_t *str, const uint16_t *reject);
+<span class="lineNum">     631 </span>                :            : extern size_t
+<span class="lineNum">     632 </span>                :            :        u32_strcspn (const uint32_t *str, const uint32_t *reject);
+<span class="lineNum">     633 </span>                :            : 
+<span class="lineNum">     634 </span>                :            : /* Return the length of the initial segment of STR which consists entirely
+<span class="lineNum">     635 </span>                :            :    of Unicode characters in ACCEPT.  */
+<span class="lineNum">     636 </span>                :            : /* Similar to strspn(), wcsspn().  */
+<span class="lineNum">     637 </span>                :            : extern size_t
+<span class="lineNum">     638 </span>                :            :        u8_strspn (const uint8_t *str, const uint8_t *accept);
+<span class="lineNum">     639 </span>                :            : extern size_t
+<span class="lineNum">     640 </span>                :            :        u16_strspn (const uint16_t *str, const uint16_t *accept);
+<span class="lineNum">     641 </span>                :            : extern size_t
+<span class="lineNum">     642 </span>                :            :        u32_strspn (const uint32_t *str, const uint32_t *accept);
+<span class="lineNum">     643 </span>                :            : 
+<span class="lineNum">     644 </span>                :            : /* Find the first occurrence in STR of any character in ACCEPT.  */
+<span class="lineNum">     645 </span>                :            : /* Similar to strpbrk(), wcspbrk().  */
+<span class="lineNum">     646 </span>                :            : extern uint8_t *
+<span class="lineNum">     647 </span>                :            :        u8_strpbrk (const uint8_t *str, const uint8_t *accept);
+<span class="lineNum">     648 </span>                :            : extern uint16_t *
+<span class="lineNum">     649 </span>                :            :        u16_strpbrk (const uint16_t *str, const uint16_t *accept);
+<span class="lineNum">     650 </span>                :            : extern uint32_t *
+<span class="lineNum">     651 </span>                :            :        u32_strpbrk (const uint32_t *str, const uint32_t *accept);
+<span class="lineNum">     652 </span>                :            : 
+<span class="lineNum">     653 </span>                :            : /* Find the first occurrence of NEEDLE in HAYSTACK.  */
+<span class="lineNum">     654 </span>                :            : /* Similar to strstr(), wcsstr().  */
+<span class="lineNum">     655 </span>                :            : extern uint8_t *
+<span class="lineNum">     656 </span>                :            :        u8_strstr (const uint8_t *haystack, const uint8_t *needle);
+<span class="lineNum">     657 </span>                :            : extern uint16_t *
+<span class="lineNum">     658 </span>                :            :        u16_strstr (const uint16_t *haystack, const uint16_t *needle);
+<span class="lineNum">     659 </span>                :            : extern uint32_t *
+<span class="lineNum">     660 </span>                :            :        u32_strstr (const uint32_t *haystack, const uint32_t *needle);
+<span class="lineNum">     661 </span>                :            : 
+<span class="lineNum">     662 </span>                :            : /* Test whether STR starts with PREFIX.  */
+<span class="lineNum">     663 </span>                :            : extern bool
+<span class="lineNum">     664 </span>                :            :        u8_startswith (const uint8_t *str, const uint8_t *prefix);
+<span class="lineNum">     665 </span>                :            : extern bool
+<span class="lineNum">     666 </span>                :            :        u16_startswith (const uint16_t *str, const uint16_t *prefix);
+<span class="lineNum">     667 </span>                :            : extern bool
+<span class="lineNum">     668 </span>                :            :        u32_startswith (const uint32_t *str, const uint32_t *prefix);
+<span class="lineNum">     669 </span>                :            : 
+<span class="lineNum">     670 </span>                :            : /* Test whether STR ends with SUFFIX.  */
+<span class="lineNum">     671 </span>                :            : extern bool
+<span class="lineNum">     672 </span>                :            :        u8_endswith (const uint8_t *str, const uint8_t *suffix);
+<span class="lineNum">     673 </span>                :            : extern bool
+<span class="lineNum">     674 </span>                :            :        u16_endswith (const uint16_t *str, const uint16_t *suffix);
+<span class="lineNum">     675 </span>                :            : extern bool
+<span class="lineNum">     676 </span>                :            :        u32_endswith (const uint32_t *str, const uint32_t *suffix);
+<span class="lineNum">     677 </span>                :            : 
+<span class="lineNum">     678 </span>                :            : /* Divide STR into tokens separated by characters in DELIM.
+<span class="lineNum">     679 </span>                :            :    This interface is actually more similar to wcstok than to strtok.  */
+<span class="lineNum">     680 </span>                :            : /* Similar to strtok_r(), wcstok().  */
+<span class="lineNum">     681 </span>                :            : extern uint8_t *
+<span class="lineNum">     682 </span>                :            :        u8_strtok (uint8_t *str, const uint8_t *delim, uint8_t **ptr);
+<span class="lineNum">     683 </span>                :            : extern uint16_t *
+<span class="lineNum">     684 </span>                :            :        u16_strtok (uint16_t *str, const uint16_t *delim, uint16_t **ptr);
+<span class="lineNum">     685 </span>                :            : extern uint32_t *
+<span class="lineNum">     686 </span>                :            :        u32_strtok (uint32_t *str, const uint32_t *delim, uint32_t **ptr);
+<span class="lineNum">     687 </span>                :            : 
+<span class="lineNum">     688 </span>                :            : 
+<span class="lineNum">     689 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">     690 </span>                :            : }
+<span class="lineNum">     691 </span>                :            : #endif
+<span class="lineNum">     692 </span>                :            : 
+<span class="lineNum">     693 </span>                :            : #endif /* _UNISTR_H */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

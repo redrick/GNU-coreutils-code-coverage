@@ -1,0 +1,535 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - coreutils - lib/spawn-pipe.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib</a> - spawn-pipe.c<span style="font-size: 80%;"> (source / <a href="spawn-pipe.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coreutils</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">53</td>
+            <td class="headerCovTableEntry">87</td>
+            <td class="headerCovTableEntryLo">60.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-03-26</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryLo">60.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">36</td>
+            <td class="headerCovTableEntry">102</td>
+            <td class="headerCovTableEntryLo">35.3 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* Creation of subprocesses, communicating via pipes.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2001-2004, 2006-2012 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Written by Bruno Haible &lt;haible@clisp.cons.org&gt;, 2001.
+<span class="lineNum">       4 </span>                :            : 
+<span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       7 </span>                :            :    the Free Software Foundation; either version 3 of the License, or
+<span class="lineNum">       8 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       9 </span>                :            : 
+<span class="lineNum">      10 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      11 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      12 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      13 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      14 </span>                :            : 
+<span class="lineNum">      15 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      16 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      17 </span>                :            : 
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      20 </span>                :            : 
+<span class="lineNum">      21 </span>                :            : /* Specification.  */
+<span class="lineNum">      22 </span>                :            : #include &quot;spawn-pipe.h&quot;
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :            : #include &lt;errno.h&gt;
+<span class="lineNum">      25 </span>                :            : #include &lt;fcntl.h&gt;
+<span class="lineNum">      26 </span>                :            : #include &lt;stdlib.h&gt;
+<span class="lineNum">      27 </span>                :            : #include &lt;signal.h&gt;
+<span class="lineNum">      28 </span>                :            : #include &lt;unistd.h&gt;
+<span class="lineNum">      29 </span>                :            : 
+<span class="lineNum">      30 </span>                :            : #include &quot;error.h&quot;
+<span class="lineNum">      31 </span>                :            : #include &quot;fatal-signal.h&quot;
+<span class="lineNum">      32 </span>                :            : #include &quot;unistd-safer.h&quot;
+<span class="lineNum">      33 </span>                :            : #include &quot;wait-process.h&quot;
+<span class="lineNum">      34 </span>                :            : #include &quot;gettext.h&quot;
+<span class="lineNum">      35 </span>                :            : 
+<span class="lineNum">      36 </span>                :            : #define _(str) gettext (str)
+<span class="lineNum">      37 </span>                :            : 
+<span class="lineNum">      38 </span>                :            : #if (defined _WIN32 || defined __WIN32__) &amp;&amp; ! defined __CYGWIN__
+<span class="lineNum">      39 </span>                :            : 
+<span class="lineNum">      40 </span>                :            : /* Native Windows API.  */
+<span class="lineNum">      41 </span>                :            : # include &lt;process.h&gt;
+<span class="lineNum">      42 </span>                :            : # include &quot;w32spawn.h&quot;
+<span class="lineNum">      43 </span>                :            : 
+<span class="lineNum">      44 </span>                :            : #else
+<span class="lineNum">      45 </span>                :            : 
+<span class="lineNum">      46 </span>                :            : /* Unix API.  */
+<span class="lineNum">      47 </span>                :            : # include &lt;spawn.h&gt;
+<span class="lineNum">      48 </span>                :            : 
+<span class="lineNum">      49 </span>                :            : #endif
+<span class="lineNum">      50 </span>                :            : 
+<span class="lineNum">      51 </span>                :            : /* The results of open() in this file are not used with fchdir,
+<span class="lineNum">      52 </span>                :            :    therefore save some unnecessary work in fchdir.c.  */
+<span class="lineNum">      53 </span>                :            : #undef open
+<span class="lineNum">      54 </span>                :            : #undef close
+<span class="lineNum">      55 </span>                :            : 
+<span class="lineNum">      56 </span>                :            : 
+<span class="lineNum">      57 </span>                :            : #ifdef EINTR
+<span class="lineNum">      58 </span>                :            : 
+<span class="lineNum">      59 </span>                :            : /* EINTR handling for close().
+<span class="lineNum">      60 </span>                :            :    These functions can return -1/EINTR even though we don't have any
+<span class="lineNum">      61 </span>                :            :    signal handlers set up, namely when we get interrupted via SIGSTOP.  */
+<a name="62"><span class="lineNum">      62 </span>                :            : </a>
+<span class="lineNum">      63 </span>                :            : static inline int
+<span class="lineNum">      64 </span>                :<span class="lineCov">         16 : nonintr_close (int fd)</span>
+<span class="lineNum">      65 </span>                :            : {
+<span class="lineNum">      66 </span>                :            :   int retval;
+<span class="lineNum">      67 </span>                :            : 
+<span class="lineNum">      68 </span>                :            :   do
+<span class="lineNum">      69 </span>                :<span class="lineCov">         16 :     retval = close (fd);</span>
+<span class="lineNum">      70 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>][<span class="branchNoExec" title="Branch 3 was not executed"> # </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span>]:<span class="lineCov">         16 :   while (retval &lt; 0 &amp;&amp; errno == EINTR);</span>
+<span class="lineNum">      71 </span>                :            : 
+<span class="lineNum">      72 </span>                :<span class="lineCov">         16 :   return retval;</span>
+<span class="lineNum">      73 </span>                :            : }
+<span class="lineNum">      74 </span>                :            : #define close nonintr_close
+<span class="lineNum">      75 </span>                :            : 
+<span class="lineNum">      76 </span>                :            : static inline int
+<span class="lineNum">      77 </span>                :            : nonintr_open (const char *pathname, int oflag, mode_t mode)
+<span class="lineNum">      78 </span>                :            : {
+<span class="lineNum">      79 </span>                :            :   int retval;
+<span class="lineNum">      80 </span>                :            : 
+<span class="lineNum">      81 </span>                :            :   do
+<span class="lineNum">      82 </span>                :            :     retval = open (pathname, oflag, mode);
+<span class="lineNum">      83 </span>                :            :   while (retval &lt; 0 &amp;&amp; errno == EINTR);
+<span class="lineNum">      84 </span>                :            : 
+<span class="lineNum">      85 </span>                :            :   return retval;
+<span class="lineNum">      86 </span>                :            : }
+<span class="lineNum">      87 </span>                :            : #undef open /* avoid warning on VMS */
+<span class="lineNum">      88 </span>                :            : #define open nonintr_open
+<span class="lineNum">      89 </span>                :            : 
+<span class="lineNum">      90 </span>                :            : #endif
+<span class="lineNum">      91 </span>                :            : 
+<span class="lineNum">      92 </span>                :            : 
+<span class="lineNum">      93 </span>                :            : /* Open a pipe connected to a child process.
+<span class="lineNum">      94 </span>                :            :  *
+<span class="lineNum">      95 </span>                :            :  *           write       system                read
+<span class="lineNum">      96 </span>                :            :  *    parent  -&gt;   fd[1]   -&gt;   STDIN_FILENO    -&gt;   child       if pipe_stdin
+<span class="lineNum">      97 </span>                :            :  *    parent  &lt;-   fd[0]   &lt;-   STDOUT_FILENO   &lt;-   child       if pipe_stdout
+<span class="lineNum">      98 </span>                :            :  *           read        system                write
+<span class="lineNum">      99 </span>                :            :  *
+<span class="lineNum">     100 </span>                :            :  * At least one of pipe_stdin, pipe_stdout must be true.
+<span class="lineNum">     101 </span>                :            :  * pipe_stdin and prog_stdin together determine the child's standard input.
+<span class="lineNum">     102 </span>                :            :  * pipe_stdout and prog_stdout together determine the child's standard output.
+<span class="lineNum">     103 </span>                :            :  * If pipe_stdin is true, prog_stdin is ignored.
+<span class="lineNum">     104 </span>                :            :  * If pipe_stdout is true, prog_stdout is ignored.
+<a name="105"><span class="lineNum">     105 </span>                :            :  */</a>
+<span class="lineNum">     106 </span>                :            : static pid_t
+<span class="lineNum">     107 </span>                :<span class="lineCov">          8 : create_pipe (const char *progname,</span>
+<span class="lineNum">     108 </span>                :            :              const char *prog_path, char **prog_argv,
+<span class="lineNum">     109 </span>                :            :              bool pipe_stdin, bool pipe_stdout,
+<span class="lineNum">     110 </span>                :            :              const char *prog_stdin, const char *prog_stdout,
+<span class="lineNum">     111 </span>                :            :              bool null_stderr,
+<span class="lineNum">     112 </span>                :            :              bool slave_process, bool exit_on_error,
+<span class="lineNum">     113 </span>                :            :              int fd[2])
+<span class="lineNum">     114 </span>                :            : {
+<span class="lineNum">     115 </span>                :            : #if (defined _WIN32 || defined __WIN32__) &amp;&amp; ! defined __CYGWIN__
+<span class="lineNum">     116 </span>                :            : 
+<span class="lineNum">     117 </span>                :            :   /* Native Windows API.
+<span class="lineNum">     118 </span>                :            :      This uses _pipe(), dup2(), and spawnv().  It could also be implemented
+<span class="lineNum">     119 </span>                :            :      using the low-level functions CreatePipe(), DuplicateHandle(),
+<span class="lineNum">     120 </span>                :            :      CreateProcess() and _open_osfhandle(); see the GNU make and GNU clisp
+<span class="lineNum">     121 </span>                :            :      and cvs source code.  */
+<span class="lineNum">     122 </span>                :            :   int ifd[2];
+<span class="lineNum">     123 </span>                :            :   int ofd[2];
+<span class="lineNum">     124 </span>                :            :   int orig_stdin;
+<span class="lineNum">     125 </span>                :            :   int orig_stdout;
+<span class="lineNum">     126 </span>                :            :   int orig_stderr;
+<span class="lineNum">     127 </span>                :            :   int child;
+<span class="lineNum">     128 </span>                :            :   int nulloutfd;
+<span class="lineNum">     129 </span>                :            :   int stdinfd;
+<span class="lineNum">     130 </span>                :            :   int stdoutfd;
+<span class="lineNum">     131 </span>                :            :   int saved_errno;
+<span class="lineNum">     132 </span>                :            : 
+<span class="lineNum">     133 </span>                :            :   /* FIXME: Need to free memory allocated by prepare_spawn.  */
+<span class="lineNum">     134 </span>                :            :   prog_argv = prepare_spawn (prog_argv);
+<span class="lineNum">     135 </span>                :            : 
+<span class="lineNum">     136 </span>                :            :   if (pipe_stdout)
+<span class="lineNum">     137 </span>                :            :     if (pipe2_safer (ifd, O_BINARY | O_CLOEXEC) &lt; 0)
+<span class="lineNum">     138 </span>                :            :       error (EXIT_FAILURE, errno, _(&quot;cannot create pipe&quot;));
+<span class="lineNum">     139 </span>                :            :   if (pipe_stdin)
+<span class="lineNum">     140 </span>                :            :     if (pipe2_safer (ofd, O_BINARY | O_CLOEXEC) &lt; 0)
+<span class="lineNum">     141 </span>                :            :       error (EXIT_FAILURE, errno, _(&quot;cannot create pipe&quot;));
+<span class="lineNum">     142 </span>                :            : /* Data flow diagram:
+<span class="lineNum">     143 </span>                :            :  *
+<span class="lineNum">     144 </span>                :            :  *           write        system         read
+<span class="lineNum">     145 </span>                :            :  *    parent  -&gt;   ofd[1]   -&gt;   ofd[0]   -&gt;   child       if pipe_stdin
+<span class="lineNum">     146 </span>                :            :  *    parent  &lt;-   ifd[0]   &lt;-   ifd[1]   &lt;-   child       if pipe_stdout
+<span class="lineNum">     147 </span>                :            :  *           read         system         write
+<span class="lineNum">     148 </span>                :            :  *
+<span class="lineNum">     149 </span>                :            :  */
+<span class="lineNum">     150 </span>                :            : 
+<span class="lineNum">     151 </span>                :            :   /* Save standard file handles of parent process.  */
+<span class="lineNum">     152 </span>                :            :   if (pipe_stdin || prog_stdin != NULL)
+<span class="lineNum">     153 </span>                :            :     orig_stdin = dup_safer_noinherit (STDIN_FILENO);
+<span class="lineNum">     154 </span>                :            :   if (pipe_stdout || prog_stdout != NULL)
+<span class="lineNum">     155 </span>                :            :     orig_stdout = dup_safer_noinherit (STDOUT_FILENO);
+<span class="lineNum">     156 </span>                :            :   if (null_stderr)
+<span class="lineNum">     157 </span>                :            :     orig_stderr = dup_safer_noinherit (STDERR_FILENO);
+<span class="lineNum">     158 </span>                :            :   child = -1;
+<span class="lineNum">     159 </span>                :            : 
+<span class="lineNum">     160 </span>                :            :   /* Create standard file handles of child process.  */
+<span class="lineNum">     161 </span>                :            :   nulloutfd = -1;
+<span class="lineNum">     162 </span>                :            :   stdinfd = -1;
+<span class="lineNum">     163 </span>                :            :   stdoutfd = -1;
+<span class="lineNum">     164 </span>                :            :   if ((!pipe_stdin || dup2 (ofd[0], STDIN_FILENO) &gt;= 0)
+<span class="lineNum">     165 </span>                :            :       &amp;&amp; (!pipe_stdout || dup2 (ifd[1], STDOUT_FILENO) &gt;= 0)
+<span class="lineNum">     166 </span>                :            :       &amp;&amp; (!null_stderr
+<span class="lineNum">     167 </span>                :            :           || ((nulloutfd = open (&quot;NUL&quot;, O_RDWR, 0)) &gt;= 0
+<span class="lineNum">     168 </span>                :            :               &amp;&amp; (nulloutfd == STDERR_FILENO
+<span class="lineNum">     169 </span>                :            :                   || (dup2 (nulloutfd, STDERR_FILENO) &gt;= 0
+<span class="lineNum">     170 </span>                :            :                       &amp;&amp; close (nulloutfd) &gt;= 0))))
+<span class="lineNum">     171 </span>                :            :       &amp;&amp; (pipe_stdin
+<span class="lineNum">     172 </span>                :            :           || prog_stdin == NULL
+<span class="lineNum">     173 </span>                :            :           || ((stdinfd = open (prog_stdin, O_RDONLY, 0)) &gt;= 0
+<span class="lineNum">     174 </span>                :            :               &amp;&amp; (stdinfd == STDIN_FILENO
+<span class="lineNum">     175 </span>                :            :                   || (dup2 (stdinfd, STDIN_FILENO) &gt;= 0
+<span class="lineNum">     176 </span>                :            :                       &amp;&amp; close (stdinfd) &gt;= 0))))
+<span class="lineNum">     177 </span>                :            :       &amp;&amp; (pipe_stdout
+<span class="lineNum">     178 </span>                :            :           || prog_stdout == NULL
+<span class="lineNum">     179 </span>                :            :           || ((stdoutfd = open (prog_stdout, O_WRONLY, 0)) &gt;= 0
+<span class="lineNum">     180 </span>                :            :               &amp;&amp; (stdoutfd == STDOUT_FILENO
+<span class="lineNum">     181 </span>                :            :                   || (dup2 (stdoutfd, STDOUT_FILENO) &gt;= 0
+<span class="lineNum">     182 </span>                :            :                       &amp;&amp; close (stdoutfd) &gt;= 0)))))
+<span class="lineNum">     183 </span>                :            :     /* The child process doesn't inherit ifd[0], ifd[1], ofd[0], ofd[1],
+<span class="lineNum">     184 </span>                :            :        but it inherits all open()ed or dup2()ed file handles (which is what
+<span class="lineNum">     185 </span>                :            :        we want in the case of STD*_FILENO).  */
+<span class="lineNum">     186 </span>                :            :     /* Use spawnvpe and pass the environment explicitly.  This is needed if
+<span class="lineNum">     187 </span>                :            :        the program has modified the environment using putenv() or [un]setenv().
+<span class="lineNum">     188 </span>                :            :        On Windows, programs have two environments, one in the &quot;environment
+<span class="lineNum">     189 </span>                :            :        block&quot; of the process and managed through SetEnvironmentVariable(), and
+<span class="lineNum">     190 </span>                :            :        one inside the process, in the location retrieved by the 'environ'
+<span class="lineNum">     191 </span>                :            :        macro.  When using spawnvp() without 'e', the child process inherits a
+<span class="lineNum">     192 </span>                :            :        copy of the environment block - ignoring the effects of putenv() and
+<span class="lineNum">     193 </span>                :            :        [un]setenv().  */
+<span class="lineNum">     194 </span>                :            :     {
+<span class="lineNum">     195 </span>                :            :       child = spawnvpe (P_NOWAIT, prog_path, (const char **) prog_argv,
+<span class="lineNum">     196 </span>                :            :                         (const char **) environ);
+<span class="lineNum">     197 </span>                :            :       if (child &lt; 0 &amp;&amp; errno == ENOEXEC)
+<span class="lineNum">     198 </span>                :            :         {
+<span class="lineNum">     199 </span>                :            :           /* prog is not a native executable.  Try to execute it as a
+<span class="lineNum">     200 </span>                :            :              shell script.  Note that prepare_spawn() has already prepended
+<span class="lineNum">     201 </span>                :            :              a hidden element &quot;sh.exe&quot; to prog_argv.  */
+<span class="lineNum">     202 </span>                :            :           --prog_argv;
+<span class="lineNum">     203 </span>                :            :           child = spawnvpe (P_NOWAIT, prog_argv[0], (const char **) prog_argv,
+<span class="lineNum">     204 </span>                :            :                             (const char **) environ);
+<span class="lineNum">     205 </span>                :            :         }
+<span class="lineNum">     206 </span>                :            :     }
+<span class="lineNum">     207 </span>                :            :   if (child == -1)
+<span class="lineNum">     208 </span>                :            :     saved_errno = errno;
+<span class="lineNum">     209 </span>                :            :   if (stdinfd &gt;= 0)
+<span class="lineNum">     210 </span>                :            :     close (stdinfd);
+<span class="lineNum">     211 </span>                :            :   if (stdoutfd &gt;= 0)
+<span class="lineNum">     212 </span>                :            :     close (stdoutfd);
+<span class="lineNum">     213 </span>                :            :   if (nulloutfd &gt;= 0)
+<span class="lineNum">     214 </span>                :            :     close (nulloutfd);
+<span class="lineNum">     215 </span>                :            : 
+<span class="lineNum">     216 </span>                :            :   /* Restore standard file handles of parent process.  */
+<span class="lineNum">     217 </span>                :            :   if (null_stderr)
+<span class="lineNum">     218 </span>                :            :     undup_safer_noinherit (orig_stderr, STDERR_FILENO);
+<span class="lineNum">     219 </span>                :            :   if (pipe_stdout || prog_stdout != NULL)
+<span class="lineNum">     220 </span>                :            :     undup_safer_noinherit (orig_stdout, STDOUT_FILENO);
+<span class="lineNum">     221 </span>                :            :   if (pipe_stdin || prog_stdin != NULL)
+<span class="lineNum">     222 </span>                :            :     undup_safer_noinherit (orig_stdin, STDIN_FILENO);
+<span class="lineNum">     223 </span>                :            : 
+<span class="lineNum">     224 </span>                :            :   if (pipe_stdin)
+<span class="lineNum">     225 </span>                :            :     close (ofd[0]);
+<span class="lineNum">     226 </span>                :            :   if (pipe_stdout)
+<span class="lineNum">     227 </span>                :            :     close (ifd[1]);
+<span class="lineNum">     228 </span>                :            :   if (child == -1)
+<span class="lineNum">     229 </span>                :            :     {
+<span class="lineNum">     230 </span>                :            :       if (exit_on_error || !null_stderr)
+<span class="lineNum">     231 </span>                :            :         error (exit_on_error ? EXIT_FAILURE : 0, saved_errno,
+<span class="lineNum">     232 </span>                :            :                _(&quot;%s subprocess failed&quot;), progname);
+<span class="lineNum">     233 </span>                :            :       if (pipe_stdout)
+<span class="lineNum">     234 </span>                :            :         close (ifd[0]);
+<span class="lineNum">     235 </span>                :            :       if (pipe_stdin)
+<span class="lineNum">     236 </span>                :            :         close (ofd[1]);
+<span class="lineNum">     237 </span>                :            :       errno = saved_errno;
+<span class="lineNum">     238 </span>                :            :       return -1;
+<span class="lineNum">     239 </span>                :            :     }
+<span class="lineNum">     240 </span>                :            : 
+<span class="lineNum">     241 </span>                :            :   if (pipe_stdout)
+<span class="lineNum">     242 </span>                :            :     fd[0] = ifd[0];
+<span class="lineNum">     243 </span>                :            :   if (pipe_stdin)
+<span class="lineNum">     244 </span>                :            :     fd[1] = ofd[1];
+<span class="lineNum">     245 </span>                :            :   return child;
+<span class="lineNum">     246 </span>                :            : 
+<span class="lineNum">     247 </span>                :            : #else
+<span class="lineNum">     248 </span>                :            : 
+<span class="lineNum">     249 </span>                :            :   /* Unix API.  */
+<span class="lineNum">     250 </span>                :            :   int ifd[2];
+<span class="lineNum">     251 </span>                :            :   int ofd[2];
+<span class="lineNum">     252 </span>                :            :   sigset_t blocked_signals;
+<span class="lineNum">     253 </span>                :            :   posix_spawn_file_actions_t actions;
+<span class="lineNum">     254 </span>                :            :   bool actions_allocated;
+<span class="lineNum">     255 </span>                :            :   posix_spawnattr_t attrs;
+<span class="lineNum">     256 </span>                :            :   bool attrs_allocated;
+<span class="lineNum">     257 </span>                :            :   int err;
+<span class="lineNum">     258 </span>                :            :   pid_t child;
+<span class="lineNum">     259 </span>                :            : 
+<span class="lineNum">     260 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (pipe_stdout)</span>
+<span class="lineNum">     261 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">          8 :     if (pipe_safer (ifd) &lt; 0)</span>
+<span class="lineNum">     262 </span>                :<span class="lineNoCov">          0 :       error (EXIT_FAILURE, errno, _(&quot;cannot create pipe&quot;));</span>
+<span class="lineNum">     263 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (pipe_stdin)</span>
+<span class="lineNum">     264 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">          8 :     if (pipe_safer (ofd) &lt; 0)</span>
+<span class="lineNum">     265 </span>                :<span class="lineNoCov">          0 :       error (EXIT_FAILURE, errno, _(&quot;cannot create pipe&quot;));</span>
+<span class="lineNum">     266 </span>                :            : /* Data flow diagram:
+<span class="lineNum">     267 </span>                :            :  *
+<span class="lineNum">     268 </span>                :            :  *           write        system         read
+<span class="lineNum">     269 </span>                :            :  *    parent  -&gt;   ofd[1]   -&gt;   ofd[0]   -&gt;   child       if pipe_stdin
+<span class="lineNum">     270 </span>                :            :  *    parent  &lt;-   ifd[0]   &lt;-   ifd[1]   &lt;-   child       if pipe_stdout
+<span class="lineNum">     271 </span>                :            :  *           read         system         write
+<span class="lineNum">     272 </span>                :            :  *
+<span class="lineNum">     273 </span>                :            :  */
+<span class="lineNum">     274 </span>                :            : 
+<span class="lineNum">     275 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (slave_process)</span>
+<span class="lineNum">     276 </span>                :            :     {
+<span class="lineNum">     277 </span>                :<span class="lineCov">          8 :       sigprocmask (SIG_SETMASK, NULL, &amp;blocked_signals);</span>
+<span class="lineNum">     278 </span>                :<span class="lineCov">          8 :       block_fatal_signals ();</span>
+<span class="lineNum">     279 </span>                :            :     }
+<span class="lineNum">     280 </span>                :<span class="lineCov">          8 :   actions_allocated = false;</span>
+<span class="lineNum">     281 </span>                :<span class="lineCov">          8 :   attrs_allocated = false;</span>
+<span class="lineNum">     282 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :   if ((err = posix_spawn_file_actions_init (&amp;actions)) != 0</span>
+<span class="lineNum">     283 </span>[<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 8 times"> + </span>]:<span class="lineCov">         16 :       || (actions_allocated = true,</span>
+<span class="lineNum">     284 </span>                :            :           (pipe_stdin
+<span class="lineNum">     285 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :            &amp;&amp; (err = posix_spawn_file_actions_adddup2 (&amp;actions,</span>
+<span class="lineNum">     286 </span>                :            :                                                        ofd[0], STDIN_FILENO))
+<span class="lineNum">     287 </span>                :            :               != 0)
+<span class="lineNum">     288 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :           || (pipe_stdout</span>
+<span class="lineNum">     289 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :               &amp;&amp; (err = posix_spawn_file_actions_adddup2 (&amp;actions,</span>
+<span class="lineNum">     290 </span>                :            :                                                           ifd[1], STDOUT_FILENO))
+<span class="lineNum">     291 </span>                :            :                  != 0)
+<span class="lineNum">     292 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :           || (pipe_stdin</span>
+<span class="lineNum">     293 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :               &amp;&amp; (err = posix_spawn_file_actions_addclose (&amp;actions, ofd[0]))</span>
+<span class="lineNum">     294 </span>                :            :                  != 0)
+<span class="lineNum">     295 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :           || (pipe_stdout</span>
+<span class="lineNum">     296 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :               &amp;&amp; (err = posix_spawn_file_actions_addclose (&amp;actions, ifd[1]))</span>
+<span class="lineNum">     297 </span>                :            :                  != 0)
+<span class="lineNum">     298 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :           || (pipe_stdin</span>
+<span class="lineNum">     299 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :               &amp;&amp; (err = posix_spawn_file_actions_addclose (&amp;actions, ofd[1]))</span>
+<span class="lineNum">     300 </span>                :            :                  != 0)
+<span class="lineNum">     301 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :           || (pipe_stdout</span>
+<span class="lineNum">     302 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :               &amp;&amp; (err = posix_spawn_file_actions_addclose (&amp;actions, ifd[0]))</span>
+<span class="lineNum">     303 </span>                :            :                  != 0)
+<span class="lineNum">     304 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :           || (null_stderr</span>
+<span class="lineNum">     305 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :               &amp;&amp; (err = posix_spawn_file_actions_addopen (&amp;actions,</span>
+<span class="lineNum">     306 </span>                :            :                                                           STDERR_FILENO,
+<span class="lineNum">     307 </span>                :            :                                                           &quot;/dev/null&quot;, O_RDWR,
+<span class="lineNum">     308 </span>                :            :                                                           0))
+<span class="lineNum">     309 </span>                :            :                  != 0)
+<span class="lineNum">     310 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :           || (!pipe_stdin</span>
+<span class="lineNum">     311 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               &amp;&amp; prog_stdin != NULL</span>
+<span class="lineNum">     312 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :               &amp;&amp; (err = posix_spawn_file_actions_addopen (&amp;actions,</span>
+<span class="lineNum">     313 </span>                :            :                                                           STDIN_FILENO,
+<span class="lineNum">     314 </span>                :            :                                                           prog_stdin, O_RDONLY,
+<span class="lineNum">     315 </span>                :            :                                                           0))
+<span class="lineNum">     316 </span>                :            :                  != 0)
+<span class="lineNum">     317 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :           || (!pipe_stdout</span>
+<span class="lineNum">     318 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               &amp;&amp; prog_stdout != NULL</span>
+<span class="lineNum">     319 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :               &amp;&amp; (err = posix_spawn_file_actions_addopen (&amp;actions,</span>
+<span class="lineNum">     320 </span>                :            :                                                           STDOUT_FILENO,
+<span class="lineNum">     321 </span>                :            :                                                           prog_stdout, O_WRONLY,
+<span class="lineNum">     322 </span>                :            :                                                           0))
+<span class="lineNum">     323 </span>                :            :                  != 0)
+<span class="lineNum">     324 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :           || (slave_process</span>
+<span class="lineNum">     325 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          8 :               &amp;&amp; ((err = posix_spawnattr_init (&amp;attrs)) != 0</span>
+<span class="lineNum">     326 </span>[<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">         16 :                   || (attrs_allocated = true,</span>
+<span class="lineNum">     327 </span>                :            :                       (err = posix_spawnattr_setsigmask (&amp;attrs,
+<span class="lineNum">     328 </span>                :            :                                                          &amp;blocked_signals))
+<span class="lineNum">     329 </span>                :            :                       != 0
+<span class="lineNum">     330 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">          8 :                       || (err = posix_spawnattr_setflags (&amp;attrs,</span>
+<span class="lineNum">     331 </span>                :            :                                                         POSIX_SPAWN_SETSIGMASK))
+<span class="lineNum">     332 </span>                :            :                          != 0)))
+<span class="lineNum">     333 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 8 times"> + </span>]:<span class="lineCov">          8 :           || (err = posix_spawnp (&amp;child, prog_path, &amp;actions,</span>
+<span class="lineNum">     334 </span>                :            :                                   attrs_allocated ? &amp;attrs : NULL, prog_argv,
+<span class="lineNum">     335 </span>                :            :                                   environ))
+<span class="lineNum">     336 </span>                :            :              != 0))
+<span class="lineNum">     337 </span>                :            :     {
+<span class="lineNum">     338 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (actions_allocated)</span>
+<span class="lineNum">     339 </span>                :<span class="lineNoCov">          0 :         posix_spawn_file_actions_destroy (&amp;actions);</span>
+<span class="lineNum">     340 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (attrs_allocated)</span>
+<span class="lineNum">     341 </span>                :<span class="lineNoCov">          0 :         posix_spawnattr_destroy (&amp;attrs);</span>
+<span class="lineNum">     342 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (slave_process)</span>
+<span class="lineNum">     343 </span>                :<span class="lineNoCov">          0 :         unblock_fatal_signals ();</span>
+<span class="lineNum">     344 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (exit_on_error || !null_stderr)</span>
+<span class="lineNum">     345 </span>                :<span class="lineNoCov">          0 :         error (exit_on_error ? EXIT_FAILURE : 0, err,</span>
+<span class="lineNum">     346 </span>                :<span class="lineNoCov">          0 :                _(&quot;%s subprocess failed&quot;), progname);</span>
+<span class="lineNum">     347 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (pipe_stdout)</span>
+<span class="lineNum">     348 </span>                :            :         {
+<span class="lineNum">     349 </span>                :<span class="lineNoCov">          0 :           close (ifd[0]);</span>
+<span class="lineNum">     350 </span>                :<span class="lineNoCov">          0 :           close (ifd[1]);</span>
+<span class="lineNum">     351 </span>                :            :         }
+<span class="lineNum">     352 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (pipe_stdin)</span>
+<span class="lineNum">     353 </span>                :            :         {
+<span class="lineNum">     354 </span>                :<span class="lineNoCov">          0 :           close (ofd[0]);</span>
+<span class="lineNum">     355 </span>                :<span class="lineNoCov">          0 :           close (ofd[1]);</span>
+<span class="lineNum">     356 </span>                :            :         }
+<span class="lineNum">     357 </span>                :<span class="lineNoCov">          0 :       errno = err;</span>
+<span class="lineNum">     358 </span>                :<span class="lineNoCov">          0 :       return -1;</span>
+<span class="lineNum">     359 </span>                :            :     }
+<span class="lineNum">     360 </span>                :<span class="lineCov">          8 :   posix_spawn_file_actions_destroy (&amp;actions);</span>
+<span class="lineNum">     361 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (attrs_allocated)</span>
+<span class="lineNum">     362 </span>                :<span class="lineCov">          8 :     posix_spawnattr_destroy (&amp;attrs);</span>
+<span class="lineNum">     363 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (slave_process)</span>
+<span class="lineNum">     364 </span>                :            :     {
+<span class="lineNum">     365 </span>                :<span class="lineCov">          8 :       register_slave_subprocess (child);</span>
+<span class="lineNum">     366 </span>                :<span class="lineCov">          8 :       unblock_fatal_signals ();</span>
+<span class="lineNum">     367 </span>                :            :     }
+<span class="lineNum">     368 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (pipe_stdin)</span>
+<span class="lineNum">     369 </span>                :<span class="lineCov">          8 :     close (ofd[0]);</span>
+<span class="lineNum">     370 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (pipe_stdout)</span>
+<span class="lineNum">     371 </span>                :<span class="lineCov">          8 :     close (ifd[1]);</span>
+<span class="lineNum">     372 </span>                :            : 
+<span class="lineNum">     373 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (pipe_stdout)</span>
+<span class="lineNum">     374 </span>                :<span class="lineCov">          8 :     fd[0] = ifd[0];</span>
+<span class="lineNum">     375 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (pipe_stdin)</span>
+<span class="lineNum">     376 </span>                :<span class="lineCov">          8 :     fd[1] = ofd[1];</span>
+<span class="lineNum">     377 </span>                :<span class="lineCov">          8 :   return child;</span>
+<span class="lineNum">     378 </span>                :            : 
+<span class="lineNum">     379 </span>                :            : #endif
+<span class="lineNum">     380 </span>                :            : }
+<span class="lineNum">     381 </span>                :            : 
+<span class="lineNum">     382 </span>                :            : /* Open a bidirectional pipe.
+<span class="lineNum">     383 </span>                :            :  *
+<span class="lineNum">     384 </span>                :            :  *           write       system                read
+<span class="lineNum">     385 </span>                :            :  *    parent  -&gt;   fd[1]   -&gt;   STDIN_FILENO    -&gt;   child
+<span class="lineNum">     386 </span>                :            :  *    parent  &lt;-   fd[0]   &lt;-   STDOUT_FILENO   &lt;-   child
+<span class="lineNum">     387 </span>                :            :  *           read        system                write
+<span class="lineNum">     388 </span>                :            :  *
+<a name="389"><span class="lineNum">     389 </span>                :            :  */</a>
+<span class="lineNum">     390 </span>                :            : pid_t
+<span class="lineNum">     391 </span>                :<span class="lineCov">          8 : create_pipe_bidi (const char *progname,</span>
+<span class="lineNum">     392 </span>                :            :                   const char *prog_path, char **prog_argv,
+<span class="lineNum">     393 </span>                :            :                   bool null_stderr,
+<span class="lineNum">     394 </span>                :            :                   bool slave_process, bool exit_on_error,
+<span class="lineNum">     395 </span>                :            :                   int fd[2])
+<span class="lineNum">     396 </span>                :            : {
+<span class="lineNum">     397 </span>                :<span class="lineCov">          8 :   pid_t result = create_pipe (progname, prog_path, prog_argv,</span>
+<span class="lineNum">     398 </span>                :            :                               true, true, NULL, NULL,
+<span class="lineNum">     399 </span>                :            :                               null_stderr, slave_process, exit_on_error,
+<span class="lineNum">     400 </span>                :            :                               fd);
+<span class="lineNum">     401 </span>                :<span class="lineCov">          8 :   return result;</span>
+<span class="lineNum">     402 </span>                :            : }
+<span class="lineNum">     403 </span>                :            : 
+<span class="lineNum">     404 </span>                :            : /* Open a pipe for input from a child process.
+<span class="lineNum">     405 </span>                :            :  * The child's stdin comes from a file.
+<span class="lineNum">     406 </span>                :            :  *
+<span class="lineNum">     407 </span>                :            :  *           read        system                write
+<span class="lineNum">     408 </span>                :            :  *    parent  &lt;-   fd[0]   &lt;-   STDOUT_FILENO   &lt;-   child
+<span class="lineNum">     409 </span>                :            :  *
+<a name="410"><span class="lineNum">     410 </span>                :            :  */</a>
+<span class="lineNum">     411 </span>                :            : pid_t
+<span class="lineNum">     412 </span>                :<span class="lineNoCov">          0 : create_pipe_in (const char *progname,</span>
+<span class="lineNum">     413 </span>                :            :                 const char *prog_path, char **prog_argv,
+<span class="lineNum">     414 </span>                :            :                 const char *prog_stdin, bool null_stderr,
+<span class="lineNum">     415 </span>                :            :                 bool slave_process, bool exit_on_error,
+<span class="lineNum">     416 </span>                :            :                 int fd[1])
+<span class="lineNum">     417 </span>                :            : {
+<span class="lineNum">     418 </span>                :            :   int iofd[2];
+<span class="lineNum">     419 </span>                :<span class="lineNoCov">          0 :   pid_t result = create_pipe (progname, prog_path, prog_argv,</span>
+<span class="lineNum">     420 </span>                :            :                               false, true, prog_stdin, NULL,
+<span class="lineNum">     421 </span>                :            :                               null_stderr, slave_process, exit_on_error,
+<span class="lineNum">     422 </span>                :            :                               iofd);
+<span class="lineNum">     423 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (result != -1)</span>
+<span class="lineNum">     424 </span>                :<span class="lineNoCov">          0 :     fd[0] = iofd[0];</span>
+<span class="lineNum">     425 </span>                :<span class="lineNoCov">          0 :   return result;</span>
+<span class="lineNum">     426 </span>                :            : }
+<span class="lineNum">     427 </span>                :            : 
+<span class="lineNum">     428 </span>                :            : /* Open a pipe for output to a child process.
+<span class="lineNum">     429 </span>                :            :  * The child's stdout goes to a file.
+<span class="lineNum">     430 </span>                :            :  *
+<span class="lineNum">     431 </span>                :            :  *           write       system                read
+<span class="lineNum">     432 </span>                :            :  *    parent  -&gt;   fd[0]   -&gt;   STDIN_FILENO    -&gt;   child
+<span class="lineNum">     433 </span>                :            :  *
+<a name="434"><span class="lineNum">     434 </span>                :            :  */</a>
+<span class="lineNum">     435 </span>                :            : pid_t
+<span class="lineNum">     436 </span>                :<span class="lineNoCov">          0 : create_pipe_out (const char *progname,</span>
+<span class="lineNum">     437 </span>                :            :                  const char *prog_path, char **prog_argv,
+<span class="lineNum">     438 </span>                :            :                  const char *prog_stdout, bool null_stderr,
+<span class="lineNum">     439 </span>                :            :                  bool slave_process, bool exit_on_error,
+<span class="lineNum">     440 </span>                :            :                  int fd[1])
+<span class="lineNum">     441 </span>                :            : {
+<span class="lineNum">     442 </span>                :            :   int iofd[2];
+<span class="lineNum">     443 </span>                :<span class="lineNoCov">          0 :   pid_t result = create_pipe (progname, prog_path, prog_argv,</span>
+<span class="lineNum">     444 </span>                :            :                               true, false, NULL, prog_stdout,
+<span class="lineNum">     445 </span>                :            :                               null_stderr, slave_process, exit_on_error,
+<span class="lineNum">     446 </span>                :            :                               iofd);
+<span class="lineNum">     447 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   if (result != -1)</span>
+<span class="lineNum">     448 </span>                :<span class="lineNoCov">          0 :     fd[0] = iofd[1];</span>
+<span class="lineNum">     449 </span>                :<span class="lineNoCov">          0 :   return result;</span>
+<span class="lineNum">     450 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

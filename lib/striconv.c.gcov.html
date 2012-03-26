@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">87</td>
-            <td class="headerCovTableEntry">141</td>
-            <td class="headerCovTableEntryLo">61.7 %</td>
+            <td class="headerCovTableEntry">81</td>
+            <td class="headerCovTableEntry">126</td>
+            <td class="headerCovTableEntryLo">64.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -111,7 +111,7 @@
 <span class="lineNum">      40 </span>                :            : #if HAVE_ICONV
 <a name="41"><span class="lineNum">      41 </span>                :            : </a>
 <span class="lineNum">      42 </span>                :            : int
-<span class="lineNum">      43 </span>                :<span class="lineCov">         28 : mem_cd_iconv (const char *src, size_t srclen, iconv_t cd,</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">          4 : mem_cd_iconv (const char *src, size_t srclen, iconv_t cd,</span>
 <span class="lineNum">      44 </span>                :            :               char **resultp, size_t *lengthp)
 <span class="lineNum">      45 </span>                :            : {
 <span class="lineNum">      46 </span>                :            : # define tmpbufsize 4096
@@ -123,35 +123,35 @@
 <span class="lineNum">      52 </span>                :            :      || !(((__GLIBC__ == 2 &amp;&amp; __GLIBC_MINOR__ &lt;= 1) &amp;&amp; !defined __UCLIBC__) \
 <span class="lineNum">      53 </span>                :            :           || defined __sun)
 <span class="lineNum">      54 </span>                :            :   /* Set to the initial state.  */
-<span class="lineNum">      55 </span>                :<span class="lineCov">         28 :   iconv (cd, NULL, NULL, NULL, NULL);</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">          4 :   iconv (cd, NULL, NULL, NULL, NULL);</span>
 <span class="lineNum">      56 </span>                :            : # endif
 <span class="lineNum">      57 </span>                :            : 
 <span class="lineNum">      58 </span>                :            :   /* Determine the length we need.  */
 <span class="lineNum">      59 </span>                :            :   {
-<span class="lineNum">      60 </span>                :<span class="lineCov">         28 :     size_t count = 0;</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">          4 :     size_t count = 0;</span>
 <span class="lineNum">      61 </span>                :            :     /* The alignment is needed when converting e.g. to glibc's WCHAR_T or
 <span class="lineNum">      62 </span>                :            :        libiconv's UCS-4-INTERNAL encoding.  */
 <span class="lineNum">      63 </span>                :            :     union { unsigned int align; char buf[tmpbufsize]; } tmp;
 <span class="lineNum">      64 </span>                :            : # define tmpbuf tmp.buf
-<span class="lineNum">      65 </span>                :<span class="lineCov">         28 :     const char *inptr = src;</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">         28 :     size_t insize = srclen;</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">          4 :     const char *inptr = src;</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">          4 :     size_t insize = srclen;</span>
 <span class="lineNum">      67 </span>                :            : 
-<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         42 :     while (insize &gt; 0)</span>
+<span class="lineNum">      68 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          6 :     while (insize &gt; 0)</span>
 <span class="lineNum">      69 </span>                :            :       {
-<span class="lineNum">      70 </span>                :<span class="lineCov">         28 :         char *outptr = tmpbuf;</span>
-<span class="lineNum">      71 </span>                :<span class="lineCov">         28 :         size_t outsize = tmpbufsize;</span>
-<span class="lineNum">      72 </span>                :<span class="lineCov">         28 :         size_t res = iconv (cd,</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">          4 :         char *outptr = tmpbuf;</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">          4 :         size_t outsize = tmpbufsize;</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">          4 :         size_t res = iconv (cd,</span>
 <span class="lineNum">      73 </span>                :            :                             (ICONV_CONST char **) &amp;inptr, &amp;insize,
 <span class="lineNum">      74 </span>                :            :                             &amp;outptr, &amp;outsize);
 <span class="lineNum">      75 </span>                :            : 
-<span class="lineNum">      76 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         28 :         if (res == (size_t)(-1))</span>
+<span class="lineNum">      76 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          4 :         if (res == (size_t)(-1))</span>
 <span class="lineNum">      77 </span>                :            :           {
-<span class="lineNum">      78 </span>        [<span class="branchCov" title="Branch 1 was taken 14 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">         14 :             if (errno == E2BIG)</span>
+<span class="lineNum">      78 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">          2 :             if (errno == E2BIG)</span>
 <span class="lineNum">      79 </span>                :            :               ;
-<span class="lineNum">      80 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchCov" title="Branch 2 was taken 7 times"> + </span>]:<span class="lineCov">         14 :             else if (errno == EINVAL)</span>
-<span class="lineNum">      81 </span>                :<span class="lineCov">          7 :               break;</span>
+<span class="lineNum">      80 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          2 :             else if (errno == EINVAL)</span>
+<span class="lineNum">      81 </span>                :            :               break;
 <span class="lineNum">      82 </span>                :            :             else
-<span class="lineNum">      83 </span>                :<span class="lineCov">          7 :               return -1;</span>
+<span class="lineNum">      83 </span>                :            :               return -1;
 <span class="lineNum">      84 </span>                :            :           }
 <span class="lineNum">      85 </span>                :            : # if !defined _LIBICONV_VERSION &amp;&amp; !(defined __GLIBC__ &amp;&amp; !defined __UCLIBC__)
 <span class="lineNum">      86 </span>                :            :         /* Irix iconv() inserts a NUL byte if it cannot convert.
@@ -164,37 +164,37 @@
 <span class="lineNum">      93 </span>                :            :             return -1;
 <span class="lineNum">      94 </span>                :            :           }
 <span class="lineNum">      95 </span>                :            : # endif
-<span class="lineNum">      96 </span>                :<span class="lineCov">         14 :         count += outptr - tmpbuf;</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">          2 :         count += outptr - tmpbuf;</span>
 <span class="lineNum">      97 </span>                :            :       }
 <span class="lineNum">      98 </span>                :            :     /* Avoid glibc-2.1 bug and Solaris 2.7 bug.  */
 <span class="lineNum">      99 </span>                :            : # if defined _LIBICONV_VERSION \
 <span class="lineNum">     100 </span>                :            :      || !(((__GLIBC__ == 2 &amp;&amp; __GLIBC_MINOR__ &lt;= 1) &amp;&amp; !defined __UCLIBC__) \
 <span class="lineNum">     101 </span>                :            :           || defined __sun)
 <span class="lineNum">     102 </span>                :            :     {
-<span class="lineNum">     103 </span>                :<span class="lineCov">         21 :       char *outptr = tmpbuf;</span>
-<span class="lineNum">     104 </span>                :<span class="lineCov">         21 :       size_t outsize = tmpbufsize;</span>
-<span class="lineNum">     105 </span>                :<span class="lineCov">         21 :       size_t res = iconv (cd, NULL, NULL, &amp;outptr, &amp;outsize);</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">          3 :       char *outptr = tmpbuf;</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">          3 :       size_t outsize = tmpbufsize;</span>
+<span class="lineNum">     105 </span>                :<span class="lineCov">          3 :       size_t res = iconv (cd, NULL, NULL, &amp;outptr, &amp;outsize);</span>
 <span class="lineNum">     106 </span>                :            : 
-<span class="lineNum">     107 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         21 :       if (res == (size_t)(-1))</span>
-<span class="lineNum">     108 </span>                :<span class="lineNoCov">          0 :         return -1;</span>
-<span class="lineNum">     109 </span>                :<span class="lineCov">         21 :       count += outptr - tmpbuf;</span>
+<span class="lineNum">     107 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          3 :       if (res == (size_t)(-1))</span>
+<span class="lineNum">     108 </span>                :            :         return -1;
+<span class="lineNum">     109 </span>                :<span class="lineCov">          3 :       count += outptr - tmpbuf;</span>
 <span class="lineNum">     110 </span>                :            :     }
 <span class="lineNum">     111 </span>                :            : # endif
-<span class="lineNum">     112 </span>                :<span class="lineCov">         21 :     length = count;</span>
+<span class="lineNum">     112 </span>                :<span class="lineCov">          3 :     length = count;</span>
 <span class="lineNum">     113 </span>                :            : # undef tmpbuf
 <span class="lineNum">     114 </span>                :            :   }
 <span class="lineNum">     115 </span>                :            : 
-<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         21 :   if (length == 0)</span>
+<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          3 :   if (length == 0)</span>
 <span class="lineNum">     117 </span>                :            :     {
-<span class="lineNum">     118 </span>                :<span class="lineCov">          7 :       *lengthp = 0;</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">          7 :       return 0;</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">          1 :       *lengthp = 0;</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">          1 :       return 0;</span>
 <span class="lineNum">     120 </span>                :            :     }
-<span class="lineNum">     121 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">         14 :   if (*resultp != NULL &amp;&amp; *lengthp &gt;= length)</span>
+<span class="lineNum">     121 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          2 :   if (*resultp != NULL &amp;&amp; *lengthp &gt;= length)</span>
 <span class="lineNum">     122 </span>                :<span class="lineNoCov">          0 :     result = *resultp;</span>
 <span class="lineNum">     123 </span>                :            :   else
 <span class="lineNum">     124 </span>                :            :     {
-<span class="lineNum">     125 </span>                :<span class="lineCov">         14 :       result = (char *) malloc (length);</span>
-<span class="lineNum">     126 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         14 :       if (result == NULL)</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">          2 :       result = (char *) malloc (length);</span>
+<span class="lineNum">     126 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :       if (result == NULL)</span>
 <span class="lineNum">     127 </span>                :            :         {
 <span class="lineNum">     128 </span>                :<span class="lineNoCov">          0 :           errno = ENOMEM;</span>
 <span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 :           return -1;</span>
@@ -206,28 +206,28 @@
 <span class="lineNum">     135 </span>                :            :      || !(((__GLIBC__ == 2 &amp;&amp; __GLIBC_MINOR__ &lt;= 1) &amp;&amp; !defined __UCLIBC__) \
 <span class="lineNum">     136 </span>                :            :           || defined __sun)
 <span class="lineNum">     137 </span>                :            :   /* Return to the initial state.  */
-<span class="lineNum">     138 </span>                :<span class="lineCov">         14 :   iconv (cd, NULL, NULL, NULL, NULL);</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">          2 :   iconv (cd, NULL, NULL, NULL, NULL);</span>
 <span class="lineNum">     139 </span>                :            : # endif
 <span class="lineNum">     140 </span>                :            : 
 <span class="lineNum">     141 </span>                :            :   /* Do the conversion for real.  */
 <span class="lineNum">     142 </span>                :            :   {
-<span class="lineNum">     143 </span>                :<span class="lineCov">         14 :     const char *inptr = src;</span>
-<span class="lineNum">     144 </span>                :<span class="lineCov">         14 :     size_t insize = srclen;</span>
-<span class="lineNum">     145 </span>                :<span class="lineCov">         14 :     char *outptr = result;</span>
-<span class="lineNum">     146 </span>                :<span class="lineCov">         14 :     size_t outsize = length;</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">          2 :     const char *inptr = src;</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">          2 :     size_t insize = srclen;</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">          2 :     char *outptr = result;</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">          2 :     size_t outsize = length;</span>
 <span class="lineNum">     147 </span>                :            : 
-<span class="lineNum">     148 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         28 :     while (insize &gt; 0)</span>
+<span class="lineNum">     148 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          4 :     while (insize &gt; 0)</span>
 <span class="lineNum">     149 </span>                :            :       {
-<span class="lineNum">     150 </span>                :<span class="lineCov">         14 :         size_t res = iconv (cd,</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">          2 :         size_t res = iconv (cd,</span>
 <span class="lineNum">     151 </span>                :            :                             (ICONV_CONST char **) &amp;inptr, &amp;insize,
 <span class="lineNum">     152 </span>                :            :                             &amp;outptr, &amp;outsize);
 <span class="lineNum">     153 </span>                :            : 
-<span class="lineNum">     154 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         14 :         if (res == (size_t)(-1))</span>
+<span class="lineNum">     154 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if (res == (size_t)(-1))</span>
 <span class="lineNum">     155 </span>                :            :           {
 <span class="lineNum">     156 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :             if (errno == EINVAL)</span>
-<span class="lineNum">     157 </span>                :<span class="lineNoCov">          0 :               break;</span>
+<span class="lineNum">     157 </span>                :            :               break;
 <span class="lineNum">     158 </span>                :            :             else
-<span class="lineNum">     159 </span>                :<span class="lineNoCov">          0 :               goto fail;</span>
+<span class="lineNum">     159 </span>                :            :               goto fail;
 <span class="lineNum">     160 </span>                :            :           }
 <span class="lineNum">     161 </span>                :            : # if !defined _LIBICONV_VERSION &amp;&amp; !(defined __GLIBC__ &amp;&amp; !defined __UCLIBC__)
 <span class="lineNum">     162 </span>                :            :         /* Irix iconv() inserts a NUL byte if it cannot convert.
@@ -246,20 +246,20 @@
 <span class="lineNum">     175 </span>                :            :      || !(((__GLIBC__ == 2 &amp;&amp; __GLIBC_MINOR__ &lt;= 1) &amp;&amp; !defined __UCLIBC__) \
 <span class="lineNum">     176 </span>                :            :           || defined __sun)
 <span class="lineNum">     177 </span>                :            :     {
-<span class="lineNum">     178 </span>                :<span class="lineCov">         14 :       size_t res = iconv (cd, NULL, NULL, &amp;outptr, &amp;outsize);</span>
+<span class="lineNum">     178 </span>                :<span class="lineCov">          2 :       size_t res = iconv (cd, NULL, NULL, &amp;outptr, &amp;outsize);</span>
 <span class="lineNum">     179 </span>                :            : 
-<span class="lineNum">     180 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         14 :       if (res == (size_t)(-1))</span>
-<span class="lineNum">     181 </span>                :<span class="lineNoCov">          0 :         goto fail;</span>
+<span class="lineNum">     180 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :       if (res == (size_t)(-1))</span>
+<span class="lineNum">     181 </span>                :            :         goto fail;
 <span class="lineNum">     182 </span>                :            :     }
 <span class="lineNum">     183 </span>                :            : # endif
-<span class="lineNum">     184 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         14 :     if (outsize != 0)</span>
+<span class="lineNum">     184 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :     if (outsize != 0)</span>
 <span class="lineNum">     185 </span>                :<span class="lineNoCov">          0 :       abort ();</span>
 <span class="lineNum">     186 </span>                :            :   }
 <span class="lineNum">     187 </span>                :            : 
-<span class="lineNum">     188 </span>                :<span class="lineCov">         14 :   *resultp = result;</span>
-<span class="lineNum">     189 </span>                :<span class="lineCov">         14 :   *lengthp = length;</span>
+<span class="lineNum">     188 </span>                :<span class="lineCov">          2 :   *resultp = result;</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">          2 :   *lengthp = length;</span>
 <span class="lineNum">     190 </span>                :            : 
-<span class="lineNum">     191 </span>                :<span class="lineCov">         14 :   return 0;</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">          2 :   return 0;</span>
 <span class="lineNum">     192 </span>                :            : 
 <span class="lineNum">     193 </span>                :            :  fail:
 <span class="lineNum">     194 </span>                :            :   {
@@ -267,15 +267,15 @@
 <span class="lineNum">     196 </span>                :            :       {
 <span class="lineNum">     197 </span>                :<span class="lineNoCov">          0 :         int saved_errno = errno;</span>
 <span class="lineNum">     198 </span>                :<span class="lineNoCov">          0 :         free (result);</span>
-<span class="lineNum">     199 </span>                :<span class="lineNoCov">          0 :         errno = saved_errno;</span>
+<span class="lineNum">     199 </span>                :<span class="lineCov">          4 :         errno = saved_errno;</span>
 <span class="lineNum">     200 </span>                :            :       }
-<span class="lineNum">     201 </span>                :<span class="lineCov">         28 :     return -1;</span>
+<span class="lineNum">     201 </span>                :            :     return -1;
 <span class="lineNum">     202 </span>                :            :   }
 <span class="lineNum">     203 </span>                :            : # undef tmpbufsize
 <span class="lineNum">     204 </span>                :            : }
 <a name="205"><span class="lineNum">     205 </span>                :            : </a>
 <span class="lineNum">     206 </span>                :            : char *
-<span class="lineNum">     207 </span>                :<span class="lineCov">       2520 : str_cd_iconv (const char *src, iconv_t cd)</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">        384 : str_cd_iconv (const char *src, iconv_t cd)</span>
 <span class="lineNum">     208 </span>                :            : {
 <span class="lineNum">     209 </span>                :            :   /* For most encodings, a trailing NUL byte in the input will be converted
 <span class="lineNum">     210 </span>                :            :      to a trailing NUL byte in the output.  But not for UTF-7.  So that this
@@ -323,22 +323,22 @@
 <span class="lineNum">     252 </span>                :            :   char *result;
 <span class="lineNum">     253 </span>                :            :   size_t result_size;
 <span class="lineNum">     254 </span>                :            :   size_t length;
-<span class="lineNum">     255 </span>                :<span class="lineCov">       2520 :   const char *inptr = src;</span>
-<span class="lineNum">     256 </span>                :<span class="lineCov">       2520 :   size_t inbytes_remaining = strlen (src);</span>
+<span class="lineNum">     255 </span>                :<span class="lineCov">        384 :   const char *inptr = src;</span>
+<span class="lineNum">     256 </span>                :<span class="lineCov">        384 :   size_t inbytes_remaining = strlen (src);</span>
 <span class="lineNum">     257 </span>                :            : 
 <span class="lineNum">     258 </span>                :            :   /* Make a guess for the worst-case output size, in order to avoid a
 <span class="lineNum">     259 </span>                :            :      realloc.  It's OK if the guess is wrong as long as it is not zero and
 <span class="lineNum">     260 </span>                :            :      doesn't lead to an integer overflow.  */
-<span class="lineNum">     261 </span>                :<span class="lineCov">       2520 :   result_size = inbytes_remaining;</span>
+<span class="lineNum">     261 </span>                :<span class="lineCov">        384 :   result_size = inbytes_remaining;</span>
 <span class="lineNum">     262 </span>                :            :   {
-<span class="lineNum">     263 </span>                :<span class="lineCov">       2520 :     size_t approx_sqrt_SIZE_MAX = SIZE_MAX &gt;&gt; (sizeof (size_t) * CHAR_BIT / 2);</span>
-<span class="lineNum">     264 </span>        [<span class="branchCov" title="Branch 0 was taken 2520 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       2520 :     if (result_size &lt;= approx_sqrt_SIZE_MAX / MB_LEN_MAX)</span>
-<span class="lineNum">     265 </span>                :<span class="lineCov">       2520 :       result_size *= MB_LEN_MAX;</span>
+<span class="lineNum">     263 </span>                :<span class="lineCov">        384 :     size_t approx_sqrt_SIZE_MAX = SIZE_MAX &gt;&gt; (sizeof (size_t) * CHAR_BIT / 2);</span>
+<span class="lineNum">     264 </span>        [<span class="branchCov" title="Branch 0 was taken 384 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        384 :     if (result_size &lt;= approx_sqrt_SIZE_MAX / MB_LEN_MAX)</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">        384 :       result_size *= MB_LEN_MAX;</span>
 <span class="lineNum">     266 </span>                :            :   }
-<span class="lineNum">     267 </span>                :<span class="lineCov">       2520 :   result_size += 1; /* for the terminating NUL */</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">        384 :   result_size += 1; /* for the terminating NUL */</span>
 <span class="lineNum">     268 </span>                :            : 
-<span class="lineNum">     269 </span>                :<span class="lineCov">       2520 :   result = (char *) malloc (result_size);</span>
-<span class="lineNum">     270 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2520 times"> + </span>]:<span class="lineCov">       2520 :   if (result == NULL)</span>
+<span class="lineNum">     269 </span>                :<span class="lineCov">        384 :   result = (char *) malloc (result_size);</span>
+<span class="lineNum">     270 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 384 times"> + </span>]:<span class="lineCov">        384 :   if (result == NULL)</span>
 <span class="lineNum">     271 </span>                :            :     {
 <span class="lineNum">     272 </span>                :<span class="lineNoCov">          0 :       errno = ENOMEM;</span>
 <span class="lineNum">     273 </span>                :<span class="lineNoCov">          0 :       return NULL;</span>
@@ -349,27 +349,27 @@
 <span class="lineNum">     278 </span>                :            :      || !(((__GLIBC__ == 2 &amp;&amp; __GLIBC_MINOR__ &lt;= 1) &amp;&amp; !defined __UCLIBC__) \
 <span class="lineNum">     279 </span>                :            :           || defined __sun)
 <span class="lineNum">     280 </span>                :            :   /* Set to the initial state.  */
-<span class="lineNum">     281 </span>                :<span class="lineCov">       2520 :   iconv (cd, NULL, NULL, NULL, NULL);</span>
+<span class="lineNum">     281 </span>                :<span class="lineCov">        384 :   iconv (cd, NULL, NULL, NULL, NULL);</span>
 <span class="lineNum">     282 </span>                :            : # endif
 <span class="lineNum">     283 </span>                :            : 
 <span class="lineNum">     284 </span>                :            :   /* Do the conversion.  */
 <span class="lineNum">     285 </span>                :            :   {
-<span class="lineNum">     286 </span>                :<span class="lineCov">       2520 :     char *outptr = result;</span>
-<span class="lineNum">     287 </span>                :<span class="lineCov">       2520 :     size_t outbytes_remaining = result_size - 1;</span>
+<span class="lineNum">     286 </span>                :<span class="lineCov">        384 :     char *outptr = result;</span>
+<span class="lineNum">     287 </span>                :<span class="lineCov">        384 :     size_t outbytes_remaining = result_size - 1;</span>
 <span class="lineNum">     288 </span>                :            : 
 <span class="lineNum">     289 </span>                :            :     for (;;)
 <span class="lineNum">     290 </span>                :            :       {
 <span class="lineNum">     291 </span>                :            :         /* Here inptr + inbytes_remaining = src + strlen (src),
 <span class="lineNum">     292 </span>                :            :                 outptr + outbytes_remaining = result + result_size - 1.  */
-<span class="lineNum">     293 </span>                :<span class="lineCov">       2520 :         size_t res = iconv (cd,</span>
+<span class="lineNum">     293 </span>                :<span class="lineCov">        384 :         size_t res = iconv (cd,</span>
 <span class="lineNum">     294 </span>                :            :                             (ICONV_CONST char **) &amp;inptr, &amp;inbytes_remaining,
 <span class="lineNum">     295 </span>                :            :                             &amp;outptr, &amp;outbytes_remaining);
 <span class="lineNum">     296 </span>                :            : 
-<span class="lineNum">     297 </span>        [<span class="branchCov" title="Branch 0 was taken 1253 times"> + </span><span class="branchCov" title="Branch 1 was taken 1267 times"> + </span>]:<span class="lineCov">       2520 :         if (res == (size_t)(-1))</span>
+<span class="lineNum">     297 </span>        [<span class="branchCov" title="Branch 0 was taken 193 times"> + </span><span class="branchCov" title="Branch 1 was taken 191 times"> + </span>]:<span class="lineCov">        386 :         if (res == (size_t)(-1))</span>
 <span class="lineNum">     298 </span>                :            :           {
-<span class="lineNum">     299 </span>        [<span class="branchCov" title="Branch 1 was taken 14 times"> + </span><span class="branchCov" title="Branch 2 was taken 1239 times"> + </span>]:<span class="lineCov">       1253 :             if (errno == EINVAL)</span>
-<span class="lineNum">     300 </span>                :<span class="lineCov">         14 :               break;</span>
-<span class="lineNum">     301 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1239 times"> + </span>]:<span class="lineCov">       1239 :             else if (errno == E2BIG)</span>
+<span class="lineNum">     299 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 189 times"> + </span>]:<span class="lineCov">        191 :             if (errno == EINVAL)</span>
+<span class="lineNum">     300 </span>                :            :               break;
+<span class="lineNum">     301 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 189 times"> + </span>]:<span class="lineCov">        189 :             else if (errno == E2BIG)</span>
 <span class="lineNum">     302 </span>                :            :               {
 <span class="lineNum">     303 </span>                :<span class="lineNoCov">          0 :                 size_t used = outptr - result;</span>
 <span class="lineNum">     304 </span>                :<span class="lineNoCov">          0 :                 size_t newsize = result_size * 2;</span>
@@ -392,10 +392,10 @@
 <span class="lineNum">     321 </span>                :<span class="lineNoCov">          0 :                 outbytes_remaining = result_size - 1 - used;</span>
 <span class="lineNum">     322 </span>                :            :               }
 <span class="lineNum">     323 </span>                :            :             else
-<span class="lineNum">     324 </span>                :<span class="lineCov">       1239 :               goto failed;</span>
+<span class="lineNum">     324 </span>                :            :               goto failed;
 <span class="lineNum">     325 </span>                :            :           }
 <span class="lineNum">     326 </span>                :            :         else
-<span class="lineNum">     327 </span>                :<span class="lineCov">       1267 :           break;</span>
+<span class="lineNum">     327 </span>                :            :           break;
 <span class="lineNum">     328 </span>                :<span class="lineNoCov">          0 :       }</span>
 <span class="lineNum">     329 </span>                :            :     /* Avoid glibc-2.1 bug and Solaris 2.7 bug.  */
 <span class="lineNum">     330 </span>                :            : # if defined _LIBICONV_VERSION \
@@ -404,9 +404,9 @@
 <span class="lineNum">     333 </span>                :            :     for (;;)
 <span class="lineNum">     334 </span>                :            :       {
 <span class="lineNum">     335 </span>                :            :         /* Here outptr + outbytes_remaining = result + result_size - 1.  */
-<span class="lineNum">     336 </span>                :<span class="lineCov">       1281 :         size_t res = iconv (cd, NULL, NULL, &amp;outptr, &amp;outbytes_remaining);</span>
+<span class="lineNum">     336 </span>                :<span class="lineCov">        195 :         size_t res = iconv (cd, NULL, NULL, &amp;outptr, &amp;outbytes_remaining);</span>
 <span class="lineNum">     337 </span>                :            : 
-<span class="lineNum">     338 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1281 times"> + </span>]:<span class="lineCov">       1281 :         if (res == (size_t)(-1))</span>
+<span class="lineNum">     338 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 195 times"> + </span>]:<span class="lineCov">        195 :         if (res == (size_t)(-1))</span>
 <span class="lineNum">     339 </span>                :            :           {
 <span class="lineNum">     340 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :             if (errno == E2BIG)</span>
 <span class="lineNum">     341 </span>                :            :               {
@@ -431,36 +431,36 @@
 <span class="lineNum">     360 </span>                :<span class="lineNoCov">          0 :                 outbytes_remaining = result_size - 1 - used;</span>
 <span class="lineNum">     361 </span>                :            :               }
 <span class="lineNum">     362 </span>                :            :             else
-<span class="lineNum">     363 </span>                :<span class="lineNoCov">          0 :               goto failed;</span>
+<span class="lineNum">     363 </span>                :            :               goto failed;
 <span class="lineNum">     364 </span>                :            :           }
 <span class="lineNum">     365 </span>                :            :         else
-<span class="lineNum">     366 </span>                :<span class="lineCov">       1281 :           break;</span>
+<span class="lineNum">     366 </span>                :            :           break;
 <span class="lineNum">     367 </span>                :<span class="lineNoCov">          0 :       }</span>
 <span class="lineNum">     368 </span>                :            : # endif
 <span class="lineNum">     369 </span>                :            : 
 <span class="lineNum">     370 </span>                :            :     /* Add the terminating NUL byte.  */
-<span class="lineNum">     371 </span>                :<span class="lineCov">       1281 :     *outptr++ = '\0';</span>
+<span class="lineNum">     371 </span>                :<span class="lineCov">        195 :     *outptr++ = '\0';</span>
 <span class="lineNum">     372 </span>                :            : 
-<span class="lineNum">     373 </span>                :<span class="lineCov">       1281 :     length = outptr - result;</span>
+<span class="lineNum">     373 </span>                :<span class="lineCov">        195 :     length = outptr - result;</span>
 <span class="lineNum">     374 </span>                :            :   }
 <span class="lineNum">     375 </span>                :            : 
 <span class="lineNum">     376 </span>                :            :   /* Give away unused memory.  */
-<span class="lineNum">     377 </span>        [<span class="branchCov" title="Branch 0 was taken 1281 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1281 :   if (length &lt; result_size)</span>
+<span class="lineNum">     377 </span>        [<span class="branchCov" title="Branch 0 was taken 195 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        195 :   if (length &lt; result_size)</span>
 <span class="lineNum">     378 </span>                :            :     {
-<span class="lineNum">     379 </span>                :<span class="lineCov">       1281 :       char *smaller_result = (char *) realloc (result, length);</span>
+<span class="lineNum">     379 </span>                :<span class="lineCov">        195 :       char *smaller_result = (char *) realloc (result, length);</span>
 <span class="lineNum">     380 </span>                :            : 
-<span class="lineNum">     381 </span>        [<span class="branchCov" title="Branch 0 was taken 1281 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">       1281 :       if (smaller_result != NULL)</span>
-<span class="lineNum">     382 </span>                :<span class="lineCov">       1281 :         result = smaller_result;</span>
+<span class="lineNum">     381 </span>        [<span class="branchCov" title="Branch 0 was taken 195 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        195 :       if (smaller_result != NULL)</span>
+<span class="lineNum">     382 </span>                :<span class="lineCov">        195 :         result = smaller_result;</span>
 <span class="lineNum">     383 </span>                :            :     }
 <span class="lineNum">     384 </span>                :            : 
-<span class="lineNum">     385 </span>                :<span class="lineCov">       1281 :   return result;</span>
+<span class="lineNum">     385 </span>                :<span class="lineCov">        195 :   return result;</span>
 <span class="lineNum">     386 </span>                :            : 
 <span class="lineNum">     387 </span>                :            :  failed:
 <span class="lineNum">     388 </span>                :            :   {
-<span class="lineNum">     389 </span>                :<span class="lineCov">       1239 :     int saved_errno = errno;</span>
-<span class="lineNum">     390 </span>                :<span class="lineCov">       1239 :     free (result);</span>
-<span class="lineNum">     391 </span>                :<span class="lineCov">       1239 :     errno = saved_errno;</span>
-<span class="lineNum">     392 </span>                :<span class="lineCov">       2520 :     return NULL;</span>
+<span class="lineNum">     389 </span>                :<span class="lineCov">        189 :     int saved_errno = errno;</span>
+<span class="lineNum">     390 </span>                :<span class="lineCov">        189 :     free (result);</span>
+<span class="lineNum">     391 </span>                :<span class="lineCov">        189 :     errno = saved_errno;</span>
+<span class="lineNum">     392 </span>                :<span class="lineCov">        384 :     return NULL;</span>
 <span class="lineNum">     393 </span>                :            :   }
 <span class="lineNum">     394 </span>                :            : 
 <span class="lineNum">     395 </span>                :            : # endif
@@ -469,15 +469,15 @@
 <span class="lineNum">     398 </span>                :            : #endif
 <a name="399"><span class="lineNum">     399 </span>                :            : </a>
 <span class="lineNum">     400 </span>                :            : char *
-<span class="lineNum">     401 </span>                :<span class="lineCov">       2492 : str_iconv (const char *src, const char *from_codeset, const char *to_codeset)</span>
+<span class="lineNum">     401 </span>                :<span class="lineCov">        380 : str_iconv (const char *src, const char *from_codeset, const char *to_codeset)</span>
 <span class="lineNum">     402 </span>                :            : {
-<span class="lineNum">     403 </span>[<span class="branchCov" title="Branch 0 was taken 2492 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 2492 times"> + </span>]:<span class="lineCov">       2492 :   if (*src == '\0' || c_strcasecmp (from_codeset, to_codeset) == 0)</span>
+<span class="lineNum">     403 </span>[<span class="branchCov" title="Branch 0 was taken 380 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 380 times"> + </span>]:<span class="lineCov">        380 :   if (*src == '\0' || c_strcasecmp (from_codeset, to_codeset) == 0)</span>
 <span class="lineNum">     404 </span>                :            :     {
 <span class="lineNum">     405 </span>                :<span class="lineNoCov">          0 :       char *result = strdup (src);</span>
 <span class="lineNum">     406 </span>                :            : 
 <span class="lineNum">     407 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (result == NULL)</span>
 <span class="lineNum">     408 </span>                :<span class="lineNoCov">          0 :         errno = ENOMEM;</span>
-<span class="lineNum">     409 </span>                :<span class="lineNoCov">          0 :       return result;</span>
+<span class="lineNum">     409 </span>                :            :       return result;
 <span class="lineNum">     410 </span>                :            :     }
 <span class="lineNum">     411 </span>                :            :   else
 <span class="lineNum">     412 </span>                :            :     {
@@ -495,32 +495,32 @@
 <span class="lineNum">     424 </span>                :            :           return NULL;
 <span class="lineNum">     425 </span>                :            :         }
 <span class="lineNum">     426 </span>                :            : # endif
-<span class="lineNum">     427 </span>                :<span class="lineCov">       2492 :       cd = iconv_open (to_codeset, from_codeset);</span>
-<span class="lineNum">     428 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2492 times"> + </span>]:<span class="lineCov">       2492 :       if (cd == (iconv_t) -1)</span>
-<span class="lineNum">     429 </span>                :<span class="lineNoCov">          0 :         return NULL;</span>
+<span class="lineNum">     427 </span>                :<span class="lineCov">        380 :       cd = iconv_open (to_codeset, from_codeset);</span>
+<span class="lineNum">     428 </span>        [<span class="branchCov" title="Branch 0 was taken 380 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        380 :       if (cd == (iconv_t) -1)</span>
+<span class="lineNum">     429 </span>                :            :         return NULL;
 <span class="lineNum">     430 </span>                :            : 
-<span class="lineNum">     431 </span>                :<span class="lineCov">       2492 :       result = str_cd_iconv (src, cd);</span>
+<span class="lineNum">     431 </span>                :<span class="lineCov">        380 :       result = str_cd_iconv (src, cd);</span>
 <span class="lineNum">     432 </span>                :            : 
-<span class="lineNum">     433 </span>        [<span class="branchCov" title="Branch 0 was taken 1232 times"> + </span><span class="branchCov" title="Branch 1 was taken 1260 times"> + </span>]:<span class="lineCov">       2492 :       if (result == NULL)</span>
+<span class="lineNum">     433 </span>        [<span class="branchCov" title="Branch 0 was taken 188 times"> + </span><span class="branchCov" title="Branch 1 was taken 192 times"> + </span>]:<span class="lineCov">        380 :       if (result == NULL)</span>
 <span class="lineNum">     434 </span>                :            :         {
 <span class="lineNum">     435 </span>                :            :           /* Close cd, but preserve the errno from str_cd_iconv.  */
-<span class="lineNum">     436 </span>                :<span class="lineCov">       1232 :           int saved_errno = errno;</span>
-<span class="lineNum">     437 </span>                :<span class="lineCov">       1232 :           iconv_close (cd);</span>
-<span class="lineNum">     438 </span>                :<span class="lineCov">       1232 :           errno = saved_errno;</span>
+<span class="lineNum">     436 </span>                :<span class="lineCov">        188 :           int saved_errno = errno;</span>
+<span class="lineNum">     437 </span>                :<span class="lineCov">        188 :           iconv_close (cd);</span>
+<span class="lineNum">     438 </span>                :<span class="lineCov">        188 :           errno = saved_errno;</span>
 <span class="lineNum">     439 </span>                :            :         }
 <span class="lineNum">     440 </span>                :            :       else
 <span class="lineNum">     441 </span>                :            :         {
-<span class="lineNum">     442 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1260 times"> + </span>]:<span class="lineCov">       1260 :           if (iconv_close (cd) &lt; 0)</span>
+<span class="lineNum">     442 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 192 times"> + </span>]:<span class="lineCov">        192 :           if (iconv_close (cd) &lt; 0)</span>
 <span class="lineNum">     443 </span>                :            :             {
 <span class="lineNum">     444 </span>                :            :               /* Return NULL, but free the allocated memory, and while doing
 <span class="lineNum">     445 </span>                :            :                  that, preserve the errno from iconv_close.  */
 <span class="lineNum">     446 </span>                :<span class="lineNoCov">          0 :               int saved_errno = errno;</span>
 <span class="lineNum">     447 </span>                :<span class="lineNoCov">          0 :               free (result);</span>
 <span class="lineNum">     448 </span>                :<span class="lineNoCov">          0 :               errno = saved_errno;</span>
-<span class="lineNum">     449 </span>                :<span class="lineNoCov">          0 :               return NULL;</span>
+<span class="lineNum">     449 </span>                :<span class="lineCov">        380 :               return NULL;</span>
 <span class="lineNum">     450 </span>                :            :             }
 <span class="lineNum">     451 </span>                :            :         }
-<span class="lineNum">     452 </span>                :<span class="lineCov">       2492 :       return result;</span>
+<span class="lineNum">     452 </span>                :            :       return result;
 <span class="lineNum">     453 </span>                :            : #else
 <span class="lineNum">     454 </span>                :            :       /* This is a different error code than if iconv_open existed but didn't
 <span class="lineNum">     455 </span>                :            :          support from_codeset and to_codeset, so that the caller can emit

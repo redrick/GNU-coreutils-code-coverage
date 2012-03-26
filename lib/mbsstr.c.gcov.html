@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">116</td>
-            <td class="headerCovTableEntry">132</td>
-            <td class="headerCovTableEntryMed">87.9 %</td>
+            <td class="headerCovTableEntry">110</td>
+            <td class="headerCovTableEntry">120</td>
+            <td class="headerCovTableEntryHi">91.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -108,29 +108,29 @@
 <span class="lineNum">      37 </span>                :            :    Return true and set *RESULTP if the search was completed.
 <a name="38"><span class="lineNum">      38 </span>                :            :    Return false if it was aborted because not enough memory was available.  */</a>
 <span class="lineNum">      39 </span>                :            : static bool
-<span class="lineNum">      40 </span>                :<span class="lineCov">          7 : knuth_morris_pratt_multibyte (const char *haystack, const char *needle,</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">          1 : knuth_morris_pratt_multibyte (const char *haystack, const char *needle,</span>
 <span class="lineNum">      41 </span>                :            :                               const char **resultp)
 <span class="lineNum">      42 </span>                :            : {
-<span class="lineNum">      43 </span>                :<span class="lineCov">          7 :   size_t m = mbslen (needle);</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">          1 :   size_t m = mbslen (needle);</span>
 <span class="lineNum">      44 </span>                :            :   mbchar_t *needle_mbchars;
 <span class="lineNum">      45 </span>                :            :   size_t *table;
 <span class="lineNum">      46 </span>                :            : 
 <span class="lineNum">      47 </span>                :            :   /* Allocate room for needle_mbchars and the table.  */
-<span class="lineNum">      48 </span>[<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 7 times"> + </span>][<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          7 :   char *memory = (char *) nmalloca (m, sizeof (mbchar_t) + sizeof (size_t));</span>
-<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">          7 :   if (memory == NULL)</span>
-<span class="lineNum">      50 </span>                :<span class="lineNoCov">          0 :     return false;</span>
-<span class="lineNum">      51 </span>                :<span class="lineCov">          7 :   needle_mbchars = (mbchar_t *) memory;</span>
-<span class="lineNum">      52 </span>                :<span class="lineCov">          7 :   table = (size_t *) (memory + m * sizeof (mbchar_t));</span>
+<span class="lineNum">      48 </span>[<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          1 :   char *memory = (char *) nmalloca (m, sizeof (mbchar_t) + sizeof (size_t));</span>
+<span class="lineNum">      49 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :   if (memory == NULL)</span>
+<span class="lineNum">      50 </span>                :            :     return false;
+<span class="lineNum">      51 </span>                :<span class="lineCov">          1 :   needle_mbchars = (mbchar_t *) memory;</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">          1 :   table = (size_t *) (memory + m * sizeof (mbchar_t));</span>
 <span class="lineNum">      53 </span>                :            : 
 <span class="lineNum">      54 </span>                :            :   /* Fill needle_mbchars.  */
 <span class="lineNum">      55 </span>                :            :   {
 <span class="lineNum">      56 </span>                :            :     mbui_iterator_t iter;
 <span class="lineNum">      57 </span>                :            :     size_t j;
 <span class="lineNum">      58 </span>                :            : 
-<span class="lineNum">      59 </span>                :<span class="lineCov">          7 :     j = 0;</span>
-<span class="lineNum">      60 </span>[<span class="branchCov" title="Branch 1 was taken 7000014 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 7000007 times"> + </span><span class="branchCov" title="Branch 4 was taken 7 times"> + </span>]:<span class="lineCov">    7000014 :     for (mbui_init (iter, needle); mbui_avail (iter); mbui_advance (iter), j++)</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 7000007 times"> + </span><span class="branchCov" title="Branch 6 was taken 7 times"> + </span>]
-<span class="lineNum">      61 </span>                :<span class="lineCov">    7000007 :       mb_copy (&amp;needle_mbchars[j], &amp;mbui_cur (iter));</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">          1 :     j = 0;</span>
+<span class="lineNum">      60 </span>[<span class="branchCov" title="Branch 1 was taken 1000002 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 1 time"> + </span><span class="branchCov" title="Branch 4 was taken 1000001 times"> + </span>]:<span class="lineCov">    1000002 :     for (mbui_init (iter, needle); mbui_avail (iter); mbui_advance (iter), j++)</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 1000001 times"> + </span><span class="branchCov" title="Branch 6 was taken 1 time"> + </span>]
+<span class="lineNum">      61 </span>                :<span class="lineCov">    1000001 :       mb_copy (&amp;needle_mbchars[j], &amp;mbui_cur (iter));</span>
 <span class="lineNum">      62 </span>                :            :   }
 <span class="lineNum">      63 </span>                :            : 
 <span class="lineNum">      64 </span>                :            :   /* Fill the table.
@@ -152,29 +152,29 @@
 <span class="lineNum">      80 </span>                :            :     size_t i, j;
 <span class="lineNum">      81 </span>                :            : 
 <span class="lineNum">      82 </span>                :            :     /* i = 1: Nothing to verify for x = 0.  */
-<span class="lineNum">      83 </span>                :<span class="lineCov">          7 :     table[1] = 1;</span>
-<span class="lineNum">      84 </span>                :<span class="lineCov">          7 :     j = 0;</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">          1 :     table[1] = 1;</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">          1 :     j = 0;</span>
 <span class="lineNum">      85 </span>                :            : 
-<span class="lineNum">      86 </span>        [<span class="branchCov" title="Branch 0 was taken 6999993 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">    7000000 :     for (i = 2; i &lt; m; i++)</span>
+<span class="lineNum">      86 </span>        [<span class="branchCov" title="Branch 0 was taken 999999 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">    1000000 :     for (i = 2; i &lt; m; i++)</span>
 <span class="lineNum">      87 </span>                :            :       {
 <span class="lineNum">      88 </span>                :            :         /* Here: j = i-1 - table[i-1].
 <span class="lineNum">      89 </span>                :            :            The inequality needle[x..i-1] != needle[0..i-1-x] is known to hold
 <span class="lineNum">      90 </span>                :            :            for x &lt; table[i-1], by induction.
 <span class="lineNum">      91 </span>                :            :            Furthermore, if j&gt;0: needle[i-1-j..i-2] = needle[0..j-1].  */
-<span class="lineNum">      92 </span>                :<span class="lineCov">    6999993 :         mbchar_t *b = &amp;needle_mbchars[i - 1];</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">     999999 :         mbchar_t *b = &amp;needle_mbchars[i - 1];</span>
 <span class="lineNum">      93 </span>                :            : 
 <span class="lineNum">      94 </span>                :            :         for (;;)
 <span class="lineNum">      95 </span>                :            :           {
 <span class="lineNum">      96 </span>                :            :             /* Invariants: The inequality needle[x..i-1] != needle[0..i-1-x]
 <span class="lineNum">      97 </span>                :            :                is known to hold for x &lt; i-1-j.
 <span class="lineNum">      98 </span>                :            :                Furthermore, if j&gt;0: needle[i-1-j..i-2] = needle[0..j-1].  */
-<span class="lineNum">      99 </span>[<span class="branchCov" title="Branch 0 was taken 6999993 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 6999993 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">    6999993 :             if (mb_equal (*b, needle_mbchars[j]))</span>
+<span class="lineNum">      99 </span>[<span class="branchCov" title="Branch 0 was taken 999999 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 999999 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     999999 :             if (mb_equal (*b, needle_mbchars[j]))</span>
 <span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>][<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 6999993 times"> + </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span>]
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 999999 times"> + </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span>]
 <span class="lineNum">     100 </span>                :            :               {
 <span class="lineNum">     101 </span>                :            :                 /* Set table[i] := i-1-j.  */
-<span class="lineNum">     102 </span>                :<span class="lineCov">    6999993 :                 table[i] = i - ++j;</span>
-<span class="lineNum">     103 </span>                :<span class="lineCov">    6999993 :                 break;</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">     999999 :                 table[i] = i - ++j;</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">     999999 :                 break;</span>
 <span class="lineNum">     104 </span>                :            :               }
 <span class="lineNum">     105 </span>                :            :             /* The inequality needle[x..i-1] != needle[0..i-1-x] also holds
 <span class="lineNum">     106 </span>                :            :                for x = i-1-j, because
@@ -208,37 +208,37 @@
 <span class="lineNum">     134 </span>                :            :     mbui_iterator_t rhaystack;
 <span class="lineNum">     135 </span>                :            :     mbui_iterator_t phaystack;
 <span class="lineNum">     136 </span>                :            : 
-<span class="lineNum">     137 </span>                :<span class="lineCov">          7 :     *resultp = NULL;</span>
-<span class="lineNum">     138 </span>                :<span class="lineCov">          7 :     j = 0;</span>
-<span class="lineNum">     139 </span>                :<span class="lineCov">          7 :     mbui_init (rhaystack, haystack);</span>
-<span class="lineNum">     140 </span>                :<span class="lineCov">          7 :     mbui_init (phaystack, haystack);</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">          1 :     *resultp = NULL;</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">          1 :     j = 0;</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">          2 :     mbui_init (rhaystack, haystack);</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">          2 :     mbui_init (phaystack, haystack);</span>
 <span class="lineNum">     141 </span>                :            :     /* Invariant: phaystack = rhaystack + j.  */
-<span class="lineNum">     142 </span>[<span class="branchCov" title="Branch 1 was taken 21000007 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 21000007 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">   21000007 :     while (mbui_avail (phaystack))</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 21000007 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span>]
-<span class="lineNum">     143 </span>[<span class="branchCov" title="Branch 0 was taken 21000007 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 21000007 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">   21000007 :       if (mb_equal (needle_mbchars[j], mbui_cur (phaystack)))</span>
+<span class="lineNum">     142 </span>[<span class="branchCov" title="Branch 1 was taken 3000001 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 3000001 times"> + </span>]:<span class="lineCov">    3000001 :     while (mbui_avail (phaystack))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 3000001 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span>]
+<span class="lineNum">     143 </span>[<span class="branchCov" title="Branch 0 was taken 3000001 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 3000001 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">    3000001 :       if (mb_equal (needle_mbchars[j], mbui_cur (phaystack)))</span>
 <span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>][<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 14000007 times"> + </span><span class="branchCov" title="Branch 9 was taken 7000000 times"> + </span>]
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 2000001 times"> + </span><span class="branchCov" title="Branch 9 was taken 1000000 times"> + </span>]
 <span class="lineNum">     144 </span>                :            :         {
-<span class="lineNum">     145 </span>                :<span class="lineCov">   14000007 :           j++;</span>
-<span class="lineNum">     146 </span>                :<span class="lineCov">   14000007 :           mbui_advance (phaystack);</span>
-<span class="lineNum">     147 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 14000000 times"> + </span>]:<span class="lineCov">   14000007 :           if (j == m)</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">    2000001 :           j++;</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">    2000001 :           mbui_advance (phaystack);</span>
+<span class="lineNum">     147 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 2000000 times"> + </span>]:<span class="lineCov">    2000001 :           if (j == m)</span>
 <span class="lineNum">     148 </span>                :            :             {
 <span class="lineNum">     149 </span>                :            :               /* The entire needle has been found.  */
-<span class="lineNum">     150 </span>                :<span class="lineCov">          7 :               *resultp = mbui_cur_ptr (rhaystack);</span>
-<span class="lineNum">     151 </span>                :<span class="lineCov">          7 :               break;</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">          1 :               *resultp = mbui_cur_ptr (rhaystack);</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">          1 :               break;</span>
 <span class="lineNum">     152 </span>                :            :             }
 <span class="lineNum">     153 </span>                :            :         }
-<span class="lineNum">     154 </span>        [<span class="branchCov" title="Branch 0 was taken 7000000 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    7000000 :       else if (j &gt; 0)</span>
+<span class="lineNum">     154 </span>        [<span class="branchCov" title="Branch 0 was taken 1000000 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    1000000 :       else if (j &gt; 0)</span>
 <span class="lineNum">     155 </span>                :            :         {
 <span class="lineNum">     156 </span>                :            :           /* Found a match of needle[0..j-1], mismatch at needle[j].  */
-<span class="lineNum">     157 </span>                :<span class="lineCov">    7000000 :           size_t count = table[j];</span>
-<span class="lineNum">     158 </span>                :<span class="lineCov">    7000000 :           j -= count;</span>
-<span class="lineNum">     159 </span>        [<span class="branchCov" title="Branch 0 was taken 7000000 times"> + </span><span class="branchCov" title="Branch 1 was taken 7000000 times"> + </span>]:<span class="lineCov">   14000000 :           for (; count &gt; 0; count--)</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">    1000000 :           size_t count = table[j];</span>
+<span class="lineNum">     158 </span>                :<span class="lineCov">    1000000 :           j -= count;</span>
+<span class="lineNum">     159 </span>        [<span class="branchCov" title="Branch 0 was taken 1000000 times"> + </span><span class="branchCov" title="Branch 1 was taken 1000000 times"> + </span>]:<span class="lineCov">    2000000 :           for (; count &gt; 0; count--)</span>
 <span class="lineNum">     160 </span>                :            :             {
-<span class="lineNum">     161 </span>[<span class="branchCov" title="Branch 1 was taken 7000000 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 7000000 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">    7000000 :               if (!mbui_avail (rhaystack))</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 7000000 times"> + </span>]
+<span class="lineNum">     161 </span>[<span class="branchCov" title="Branch 1 was taken 1000000 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 1000000 times"> + </span>]:<span class="lineCov">    1000000 :               if (!mbui_avail (rhaystack))</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 1000000 times"> + </span>]
 <span class="lineNum">     162 </span>                :<span class="lineNoCov">          0 :                 abort ();</span>
-<span class="lineNum">     163 </span>                :<span class="lineCov">    7000000 :               mbui_advance (rhaystack);</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">    1000000 :               mbui_advance (rhaystack);</span>
 <span class="lineNum">     164 </span>                :            :             }
 <span class="lineNum">     165 </span>                :            :         }
 <span class="lineNum">     166 </span>                :            :       else
@@ -248,12 +248,12 @@
 <span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span>]
 <span class="lineNum">     170 </span>                :<span class="lineNoCov">          0 :             abort ();</span>
 <span class="lineNum">     171 </span>                :<span class="lineNoCov">          0 :           mbui_advance (rhaystack);</span>
-<span class="lineNum">     172 </span>                :<span class="lineNoCov">          0 :           mbui_advance (phaystack);</span>
+<span class="lineNum">     172 </span>                :<span class="lineCov">    3000000 :           mbui_advance (phaystack);</span>
 <span class="lineNum">     173 </span>                :            :         }
 <span class="lineNum">     174 </span>                :            :   }
 <span class="lineNum">     175 </span>                :            : 
-<span class="lineNum">     176 </span>                :<span class="lineCov">          7 :   freea (memory);</span>
-<span class="lineNum">     177 </span>                :<span class="lineCov">          7 :   return true;</span>
+<span class="lineNum">     176 </span>                :<span class="lineCov">          1 :   freea (memory);</span>
+<span class="lineNum">     177 </span>                :<span class="lineCov">          1 :   return true;</span>
 <span class="lineNum">     178 </span>                :            : }
 <span class="lineNum">     179 </span>                :            : 
 <span class="lineNum">     180 </span>                :            : /* Find the first occurrence of the character string NEEDLE in the character
@@ -266,13 +266,13 @@
 <span class="lineNum">     187 </span>                :            :        - haystack may be very long, and a match of needle found early,
 <span class="lineNum">     188 </span>                :            :        - needle may be very long, and not even a short initial segment of
 <span class="lineNum">     189 </span>                :            :          needle may be found in haystack.  */
-<span class="lineNum">     190 </span>        [<span class="branchCov" title="Branch 1 was taken 140091 times"> + </span><span class="branchCov" title="Branch 2 was taken 140035 times"> + </span>]:<span class="lineCov">     280126 :   if (MB_CUR_MAX &gt; 1)</span>
+<span class="lineNum">     190 </span>        [<span class="branchCov" title="Branch 1 was taken 20013 times"> + </span><span class="branchCov" title="Branch 2 was taken 20005 times"> + </span>]:<span class="lineCov">      40018 :   if (MB_CUR_MAX &gt; 1)</span>
 <span class="lineNum">     191 </span>                :            :     {
 <span class="lineNum">     192 </span>                :            :       mbui_iterator_t iter_needle;
 <span class="lineNum">     193 </span>                :            : 
-<span class="lineNum">     194 </span>                :<span class="lineCov">     140091 :       mbui_init (iter_needle, needle);</span>
-<span class="lineNum">     195 </span>[<span class="branchCov" title="Branch 1 was taken 140077 times"> + </span><span class="branchCov" title="Branch 2 was taken 14 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 140070 times"> + </span><span class="branchCov" title="Branch 4 was taken 7 times"> + </span>]:<span class="lineCov">     140091 :       if (mbui_avail (iter_needle))</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 140084 times"> + </span><span class="branchCov" title="Branch 6 was taken 7 times"> + </span>]
+<span class="lineNum">     194 </span>                :<span class="lineCov">      40026 :       mbui_init (iter_needle, needle);</span>
+<span class="lineNum">     195 </span>[<span class="branchCov" title="Branch 1 was taken 20011 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 1 time"> + </span><span class="branchCov" title="Branch 4 was taken 20010 times"> + </span>]:<span class="lineCov">      20013 :       if (mbui_avail (iter_needle))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 20012 times"> + </span><span class="branchCov" title="Branch 6 was taken 1 time"> + </span>]
 <span class="lineNum">     196 </span>                :            :         {
 <span class="lineNum">     197 </span>                :            :           /* Minimizing the worst-case complexity:
 <span class="lineNum">     198 </span>                :            :              Let n = mbslen(haystack), m = mbslen(needle).
@@ -288,97 +288,97 @@
 <span class="lineNum">     208 </span>                :            :                - the total number of comparisons is &gt;= m.
 <span class="lineNum">     209 </span>                :            :              But we try it only once.  If the memory allocation attempt failed,
 <span class="lineNum">     210 </span>                :            :              we don't retry it.  */
-<span class="lineNum">     211 </span>                :<span class="lineCov">     140084 :           bool try_kmp = true;</span>
-<span class="lineNum">     212 </span>                :<span class="lineCov">     140084 :           size_t outer_loop_count = 0;</span>
-<span class="lineNum">     213 </span>                :<span class="lineCov">     140084 :           size_t comparison_count = 0;</span>
-<span class="lineNum">     214 </span>                :<span class="lineCov">     140084 :           size_t last_ccount = 0;                  /* last comparison count */</span>
+<span class="lineNum">     211 </span>                :<span class="lineCov">      20012 :           bool try_kmp = true;</span>
+<span class="lineNum">     212 </span>                :<span class="lineCov">      20012 :           size_t outer_loop_count = 0;</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">      20012 :           size_t comparison_count = 0;</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">      20012 :           size_t last_ccount = 0;                  /* last comparison count */</span>
 <span class="lineNum">     215 </span>                :            :           mbui_iterator_t iter_needle_last_ccount; /* = needle + last_ccount */
 <span class="lineNum">     216 </span>                :            : 
 <span class="lineNum">     217 </span>                :            :           mbui_iterator_t iter_haystack;
 <span class="lineNum">     218 </span>                :            : 
-<span class="lineNum">     219 </span>                :<span class="lineCov">     140084 :           mbui_init (iter_needle_last_ccount, needle);</span>
-<span class="lineNum">     220 </span>                :<span class="lineCov">     140084 :           mbui_init (iter_haystack, haystack);</span>
-<span class="lineNum">     221 </span>                :<span class="lineCov">    9590539 :           for (;; mbui_advance (iter_haystack))</span>
+<span class="lineNum">     219 </span>                :<span class="lineCov">      40024 :           mbui_init (iter_needle_last_ccount, needle);</span>
+<span class="lineNum">     220 </span>                :<span class="lineCov">      20012 :           mbui_init (iter_haystack, haystack);</span>
+<span class="lineNum">     221 </span>                :<span class="lineCov">    1370077 :           for (;; mbui_advance (iter_haystack))</span>
 <span class="lineNum">     222 </span>                :            :             {
-<span class="lineNum">     223 </span>[<span class="branchCov" title="Branch 1 was taken 9730623 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 9660588 times"> + </span><span class="branchCov" title="Branch 4 was taken 70035 times"> + </span>]:<span class="lineCov">    9730623 :               if (!mbui_avail (iter_haystack))</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 70035 times"> + </span><span class="branchCov" title="Branch 6 was taken 9660588 times"> + </span>]
+<span class="lineNum">     223 </span>[<span class="branchCov" title="Branch 1 was taken 1390089 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 10005 times"> + </span><span class="branchCov" title="Branch 4 was taken 1380084 times"> + </span>]:<span class="lineCov">    1390089 :               if (!mbui_avail (iter_haystack))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 1380084 times"> + </span><span class="branchCov" title="Branch 6 was taken 10005 times"> + </span>]
 <span class="lineNum">     224 </span>                :            :                 /* No match.  */
-<span class="lineNum">     225 </span>                :<span class="lineCov">      70035 :                 return NULL;</span>
+<span class="lineNum">     225 </span>                :            :                 return NULL;
 <span class="lineNum">     226 </span>                :            : 
 <span class="lineNum">     227 </span>                :            :               /* See whether it's advisable to use an asymptotically faster
 <span class="lineNum">     228 </span>                :            :                  algorithm.  */
-<span class="lineNum">     229 </span>        [<span class="branchCov" title="Branch 0 was taken 9660588 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    9660588 :               if (try_kmp</span>
-<span class="lineNum">     230 </span>        [<span class="branchCov" title="Branch 0 was taken 8820140 times"> + </span><span class="branchCov" title="Branch 1 was taken 840448 times"> + </span>]:<span class="lineCov">    9660588 :                   &amp;&amp; outer_loop_count &gt;= 10</span>
-<span class="lineNum">     231 </span>        [<span class="branchCov" title="Branch 0 was taken 8820007 times"> + </span><span class="branchCov" title="Branch 1 was taken 133 times"> + </span>]:<span class="lineCov">    8820140 :                   &amp;&amp; comparison_count &gt;= 5 * outer_loop_count)</span>
+<span class="lineNum">     229 </span>        [<span class="branchCov" title="Branch 0 was taken 1380084 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    1380084 :               if (try_kmp</span>
+<span class="lineNum">     230 </span>        [<span class="branchCov" title="Branch 0 was taken 1260020 times"> + </span><span class="branchCov" title="Branch 1 was taken 120064 times"> + </span>]:<span class="lineCov">    1380084 :                   &amp;&amp; outer_loop_count &gt;= 10</span>
+<span class="lineNum">     231 </span>        [<span class="branchCov" title="Branch 0 was taken 1260001 times"> + </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">    1260020 :                   &amp;&amp; comparison_count &gt;= 5 * outer_loop_count)</span>
 <span class="lineNum">     232 </span>                :            :                 {
 <span class="lineNum">     233 </span>                :            :                   /* See if needle + comparison_count now reaches the end of
 <span class="lineNum">     234 </span>                :            :                      needle.  */
-<span class="lineNum">     235 </span>                :<span class="lineCov">    8820007 :                   size_t count = comparison_count - last_ccount;</span>
-<span class="lineNum">     236 </span>        [<span class="branchCov" title="Branch 0 was taken 187810014 times"> + </span><span class="branchCov" title="Branch 1 was taken 8820000 times"> + </span>]:<span class="lineCov">  196630014 :                   for (;</span>
-<span class="lineNum">     237 </span>[<span class="branchCov" title="Branch 1 was taken 187810014 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 187810007 times"> + </span><span class="branchCov" title="Branch 4 was taken 7 times"> + </span>]:<span class="lineCov">  187810014 :                        count &gt; 0 &amp;&amp; mbui_avail (iter_needle_last_ccount);</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 187810007 times"> + </span><span class="branchCov" title="Branch 6 was taken 7 times"> + </span>]
-<span class="lineNum">     238 </span>                :<span class="lineCov">  187810007 :                        count--)</span>
-<span class="lineNum">     239 </span>                :<span class="lineCov">  187810007 :                     mbui_advance (iter_needle_last_ccount);</span>
-<span class="lineNum">     240 </span>                :<span class="lineCov">    8820007 :                   last_ccount = comparison_count;</span>
-<span class="lineNum">     241 </span>[<span class="branchCov" title="Branch 1 was taken 8820007 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 8820000 times"> + </span><span class="branchCov" title="Branch 4 was taken 7 times"> + </span>]:<span class="lineCov">    8820007 :                   if (!mbui_avail (iter_needle_last_ccount))</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 7 times"> + </span><span class="branchCov" title="Branch 6 was taken 8820000 times"> + </span>]
+<span class="lineNum">     235 </span>                :<span class="lineCov">    1260001 :                   size_t count = comparison_count - last_ccount;</span>
+<span class="lineNum">     236 </span>        [<span class="branchCov" title="Branch 0 was taken 26830002 times"> + </span><span class="branchCov" title="Branch 1 was taken 1260000 times"> + </span>]:<span class="lineCov">   28090002 :                   for (;</span>
+<span class="lineNum">     237 </span>[<span class="branchCov" title="Branch 1 was taken 26830002 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 1 time"> + </span><span class="branchCov" title="Branch 4 was taken 26830001 times"> + </span>]:<span class="lineCov">   26830002 :                        count &gt; 0 &amp;&amp; mbui_avail (iter_needle_last_ccount);</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 26830001 times"> + </span><span class="branchCov" title="Branch 6 was taken 1 time"> + </span>]
+<span class="lineNum">     238 </span>                :<span class="lineCov">   26830001 :                        count--)</span>
+<span class="lineNum">     239 </span>                :<span class="lineCov">   26830001 :                     mbui_advance (iter_needle_last_ccount);</span>
+<span class="lineNum">     240 </span>                :<span class="lineCov">    1260001 :                   last_ccount = comparison_count;</span>
+<span class="lineNum">     241 </span>[<span class="branchCov" title="Branch 1 was taken 1260001 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 1 time"> + </span><span class="branchCov" title="Branch 4 was taken 1260000 times"> + </span>]:<span class="lineCov">    1260001 :                   if (!mbui_avail (iter_needle_last_ccount))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 1 time"> + </span><span class="branchCov" title="Branch 6 was taken 1260000 times"> + </span>]
 <span class="lineNum">     242 </span>                :            :                     {
 <span class="lineNum">     243 </span>                :            :                       /* Try the Knuth-Morris-Pratt algorithm.  */
 <span class="lineNum">     244 </span>                :            :                       const char *result;
-<span class="lineNum">     245 </span>                :<span class="lineCov">          7 :                       bool success =</span>
+<span class="lineNum">     245 </span>                :<span class="lineCov">          1 :                       bool success =</span>
 <span class="lineNum">     246 </span>                :            :                         knuth_morris_pratt_multibyte (haystack, needle,
 <span class="lineNum">     247 </span>                :            :                                                       &amp;result);
-<span class="lineNum">     248 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          7 :                       if (success)</span>
-<span class="lineNum">     249 </span>                :<span class="lineCov">          7 :                         return (char *) result;</span>
-<span class="lineNum">     250 </span>                :<span class="lineNoCov">          0 :                       try_kmp = false;</span>
+<span class="lineNum">     248 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :                       if (success)</span>
+<span class="lineNum">     249 </span>                :<span class="lineCov">          1 :                         return (char *) result;</span>
+<span class="lineNum">     250 </span>                :            :                       try_kmp = false;
 <span class="lineNum">     251 </span>                :            :                     }
 <span class="lineNum">     252 </span>                :            :                 }
 <span class="lineNum">     253 </span>                :            : 
-<span class="lineNum">     254 </span>                :<span class="lineCov">    9660581 :               outer_loop_count++;</span>
-<span class="lineNum">     255 </span>                :<span class="lineCov">    9660581 :               comparison_count++;</span>
-<span class="lineNum">     256 </span>[<span class="branchCov" title="Branch 0 was taken 9660581 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 9660504 times"> + </span><span class="branchCov" title="Branch 3 was taken 77 times"> + </span>]:<span class="lineCov">    9660581 :               if (mb_equal (mbui_cur (iter_haystack), mbui_cur (iter_needle)))</span>
-<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 21 times"> + </span><span class="branchCov" title="Branch 5 was taken 56 times"> + </span>][<span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchCov" title="Branch 7 was taken 21 times"> + </span>]
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 7210182 times"> + </span><span class="branchCov" title="Branch 9 was taken 2450399 times"> + </span>]
+<span class="lineNum">     254 </span>                :<span class="lineCov">    1380083 :               outer_loop_count++;</span>
+<span class="lineNum">     255 </span>                :<span class="lineCov">    1380083 :               comparison_count++;</span>
+<span class="lineNum">     256 </span>[<span class="branchCov" title="Branch 0 was taken 1380083 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 1380072 times"> + </span><span class="branchCov" title="Branch 3 was taken 11 times"> + </span>]:<span class="lineCov">    1380083 :               if (mb_equal (mbui_cur (iter_haystack), mbui_cur (iter_needle)))</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 3 times"> + </span><span class="branchCov" title="Branch 5 was taken 8 times"> + </span>][<span class="branchCov" title="Branch 6 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span>]
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 1030026 times"> + </span><span class="branchCov" title="Branch 9 was taken 350057 times"> + </span>]
 <span class="lineNum">     257 </span>                :            :                 /* The first character matches.  */
 <span class="lineNum">     258 </span>                :            :                 {
 <span class="lineNum">     259 </span>                :            :                   mbui_iterator_t rhaystack;
 <span class="lineNum">     260 </span>                :            :                   mbui_iterator_t rneedle;
 <span class="lineNum">     261 </span>                :            : 
-<span class="lineNum">     262 </span>                :<span class="lineCov">    7210182 :                   memcpy (&amp;rhaystack, &amp;iter_haystack, sizeof (mbui_iterator_t));</span>
-<span class="lineNum">     263 </span>                :<span class="lineCov">    7210182 :                   mbui_advance (rhaystack);</span>
+<span class="lineNum">     262 </span>                :<span class="lineCov">    1030026 :                   memcpy (&amp;rhaystack, &amp;iter_haystack, sizeof (mbui_iterator_t));</span>
+<span class="lineNum">     263 </span>                :<span class="lineCov">    1030026 :                   mbui_advance (rhaystack);</span>
 <span class="lineNum">     264 </span>                :            : 
-<span class="lineNum">     265 </span>                :<span class="lineCov">    7210182 :                   mbui_init (rneedle, needle);</span>
-<span class="lineNum">     266 </span>[<span class="branchCov" title="Branch 1 was taken 7210182 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 7210182 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">    7210182 :                   if (!mbui_avail (rneedle))</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 7210182 times"> + </span>]
+<span class="lineNum">     265 </span>                :<span class="lineCov">    2060052 :                   mbui_init (rneedle, needle);</span>
+<span class="lineNum">     266 </span>[<span class="branchCov" title="Branch 1 was taken 1030026 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 1030026 times"> + </span>]:<span class="lineCov">    1030026 :                   if (!mbui_avail (rneedle))</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 1030026 times"> + </span>]
 <span class="lineNum">     267 </span>                :<span class="lineNoCov">          0 :                     abort ();</span>
-<span class="lineNum">     268 </span>                :<span class="lineCov">    7210182 :                   mbui_advance (rneedle);</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">    1030026 :                   mbui_advance (rneedle);</span>
 <span class="lineNum">     269 </span>                :            : 
-<span class="lineNum">     270 </span>                :<span class="lineCov">  243670196 :                   for (;; mbui_advance (rhaystack), mbui_advance (rneedle))</span>
+<span class="lineNum">     270 </span>                :<span class="lineCov">   34810028 :                   for (;; mbui_advance (rhaystack), mbui_advance (rneedle))</span>
 <span class="lineNum">     271 </span>                :            :                     {
-<span class="lineNum">     272 </span>[<span class="branchCov" title="Branch 1 was taken 250880378 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 250810336 times"> + </span><span class="branchCov" title="Branch 4 was taken 70042 times"> + </span>]:<span class="lineCov">  250880378 :                       if (!mbui_avail (rneedle))</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 70042 times"> + </span><span class="branchCov" title="Branch 6 was taken 250810336 times"> + </span>]
+<span class="lineNum">     272 </span>[<span class="branchCov" title="Branch 1 was taken 35840054 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 10006 times"> + </span><span class="branchCov" title="Branch 4 was taken 35830048 times"> + </span>]:<span class="lineCov">   35840054 :                       if (!mbui_avail (rneedle))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 10006 times"> + </span><span class="branchCov" title="Branch 6 was taken 35830048 times"> + </span>]
 <span class="lineNum">     273 </span>                :            :                         /* Found a match.  */
-<span class="lineNum">     274 </span>                :<span class="lineCov">      70042 :                         return (char *) mbui_cur_ptr (iter_haystack);</span>
-<span class="lineNum">     275 </span>[<span class="branchCov" title="Branch 1 was taken 250810336 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchCov" title="Branch 3 was taken 250810336 times"> + </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span>]:<span class="lineCov">  250810336 :                       if (!mbui_avail (rhaystack))</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 250810336 times"> + </span>]
+<span class="lineNum">     274 </span>                :<span class="lineCov">      10006 :                         return (char *) mbui_cur_ptr (iter_haystack);</span>
+<span class="lineNum">     275 </span>[<span class="branchCov" title="Branch 1 was taken 35830048 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 35830048 times"> + </span>]:<span class="lineCov">   35830048 :                       if (!mbui_avail (rhaystack))</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 35830048 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span>]
 <span class="lineNum">     276 </span>                :            :                         /* No match.  */
-<span class="lineNum">     277 </span>                :<span class="lineNoCov">          0 :                         return NULL;</span>
-<span class="lineNum">     278 </span>                :<span class="lineCov">  250810336 :                       comparison_count++;</span>
-<span class="lineNum">     279 </span>[<span class="branchCov" title="Branch 0 was taken 250810336 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 250810336 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">  250810336 :                       if (!mb_equal (mbui_cur (rhaystack), mbui_cur (rneedle)))</span>
+<span class="lineNum">     277 </span>                :            :                         return NULL;
+<span class="lineNum">     278 </span>                :<span class="lineCov">   35830048 :                       comparison_count++;</span>
+<span class="lineNum">     279 </span>[<span class="branchCov" title="Branch 0 was taken 35830048 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 35830048 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">   35830048 :                       if (!mb_equal (mbui_cur (rhaystack), mbui_cur (rneedle)))</span>
 <span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>][<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 7140140 times"> + </span><span class="branchCov" title="Branch 9 was taken 243670196 times"> + </span>]
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 8 was taken 34810028 times"> + </span><span class="branchCov" title="Branch 9 was taken 1020020 times"> + </span>]
 <span class="lineNum">     280 </span>                :            :                         /* Nothing in this round.  */
-<span class="lineNum">     281 </span>                :<span class="lineCov">    7140140 :                         break;</span>
-<span class="lineNum">     282 </span>                :<span class="lineCov">  243670196 :                     }</span>
+<span class="lineNum">     281 </span>                :            :                         break;
+<span class="lineNum">     282 </span>                :<span class="lineCov">   34810028 :                     }</span>
 <span class="lineNum">     283 </span>                :            :                 }
-<span class="lineNum">     284 </span>                :<span class="lineCov">    9590539 :             }</span>
+<span class="lineNum">     284 </span>                :<span class="lineCov">    1370077 :             }</span>
 <span class="lineNum">     285 </span>                :            :         }
 <span class="lineNum">     286 </span>                :            :       else
-<span class="lineNum">     287 </span>                :<span class="lineCov">          7 :         return (char *) haystack;</span>
+<span class="lineNum">     287 </span>                :            :         return (char *) haystack;
 <span class="lineNum">     288 </span>                :            :     }
 <span class="lineNum">     289 </span>                :            :   else
 <span class="lineNum">     290 </span>                :            :     {
-<span class="lineNum">     291 </span>        [<span class="branchCov" title="Branch 0 was taken 140028 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">     140035 :       if (*needle != '\0')</span>
+<span class="lineNum">     291 </span>        [<span class="branchCov" title="Branch 0 was taken 20004 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">      20005 :       if (*needle != '\0')</span>
 <span class="lineNum">     292 </span>                :            :         {
 <span class="lineNum">     293 </span>                :            :           /* Minimizing the worst-case complexity:
 <span class="lineNum">     294 </span>                :            :              Let n = strlen(haystack), m = strlen(needle).
@@ -394,80 +394,80 @@
 <span class="lineNum">     304 </span>                :            :                - the total number of comparisons is &gt;= m.
 <span class="lineNum">     305 </span>                :            :              But we try it only once.  If the memory allocation attempt failed,
 <span class="lineNum">     306 </span>                :            :              we don't retry it.  */
-<span class="lineNum">     307 </span>                :<span class="lineCov">     140028 :           bool try_kmp = true;</span>
-<span class="lineNum">     308 </span>                :<span class="lineCov">     140028 :           size_t outer_loop_count = 0;</span>
-<span class="lineNum">     309 </span>                :<span class="lineCov">     140028 :           size_t comparison_count = 0;</span>
-<span class="lineNum">     310 </span>                :<span class="lineCov">     140028 :           size_t last_ccount = 0;                  /* last comparison count */</span>
-<span class="lineNum">     311 </span>                :<span class="lineCov">     140028 :           const char *needle_last_ccount = needle; /* = needle + last_ccount */</span>
+<span class="lineNum">     307 </span>                :<span class="lineCov">      20004 :           bool try_kmp = true;</span>
+<span class="lineNum">     308 </span>                :<span class="lineCov">      20004 :           size_t outer_loop_count = 0;</span>
+<span class="lineNum">     309 </span>                :<span class="lineCov">      20004 :           size_t comparison_count = 0;</span>
+<span class="lineNum">     310 </span>                :<span class="lineCov">      20004 :           size_t last_ccount = 0;                  /* last comparison count */</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">      20004 :           const char *needle_last_ccount = needle; /* = needle + last_ccount */</span>
 <span class="lineNum">     312 </span>                :            : 
 <span class="lineNum">     313 </span>                :            :           /* Speed up the following searches of needle by caching its first
 <span class="lineNum">     314 </span>                :            :              character.  */
-<span class="lineNum">     315 </span>                :<span class="lineCov">     140028 :           char b = *needle++;</span>
+<span class="lineNum">     315 </span>                :<span class="lineCov">      20004 :           char b = *needle++;</span>
 <span class="lineNum">     316 </span>                :            : 
-<span class="lineNum">     317 </span>                :<span class="lineCov">    9590343 :           for (;; haystack++)</span>
+<span class="lineNum">     317 </span>                :<span class="lineCov">    1370049 :           for (;; haystack++)</span>
 <span class="lineNum">     318 </span>                :            :             {
-<span class="lineNum">     319 </span>        [<span class="branchCov" title="Branch 0 was taken 70007 times"> + </span><span class="branchCov" title="Branch 1 was taken 9660364 times"> + </span>]:<span class="lineCov">    9730371 :               if (*haystack == '\0')</span>
+<span class="lineNum">     319 </span>        [<span class="branchCov" title="Branch 0 was taken 1380052 times"> + </span><span class="branchCov" title="Branch 1 was taken 10001 times"> + </span>]:<span class="lineCov">    1390053 :               if (*haystack == '\0')</span>
 <span class="lineNum">     320 </span>                :            :                 /* No match.  */
-<span class="lineNum">     321 </span>                :<span class="lineCov">      70007 :                 return NULL;</span>
+<span class="lineNum">     321 </span>                :            :                 return NULL;
 <span class="lineNum">     322 </span>                :            : 
 <span class="lineNum">     323 </span>                :            :               /* See whether it's advisable to use an asymptotically faster
 <span class="lineNum">     324 </span>                :            :                  algorithm.  */
-<span class="lineNum">     325 </span>        [<span class="branchCov" title="Branch 0 was taken 9660364 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    9660364 :               if (try_kmp</span>
-<span class="lineNum">     326 </span>        [<span class="branchCov" title="Branch 0 was taken 8820140 times"> + </span><span class="branchCov" title="Branch 1 was taken 840224 times"> + </span>]:<span class="lineCov">    9660364 :                   &amp;&amp; outer_loop_count &gt;= 10</span>
-<span class="lineNum">     327 </span>        [<span class="branchCov" title="Branch 0 was taken 8820007 times"> + </span><span class="branchCov" title="Branch 1 was taken 133 times"> + </span>]:<span class="lineCov">    8820140 :                   &amp;&amp; comparison_count &gt;= 5 * outer_loop_count)</span>
+<span class="lineNum">     325 </span>        [<span class="branchCov" title="Branch 0 was taken 1380052 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    1380052 :               if (try_kmp</span>
+<span class="lineNum">     326 </span>        [<span class="branchCov" title="Branch 0 was taken 1260020 times"> + </span><span class="branchCov" title="Branch 1 was taken 120032 times"> + </span>]:<span class="lineCov">    1380052 :                   &amp;&amp; outer_loop_count &gt;= 10</span>
+<span class="lineNum">     327 </span>        [<span class="branchCov" title="Branch 0 was taken 1260001 times"> + </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">    1260020 :                   &amp;&amp; comparison_count &gt;= 5 * outer_loop_count)</span>
 <span class="lineNum">     328 </span>                :            :                 {
 <span class="lineNum">     329 </span>                :            :                   /* See if needle + comparison_count now reaches the end of
 <span class="lineNum">     330 </span>                :            :                      needle.  */
-<span class="lineNum">     331 </span>        [<span class="branchCov" title="Branch 0 was taken 8820007 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    8820007 :                   if (needle_last_ccount != NULL)</span>
+<span class="lineNum">     331 </span>        [<span class="branchCov" title="Branch 0 was taken 1260001 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    1260001 :                   if (needle_last_ccount != NULL)</span>
 <span class="lineNum">     332 </span>                :            :                     {
-<span class="lineNum">     333 </span>                :<span class="lineCov">    8820007 :                       needle_last_ccount +=</span>
+<span class="lineNum">     333 </span>                :<span class="lineCov">    1260001 :                       needle_last_ccount +=</span>
 <span class="lineNum">     334 </span>                :            :                         strnlen (needle_last_ccount,
 <span class="lineNum">     335 </span>                :            :                                  comparison_count - last_ccount);
-<span class="lineNum">     336 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 8820000 times"> + </span>]:<span class="lineCov">    8820007 :                       if (*needle_last_ccount == '\0')</span>
-<span class="lineNum">     337 </span>                :<span class="lineCov">          7 :                         needle_last_ccount = NULL;</span>
-<span class="lineNum">     338 </span>                :<span class="lineCov">    8820007 :                       last_ccount = comparison_count;</span>
+<span class="lineNum">     336 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1260000 times"> + </span>]:<span class="lineCov">    1260001 :                       if (*needle_last_ccount == '\0')</span>
+<span class="lineNum">     337 </span>                :<span class="lineCov">          1 :                         needle_last_ccount = NULL;</span>
+<span class="lineNum">     338 </span>                :<span class="lineCov">    1260001 :                       last_ccount = comparison_count;</span>
 <span class="lineNum">     339 </span>                :            :                     }
-<span class="lineNum">     340 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 8820000 times"> + </span>]:<span class="lineCov">    8820007 :                   if (needle_last_ccount == NULL)</span>
+<span class="lineNum">     340 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1260000 times"> + </span>]:<span class="lineCov">    1260001 :                   if (needle_last_ccount == NULL)</span>
 <span class="lineNum">     341 </span>                :            :                     {
 <span class="lineNum">     342 </span>                :            :                       /* Try the Knuth-Morris-Pratt algorithm.  */
 <span class="lineNum">     343 </span>                :            :                       const unsigned char *result;
-<span class="lineNum">     344 </span>                :<span class="lineCov">          7 :                       bool success =</span>
-<span class="lineNum">     345 </span>                :<span class="lineCov">          7 :                         knuth_morris_pratt ((const unsigned char *) haystack,</span>
+<span class="lineNum">     344 </span>                :<span class="lineCov">          1 :                       bool success =</span>
+<span class="lineNum">     345 </span>                :<span class="lineCov">          1 :                         knuth_morris_pratt ((const unsigned char *) haystack,</span>
 <span class="lineNum">     346 </span>                :            :                                             (const unsigned char *) (needle - 1),
 <span class="lineNum">     347 </span>                :            :                                             strlen (needle - 1),
 <span class="lineNum">     348 </span>                :            :                                             &amp;result);
-<span class="lineNum">     349 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          7 :                       if (success)</span>
-<span class="lineNum">     350 </span>                :<span class="lineCov">          7 :                         return (char *) result;</span>
-<span class="lineNum">     351 </span>                :<span class="lineNoCov">          0 :                       try_kmp = false;</span>
+<span class="lineNum">     349 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :                       if (success)</span>
+<span class="lineNum">     350 </span>                :<span class="lineCov">          1 :                         return (char *) result;</span>
+<span class="lineNum">     351 </span>                :            :                       try_kmp = false;
 <span class="lineNum">     352 </span>                :            :                     }
 <span class="lineNum">     353 </span>                :            :                 }
 <span class="lineNum">     354 </span>                :            : 
-<span class="lineNum">     355 </span>                :<span class="lineCov">    9660357 :               outer_loop_count++;</span>
-<span class="lineNum">     356 </span>                :<span class="lineCov">    9660357 :               comparison_count++;</span>
-<span class="lineNum">     357 </span>        [<span class="branchCov" title="Branch 0 was taken 7210154 times"> + </span><span class="branchCov" title="Branch 1 was taken 2450203 times"> + </span>]:<span class="lineCov">    9660357 :               if (*haystack == b)</span>
+<span class="lineNum">     355 </span>                :<span class="lineCov">    1380051 :               outer_loop_count++;</span>
+<span class="lineNum">     356 </span>                :<span class="lineCov">    1380051 :               comparison_count++;</span>
+<span class="lineNum">     357 </span>        [<span class="branchCov" title="Branch 0 was taken 1030022 times"> + </span><span class="branchCov" title="Branch 1 was taken 350029 times"> + </span>]:<span class="lineCov">    1380051 :               if (*haystack == b)</span>
 <span class="lineNum">     358 </span>                :            :                 /* The first character matches.  */
 <span class="lineNum">     359 </span>                :            :                 {
-<span class="lineNum">     360 </span>                :<span class="lineCov">    7210154 :                   const char *rhaystack = haystack + 1;</span>
-<span class="lineNum">     361 </span>                :<span class="lineCov">    7210154 :                   const char *rneedle = needle;</span>
+<span class="lineNum">     360 </span>                :<span class="lineCov">    1030022 :                   const char *rhaystack = haystack + 1;</span>
+<span class="lineNum">     361 </span>                :<span class="lineCov">    1030022 :                   const char *rneedle = needle;</span>
 <span class="lineNum">     362 </span>                :            : 
-<span class="lineNum">     363 </span>                :<span class="lineCov">  243670196 :                   for (;; rhaystack++, rneedle++)</span>
+<span class="lineNum">     363 </span>                :<span class="lineCov">   34810028 :                   for (;; rhaystack++, rneedle++)</span>
 <span class="lineNum">     364 </span>                :            :                     {
-<span class="lineNum">     365 </span>        [<span class="branchCov" title="Branch 0 was taken 70014 times"> + </span><span class="branchCov" title="Branch 1 was taken 250810336 times"> + </span>]:<span class="lineCov">  250880350 :                       if (*rneedle == '\0')</span>
+<span class="lineNum">     365 </span>        [<span class="branchCov" title="Branch 0 was taken 35830048 times"> + </span><span class="branchCov" title="Branch 1 was taken 10002 times"> + </span>]:<span class="lineCov">   35840050 :                       if (*rneedle == '\0')</span>
 <span class="lineNum">     366 </span>                :            :                         /* Found a match.  */
-<span class="lineNum">     367 </span>                :<span class="lineCov">      70014 :                         return (char *) haystack;</span>
-<span class="lineNum">     368 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 250810336 times"> + </span>]:<span class="lineCov">  250810336 :                       if (*rhaystack == '\0')</span>
+<span class="lineNum">     367 </span>                :            :                         return (char *) haystack;
+<span class="lineNum">     368 </span>        [<span class="branchCov" title="Branch 0 was taken 35830048 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">   35830048 :                       if (*rhaystack == '\0')</span>
 <span class="lineNum">     369 </span>                :            :                         /* No match.  */
-<span class="lineNum">     370 </span>                :<span class="lineNoCov">          0 :                         return NULL;</span>
-<span class="lineNum">     371 </span>                :<span class="lineCov">  250810336 :                       comparison_count++;</span>
-<span class="lineNum">     372 </span>        [<span class="branchCov" title="Branch 0 was taken 7140140 times"> + </span><span class="branchCov" title="Branch 1 was taken 243670196 times"> + </span>]:<span class="lineCov">  250810336 :                       if (*rhaystack != *rneedle)</span>
+<span class="lineNum">     370 </span>                :            :                         return NULL;
+<span class="lineNum">     371 </span>                :<span class="lineCov">   35830048 :                       comparison_count++;</span>
+<span class="lineNum">     372 </span>        [<span class="branchCov" title="Branch 0 was taken 34810028 times"> + </span><span class="branchCov" title="Branch 1 was taken 1020020 times"> + </span>]:<span class="lineCov">   35830048 :                       if (*rhaystack != *rneedle)</span>
 <span class="lineNum">     373 </span>                :            :                         /* Nothing in this round.  */
-<span class="lineNum">     374 </span>                :<span class="lineCov">    7140140 :                         break;</span>
-<span class="lineNum">     375 </span>                :<span class="lineCov">  243670196 :                     }</span>
+<span class="lineNum">     374 </span>                :            :                         break;
+<span class="lineNum">     375 </span>                :<span class="lineCov">   34810028 :                     }</span>
 <span class="lineNum">     376 </span>                :            :                 }
-<span class="lineNum">     377 </span>                :<span class="lineCov">    9590343 :             }</span>
+<span class="lineNum">     377 </span>                :<span class="lineCov">    1410067 :             }</span>
 <span class="lineNum">     378 </span>                :            :         }
 <span class="lineNum">     379 </span>                :            :       else
-<span class="lineNum">     380 </span>                :<span class="lineCov">     280126 :         return (char *) haystack;</span>
+<span class="lineNum">     380 </span>                :            :         return (char *) haystack;
 <span class="lineNum">     381 </span>                :            :     }
 <span class="lineNum">     382 </span>                :            : }
 </pre>

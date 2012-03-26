@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">33</td>
-            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">28</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -104,7 +104,7 @@
 <span class="lineNum">      33 </span>                :            :    char) that occurs within N bytes of the memory region S.  If
 <a name="34"><span class="lineNum">      34 </span>                :            :    neither byte appears, return NULL.  */</a>
 <span class="lineNum">      35 </span>                :            : void *
-<span class="lineNum">      36 </span>                :<span class="lineCov">     395810 : memchr2 (void const *s, int c1_in, int c2_in, size_t n)</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">      56543 : memchr2 (void const *s, int c1_in, int c2_in, size_t n)</span>
 <span class="lineNum">      37 </span>                :            : {
 <span class="lineNum">      38 </span>                :            :   /* On 32-bit hardware, choosing longword to be a 32-bit unsigned
 <span class="lineNum">      39 </span>                :            :      long instead of a 64-bit uintmax_t tends to give better
@@ -121,21 +121,21 @@
 <span class="lineNum">      50 </span>                :            :   unsigned char c1;
 <span class="lineNum">      51 </span>                :            :   unsigned char c2;
 <span class="lineNum">      52 </span>                :            : 
-<span class="lineNum">      53 </span>                :<span class="lineCov">     395810 :   c1 = (unsigned char) c1_in;</span>
-<span class="lineNum">      54 </span>                :<span class="lineCov">     395810 :   c2 = (unsigned char) c2_in;</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">      56543 :   c1 = (unsigned char) c1_in;</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">      56543 :   c2 = (unsigned char) c2_in;</span>
 <span class="lineNum">      55 </span>                :            : 
-<span class="lineNum">      56 </span>        [<span class="branchCov" title="Branch 0 was taken 497 times"> + </span><span class="branchCov" title="Branch 1 was taken 395313 times"> + </span>]:<span class="lineCov">     395810 :   if (c1 == c2)</span>
-<span class="lineNum">      57 </span>                :<span class="lineCov">        497 :     return memchr (s, c1, n);</span>
+<span class="lineNum">      56 </span>        [<span class="branchCov" title="Branch 0 was taken 56472 times"> + </span><span class="branchCov" title="Branch 1 was taken 71 times"> + </span>]:<span class="lineCov">      56543 :   if (c1 == c2)</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">         71 :     return memchr (s, c1, n);</span>
 <span class="lineNum">      58 </span>                :            : 
 <span class="lineNum">      59 </span>                :            :   /* Handle the first few bytes by reading one byte at a time.
 <span class="lineNum">      60 </span>                :            :      Do this until CHAR_PTR is aligned on a longword boundary.  */
-<span class="lineNum">      61 </span>        [<span class="branchCov" title="Branch 0 was taken 791506 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">     791520 :   for (char_ptr = (const unsigned char *) s;</span>
-<span class="lineNum">      62 </span>        [<span class="branchCov" title="Branch 0 was taken 397831 times"> + </span><span class="branchCov" title="Branch 1 was taken 393675 times"> + </span>]:<span class="lineCov">     791506 :        n &gt; 0 &amp;&amp; (size_t) char_ptr % sizeof (longword) != 0;</span>
-<span class="lineNum">      63 </span>                :<span class="lineCov">     396207 :        --n, ++char_ptr)</span>
-<span class="lineNum">      64 </span>[<span class="branchCov" title="Branch 0 was taken 396991 times"> + </span><span class="branchCov" title="Branch 1 was taken 840 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 784 times"> + </span><span class="branchCov" title="Branch 3 was taken 396207 times"> + </span>]:<span class="lineCov">     397831 :     if (*char_ptr == c1 || *char_ptr == c2)</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">       1624 :       return (void *) char_ptr;</span>
+<span class="lineNum">      61 </span>        [<span class="branchCov" title="Branch 0 was taken 113071 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">     113073 :   for (char_ptr = (const unsigned char *) s;</span>
+<span class="lineNum">      62 </span>        [<span class="branchCov" title="Branch 0 was taken 56833 times"> + </span><span class="branchCov" title="Branch 1 was taken 56238 times"> + </span>]:<span class="lineCov">     113071 :        n &gt; 0 &amp;&amp; (size_t) char_ptr % sizeof (longword) != 0;</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">      56601 :        --n, ++char_ptr)</span>
+<span class="lineNum">      64 </span>[<span class="branchCov" title="Branch 0 was taken 56713 times"> + </span><span class="branchCov" title="Branch 1 was taken 120 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 56601 times"> + </span><span class="branchCov" title="Branch 3 was taken 112 times"> + </span>]:<span class="lineCov">      56833 :     if (*char_ptr == c1 || *char_ptr == c2)</span>
+<span class="lineNum">      65 </span>                :            :       return (void *) char_ptr;
 <span class="lineNum">      66 </span>                :            : 
-<span class="lineNum">      67 </span>                :<span class="lineCov">     393689 :   longword_ptr = (const longword *) char_ptr;</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">      56240 :   longword_ptr = (const longword *) char_ptr;</span>
 <span class="lineNum">      68 </span>                :            : 
 <span class="lineNum">      69 </span>                :            :   /* All these elucidatory comments refer to 4-byte longwords,
 <span class="lineNum">      70 </span>                :            :      but the theory applies equally well to any size longwords.  */
@@ -144,16 +144,16 @@
 <span class="lineNum">      73 </span>                :            :      repeated_one is a value which has a 1 in every byte.
 <span class="lineNum">      74 </span>                :            :      repeated_c1 has c1 in every byte.
 <span class="lineNum">      75 </span>                :            :      repeated_c2 has c2 in every byte.  */
-<span class="lineNum">      76 </span>                :<span class="lineCov">     393689 :   repeated_one = 0x01010101;</span>
-<span class="lineNum">      77 </span>                :<span class="lineCov">     393689 :   repeated_c1 = c1 | (c1 &lt;&lt; 8);</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">     393689 :   repeated_c2 = c2 | (c2 &lt;&lt; 8);</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">     393689 :   repeated_c1 |= repeated_c1 &lt;&lt; 16;</span>
-<span class="lineNum">      80 </span>                :<span class="lineCov">     393689 :   repeated_c2 |= repeated_c2 &lt;&lt; 16;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">      56240 :   repeated_one = 0x01010101;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">      56240 :   repeated_c1 = c1 | (c1 &lt;&lt; 8);</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">      56240 :   repeated_c2 = c2 | (c2 &lt;&lt; 8);</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">      56240 :   repeated_c1 |= repeated_c1 &lt;&lt; 16;</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">      56240 :   repeated_c2 |= repeated_c2 &lt;&lt; 16;</span>
 <span class="lineNum">      81 </span>                :            :   if (0xffffffffU &lt; (longword) -1)
 <span class="lineNum">      82 </span>                :            :     {
-<span class="lineNum">      83 </span>                :<span class="lineCov">     393689 :       repeated_one |= repeated_one &lt;&lt; 31 &lt;&lt; 1;</span>
-<span class="lineNum">      84 </span>                :<span class="lineCov">     393689 :       repeated_c1 |= repeated_c1 &lt;&lt; 31 &lt;&lt; 1;</span>
-<span class="lineNum">      85 </span>                :<span class="lineCov">     393689 :       repeated_c2 |= repeated_c2 &lt;&lt; 31 &lt;&lt; 1;</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">      56240 :       repeated_one |= repeated_one &lt;&lt; 31 &lt;&lt; 1;</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">      56240 :       repeated_c1 |= repeated_c1 &lt;&lt; 31 &lt;&lt; 1;</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">      56240 :       repeated_c2 |= repeated_c2 &lt;&lt; 31 &lt;&lt; 1;</span>
 <span class="lineNum">      86 </span>                :            :       if (8 &lt; sizeof (longword))
 <span class="lineNum">      87 </span>                :            :         {
 <span class="lineNum">      88 </span>                :            :           size_t i;
@@ -203,20 +203,20 @@
 <span class="lineNum">     132 </span>                :            :      to testing whether tmp1 is nonzero or tmp2 is nonzero.  We can combine
 <span class="lineNum">     133 </span>                :            :      this into a single test, whether (tmp1 | tmp2) is nonzero.  */
 <span class="lineNum">     134 </span>                :            : 
-<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 5786659 times"> + </span><span class="branchCov" title="Branch 1 was taken 1855 times"> + </span>]:<span class="lineCov">    5788514 :   while (n &gt;= sizeof (longword))</span>
+<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 826663 times"> + </span><span class="branchCov" title="Branch 1 was taken 265 times"> + </span>]:<span class="lineCov">     882903 :   while (n &gt;= sizeof (longword))</span>
 <span class="lineNum">     136 </span>                :            :     {
-<span class="lineNum">     137 </span>                :<span class="lineCov">    5786659 :       longword longword1 = *longword_ptr ^ repeated_c1;</span>
-<span class="lineNum">     138 </span>                :<span class="lineCov">    5786659 :       longword longword2 = *longword_ptr ^ repeated_c2;</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">     826663 :       longword longword1 = *longword_ptr ^ repeated_c1;</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">     826663 :       longword longword2 = *longword_ptr ^ repeated_c2;</span>
 <span class="lineNum">     139 </span>                :            : 
-<span class="lineNum">     140 </span>        [<span class="branchCov" title="Branch 0 was taken 391834 times"> + </span><span class="branchCov" title="Branch 1 was taken 5394825 times"> + </span>]:<span class="lineCov">    5786659 :       if (((((longword1 - repeated_one) &amp; ~longword1)</span>
-<span class="lineNum">     141 </span>                :<span class="lineCov">    5786659 :             | ((longword2 - repeated_one) &amp; ~longword2))</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">    5786659 :            &amp; (repeated_one &lt;&lt; 7)) != 0)</span>
-<span class="lineNum">     143 </span>                :<span class="lineCov">     391834 :         break;</span>
-<span class="lineNum">     144 </span>                :<span class="lineCov">    5394825 :       longword_ptr++;</span>
-<span class="lineNum">     145 </span>                :<span class="lineCov">    5394825 :       n -= sizeof (longword);</span>
+<span class="lineNum">     140 </span>        [<span class="branchCov" title="Branch 0 was taken 770688 times"> + </span><span class="branchCov" title="Branch 1 was taken 55975 times"> + </span>]:<span class="lineCov">     826663 :       if (((((longword1 - repeated_one) &amp; ~longword1)</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">     826663 :             | ((longword2 - repeated_one) &amp; ~longword2))</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">     826663 :            &amp; (repeated_one &lt;&lt; 7)) != 0)</span>
+<span class="lineNum">     143 </span>                :            :         break;
+<span class="lineNum">     144 </span>                :<span class="lineCov">     770688 :       longword_ptr++;</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">     770688 :       n -= sizeof (longword);</span>
 <span class="lineNum">     146 </span>                :            :     }
 <span class="lineNum">     147 </span>                :            : 
-<span class="lineNum">     148 </span>                :<span class="lineCov">     393689 :   char_ptr = (const unsigned char *) longword_ptr;</span>
+<span class="lineNum">     148 </span>                :            :   char_ptr = (const unsigned char *) longword_ptr;
 <span class="lineNum">     149 </span>                :            : 
 <span class="lineNum">     150 </span>                :            :   /* At this point, we know that either n &lt; sizeof (longword), or one of the
 <span class="lineNum">     151 </span>                :            :      sizeof (longword) bytes starting at char_ptr is == c1 or == c2.  On
@@ -225,13 +225,13 @@
 <span class="lineNum">     154 </span>                :            :      from the last loop iteration.  But this does not work on big-endian
 <span class="lineNum">     155 </span>                :            :      machines.  Choose code that works in both cases.  */
 <span class="lineNum">     156 </span>                :            : 
-<span class="lineNum">     157 </span>        [<span class="branchCov" title="Branch 0 was taken 1347095 times"> + </span><span class="branchCov" title="Branch 1 was taken 63 times"> + </span>]:<span class="lineCov">    1347158 :   for (; n &gt; 0; --n, ++char_ptr)</span>
+<span class="lineNum">     157 </span>        [<span class="branchCov" title="Branch 0 was taken 192437 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">     248980 :   for (; n &gt; 0; --n, ++char_ptr)</span>
 <span class="lineNum">     158 </span>                :            :     {
-<span class="lineNum">     159 </span>[<span class="branchCov" title="Branch 0 was taken 1149847 times"> + </span><span class="branchCov" title="Branch 1 was taken 197248 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 196378 times"> + </span><span class="branchCov" title="Branch 3 was taken 953469 times"> + </span>]:<span class="lineCov">    1347095 :       if (*char_ptr == c1 || *char_ptr == c2)</span>
-<span class="lineNum">     160 </span>                :<span class="lineCov">     393626 :         return (void *) char_ptr;</span>
+<span class="lineNum">     159 </span>[<span class="branchCov" title="Branch 0 was taken 164260 times"> + </span><span class="branchCov" title="Branch 1 was taken 28177 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 136206 times"> + </span><span class="branchCov" title="Branch 3 was taken 28054 times"> + </span>]:<span class="lineCov">     192437 :       if (*char_ptr == c1 || *char_ptr == c2)</span>
+<span class="lineNum">     160 </span>                :            :         return (void *) char_ptr;
 <span class="lineNum">     161 </span>                :            :     }
 <span class="lineNum">     162 </span>                :            : 
-<span class="lineNum">     163 </span>                :<span class="lineCov">     395810 :   return NULL;</span>
+<span class="lineNum">     163 </span>                :            :   return NULL;
 <span class="lineNum">     164 </span>                :            : }
 </pre>
       </td>

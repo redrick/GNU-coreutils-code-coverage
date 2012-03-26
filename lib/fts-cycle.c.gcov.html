@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">50</td>
-            <td class="headerCovTableEntry">57</td>
-            <td class="headerCovTableEntryMed">87.7 %</td>
+            <td class="headerCovTableEntry">52</td>
+            <td class="headerCovTableEntryHi">96.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -100,136 +100,136 @@
 <span class="lineNum">      29 </span>                :            : };
 <a name="30"><span class="lineNum">      30 </span>                :            : </a>
 <span class="lineNum">      31 </span>                :            : static bool
-<span class="lineNum">      32 </span>                :<span class="lineCov">       2170 : AD_compare (void const *x, void const *y)</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">        328 : AD_compare (void const *x, void const *y)</span>
 <span class="lineNum">      33 </span>                :            : {
-<span class="lineNum">      34 </span>                :<span class="lineCov">       2170 :   struct Active_dir const *ax = x;</span>
-<span class="lineNum">      35 </span>                :<span class="lineCov">       2170 :   struct Active_dir const *ay = y;</span>
-<span class="lineNum">      36 </span>                :<span class="lineCov">       2170 :   return ax-&gt;ino == ay-&gt;ino</span>
-<span class="lineNum">      37 </span>[<span class="branchCov" title="Branch 0 was taken 2156 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 2142 times"> + </span><span class="branchCov" title="Branch 3 was taken 14 times"> + </span>]:<span class="lineCov">       2170 :       &amp;&amp; ax-&gt;dev == ay-&gt;dev;</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">        328 :   struct Active_dir const *ax = x;</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">        328 :   struct Active_dir const *ay = y;</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">        328 :   return ax-&gt;ino == ay-&gt;ino</span>
+<span class="lineNum">      37 </span>[<span class="branchCov" title="Branch 0 was taken 326 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchCov" title="Branch 3 was taken 324 times"> + </span>]:<span class="lineCov">        328 :       &amp;&amp; ax-&gt;dev == ay-&gt;dev;</span>
 <span class="lineNum">      38 </span>                :            : }
 <a name="39"><span class="lineNum">      39 </span>                :            : </a>
 <span class="lineNum">      40 </span>                :            : static size_t
-<span class="lineNum">      41 </span>                :<span class="lineCov">       5089 : AD_hash (void const *x, size_t table_size)</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">        763 : AD_hash (void const *x, size_t table_size)</span>
 <span class="lineNum">      42 </span>                :            : {
-<span class="lineNum">      43 </span>                :<span class="lineCov">       5089 :   struct Active_dir const *ax = x;</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">       5089 :   return (uintmax_t) ax-&gt;ino % table_size;</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">        763 :   struct Active_dir const *ax = x;</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">        763 :   return (uintmax_t) ax-&gt;ino % table_size;</span>
 <span class="lineNum">      45 </span>                :            : }
 <span class="lineNum">      46 </span>                :            : 
 <span class="lineNum">      47 </span>                :            : /* Set up the cycle-detection machinery.  */
 <a name="48"><span class="lineNum">      48 </span>                :            : </a>
 <span class="lineNum">      49 </span>                :            : static bool
-<span class="lineNum">      50 </span>                :<span class="lineCov">     116239 : setup_dir (FTS *fts)</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">      24218 : setup_dir (FTS *fts)</span>
 <span class="lineNum">      51 </span>                :            : {
-<span class="lineNum">      52 </span>        [<span class="branchCov" title="Branch 0 was taken 600 times"> + </span><span class="branchCov" title="Branch 1 was taken 115639 times"> + </span>]:<span class="lineCov">     116239 :   if (fts-&gt;fts_options &amp; (FTS_TIGHT_CYCLE_CHECK | FTS_LOGICAL))</span>
+<span class="lineNum">      52 </span>        [<span class="branchCov" title="Branch 0 was taken 108 times"> + </span><span class="branchCov" title="Branch 1 was taken 24110 times"> + </span>]:<span class="lineCov">      24218 :   if (fts-&gt;fts_options &amp; (FTS_TIGHT_CYCLE_CHECK | FTS_LOGICAL))</span>
 <span class="lineNum">      53 </span>                :            :     {
 <span class="lineNum">      54 </span>                :            :       enum { HT_INITIAL_SIZE = 31 };
-<span class="lineNum">      55 </span>                :<span class="lineCov">        600 :       fts-&gt;fts_cycle.ht = hash_initialize (HT_INITIAL_SIZE, NULL, AD_hash,</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">        108 :       fts-&gt;fts_cycle.ht = hash_initialize (HT_INITIAL_SIZE, NULL, AD_hash,</span>
 <span class="lineNum">      56 </span>                :            :                                            AD_compare, free);
-<span class="lineNum">      57 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 600 times"> + </span>]:<span class="lineCov">        600 :       if (! fts-&gt;fts_cycle.ht)</span>
-<span class="lineNum">      58 </span>                :<span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      57 </span>        [<span class="branchCov" title="Branch 0 was taken 108 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        108 :       if (! fts-&gt;fts_cycle.ht)</span>
+<span class="lineNum">      58 </span>                :            :         return false;
 <span class="lineNum">      59 </span>                :            :     }
 <span class="lineNum">      60 </span>                :            :   else
 <span class="lineNum">      61 </span>                :            :     {
-<span class="lineNum">      62 </span>                :<span class="lineCov">     115639 :       fts-&gt;fts_cycle.state = malloc (sizeof *fts-&gt;fts_cycle.state);</span>
-<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 115639 times"> + </span>]:<span class="lineCov">     115639 :       if (! fts-&gt;fts_cycle.state)</span>
-<span class="lineNum">      64 </span>                :<span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">     115639 :       cycle_check_init (fts-&gt;fts_cycle.state);</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">      24110 :       fts-&gt;fts_cycle.state = malloc (sizeof *fts-&gt;fts_cycle.state);</span>
+<span class="lineNum">      63 </span>        [<span class="branchCov" title="Branch 0 was taken 24110 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      24110 :       if (! fts-&gt;fts_cycle.state)</span>
+<span class="lineNum">      64 </span>                :            :         return false;
+<span class="lineNum">      65 </span>                :<span class="lineCov">      24110 :       cycle_check_init (fts-&gt;fts_cycle.state);</span>
 <span class="lineNum">      66 </span>                :            :     }
 <span class="lineNum">      67 </span>                :            : 
-<span class="lineNum">      68 </span>                :<span class="lineCov">     116239 :   return true;</span>
+<span class="lineNum">      68 </span>                :<span class="lineCov">      24218 :   return true;</span>
 <span class="lineNum">      69 </span>                :            : }
 <span class="lineNum">      70 </span>                :            : 
 <span class="lineNum">      71 </span>                :            : /* Enter a directory during a file tree walk.  */
 <a name="72"><span class="lineNum">      72 </span>                :            : </a>
 <span class="lineNum">      73 </span>                :            : static bool
-<span class="lineNum">      74 </span>                :<span class="lineCov">     452431 : enter_dir (FTS *fts, FTSENT *ent)</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">     107520 : enter_dir (FTS *fts, FTSENT *ent)</span>
 <span class="lineNum">      75 </span>                :            : {
-<span class="lineNum">      76 </span>        [<span class="branchCov" title="Branch 0 was taken 2142 times"> + </span><span class="branchCov" title="Branch 1 was taken 450289 times"> + </span>]:<span class="lineCov">     452431 :   if (fts-&gt;fts_options &amp; (FTS_TIGHT_CYCLE_CHECK | FTS_LOGICAL))</span>
+<span class="lineNum">      76 </span>        [<span class="branchCov" title="Branch 0 was taken 324 times"> + </span><span class="branchCov" title="Branch 1 was taken 107196 times"> + </span>]:<span class="lineCov">     107520 :   if (fts-&gt;fts_options &amp; (FTS_TIGHT_CYCLE_CHECK | FTS_LOGICAL))</span>
 <span class="lineNum">      77 </span>                :            :     {
-<span class="lineNum">      78 </span>                :<span class="lineCov">       2142 :       struct stat const *st = ent-&gt;fts_statp;</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">       2142 :       struct Active_dir *ad = malloc (sizeof *ad);</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">        324 :       struct stat const *st = ent-&gt;fts_statp;</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">        324 :       struct Active_dir *ad = malloc (sizeof *ad);</span>
 <span class="lineNum">      80 </span>                :            :       struct Active_dir *ad_from_table;
 <span class="lineNum">      81 </span>                :            : 
-<span class="lineNum">      82 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2142 times"> + </span>]:<span class="lineCov">       2142 :       if (!ad)</span>
-<span class="lineNum">      83 </span>                :<span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      82 </span>        [<span class="branchCov" title="Branch 0 was taken 324 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        324 :       if (!ad)</span>
+<span class="lineNum">      83 </span>                :            :         return false;
 <span class="lineNum">      84 </span>                :            : 
-<span class="lineNum">      85 </span>                :<span class="lineCov">       2142 :       ad-&gt;dev = st-&gt;st_dev;</span>
-<span class="lineNum">      86 </span>                :<span class="lineCov">       2142 :       ad-&gt;ino = st-&gt;st_ino;</span>
-<span class="lineNum">      87 </span>                :<span class="lineCov">       2142 :       ad-&gt;fts_ent = ent;</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">        324 :       ad-&gt;dev = st-&gt;st_dev;</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">        324 :       ad-&gt;ino = st-&gt;st_ino;</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">        324 :       ad-&gt;fts_ent = ent;</span>
 <span class="lineNum">      88 </span>                :            : 
 <span class="lineNum">      89 </span>                :            :       /* See if we've already encountered this directory.
 <span class="lineNum">      90 </span>                :            :          This can happen when following symlinks as well as
 <span class="lineNum">      91 </span>                :            :          with a corrupted directory hierarchy. */
-<span class="lineNum">      92 </span>                :<span class="lineCov">       2142 :       ad_from_table = hash_insert (fts-&gt;fts_cycle.ht, ad);</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">        324 :       ad_from_table = hash_insert (fts-&gt;fts_cycle.ht, ad);</span>
 <span class="lineNum">      93 </span>                :            : 
-<span class="lineNum">      94 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 2128 times"> + </span>]:<span class="lineCov">       2142 :       if (ad_from_table != ad)</span>
+<span class="lineNum">      94 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 322 times"> + </span>]:<span class="lineCov">        324 :       if (ad_from_table != ad)</span>
 <span class="lineNum">      95 </span>                :            :         {
-<span class="lineNum">      96 </span>                :<span class="lineCov">         14 :           free (ad);</span>
-<span class="lineNum">      97 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         14 :           if (!ad_from_table)</span>
-<span class="lineNum">      98 </span>                :<span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">          2 :           free (ad);</span>
+<span class="lineNum">      97 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :           if (!ad_from_table)</span>
+<span class="lineNum">      98 </span>                :            :             return false;
 <span class="lineNum">      99 </span>                :            : 
 <span class="lineNum">     100 </span>                :            :           /* There was an entry with matching dev/inode already in the table.
 <span class="lineNum">     101 </span>                :            :              Record the fact that we've found a cycle.  */
-<span class="lineNum">     102 </span>                :<span class="lineCov">         14 :           ent-&gt;fts_cycle = ad_from_table-&gt;fts_ent;</span>
-<span class="lineNum">     103 </span>                :<span class="lineCov">         14 :           ent-&gt;fts_info = FTS_DC;</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">          2 :           ent-&gt;fts_cycle = ad_from_table-&gt;fts_ent;</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">          2 :           ent-&gt;fts_info = FTS_DC;</span>
 <span class="lineNum">     104 </span>                :            :         }
 <span class="lineNum">     105 </span>                :            :     }
 <span class="lineNum">     106 </span>                :            :   else
 <span class="lineNum">     107 </span>                :            :     {
-<span class="lineNum">     108 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 450289 times"> + </span>]:<span class="lineCov">     450289 :       if (cycle_check (fts-&gt;fts_cycle.state, ent-&gt;fts_statp))</span>
+<span class="lineNum">     108 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 107196 times"> + </span>]:<span class="lineCov">     107196 :       if (cycle_check (fts-&gt;fts_cycle.state, ent-&gt;fts_statp))</span>
 <span class="lineNum">     109 </span>                :            :         {
 <span class="lineNum">     110 </span>                :            :           /* FIXME: setting fts_cycle like this isn't proper.
 <span class="lineNum">     111 </span>                :            :              To do what the documentation requires, we'd have to
 <span class="lineNum">     112 </span>                :            :              go around the cycle again and find the right entry.
 <span class="lineNum">     113 </span>                :            :              But no callers in coreutils use the fts_cycle member. */
 <span class="lineNum">     114 </span>                :<span class="lineNoCov">          0 :           ent-&gt;fts_cycle = ent;</span>
-<span class="lineNum">     115 </span>                :<span class="lineNoCov">          0 :           ent-&gt;fts_info = FTS_DC;</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">     107520 :           ent-&gt;fts_info = FTS_DC;</span>
 <span class="lineNum">     116 </span>                :            :         }
 <span class="lineNum">     117 </span>                :            :     }
 <span class="lineNum">     118 </span>                :            : 
-<span class="lineNum">     119 </span>                :<span class="lineCov">     452431 :   return true;</span>
+<span class="lineNum">     119 </span>                :            :   return true;
 <span class="lineNum">     120 </span>                :            : }
 <span class="lineNum">     121 </span>                :            : 
 <span class="lineNum">     122 </span>                :            : /* Leave a directory during a file tree walk.  */
 <a name="123"><span class="lineNum">     123 </span>                :            : </a>
 <span class="lineNum">     124 </span>                :            : static void
-<span class="lineNum">     125 </span>                :<span class="lineCov">     452389 : leave_dir (FTS *fts, FTSENT *ent)</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">     107514 : leave_dir (FTS *fts, FTSENT *ent)</span>
 <span class="lineNum">     126 </span>                :            : {
-<span class="lineNum">     127 </span>                :<span class="lineCov">     452389 :   struct stat const *st = ent-&gt;fts_statp;</span>
-<span class="lineNum">     128 </span>        [<span class="branchCov" title="Branch 0 was taken 2128 times"> + </span><span class="branchCov" title="Branch 1 was taken 450261 times"> + </span>]:<span class="lineCov">     452389 :   if (fts-&gt;fts_options &amp; (FTS_TIGHT_CYCLE_CHECK | FTS_LOGICAL))</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">     107514 :   struct stat const *st = ent-&gt;fts_statp;</span>
+<span class="lineNum">     128 </span>        [<span class="branchCov" title="Branch 0 was taken 322 times"> + </span><span class="branchCov" title="Branch 1 was taken 107192 times"> + </span>]:<span class="lineCov">     107514 :   if (fts-&gt;fts_options &amp; (FTS_TIGHT_CYCLE_CHECK | FTS_LOGICAL))</span>
 <span class="lineNum">     129 </span>                :            :     {
 <span class="lineNum">     130 </span>                :            :       struct Active_dir obj;
 <span class="lineNum">     131 </span>                :            :       void *found;
-<span class="lineNum">     132 </span>                :<span class="lineCov">       2128 :       obj.dev = st-&gt;st_dev;</span>
-<span class="lineNum">     133 </span>                :<span class="lineCov">       2128 :       obj.ino = st-&gt;st_ino;</span>
-<span class="lineNum">     134 </span>                :<span class="lineCov">       2128 :       found = hash_delete (fts-&gt;fts_cycle.ht, &amp;obj);</span>
-<span class="lineNum">     135 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2128 times"> + </span>]:<span class="lineCov">       2128 :       if (!found)</span>
+<span class="lineNum">     132 </span>                :<span class="lineCov">        322 :       obj.dev = st-&gt;st_dev;</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">        322 :       obj.ino = st-&gt;st_ino;</span>
+<span class="lineNum">     134 </span>                :<span class="lineCov">        322 :       found = hash_delete (fts-&gt;fts_cycle.ht, &amp;obj);</span>
+<span class="lineNum">     135 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 322 times"> + </span>]:<span class="lineCov">        322 :       if (!found)</span>
 <span class="lineNum">     136 </span>                :<span class="lineNoCov">          0 :         abort ();</span>
-<span class="lineNum">     137 </span>                :<span class="lineCov">       2128 :       free (found);</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">        322 :       free (found);</span>
 <span class="lineNum">     138 </span>                :            :     }
 <span class="lineNum">     139 </span>                :            :   else
 <span class="lineNum">     140 </span>                :            :     {
-<span class="lineNum">     141 </span>                :<span class="lineCov">     450261 :       FTSENT *parent = ent-&gt;fts_parent;</span>
-<span class="lineNum">     142 </span>[<span class="branchCov" title="Branch 0 was taken 450261 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 425883 times"> + </span><span class="branchCov" title="Branch 3 was taken 24378 times"> + </span>]:<span class="lineCov">     450261 :       if (parent != NULL &amp;&amp; 0 &lt;= parent-&gt;fts_level)</span>
-<span class="lineNum">     143 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 425883 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 12543 times"> + </span><span class="branchCov" title="Branch 4 was taken 413340 times"> + </span>]:<span class="lineCov">     425883 :         CYCLE_CHECK_REFLECT_CHDIR_UP (fts-&gt;fts_cycle.state,</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 12543 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span>]
+<span class="lineNum">     141 </span>                :<span class="lineCov">     107192 :       FTSENT *parent = ent-&gt;fts_parent;</span>
+<span class="lineNum">     142 </span>[<span class="branchCov" title="Branch 0 was taken 107192 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 101966 times"> + </span><span class="branchCov" title="Branch 3 was taken 5226 times"> + </span>]:<span class="lineCov">     107192 :       if (parent != NULL &amp;&amp; 0 &lt;= parent-&gt;fts_level)</span>
+<span class="lineNum">     143 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 101966 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 2107 times"> + </span><span class="branchCov" title="Branch 4 was taken 99859 times"> + </span>]:<span class="lineCov">     101966 :         CYCLE_CHECK_REFLECT_CHDIR_UP (fts-&gt;fts_cycle.state,</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 2107 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span>]
 <span class="lineNum">     144 </span>                :            :                                       *(parent-&gt;fts_statp), *st);
 <span class="lineNum">     145 </span>                :            :     }
-<span class="lineNum">     146 </span>                :<span class="lineCov">     452389 : }</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">     107514 : }</span>
 <span class="lineNum">     147 </span>                :            : 
 <span class="lineNum">     148 </span>                :            : /* Free any memory used for cycle detection.  */
 <a name="149"><span class="lineNum">     149 </span>                :            : </a>
 <span class="lineNum">     150 </span>                :            : static void
-<span class="lineNum">     151 </span>                :<span class="lineCov">     116239 : free_dir (FTS *sp)</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">      24218 : free_dir (FTS *sp)</span>
 <span class="lineNum">     152 </span>                :            : {
-<span class="lineNum">     153 </span>        [<span class="branchCov" title="Branch 0 was taken 600 times"> + </span><span class="branchCov" title="Branch 1 was taken 115639 times"> + </span>]:<span class="lineCov">     116239 :   if (sp-&gt;fts_options &amp; (FTS_TIGHT_CYCLE_CHECK | FTS_LOGICAL))</span>
+<span class="lineNum">     153 </span>        [<span class="branchCov" title="Branch 0 was taken 108 times"> + </span><span class="branchCov" title="Branch 1 was taken 24110 times"> + </span>]:<span class="lineCov">      24218 :   if (sp-&gt;fts_options &amp; (FTS_TIGHT_CYCLE_CHECK | FTS_LOGICAL))</span>
 <span class="lineNum">     154 </span>                :            :     {
-<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 0 was taken 600 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        600 :       if (sp-&gt;fts_cycle.ht)</span>
-<span class="lineNum">     156 </span>                :<span class="lineCov">        600 :         hash_free (sp-&gt;fts_cycle.ht);</span>
+<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 0 was taken 108 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        108 :       if (sp-&gt;fts_cycle.ht)</span>
+<span class="lineNum">     156 </span>                :<span class="lineCov">        108 :         hash_free (sp-&gt;fts_cycle.ht);</span>
 <span class="lineNum">     157 </span>                :            :     }
 <span class="lineNum">     158 </span>                :            :   else
-<span class="lineNum">     159 </span>                :<span class="lineCov">     115639 :     free (sp-&gt;fts_cycle.state);</span>
-<span class="lineNum">     160 </span>                :<span class="lineCov">     116239 : }</span>
+<span class="lineNum">     159 </span>                :<span class="lineCov">      24110 :     free (sp-&gt;fts_cycle.state);</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">      24218 : }</span>
 </pre>
       </td>
     </tr>

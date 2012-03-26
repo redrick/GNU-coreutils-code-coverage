@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">41</td>
-            <td class="headerCovTableEntry">41</td>
+            <td class="headerCovTableEntry">51</td>
+            <td class="headerCovTableEntry">51</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntryHi">94.1 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -85,129 +85,178 @@
 <span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU General Public License
 <span class="lineNum">      15 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
 <span class="lineNum">      16 </span>                :            : 
-<span class="lineNum">      17 </span>                :            : /* Usage: basename name [suffix]
-<span class="lineNum">      18 </span>                :            :    NAME is a file name; SUFFIX is a suffix to strip from it.
-<span class="lineNum">      19 </span>                :            : 
-<span class="lineNum">      20 </span>                :            :    basename /usr/foo/lossage/functions.l
-<span class="lineNum">      21 </span>                :            :    =&gt; functions.l
-<span class="lineNum">      22 </span>                :            :    basename /usr/foo/lossage/functions.l .l
-<span class="lineNum">      23 </span>                :            :    =&gt; functions
-<span class="lineNum">      24 </span>                :            :    basename functions.lisp p
-<span class="lineNum">      25 </span>                :            :    =&gt; functions.lis */
-<span class="lineNum">      26 </span>                :            : 
-<span class="lineNum">      27 </span>                :            : #include &lt;config.h&gt;
-<span class="lineNum">      28 </span>                :            : #include &lt;getopt.h&gt;
-<span class="lineNum">      29 </span>                :            : #include &lt;stdio.h&gt;
-<span class="lineNum">      30 </span>                :            : #include &lt;sys/types.h&gt;
-<span class="lineNum">      31 </span>                :            : 
-<span class="lineNum">      32 </span>                :            : #include &quot;system.h&quot;
-<span class="lineNum">      33 </span>                :            : #include &quot;long-options.h&quot;
-<span class="lineNum">      34 </span>                :            : #include &quot;error.h&quot;
-<span class="lineNum">      35 </span>                :            : #include &quot;quote.h&quot;
-<span class="lineNum">      36 </span>                :            : 
-<span class="lineNum">      37 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
-<span class="lineNum">      38 </span>                :            : #define PROGRAM_NAME &quot;basename&quot;
-<span class="lineNum">      39 </span>                :            : 
-<span class="lineNum">      40 </span>                :            : #define AUTHORS proper_name (&quot;David MacKenzie&quot;)
-<a name="41"><span class="lineNum">      41 </span>                :            : </a>
-<span class="lineNum">      42 </span>                :            : void
-<span class="lineNum">      43 </span>                :<span class="lineCov">         42 : usage (int status)</span>
-<span class="lineNum">      44 </span>                :            : {
-<span class="lineNum">      45 </span>        [<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         42 :   if (status != EXIT_SUCCESS)</span>
-<span class="lineNum">      46 </span>                :<span class="lineCov">         21 :     emit_try_help ();</span>
-<span class="lineNum">      47 </span>                :            :   else
-<span class="lineNum">      48 </span>                :            :     {
-<span class="lineNum">      49 </span>                :<span class="lineCov">         21 :       printf (_(&quot;\</span>
-<span class="lineNum">      50 </span>                :            : Usage: %s NAME [SUFFIX]\n\
-<span class="lineNum">      51 </span>                :            :   or:  %s OPTION\n\
-<span class="lineNum">      52 </span>                :            : &quot;),
-<span class="lineNum">      53 </span>                :            :               program_name, program_name);
-<span class="lineNum">      54 </span>                :<span class="lineCov">         21 :       fputs (_(&quot;\</span>
-<span class="lineNum">      55 </span>                :            : Print NAME with any leading directory components removed.\n\
-<span class="lineNum">      56 </span>                :            : If specified, also remove a trailing SUFFIX.\n\
-<span class="lineNum">      57 </span>                :            : \n\
-<span class="lineNum">      58 </span>                :            : &quot;), stdout);
-<span class="lineNum">      59 </span>                :<span class="lineCov">         21 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">      60 </span>                :<span class="lineCov">         21 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">         21 :       printf (_(&quot;\</span>
-<span class="lineNum">      62 </span>                :            : \n\
-<span class="lineNum">      63 </span>                :            : Examples:\n\
-<span class="lineNum">      64 </span>                :            :   %s /usr/bin/sort       Output \&quot;sort\&quot;.\n\
-<span class="lineNum">      65 </span>                :            :   %s include/stdio.h .h  Output \&quot;stdio\&quot;.\n\
-<span class="lineNum">      66 </span>                :            : &quot;),
-<span class="lineNum">      67 </span>                :            :               program_name, program_name);
-<span class="lineNum">      68 </span>                :<span class="lineCov">         21 :       emit_ancillary_info ();</span>
-<span class="lineNum">      69 </span>                :            :     }
-<span class="lineNum">      70 </span>                :<span class="lineCov">         42 :   exit (status);</span>
-<span class="lineNum">      71 </span>                :            : }
-<span class="lineNum">      72 </span>                :            : 
-<span class="lineNum">      73 </span>                :            : /* Remove SUFFIX from the end of NAME if it is there, unless NAME
-<span class="lineNum">      74 </span>                :            :    consists entirely of SUFFIX. */
-<a name="75"><span class="lineNum">      75 </span>                :            : </a>
-<span class="lineNum">      76 </span>                :            : static void
-<span class="lineNum">      77 </span>                :<span class="lineCov">         56 : remove_suffix (char *name, const char *suffix)</span>
-<span class="lineNum">      78 </span>                :            : {
-<span class="lineNum">      79 </span>                :            :   char *np;
-<span class="lineNum">      80 </span>                :            :   const char *sp;
-<span class="lineNum">      81 </span>                :            : 
-<span class="lineNum">      82 </span>                :<span class="lineCov">         56 :   np = name + strlen (name);</span>
-<span class="lineNum">      83 </span>                :<span class="lineCov">         56 :   sp = suffix + strlen (suffix);</span>
-<span class="lineNum">      84 </span>                :            : 
-<span class="lineNum">      85 </span>[<span class="branchCov" title="Branch 0 was taken 119 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 84 times"> + </span><span class="branchCov" title="Branch 3 was taken 35 times"> + </span>]:<span class="lineCov">        126 :   while (np &gt; name &amp;&amp; sp &gt; suffix)</span>
-<span class="lineNum">      86 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 70 times"> + </span>]:<span class="lineCov">         84 :     if (*--np != *--sp)</span>
-<span class="lineNum">      87 </span>                :<span class="lineCov">         56 :       return;</span>
-<span class="lineNum">      88 </span>        [<span class="branchCov" title="Branch 0 was taken 35 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">         42 :   if (np &gt; name)</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">         35 :     *np = '\0';</span>
-<span class="lineNum">      90 </span>                :            : }
-<a name="91"><span class="lineNum">      91 </span>                :            : </a>
-<span class="lineNum">      92 </span>                :            : int
-<span class="lineNum">      93 </span>                :<span class="lineCov">        273 : main (int argc, char **argv)</span>
-<span class="lineNum">      94 </span>                :            : {
-<span class="lineNum">      95 </span>                :            :   char *name;
-<span class="lineNum">      96 </span>                :            : 
-<span class="lineNum">      97 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
-<span class="lineNum">      98 </span>                :<span class="lineCov">        273 :   set_program_name (argv[0]);</span>
-<span class="lineNum">      99 </span>                :<span class="lineCov">        273 :   setlocale (LC_ALL, &quot;&quot;);</span>
-<span class="lineNum">     100 </span>                :<span class="lineCov">        273 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
-<span class="lineNum">     101 </span>                :<span class="lineCov">        273 :   textdomain (PACKAGE);</span>
-<span class="lineNum">     102 </span>                :            : 
-<span class="lineNum">     103 </span>                :<span class="lineCov">        273 :   atexit (close_stdout);</span>
-<span class="lineNum">     104 </span>                :            : 
-<span class="lineNum">     105 </span>                :<span class="lineCov">        273 :   parse_long_options (argc, argv, PROGRAM_NAME, PACKAGE_NAME, Version,</span>
-<span class="lineNum">     106 </span>                :            :                       usage, AUTHORS, (char const *) NULL);
-<span class="lineNum">     107 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchCov" title="Branch 2 was taken 210 times"> + </span>]:<span class="lineCov">        217 :   if (getopt_long (argc, argv, &quot;+&quot;, NULL, NULL) != -1)</span>
-<span class="lineNum">     108 </span>                :<span class="lineCov">          7 :     usage (EXIT_FAILURE);</span>
-<span class="lineNum">     109 </span>                :            : 
-<span class="lineNum">     110 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 203 times"> + </span>]:<span class="lineCov">        210 :   if (argc &lt; optind + 1)</span>
-<span class="lineNum">     111 </span>                :            :     {
-<span class="lineNum">     112 </span>                :<span class="lineCov">          7 :       error (0, 0, _(&quot;missing operand&quot;));</span>
-<span class="lineNum">     113 </span>                :<span class="lineCov">          7 :       usage (EXIT_FAILURE);</span>
-<span class="lineNum">     114 </span>                :            :     }
-<span class="lineNum">     115 </span>                :            : 
-<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 196 times"> + </span>]:<span class="lineCov">        203 :   if (optind + 2 &lt; argc)</span>
-<span class="lineNum">     117 </span>                :            :     {
-<span class="lineNum">     118 </span>                :<span class="lineCov">          7 :       error (0, 0, _(&quot;extra operand %s&quot;), quote (argv[optind + 2]));</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">          7 :       usage (EXIT_FAILURE);</span>
-<span class="lineNum">     120 </span>                :            :     }
-<span class="lineNum">     121 </span>                :            : 
-<span class="lineNum">     122 </span>                :<span class="lineCov">        196 :   name = base_name (argv[optind]);</span>
-<span class="lineNum">     123 </span>                :<span class="lineCov">        196 :   strip_trailing_slashes (name);</span>
-<span class="lineNum">     124 </span>                :            : 
-<span class="lineNum">     125 </span>                :            :   /* Per POSIX, 'basename // /' must return '//' on platforms with
-<span class="lineNum">     126 </span>                :            :      distinct //.  On platforms with drive letters, this generalizes
-<span class="lineNum">     127 </span>                :            :      to making 'basename c: :' return 'c:'.  This rule is captured by
-<span class="lineNum">     128 </span>                :            :      skipping suffix stripping if base_name returned an absolute path
-<span class="lineNum">     129 </span>                :            :      or a drive letter (only possible if name is a file-system
-<span class="lineNum">     130 </span>                :            :      root).  */
-<span class="lineNum">     131 </span>        [<span class="branchCov" title="Branch 0 was taken 70 times"> + </span><span class="branchCov" title="Branch 1 was taken 126 times"> + </span>]:<span class="lineCov">        196 :   if (argc == optind + 2 &amp;&amp; IS_RELATIVE_FILE_NAME (name)</span>
-<span class="lineNum">     132 </span>        [<span class="branchCov" title="Branch 0 was taken 56 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         70 :       &amp;&amp; ! FILE_SYSTEM_PREFIX_LEN (name))</span>
-<span class="lineNum">     133 </span>                :<span class="lineCov">         56 :     remove_suffix (name, argv[optind + 1]);</span>
+<span class="lineNum">      17 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      18 </span>                :            : #include &lt;getopt.h&gt;
+<span class="lineNum">      19 </span>                :            : #include &lt;stdio.h&gt;
+<span class="lineNum">      20 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      21 </span>                :            : 
+<span class="lineNum">      22 </span>                :            : #include &quot;system.h&quot;
+<span class="lineNum">      23 </span>                :            : #include &quot;error.h&quot;
+<span class="lineNum">      24 </span>                :            : #include &quot;quote.h&quot;
+<span class="lineNum">      25 </span>                :            : 
+<span class="lineNum">      26 </span>                :            : /* The official name of this program (e.g., no 'g' prefix).  */
+<span class="lineNum">      27 </span>                :            : #define PROGRAM_NAME &quot;basename&quot;
+<span class="lineNum">      28 </span>                :            : 
+<span class="lineNum">      29 </span>                :            : #define AUTHORS proper_name (&quot;David MacKenzie&quot;)
+<span class="lineNum">      30 </span>                :            : 
+<span class="lineNum">      31 </span>                :            : static struct option const longopts[] =
+<span class="lineNum">      32 </span>                :            : {
+<span class="lineNum">      33 </span>                :            :   {&quot;multiple&quot;, no_argument, NULL, 'a'},
+<span class="lineNum">      34 </span>                :            :   {&quot;suffix&quot;, required_argument, NULL, 's'},
+<span class="lineNum">      35 </span>                :            :   {&quot;zero&quot;, no_argument, NULL, 'z'},
+<span class="lineNum">      36 </span>                :            :   {GETOPT_HELP_OPTION_DECL},
+<span class="lineNum">      37 </span>                :            :   {GETOPT_VERSION_OPTION_DECL},
+<span class="lineNum">      38 </span>                :            :   {NULL, 0, NULL, 0}
+<span class="lineNum">      39 </span>                :            : };
+<a name="40"><span class="lineNum">      40 </span>                :            : </a>
+<span class="lineNum">      41 </span>                :            : void
+<span class="lineNum">      42 </span>                :<span class="lineCov">          7 : usage (int status)</span>
+<span class="lineNum">      43 </span>                :            : {
+<span class="lineNum">      44 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          7 :   if (status != EXIT_SUCCESS)</span>
+<span class="lineNum">      45 </span>                :            :     emit_try_help ();
+<span class="lineNum">      46 </span>                :            :   else
+<span class="lineNum">      47 </span>                :            :     {
+<span class="lineNum">      48 </span>                :<span class="lineCov">          4 :       printf (_(&quot;\</span>
+<span class="lineNum">      49 </span>                :            : Usage: %s NAME [SUFFIX]\n\
+<span class="lineNum">      50 </span>                :            :   or:  %s OPTION... NAME...\n\
+<span class="lineNum">      51 </span>                :            : &quot;),
+<span class="lineNum">      52 </span>                :            :               program_name, program_name);
+<span class="lineNum">      53 </span>                :<span class="lineCov">          4 :       fputs (_(&quot;\</span>
+<span class="lineNum">      54 </span>                :            : Print NAME with any leading directory components removed.\n\
+<span class="lineNum">      55 </span>                :            : If specified, also remove a trailing SUFFIX.\n\
+<span class="lineNum">      56 </span>                :            : \n\
+<span class="lineNum">      57 </span>                :            : &quot;), stdout);
+<span class="lineNum">      58 </span>                :            : 
+<span class="lineNum">      59 </span>                :<span class="lineCov">          4 :       fputs (_(&quot;\</span>
+<span class="lineNum">      60 </span>                :            :   -a, --multiple       support multiple arguments and treat each as a NAME\n\
+<span class="lineNum">      61 </span>                :            :   -s, --suffix=SUFFIX  remove a trailing SUFFIX\n\
+<span class="lineNum">      62 </span>                :            :   -z, --zero           separate output with NUL rather than newline\n\
+<span class="lineNum">      63 </span>                :            : &quot;), stdout);
+<span class="lineNum">      64 </span>                :<span class="lineCov">          4 :       fputs (HELP_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">          4 :       fputs (VERSION_OPTION_DESCRIPTION, stdout);</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">          4 :       printf (_(&quot;\</span>
+<span class="lineNum">      67 </span>                :            : \n\
+<span class="lineNum">      68 </span>                :            : Examples:\n\
+<span class="lineNum">      69 </span>                :            :   %s /usr/bin/sort          -&gt; \&quot;sort\&quot;\n\
+<span class="lineNum">      70 </span>                :            :   %s include/stdio.h .h     -&gt; \&quot;stdio\&quot;\n\
+<span class="lineNum">      71 </span>                :            :   %s -s .h include/stdio.h  -&gt; \&quot;stdio\&quot;\n\
+<span class="lineNum">      72 </span>                :            :   %s -a any/str1 any/str2   -&gt; \&quot;str1\&quot; followed by \&quot;str2\&quot;\n\
+<span class="lineNum">      73 </span>                :            : &quot;),
+<span class="lineNum">      74 </span>                :            :               program_name, program_name, program_name, program_name);
+<span class="lineNum">      75 </span>                :            :       emit_ancillary_info ();
+<span class="lineNum">      76 </span>                :            :     }
+<span class="lineNum">      77 </span>                :<span class="lineCov">          7 :   exit (status);</span>
+<span class="lineNum">      78 </span>                :            : }
+<span class="lineNum">      79 </span>                :            : 
+<span class="lineNum">      80 </span>                :            : /* Remove SUFFIX from the end of NAME if it is there, unless NAME
+<span class="lineNum">      81 </span>                :            :    consists entirely of SUFFIX.  */
+<span class="lineNum">      82 </span>                :            : 
+<span class="lineNum">      83 </span>                :            : static void
+<span class="lineNum">      84 </span>                :            : remove_suffix (char *name, const char *suffix)
+<span class="lineNum">      85 </span>                :            : {
+<span class="lineNum">      86 </span>                :            :   char *np;
+<a name="87"><span class="lineNum">      87 </span>                :            :   const char *sp;</a>
+<span class="lineNum">      88 </span>                :            : 
+<span class="lineNum">      89 </span>                :<span class="lineCov">         13 :   np = name + strlen (name);</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">         13 :   sp = suffix + strlen (suffix);</span>
+<span class="lineNum">      91 </span>                :            : 
+<span class="lineNum">      92 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         28 :   while (np &gt; name &amp;&amp; sp &gt; suffix)</span>
+<span class="lineNum">      93 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">         18 :     if (*--np != *--sp)</span>
+<span class="lineNum">      94 </span>                :            :       return;
+<span class="lineNum">      95 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">         10 :   if (np &gt; name)</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">          9 :     *np = '\0';</span>
+<span class="lineNum">      97 </span>                :            : }
+<span class="lineNum">      98 </span>                :            : 
+<span class="lineNum">      99 </span>                :            : /* Perform the basename operation on STRING.  If SUFFIX is non-NULL, remove
+<span class="lineNum">     100 </span>                :            :    the trailing SUFFIX.  Finally, output the result string.  */
+<span class="lineNum">     101 </span>                :            : 
+<span class="lineNum">     102 </span>                :            : static void
+<span class="lineNum">     103 </span>                :<span class="lineCov">         36 : perform_basename (const char *string, const char *suffix, bool use_nuls)</span>
+<span class="lineNum">     104 </span>                :            : {
+<span class="lineNum">     105 </span>                :<span class="lineCov">         36 :   char *name = base_name (string);</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">         36 :   strip_trailing_slashes (name);</span>
+<span class="lineNum">     107 </span>                :            : 
+<span class="lineNum">     108 </span>                :            :   /* Per POSIX, 'basename // /' must return '//' on platforms with
+<span class="lineNum">     109 </span>                :            :      distinct //.  On platforms with drive letters, this generalizes
+<span class="lineNum">     110 </span>                :            :      to making 'basename c: :' return 'c:'.  This rule is captured by
+<span class="lineNum">     111 </span>                :            :      skipping suffix stripping if base_name returned an absolute path
+<span class="lineNum">     112 </span>                :            :      or a drive letter (only possible if name is a file-system
+<span class="lineNum">     113 </span>                :            :      root).  */
+<span class="lineNum">     114 </span>[<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 13 times"> + </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">         36 :   if (suffix &amp;&amp; IS_RELATIVE_FILE_NAME (name) &amp;&amp; ! FILE_SYSTEM_PREFIX_LEN (name))</span>
+<span class="lineNum">     115 </span>                :            :     remove_suffix (name, suffix);
+<span class="lineNum">     116 </span>                :            : 
+<span class="lineNum">     117 </span>                :<span class="lineCov">         36 :   fputs (name, stdout);</span>
+<span class="lineNum">     118 </span>        [<span class="branchCov" title="Branch 0 was taken 36 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         36 :   putchar (use_nuls ? '\0' : '\n');</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">         36 :   free (name);</span>
+<span class="lineNum">     120 </span>                :<span class="lineCov">         36 : }</span>
+<a name="121"><span class="lineNum">     121 </span>                :            : </a>
+<span class="lineNum">     122 </span>                :            : int
+<span class="lineNum">     123 </span>                :<span class="lineCov">         46 : main (int argc, char **argv)</span>
+<span class="lineNum">     124 </span>                :            : {
+<span class="lineNum">     125 </span>                :<span class="lineCov">         46 :   bool multiple_names = false;</span>
+<span class="lineNum">     126 </span>                :<span class="lineCov">         46 :   bool use_nuls = false;</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">         46 :   const char *suffix = NULL;</span>
+<span class="lineNum">     128 </span>                :            : 
+<span class="lineNum">     129 </span>                :            :   initialize_main (&amp;argc, &amp;argv);
+<span class="lineNum">     130 </span>                :<span class="lineCov">         46 :   set_program_name (argv[0]);</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">         46 :   setlocale (LC_ALL, &quot;&quot;);</span>
+<span class="lineNum">     132 </span>                :<span class="lineCov">         46 :   bindtextdomain (PACKAGE, LOCALEDIR);</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">         46 :   textdomain (PACKAGE);</span>
 <span class="lineNum">     134 </span>                :            : 
-<span class="lineNum">     135 </span>                :<span class="lineCov">        196 :   puts (name);</span>
-<span class="lineNum">     136 </span>                :<span class="lineCov">        196 :   free (name);</span>
-<span class="lineNum">     137 </span>                :            : 
-<span class="lineNum">     138 </span>                :<span class="lineCov">        196 :   exit (EXIT_SUCCESS);</span>
-<span class="lineNum">     139 </span>                :            : }
+<span class="lineNum">     135 </span>                :<span class="lineCov">         48 :   atexit (close_stdout);</span>
+<span class="lineNum">     136 </span>                :            : 
+<span class="lineNum">     137 </span>                :            :   while (true)
+<span class="lineNum">     138 </span>                :            :     {
+<span class="lineNum">     139 </span>                :<span class="lineCov">         48 :       int c = getopt_long (argc, argv, &quot;+as:z&quot;, longopts, NULL);</span>
+<span class="lineNum">     140 </span>                :            : 
+<span class="lineNum">     141 </span>        [<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">         48 :       if (c == -1)</span>
+<span class="lineNum">     142 </span>                :            :         break;
+<span class="lineNum">     143 </span>                :            : 
+<span class="lineNum">     144 </span>  [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchCov" title="Branch 3 was taken 4 times"> + </span> :<span class="lineCov">         13 :       switch (c)</span>
+<span class="lineNum">         </span>         <span class="branchCov" title="Branch 4 was taken 6 times"> + </span><span class="branchCov" title="Branch 5 was taken 1 time"> + </span>]
+<span class="lineNum">     145 </span>                :            :         {
+<span class="lineNum">     146 </span>                :            :         case 's':
+<span class="lineNum">     147 </span>                :<span class="lineCov">          1 :           suffix = optarg;</span>
+<span class="lineNum">     148 </span>                :            : 
+<span class="lineNum">     149 </span>                :            :         case 'a':
+<span class="lineNum">     150 </span>                :            :           multiple_names = true;
+<span class="lineNum">     151 </span>                :            :           break;
+<span class="lineNum">     152 </span>                :            : 
+<span class="lineNum">     153 </span>                :            :         case 'z':
+<span class="lineNum">     154 </span>                :            :           use_nuls = true;
+<span class="lineNum">     155 </span>                :            :           break;
+<span class="lineNum">     156 </span>                :            : 
+<span class="lineNum">     157 </span>                :<span class="lineCov">          4 :         case_GETOPT_HELP_CHAR;</span>
+<span class="lineNum">     158 </span>                :<span class="lineCov">          6 :         case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);</span>
+<span class="lineNum">     159 </span>                :            : 
+<span class="lineNum">     160 </span>                :            :         default:
+<span class="lineNum">     161 </span>                :<span class="lineCov">          1 :           usage (EXIT_FAILURE);</span>
+<span class="lineNum">     162 </span>                :            :         }
+<span class="lineNum">     163 </span>                :            :     }
+<span class="lineNum">     164 </span>                :            : 
+<span class="lineNum">     165 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 34 times"> + </span>]:<span class="lineCov">         35 :   if (argc &lt; optind + 1)</span>
+<span class="lineNum">     166 </span>                :            :     {
+<span class="lineNum">     167 </span>                :<span class="lineCov">          1 :       error (0, 0, _(&quot;missing operand&quot;));</span>
+<span class="lineNum">     168 </span>                :<span class="lineCov">          1 :       usage (EXIT_FAILURE);</span>
+<span class="lineNum">     169 </span>                :            :     }
+<span class="lineNum">     170 </span>                :            : 
+<span class="lineNum">     171 </span>[<span class="branchCov" title="Branch 0 was taken 32 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchCov" title="Branch 3 was taken 31 times"> + </span>]:<span class="lineCov">         34 :   if (!multiple_names &amp;&amp; optind + 2 &lt; argc)</span>
+<span class="lineNum">     172 </span>                :            :     {
+<span class="lineNum">     173 </span>                :<span class="lineCov">          1 :       error (0, 0, _(&quot;extra operand %s&quot;), quote (argv[optind + 2]));</span>
+<span class="lineNum">     174 </span>                :<span class="lineCov">          1 :       usage (EXIT_FAILURE);</span>
+<span class="lineNum">     175 </span>                :            :     }
+<span class="lineNum">     176 </span>                :            : 
+<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 31 times"> + </span>]:<span class="lineCov">         33 :   if (multiple_names)</span>
+<span class="lineNum">     178 </span>                :            :     {
+<span class="lineNum">     179 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          7 :       for (; optind &lt; argc; optind++)</span>
+<span class="lineNum">     180 </span>                :<span class="lineCov">          5 :         perform_basename (argv[optind], suffix, use_nuls);</span>
+<span class="lineNum">     181 </span>                :            :     }
+<span class="lineNum">     182 </span>                :            :   else
+<span class="lineNum">     183 </span>        [<span class="branchCov" title="Branch 0 was taken 12 times"> + </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         31 :     perform_basename (argv[optind],</span>
+<span class="lineNum">     184 </span>                :<span class="lineCov">         43 :                       optind + 2 == argc ? argv[optind + 1] : NULL, use_nuls);</span>
+<span class="lineNum">     185 </span>                :            : 
+<span class="lineNum">     186 </span>                :<span class="lineCov">         33 :   exit (EXIT_SUCCESS);</span>
+<span class="lineNum">     187 </span>                :            : }
 </pre>
       </td>
     </tr>

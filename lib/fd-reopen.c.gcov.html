@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -49,8 +49,8 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -100,19 +100,19 @@
 <span class="lineNum">      29 </span>                :            :    'open', except it always returns DESIRED_FD if successful.  */
 <a name="30"><span class="lineNum">      30 </span>                :            : </a>
 <span class="lineNum">      31 </span>                :            : int
-<span class="lineNum">      32 </span>                :<span class="lineCov">    2682217 : fd_reopen (int desired_fd, char const *file, int flags, mode_t mode)</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">     666110 : fd_reopen (int desired_fd, char const *file, int flags, mode_t mode)</span>
 <span class="lineNum">      33 </span>                :            : {
-<span class="lineNum">      34 </span>                :<span class="lineCov">    2682217 :   int fd = open (file, flags, mode);</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">     666110 :   int fd = open (file, flags, mode);</span>
 <span class="lineNum">      35 </span>                :            : 
-<span class="lineNum">      36 </span>[<span class="branchCov" title="Branch 2 was taken 2478 times"> + </span><span class="branchCov" title="Branch 3 was taken 196239 times"> + </span>][<span class="branchCov" title="Branch 0 was taken 198717 times"> + </span><span class="branchCov" title="Branch 1 was taken 2483500 times"> + </span>]:<span class="lineCov">    2682217 :   if (fd == desired_fd || fd &lt; 0)</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">    2485978 :     return fd;</span>
+<span class="lineNum">      36 </span>        [<span class="branchCov" title="Branch 0 was taken 47065 times"> + </span><span class="branchCov" title="Branch 1 was taken 619045 times"> + </span>]:<span class="lineCov">     666110 :   if (fd == desired_fd || fd &lt; 0)</span>
+<span class="lineNum">      37 </span>                :            :     return fd;
 <span class="lineNum">      38 </span>                :            :   else
 <span class="lineNum">      39 </span>                :            :     {
-<span class="lineNum">      40 </span>                :<span class="lineCov">     196239 :       int fd2 = dup2 (fd, desired_fd);</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">     196239 :       int saved_errno = errno;</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">     196239 :       close (fd);</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">     196239 :       errno = saved_errno;</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">    2682217 :       return fd2;</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">      47065 :       int fd2 = dup2 (fd, desired_fd);</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">      47065 :       int saved_errno = errno;</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">      47065 :       close (fd);</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">      47065 :       errno = saved_errno;</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">     666110 :       return fd2;</span>
 <span class="lineNum">      45 </span>                :            :     }
 <span class="lineNum">      46 </span>                :            : }
 </pre>

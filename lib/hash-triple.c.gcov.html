@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">9</td>
             <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntryMed">83.3 %</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -102,52 +102,52 @@
 <span class="lineNum">      31 </span>                :            : 
 <a name="32"><span class="lineNum">      32 </span>                :            : /* Hash an F_triple, and *do* consider the file name.  */</a>
 <span class="lineNum">      33 </span>                :            : size_t
-<span class="lineNum">      34 </span>                :<span class="lineCov">      57401 : triple_hash (void const *x, size_t table_size)</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">      14358 : triple_hash (void const *x, size_t table_size)</span>
 <span class="lineNum">      35 </span>                :            : {
-<span class="lineNum">      36 </span>                :<span class="lineCov">      57401 :   struct F_triple const *p = x;</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">      57401 :   size_t tmp = hash_pjw (p-&gt;name, table_size);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">      14358 :   struct F_triple const *p = x;</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">      14358 :   size_t tmp = hash_pjw (p-&gt;name, table_size);</span>
 <span class="lineNum">      38 </span>                :            : 
 <span class="lineNum">      39 </span>                :            :   /* Ignoring the device number here should be fine.  */
-<span class="lineNum">      40 </span>                :<span class="lineCov">      57401 :   return (tmp ^ p-&gt;st_ino) % table_size;</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">      14358 :   return (tmp ^ p-&gt;st_ino) % table_size;</span>
 <span class="lineNum">      41 </span>                :            : }
 <span class="lineNum">      42 </span>                :            : 
 <a name="43"><span class="lineNum">      43 </span>                :            : /* Hash an F_triple, without considering the file name.  */</a>
 <span class="lineNum">      44 </span>                :            : size_t
-<span class="lineNum">      45 </span>                :<span class="lineCov">        330 : triple_hash_no_name (void const *x, size_t table_size)</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">         57 : triple_hash_no_name (void const *x, size_t table_size)</span>
 <span class="lineNum">      46 </span>                :            : {
-<span class="lineNum">      47 </span>                :<span class="lineCov">        330 :   struct F_triple const *p = x;</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">         57 :   struct F_triple const *p = x;</span>
 <span class="lineNum">      48 </span>                :            : 
 <span class="lineNum">      49 </span>                :            :   /* Ignoring the device number here should be fine.  */
-<span class="lineNum">      50 </span>                :<span class="lineCov">        330 :   return p-&gt;st_ino % table_size;</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">         57 :   return p-&gt;st_ino % table_size;</span>
 <span class="lineNum">      51 </span>                :            : }
 <span class="lineNum">      52 </span>                :            : 
 <a name="53"><span class="lineNum">      53 </span>                :            : /* Compare two F_triple structs.  */</a>
 <span class="lineNum">      54 </span>                :            : bool
-<span class="lineNum">      55 </span>                :<span class="lineCov">      20019 : triple_compare (void const *x, void const *y)</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">       5292 : triple_compare (void const *x, void const *y)</span>
 <span class="lineNum">      56 </span>                :            : {
-<span class="lineNum">      57 </span>                :<span class="lineCov">      20019 :   struct F_triple const *a = x;</span>
-<span class="lineNum">      58 </span>                :<span class="lineCov">      20019 :   struct F_triple const *b = y;</span>
-<span class="lineNum">      59 </span>[<span class="branchCov" title="Branch 0 was taken 140 times"> + </span><span class="branchCov" title="Branch 1 was taken 19879 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 140 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">      20019 :   return (SAME_INODE (*a, *b) &amp;&amp; same_name (a-&gt;name, b-&gt;name)) ? true : false;</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 50 times"> + </span><span class="branchCov" title="Branch 6 was taken 90 times"> + </span>]
+<span class="lineNum">      57 </span>                :<span class="lineCov">       5292 :   struct F_triple const *a = x;</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">       5292 :   struct F_triple const *b = y;</span>
+<span class="lineNum">      59 </span>[<span class="branchCov" title="Branch 0 was taken 29 times"> + </span><span class="branchCov" title="Branch 1 was taken 5263 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 29 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       5292 :   return (SAME_INODE (*a, *b) &amp;&amp; same_name (a-&gt;name, b-&gt;name)) ? true : false;</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 5 was taken 18 times"> + </span><span class="branchCov" title="Branch 6 was taken 11 times"> + </span>]
 <span class="lineNum">      60 </span>                :            : }
 <a name="61"><span class="lineNum">      61 </span>                :            : </a>
 <span class="lineNum">      62 </span>                :            : bool
-<span class="lineNum">      63 </span>                :<span class="lineCov">        658 : triple_compare_ino_str (void const *x, void const *y)</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">         37 : triple_compare_ino_str (void const *x, void const *y)</span>
 <span class="lineNum">      64 </span>                :            : {
-<span class="lineNum">      65 </span>                :<span class="lineCov">        658 :   struct F_triple const *a = x;</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">        658 :   struct F_triple const *b = y;</span>
-<span class="lineNum">      67 </span>[<span class="branchCov" title="Branch 0 was taken 230 times"> + </span><span class="branchCov" title="Branch 1 was taken 428 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 230 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        658 :   return (SAME_INODE (*a, *b) &amp;&amp; STREQ (a-&gt;name, b-&gt;name)) ? true : false;</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 77 times"> + </span><span class="branchCov" title="Branch 5 was taken 153 times"> + </span>]
+<span class="lineNum">      65 </span>                :<span class="lineCov">         37 :   struct F_triple const *a = x;</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">         37 :   struct F_triple const *b = y;</span>
+<span class="lineNum">      67 </span>[<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 26 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 11 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         37 :   return (SAME_INODE (*a, *b) &amp;&amp; STREQ (a-&gt;name, b-&gt;name)) ? true : false;</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 11 times"> + </span>]
 <span class="lineNum">      68 </span>                :            : }
 <span class="lineNum">      69 </span>                :            : 
 <a name="70"><span class="lineNum">      70 </span>                :            : /* Free an F_triple.  */</a>
 <span class="lineNum">      71 </span>                :            : void
-<span class="lineNum">      72 </span>                :<span class="lineCov">       1147 : triple_free (void *x)</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">        185 : triple_free (void *x)</span>
 <span class="lineNum">      73 </span>                :            : {
-<span class="lineNum">      74 </span>                :<span class="lineCov">       1147 :   struct F_triple *a = x;</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">       1147 :   free (a-&gt;name);</span>
-<span class="lineNum">      76 </span>                :<span class="lineCov">       1147 :   free (a);</span>
-<span class="lineNum">      77 </span>                :<span class="lineCov">       1147 : }</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">        185 :   struct F_triple *a = x;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">        185 :   free (a-&gt;name);</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">        185 :   free (a);</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">        185 : }</span>
 </pre>
       </td>
     </tr>

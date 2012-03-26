@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntryHi">90.9 %</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -163,7 +163,7 @@
 <span class="lineNum">      92 </span>                :            :    ERRNO is either a system error value, or zero if DISK is NULL
 <a name="93"><span class="lineNum">      93 </span>                :            :    on a system that requires a non-NULL value.  */</a>
 <span class="lineNum">      94 </span>                :            : int
-<span class="lineNum">      95 </span>                :<span class="lineCov">        926 : get_fs_usage (char const *file, char const *disk, struct fs_usage *fsp)</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">        139 : get_fs_usage (char const *file, char const *disk, struct fs_usage *fsp)</span>
 <span class="lineNum">      96 </span>                :            : {
 <span class="lineNum">      97 </span>                :            : #if defined STAT_STATVFS                /* POSIX, except glibc/Linux */
 <span class="lineNum">      98 </span>                :            : 
@@ -254,10 +254,10 @@
 <span class="lineNum">     183 </span>                :            : 
 <span class="lineNum">     184 </span>                :            :   struct statfs fsd;
 <span class="lineNum">     185 </span>                :            : 
-<span class="lineNum">     186 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 926 times"> + </span>]:<span class="lineCov">        926 :   if (statfs (file, &amp;fsd) &lt; 0)</span>
-<span class="lineNum">     187 </span>                :<span class="lineNoCov">          0 :     return -1;</span>
+<span class="lineNum">     186 </span>        [<span class="branchCov" title="Branch 1 was taken 139 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">        139 :   if (statfs (file, &amp;fsd) &lt; 0)</span>
+<span class="lineNum">     187 </span>                :            :     return -1;
 <span class="lineNum">     188 </span>                :            : 
-<span class="lineNum">     189 </span>                :<span class="lineCov">        926 :   fsp-&gt;fsu_blocksize = PROPAGATE_ALL_ONES (fsd.f_bsize);</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">        139 :   fsp-&gt;fsu_blocksize = PROPAGATE_ALL_ONES (fsd.f_bsize);</span>
 <span class="lineNum">     190 </span>                :            : 
 <span class="lineNum">     191 </span>                :            : # ifdef STATFS_TRUNCATES_BLOCK_COUNTS
 <span class="lineNum">     192 </span>                :            : 
@@ -309,17 +309,17 @@
 <span class="lineNum">     238 </span>                :            : #if (defined STAT_STATVFS || defined STAT_STATVFS64 \
 <span class="lineNum">     239 </span>                :            :      || (!defined STAT_STATFS2_FS_DATA &amp;&amp; !defined STAT_READ_FILSYS))
 <span class="lineNum">     240 </span>                :            : 
-<span class="lineNum">     241 </span>                :<span class="lineCov">        926 :   fsp-&gt;fsu_blocks = PROPAGATE_ALL_ONES (fsd.f_blocks);</span>
-<span class="lineNum">     242 </span>                :<span class="lineCov">        926 :   fsp-&gt;fsu_bfree = PROPAGATE_ALL_ONES (fsd.f_bfree);</span>
-<span class="lineNum">     243 </span>                :<span class="lineCov">        926 :   fsp-&gt;fsu_bavail = PROPAGATE_TOP_BIT (fsd.f_bavail);</span>
-<span class="lineNum">     244 </span>                :<span class="lineCov">        926 :   fsp-&gt;fsu_bavail_top_bit_set = EXTRACT_TOP_BIT (fsd.f_bavail) != 0;</span>
-<span class="lineNum">     245 </span>                :<span class="lineCov">        926 :   fsp-&gt;fsu_files = PROPAGATE_ALL_ONES (fsd.f_files);</span>
-<span class="lineNum">     246 </span>                :<span class="lineCov">        926 :   fsp-&gt;fsu_ffree = PROPAGATE_ALL_ONES (fsd.f_ffree);</span>
+<span class="lineNum">     241 </span>                :<span class="lineCov">        139 :   fsp-&gt;fsu_blocks = PROPAGATE_ALL_ONES (fsd.f_blocks);</span>
+<span class="lineNum">     242 </span>                :<span class="lineCov">        139 :   fsp-&gt;fsu_bfree = PROPAGATE_ALL_ONES (fsd.f_bfree);</span>
+<span class="lineNum">     243 </span>                :<span class="lineCov">        139 :   fsp-&gt;fsu_bavail = PROPAGATE_TOP_BIT (fsd.f_bavail);</span>
+<span class="lineNum">     244 </span>                :<span class="lineCov">        139 :   fsp-&gt;fsu_bavail_top_bit_set = EXTRACT_TOP_BIT (fsd.f_bavail) != 0;</span>
+<span class="lineNum">     245 </span>                :<span class="lineCov">        139 :   fsp-&gt;fsu_files = PROPAGATE_ALL_ONES (fsd.f_files);</span>
+<span class="lineNum">     246 </span>                :<span class="lineCov">        139 :   fsp-&gt;fsu_ffree = PROPAGATE_ALL_ONES (fsd.f_ffree);</span>
 <span class="lineNum">     247 </span>                :            : 
 <span class="lineNum">     248 </span>                :            : #endif
 <span class="lineNum">     249 </span>                :            : 
 <span class="lineNum">     250 </span>                :            :   (void) disk;  /* avoid argument-unused warning */
-<span class="lineNum">     251 </span>                :<span class="lineCov">        926 :   return 0;</span>
+<span class="lineNum">     251 </span>                :<span class="lineCov">        139 :   return 0;</span>
 <span class="lineNum">     252 </span>                :            : }
 <span class="lineNum">     253 </span>                :            : 
 <span class="lineNum">     254 </span>                :            : #if defined _AIX &amp;&amp; defined _I386

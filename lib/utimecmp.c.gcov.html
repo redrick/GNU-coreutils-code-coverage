@@ -31,13 +31,13 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">57</td>
-            <td class="headerCovTableEntry">113</td>
-            <td class="headerCovTableEntryLo">50.4 %</td>
+            <td class="headerCovTableEntry">62</td>
+            <td class="headerCovTableEntry">100</td>
+            <td class="headerCovTableEntryLo">62.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">28</td>
-            <td class="headerCovTableEntry">76</td>
-            <td class="headerCovTableEntryLo">36.8 %</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntry">72</td>
+            <td class="headerCovTableEntryLo">47.2 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -147,9 +147,9 @@
 <span class="lineNum">      76 </span>                :            : 
 <a name="77"><span class="lineNum">      77 </span>                :            : /* Hash some device info.  */</a>
 <span class="lineNum">      78 </span>                :            : static size_t
-<span class="lineNum">      79 </span>                :<span class="lineCov">        168 : dev_info_hash (void const *x, size_t table_size)</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">         24 : dev_info_hash (void const *x, size_t table_size)</span>
 <span class="lineNum">      80 </span>                :            : {
-<span class="lineNum">      81 </span>                :<span class="lineCov">        168 :   struct fs_res const *p = x;</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">         24 :   struct fs_res const *p = x;</span>
 <span class="lineNum">      82 </span>                :            : 
 <span class="lineNum">      83 </span>                :            :   /* Beware signed arithmetic gotchas.  */
 <span class="lineNum">      84 </span>                :            :   if (TYPE_SIGNED (dev_t) &amp;&amp; SIZE_MAX &lt; MAX (INT_MAX, TYPE_MAXIMUM (dev_t)))
@@ -158,16 +158,16 @@
 <span class="lineNum">      87 </span>                :            :       return dev % table_size;
 <span class="lineNum">      88 </span>                :            :     }
 <span class="lineNum">      89 </span>                :            : 
-<span class="lineNum">      90 </span>                :<span class="lineCov">        168 :   return p-&gt;dev % table_size;</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">         24 :   return p-&gt;dev % table_size;</span>
 <span class="lineNum">      91 </span>                :            : }
 <span class="lineNum">      92 </span>                :            : 
 <a name="93"><span class="lineNum">      93 </span>                :            : /* Compare two dev_info structs.  */</a>
 <span class="lineNum">      94 </span>                :            : static bool
-<span class="lineNum">      95 </span>                :<span class="lineCov">        126 : dev_info_compare (void const *x, void const *y)</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">         18 : dev_info_compare (void const *x, void const *y)</span>
 <span class="lineNum">      96 </span>                :            : {
-<span class="lineNum">      97 </span>                :<span class="lineCov">        126 :   struct fs_res const *a = x;</span>
-<span class="lineNum">      98 </span>                :<span class="lineCov">        126 :   struct fs_res const *b = y;</span>
-<span class="lineNum">      99 </span>                :<span class="lineCov">        126 :   return a-&gt;dev == b-&gt;dev;</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">         18 :   struct fs_res const *a = x;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">         18 :   struct fs_res const *b = y;</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">         18 :   return a-&gt;dev == b-&gt;dev;</span>
 <span class="lineNum">     100 </span>                :            : }
 <span class="lineNum">     101 </span>                :            : 
 <span class="lineNum">     102 </span>                :            : /* Return -1, 0, 1 based on whether the destination file (with name
@@ -184,7 +184,7 @@
 <span class="lineNum">     113 </span>                :            :    have permission to futz with the destination's time stamps).  */
 <a name="114"><span class="lineNum">     114 </span>                :            : </a>
 <span class="lineNum">     115 </span>                :            : int
-<span class="lineNum">     116 </span>                :<span class="lineCov">        462 : utimecmp (char const *dst_name,</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">         66 : utimecmp (char const *dst_name,</span>
 <span class="lineNum">     117 </span>                :            :           struct stat const *dst_stat,
 <span class="lineNum">     118 </span>                :            :           struct stat const *src_stat,
 <span class="lineNum">     119 </span>                :            :           int options)
@@ -206,12 +206,12 @@
 <span class="lineNum">     135 </span>                :            :   verify (TYPE_TWOS_COMPLEMENT (int));
 <span class="lineNum">     136 </span>                :            : 
 <span class="lineNum">     137 </span>                :            :   /* Destination and source time stamps.  */
-<span class="lineNum">     138 </span>                :<span class="lineCov">        462 :   time_t dst_s = dst_stat-&gt;st_mtime;</span>
-<span class="lineNum">     139 </span>                :<span class="lineCov">        462 :   time_t src_s = src_stat-&gt;st_mtime;</span>
-<span class="lineNum">     140 </span>                :<span class="lineCov">        462 :   int dst_ns = get_stat_mtime_ns (dst_stat);</span>
-<span class="lineNum">     141 </span>                :<span class="lineCov">        462 :   int src_ns = get_stat_mtime_ns (src_stat);</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">         66 :   time_t dst_s = dst_stat-&gt;st_mtime;</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">         66 :   time_t src_s = src_stat-&gt;st_mtime;</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">         66 :   int dst_ns = get_stat_mtime_ns (dst_stat);</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">         66 :   int src_ns = get_stat_mtime_ns (src_stat);</span>
 <span class="lineNum">     142 </span>                :            : 
-<span class="lineNum">     143 </span>        [<span class="branchCov" title="Branch 0 was taken 196 times"> + </span><span class="branchCov" title="Branch 1 was taken 266 times"> + </span>]:<span class="lineCov">        462 :   if (options &amp; UTIMECMP_TRUNCATE_SOURCE)</span>
+<span class="lineNum">     143 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span>]:<span class="lineCov">         66 :   if (options &amp; UTIMECMP_TRUNCATE_SOURCE)</span>
 <span class="lineNum">     144 </span>                :            :     {
 <span class="lineNum">     145 </span>                :            :       /* Look up the time stamp resolution for the destination device.  */
 <span class="lineNum">     146 </span>                :            : 
@@ -220,7 +220,7 @@
 <span class="lineNum">     149 </span>                :            : 
 <span class="lineNum">     150 </span>                :            :       /* Information about the destination file system.  */
 <span class="lineNum">     151 </span>                :            :       static struct fs_res *new_dst_res;
-<span class="lineNum">     152 </span>                :<span class="lineCov">        196 :       struct fs_res *dst_res = NULL;</span>
+<span class="lineNum">     152 </span>                :<span class="lineCov">         28 :       struct fs_res *dst_res = NULL;</span>
 <span class="lineNum">     153 </span>                :            :       struct fs_res tmp_dst_res;
 <span class="lineNum">     154 </span>                :            : 
 <span class="lineNum">     155 </span>                :            :       /* Time stamp resolution in nanoseconds.  */
@@ -229,37 +229,37 @@
 <span class="lineNum">     158 </span>                :            :       /* Quick exit, if possible.  Since the worst resolution is 2
 <span class="lineNum">     159 </span>                :            :          seconds, anything that differs by more than that does not
 <span class="lineNum">     160 </span>                :            :          needs source truncation.  */
-<span class="lineNum">     161 </span>[<span class="branchCov" title="Branch 0 was taken 163 times"> + </span><span class="branchCov" title="Branch 1 was taken 33 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 163 times"> + </span>]:<span class="lineCov">        196 :       if (dst_s == src_s &amp;&amp; dst_ns == src_ns)</span>
-<span class="lineNum">     162 </span>                :<span class="lineNoCov">          0 :         return 0;</span>
-<span class="lineNum">     163 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 182 times"> + </span>]:<span class="lineCov">        196 :       if (dst_s &lt;= src_s - 2)</span>
-<span class="lineNum">     164 </span>                :<span class="lineCov">         14 :         return -1;</span>
-<span class="lineNum">     165 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 168 times"> + </span>]:<span class="lineCov">        182 :       if (src_s &lt;= dst_s - 2)</span>
-<span class="lineNum">     166 </span>                :<span class="lineCov">         14 :         return 1;</span>
+<span class="lineNum">     161 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         28 :       if (dst_s == src_s &amp;&amp; dst_ns == src_ns)</span>
+<span class="lineNum">     162 </span>                :            :         return 0;
+<span class="lineNum">     163 </span>        [<span class="branchCov" title="Branch 0 was taken 26 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">         28 :       if (dst_s &lt;= src_s - 2)</span>
+<span class="lineNum">     164 </span>                :            :         return -1;
+<span class="lineNum">     165 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">         26 :       if (src_s &lt;= dst_s - 2)</span>
+<span class="lineNum">     166 </span>                :            :         return 1;
 <span class="lineNum">     167 </span>                :            : 
 <span class="lineNum">     168 </span>                :            :       /* Try to do a hash lookup, but fall back to stack variables and
 <span class="lineNum">     169 </span>                :            :          recomputation on low memory situations.  */
-<span class="lineNum">     170 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 126 times"> + </span>]:<span class="lineCov">        168 :       if (! ht)</span>
-<span class="lineNum">     171 </span>                :<span class="lineCov">         42 :         ht = hash_initialize (16, NULL, dev_info_hash, dev_info_compare, free);</span>
-<span class="lineNum">     172 </span>        [<span class="branchCov" title="Branch 0 was taken 168 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        168 :       if (ht)</span>
+<span class="lineNum">     170 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         24 :       if (! ht)</span>
+<span class="lineNum">     171 </span>                :<span class="lineCov">          6 :         ht = hash_initialize (16, NULL, dev_info_hash, dev_info_compare, free);</span>
+<span class="lineNum">     172 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         24 :       if (ht)</span>
 <span class="lineNum">     173 </span>                :            :         {
-<span class="lineNum">     174 </span>        [<span class="branchCov" title="Branch 0 was taken 77 times"> + </span><span class="branchCov" title="Branch 1 was taken 91 times"> + </span>]:<span class="lineCov">        168 :           if (! new_dst_res)</span>
+<span class="lineNum">     174 </span>        [<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">         24 :           if (! new_dst_res)</span>
 <span class="lineNum">     175 </span>                :            :             {
-<span class="lineNum">     176 </span>                :<span class="lineCov">         77 :               new_dst_res = malloc (sizeof *new_dst_res);</span>
-<span class="lineNum">     177 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 77 times"> + </span>]:<span class="lineCov">         77 :               if (!new_dst_res)</span>
-<span class="lineNum">     178 </span>                :<span class="lineNoCov">          0 :                 goto low_memory;</span>
-<span class="lineNum">     179 </span>                :<span class="lineCov">         77 :               new_dst_res-&gt;resolution = 2 * BILLION;</span>
-<span class="lineNum">     180 </span>                :<span class="lineCov">         77 :               new_dst_res-&gt;exact = false;</span>
+<span class="lineNum">     176 </span>                :<span class="lineCov">         11 :               new_dst_res = malloc (sizeof *new_dst_res);</span>
+<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         11 :               if (!new_dst_res)</span>
+<span class="lineNum">     178 </span>                :            :                 goto low_memory;
+<span class="lineNum">     179 </span>                :<span class="lineCov">         11 :               new_dst_res-&gt;resolution = 2 * BILLION;</span>
+<span class="lineNum">     180 </span>                :<span class="lineCov">         11 :               new_dst_res-&gt;exact = false;</span>
 <span class="lineNum">     181 </span>                :            :             }
-<span class="lineNum">     182 </span>                :<span class="lineCov">        168 :           new_dst_res-&gt;dev = dst_stat-&gt;st_dev;</span>
-<span class="lineNum">     183 </span>                :<span class="lineCov">        168 :           dst_res = hash_insert (ht, new_dst_res);</span>
-<span class="lineNum">     184 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 168 times"> + </span>]:<span class="lineCov">        168 :           if (! dst_res)</span>
-<span class="lineNum">     185 </span>                :<span class="lineNoCov">          0 :             goto low_memory;</span>
+<span class="lineNum">     182 </span>                :<span class="lineCov">         24 :           new_dst_res-&gt;dev = dst_stat-&gt;st_dev;</span>
+<span class="lineNum">     183 </span>                :<span class="lineCov">         24 :           dst_res = hash_insert (ht, new_dst_res);</span>
+<span class="lineNum">     184 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         24 :           if (! dst_res)</span>
+<span class="lineNum">     185 </span>                :            :             goto low_memory;
 <span class="lineNum">     186 </span>                :            : 
-<span class="lineNum">     187 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 126 times"> + </span>]:<span class="lineCov">        168 :           if (dst_res == new_dst_res)</span>
+<span class="lineNum">     187 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         24 :           if (dst_res == new_dst_res)</span>
 <span class="lineNum">     188 </span>                :            :             {
 <span class="lineNum">     189 </span>                :            :               /* NEW_DST_RES is now in use in the hash table, so allocate a
 <span class="lineNum">     190 </span>                :            :                  new entry next time.  */
-<span class="lineNum">     191 </span>                :<span class="lineCov">         42 :               new_dst_res = NULL;</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">          6 :               new_dst_res = NULL;</span>
 <span class="lineNum">     192 </span>                :            :             }
 <span class="lineNum">     193 </span>                :            :         }
 <span class="lineNum">     194 </span>                :            :       else
@@ -278,7 +278,7 @@
 <span class="lineNum">     207 </span>                :            :             }
 <span class="lineNum">     208 </span>                :            :         }
 <span class="lineNum">     209 </span>                :            : 
-<span class="lineNum">     210 </span>                :<span class="lineCov">        168 :       res = dst_res-&gt;resolution;</span>
+<span class="lineNum">     210 </span>                :<span class="lineCov">         24 :       res = dst_res-&gt;resolution;</span>
 <span class="lineNum">     211 </span>                :            : 
 <span class="lineNum">     212 </span>                :            : #ifdef _PC_TIMESTAMP_RESOLUTION
 <span class="lineNum">     213 </span>                :            :       /* If the system will tell us the resolution, we're set!  */
@@ -293,17 +293,17 @@
 <span class="lineNum">     222 </span>                :            :         }
 <span class="lineNum">     223 </span>                :            : #endif
 <span class="lineNum">     224 </span>                :            : 
-<span class="lineNum">     225 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchCov" title="Branch 1 was taken 126 times"> + </span>]:<span class="lineCov">        168 :       if (! dst_res-&gt;exact)</span>
+<span class="lineNum">     225 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         24 :       if (! dst_res-&gt;exact)</span>
 <span class="lineNum">     226 </span>                :            :         {
 <span class="lineNum">     227 </span>                :            :           /* This file system's resolution is not known exactly.
 <span class="lineNum">     228 </span>                :            :              Deduce it, and store the result in the hash table.  */
 <span class="lineNum">     229 </span>                :            : 
-<span class="lineNum">     230 </span>                :<span class="lineCov">         42 :           time_t dst_a_s = dst_stat-&gt;st_atime;</span>
-<span class="lineNum">     231 </span>                :<span class="lineCov">         42 :           time_t dst_c_s = dst_stat-&gt;st_ctime;</span>
-<span class="lineNum">     232 </span>                :<span class="lineCov">         42 :           time_t dst_m_s = dst_s;</span>
-<span class="lineNum">     233 </span>                :<span class="lineCov">         42 :           int dst_a_ns = get_stat_atime_ns (dst_stat);</span>
-<span class="lineNum">     234 </span>                :<span class="lineCov">         42 :           int dst_c_ns = get_stat_ctime_ns (dst_stat);</span>
-<span class="lineNum">     235 </span>                :<span class="lineCov">         42 :           int dst_m_ns = dst_ns;</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">          7 :           time_t dst_a_s = dst_stat-&gt;st_atime;</span>
+<span class="lineNum">     231 </span>                :<span class="lineCov">          7 :           time_t dst_c_s = dst_stat-&gt;st_ctime;</span>
+<span class="lineNum">     232 </span>                :<span class="lineCov">          7 :           time_t dst_m_s = dst_s;</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">          7 :           int dst_a_ns = get_stat_atime_ns (dst_stat);</span>
+<span class="lineNum">     234 </span>                :<span class="lineCov">          7 :           int dst_c_ns = get_stat_ctime_ns (dst_stat);</span>
+<span class="lineNum">     235 </span>                :<span class="lineCov">          7 :           int dst_m_ns = dst_ns;</span>
 <span class="lineNum">     236 </span>                :            : 
 <span class="lineNum">     237 </span>                :            :           /* Set RES to an upper bound on the file system resolution
 <span class="lineNum">     238 </span>                :            :              (after truncation due to SYSCALL_RESOLUTION) by inspecting
@@ -312,7 +312,7 @@
 <span class="lineNum">     241 </span>                :            :              ctime with a higher precision than mtime, so it's valid to
 <span class="lineNum">     242 </span>                :            :              look at them too.  */
 <span class="lineNum">     243 </span>                :            :           {
-<span class="lineNum">     244 </span>                :<span class="lineCov">         42 :             bool odd_second = (dst_a_s | dst_c_s | dst_m_s) &amp; 1;</span>
+<span class="lineNum">     244 </span>                :<span class="lineCov">          7 :             bool odd_second = (dst_a_s | dst_c_s | dst_m_s) &amp; 1;</span>
 <span class="lineNum">     245 </span>                :            : 
 <span class="lineNum">     246 </span>                :            :             if (SYSCALL_RESOLUTION == BILLION)
 <span class="lineNum">     247 </span>                :            :               {
@@ -321,52 +321,51 @@
 <span class="lineNum">     250 </span>                :            :               }
 <span class="lineNum">     251 </span>                :            :             else
 <span class="lineNum">     252 </span>                :            :               {
-<span class="lineNum">     253 </span>                :<span class="lineCov">         42 :                 int a = dst_a_ns;</span>
-<span class="lineNum">     254 </span>                :<span class="lineCov">         42 :                 int c = dst_c_ns;</span>
-<span class="lineNum">     255 </span>                :<span class="lineCov">         42 :                 int m = dst_m_ns;</span>
+<span class="lineNum">     253 </span>                :<span class="lineCov">          7 :                 int a = dst_a_ns;</span>
+<span class="lineNum">     254 </span>                :<span class="lineCov">          7 :                 int c = dst_c_ns;</span>
+<span class="lineNum">     255 </span>                :<span class="lineCov">          7 :                 int m = dst_m_ns;</span>
 <span class="lineNum">     256 </span>                :            : 
 <span class="lineNum">     257 </span>                :            :                 /* Write it this way to avoid mistaken GCC warning
 <span class="lineNum">     258 </span>                :            :                    about integer overflow in constant expression.  */
-<span class="lineNum">     259 </span>                :<span class="lineCov">         42 :                 int SR10 = SYSCALL_RESOLUTION;  SR10 *= 10;</span>
+<span class="lineNum">     259 </span>                :<span class="lineCov">          7 :                 int SR10 = SYSCALL_RESOLUTION;  SR10 *= 10;</span>
 <span class="lineNum">     260 </span>                :            : 
-<span class="lineNum">     261 </span>        [<span class="branchCov" title="Branch 0 was taken 42 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         42 :                 if ((a % SR10 | c % SR10 | m % SR10) != 0)</span>
-<span class="lineNum">     262 </span>                :<span class="lineCov">         42 :                   res = SYSCALL_RESOLUTION;</span>
+<span class="lineNum">     261 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          7 :                 if ((a % SR10 | c % SR10 | m % SR10) != 0)</span>
+<span class="lineNum">     262 </span>                :            :                   res = SYSCALL_RESOLUTION;
 <span class="lineNum">     263 </span>                :            :                 else
-<span class="lineNum">     264 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                   for (res = SR10, a /= SR10, c /= SR10, m /= SR10;</span>
-<span class="lineNum">     265 </span>                :<span class="lineNoCov">          0 :                        (res &lt; dst_res-&gt;resolution</span>
-<span class="lineNum">     266 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         &amp;&amp; (a % 10 | c % 10 | m % 10) == 0);</span>
-<span class="lineNum">     267 </span>                :<span class="lineNoCov">          0 :                        res *= 10, a /= 10, c /= 10, m /= 10)</span>
-<span class="lineNum">     268 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                     if (res == BILLION)</span>
+<span class="lineNum">     264 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :                   for (res = SR10, a /= SR10, c /= SR10, m /= SR10;</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">          2 :                        (res &lt; dst_res-&gt;resolution</span>
+<span class="lineNum">     266 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          2 :                         &amp;&amp; (a % 10 | c % 10 | m % 10) == 0);</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">          1 :                        res *= 10, a /= 10, c /= 10, m /= 10)</span>
+<span class="lineNum">     268 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                     if (res == BILLION)</span>
 <span class="lineNum">     269 </span>                :            :                       {
 <span class="lineNum">     270 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if (! odd_second)</span>
 <span class="lineNum">     271 </span>                :<span class="lineNoCov">          0 :                           res *= 2;</span>
-<span class="lineNum">     272 </span>                :<span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     272 </span>                :            :                         break;
 <span class="lineNum">     273 </span>                :            :                       }
 <span class="lineNum">     274 </span>                :            :               }
 <span class="lineNum">     275 </span>                :            : 
-<span class="lineNum">     276 </span>                :<span class="lineCov">         42 :             dst_res-&gt;resolution = res;</span>
+<span class="lineNum">     276 </span>                :<span class="lineCov">          7 :             dst_res-&gt;resolution = res;</span>
 <span class="lineNum">     277 </span>                :            :           }
 <span class="lineNum">     278 </span>                :            : 
-<span class="lineNum">     279 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">         42 :           if (SYSCALL_RESOLUTION &lt; res)</span>
+<span class="lineNum">     279 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          7 :           if (SYSCALL_RESOLUTION &lt; res)</span>
 <span class="lineNum">     280 </span>                :            :             {
 <span class="lineNum">     281 </span>                :            :               struct timespec timespec[2];
 <span class="lineNum">     282 </span>                :            :               struct stat dst_status;
 <span class="lineNum">     283 </span>                :            : 
 <span class="lineNum">     284 </span>                :            :               /* Ignore source time stamp information that must necessarily
 <span class="lineNum">     285 </span>                :            :                  be lost when filtered through utimens.  */
-<span class="lineNum">     286 </span>                :<span class="lineNoCov">          0 :               src_ns -= src_ns % SYSCALL_RESOLUTION;</span>
+<span class="lineNum">     286 </span>                :<span class="lineCov">          1 :               src_ns -= src_ns % SYSCALL_RESOLUTION;</span>
 <span class="lineNum">     287 </span>                :            : 
 <span class="lineNum">     288 </span>                :            :               /* If the time stamps disagree widely enough, there's no need
 <span class="lineNum">     289 </span>                :            :                  to interrogate the file system to deduce the exact time
 <span class="lineNum">     290 </span>                :            :                  stamp resolution; return the answer directly.  */
 <span class="lineNum">     291 </span>                :            :               {
-<span class="lineNum">     292 </span>                :<span class="lineNoCov">          0 :                 time_t s = src_s &amp; ~ (res == 2 * BILLION);</span>
-<span class="lineNum">     293 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if (src_s &lt; dst_s || (src_s == dst_s &amp;&amp; src_ns &lt;= dst_ns))</span>
-<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
-<span class="lineNum">     294 </span>                :<span class="lineNoCov">          0 :                   return 1;</span>
+<span class="lineNum">     292 </span>                :<span class="lineCov">          1 :                 time_t s = src_s &amp; ~ (res == 2 * BILLION);</span>
+<span class="lineNum">     293 </span>[<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 if (src_s &lt; dst_s || (src_s == dst_s &amp;&amp; src_ns &lt;= dst_ns))</span>
+<span class="lineNum">     294 </span>                :            :                   return 1;
 <span class="lineNum">     295 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if (dst_s &lt; s</span>
 <span class="lineNum">     296 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                     || (dst_s == s &amp;&amp; dst_ns &lt; src_ns - src_ns % res))</span>
-<span class="lineNum">     297 </span>                :<span class="lineNoCov">          0 :                   return -1;</span>
+<span class="lineNum">     297 </span>                :            :                   return -1;
 <span class="lineNum">     298 </span>                :            :               }
 <span class="lineNum">     299 </span>                :            : 
 <span class="lineNum">     300 </span>                :            :               /* Determine the actual time stamp resolution for the
@@ -386,7 +385,7 @@
 <span class="lineNum">     314 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :               if ((S_ISLNK (dst_stat-&gt;st_mode)</span>
 <span class="lineNum">     315 </span>                :<span class="lineNoCov">          0 :                    ? lutimens (dst_name, timespec)</span>
 <span class="lineNum">     316 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                    : utimens (dst_name, timespec)) != 0)</span>
-<span class="lineNum">     317 </span>                :<span class="lineNoCov">          0 :                 return -2;</span>
+<span class="lineNum">     317 </span>                :            :                 return -2;
 <span class="lineNum">     318 </span>                :            : 
 <span class="lineNum">     319 </span>                :            :               /* Read the modification time that was set.  */
 <span class="lineNum">     320 </span>                :            :               {
@@ -409,7 +408,7 @@
 <span class="lineNum">     337 </span>                :            :                   }
 <span class="lineNum">     338 </span>                :            : 
 <span class="lineNum">     339 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if (stat_result != 0)</span>
-<span class="lineNum">     340 </span>                :<span class="lineNoCov">          0 :                   return -2;</span>
+<span class="lineNum">     340 </span>                :            :                   return -2;
 <span class="lineNum">     341 </span>                :            :               }
 <span class="lineNum">     342 </span>                :            : 
 <span class="lineNum">     343 </span>                :            :               /* Determine the exact resolution from the modification time
@@ -417,7 +416,7 @@
 <span class="lineNum">     345 </span>                :            :               {
 <span class="lineNum">     346 </span>                :<span class="lineNoCov">          0 :                 int old_res = res;</span>
 <span class="lineNum">     347 </span>                :<span class="lineNoCov">          0 :                 int a = (BILLION * (dst_status.st_mtime &amp; 1)</span>
-<span class="lineNum">     348 </span>                :<span class="lineNoCov">          0 :                          + get_stat_mtime_ns (&amp;dst_status));</span>
+<span class="lineNum">     348 </span>                :            :                          + get_stat_mtime_ns (&amp;dst_status));
 <span class="lineNum">     349 </span>                :            : 
 <span class="lineNum">     350 </span>                :<span class="lineNoCov">          0 :                 res = SYSCALL_RESOLUTION;</span>
 <span class="lineNum">     351 </span>                :            : 
@@ -430,25 +429,25 @@
 <span class="lineNum">     358 </span>                :            :                       }
 <span class="lineNum">     359 </span>                :<span class="lineNoCov">          0 :                     res *= 10;</span>
 <span class="lineNum">     360 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                     if (res == old_res)</span>
-<span class="lineNum">     361 </span>                :<span class="lineNoCov">          0 :                       break;</span>
+<span class="lineNum">     361 </span>                :            :                       break;
 <span class="lineNum">     362 </span>                :            :                   }
 <span class="lineNum">     363 </span>                :            :               }
 <span class="lineNum">     364 </span>                :            :             }
 <span class="lineNum">     365 </span>                :            : 
-<span class="lineNum">     366 </span>                :<span class="lineCov">         42 :           dst_res-&gt;resolution = res;</span>
-<span class="lineNum">     367 </span>                :<span class="lineCov">         42 :           dst_res-&gt;exact = true;</span>
+<span class="lineNum">     366 </span>                :<span class="lineCov">          6 :           dst_res-&gt;resolution = res;</span>
+<span class="lineNum">     367 </span>                :<span class="lineCov">          6 :           dst_res-&gt;exact = true;</span>
 <span class="lineNum">     368 </span>                :            :         }
 <span class="lineNum">     369 </span>                :            : 
 <span class="lineNum">     370 </span>                :            :       /* Truncate the source's time stamp according to the resolution.  */
-<span class="lineNum">     371 </span>                :<span class="lineCov">        168 :       src_s &amp;= ~ (res == 2 * BILLION);</span>
-<span class="lineNum">     372 </span>                :<span class="lineCov">        168 :       src_ns -= src_ns % res;</span>
+<span class="lineNum">     371 </span>                :<span class="lineCov">         23 :       src_s &amp;= ~ (res == 2 * BILLION);</span>
+<span class="lineNum">     372 </span>                :<span class="lineCov">         23 :       src_ns -= src_ns % res;</span>
 <span class="lineNum">     373 </span>                :            :     }
 <span class="lineNum">     374 </span>                :            : 
 <span class="lineNum">     375 </span>                :            :   /* Compare the time stamps and return -1, 0, 1 accordingly.  */
-<span class="lineNum">     376 </span>                :<span class="lineCov">        462 :   return (dst_s &lt; src_s ? -1</span>
-<span class="lineNum">     377 </span>        [<span class="branchCov" title="Branch 0 was taken 420 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">        854 :           : dst_s &gt; src_s ? 1</span>
-<span class="lineNum">     378 </span>        [<span class="branchCov" title="Branch 0 was taken 387 times"> + </span><span class="branchCov" title="Branch 1 was taken 33 times"> + </span>]:<span class="lineCov">        807 :           : dst_ns &lt; src_ns ? -1</span>
-<span class="lineNum">     379 </span>        [<span class="branchCov" title="Branch 0 was taken 310 times"> + </span><span class="branchCov" title="Branch 1 was taken 77 times"> + </span>]:<span class="lineCov">        387 :           : dst_ns &gt; src_ns);</span>
+<span class="lineNum">     376 </span>                :<span class="lineCov">         66 :   return (dst_s &lt; src_s ? -1</span>
+<span class="lineNum">     377 </span>        [<span class="branchCov" title="Branch 0 was taken 59 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">         61 :           : dst_s &gt; src_s ? 1</span>
+<span class="lineNum">     378 </span>        [<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">         59 :           : dst_ns &lt; src_ns ? -1</span>
+<span class="lineNum">     379 </span>        [<span class="branchCov" title="Branch 0 was taken 43 times"> + </span><span class="branchCov" title="Branch 1 was taken 11 times"> + </span>]:<span class="lineCov">         59 :           : dst_ns &gt; src_ns);</span>
 <span class="lineNum">     380 </span>                :            : }
 </pre>
       </td>

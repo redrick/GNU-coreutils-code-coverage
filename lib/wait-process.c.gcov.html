@@ -1,0 +1,447 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - coreutils - lib/wait-process.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib</a> - wait-process.c<span style="font-size: 80%;"> (source / <a href="wait-process.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coreutils</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">36</td>
+            <td class="headerCovTableEntry">70</td>
+            <td class="headerCovTableEntryLo">51.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-03-26</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">58</td>
+            <td class="headerCovTableEntryLo">29.3 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* Waiting for a subprocess to finish.</a>
+<span class="lineNum">       2 </span>                :            :    Copyright (C) 2001-2003, 2005-2012 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>                :            :    Written by Bruno Haible &lt;haible@clisp.cons.org&gt;, 2001.
+<span class="lineNum">       4 </span>                :            : 
+<span class="lineNum">       5 </span>                :            :    This program is free software: you can redistribute it and/or modify
+<span class="lineNum">       6 </span>                :            :    it under the terms of the GNU General Public License as published by
+<span class="lineNum">       7 </span>                :            :    the Free Software Foundation; either version 3 of the License, or
+<span class="lineNum">       8 </span>                :            :    (at your option) any later version.
+<span class="lineNum">       9 </span>                :            : 
+<span class="lineNum">      10 </span>                :            :    This program is distributed in the hope that it will be useful,
+<span class="lineNum">      11 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      12 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      13 </span>                :            :    GNU General Public License for more details.
+<span class="lineNum">      14 </span>                :            : 
+<span class="lineNum">      15 </span>                :            :    You should have received a copy of the GNU General Public License
+<span class="lineNum">      16 </span>                :            :    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      17 </span>                :            : 
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :            : #include &lt;config.h&gt;
+<span class="lineNum">      20 </span>                :            : 
+<span class="lineNum">      21 </span>                :            : /* Specification.  */
+<span class="lineNum">      22 </span>                :            : #include &quot;wait-process.h&quot;
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :            : #include &lt;errno.h&gt;
+<span class="lineNum">      25 </span>                :            : #include &lt;stdlib.h&gt;
+<span class="lineNum">      26 </span>                :            : #include &lt;string.h&gt;
+<span class="lineNum">      27 </span>                :            : #include &lt;signal.h&gt;
+<span class="lineNum">      28 </span>                :            : 
+<span class="lineNum">      29 </span>                :            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      30 </span>                :            : #include &lt;sys/wait.h&gt;
+<span class="lineNum">      31 </span>                :            : 
+<span class="lineNum">      32 </span>                :            : #include &quot;error.h&quot;
+<span class="lineNum">      33 </span>                :            : #include &quot;fatal-signal.h&quot;
+<span class="lineNum">      34 </span>                :            : #include &quot;xalloc.h&quot;
+<span class="lineNum">      35 </span>                :            : #include &quot;gettext.h&quot;
+<span class="lineNum">      36 </span>                :            : 
+<span class="lineNum">      37 </span>                :            : #define _(str) gettext (str)
+<span class="lineNum">      38 </span>                :            : 
+<span class="lineNum">      39 </span>                :            : #define SIZEOF(a) (sizeof(a) / sizeof(a[0]))
+<span class="lineNum">      40 </span>                :            : 
+<span class="lineNum">      41 </span>                :            : 
+<span class="lineNum">      42 </span>                :            : #if defined _MSC_VER || defined __MINGW32__
+<span class="lineNum">      43 </span>                :            : 
+<span class="lineNum">      44 </span>                :            : #define WIN32_LEAN_AND_MEAN
+<span class="lineNum">      45 </span>                :            : #include &lt;windows.h&gt;
+<span class="lineNum">      46 </span>                :            : 
+<span class="lineNum">      47 </span>                :            : /* The return value of spawnvp() is really a process handle as returned
+<span class="lineNum">      48 </span>                :            :    by CreateProcess().  Therefore we can kill it using TerminateProcess.  */
+<span class="lineNum">      49 </span>                :            : #define kill(pid,sig) TerminateProcess ((HANDLE) (pid), sig)
+<span class="lineNum">      50 </span>                :            : 
+<span class="lineNum">      51 </span>                :            : #endif
+<span class="lineNum">      52 </span>                :            : 
+<span class="lineNum">      53 </span>                :            : 
+<span class="lineNum">      54 </span>                :            : /* Type of an entry in the slaves array.
+<span class="lineNum">      55 </span>                :            :    The 'used' bit determines whether this entry is currently in use.
+<span class="lineNum">      56 </span>                :            :    (If pid_t was an atomic type like sig_atomic_t, we could just set the
+<span class="lineNum">      57 </span>                :            :    'child' field to 0 when unregistering a slave process, and wouldn't need
+<span class="lineNum">      58 </span>                :            :    the 'used' field.)
+<span class="lineNum">      59 </span>                :            :    The 'used' and 'child' fields are accessed from within the cleanup_slaves()
+<span class="lineNum">      60 </span>                :            :    action, therefore we mark them as 'volatile'.  */
+<span class="lineNum">      61 </span>                :            : typedef struct
+<span class="lineNum">      62 </span>                :            : {
+<span class="lineNum">      63 </span>                :            :   volatile sig_atomic_t used;
+<span class="lineNum">      64 </span>                :            :   volatile pid_t child;
+<span class="lineNum">      65 </span>                :            : }
+<span class="lineNum">      66 </span>                :            : slaves_entry_t;
+<span class="lineNum">      67 </span>                :            : 
+<span class="lineNum">      68 </span>                :            : /* The registered slave subprocesses.  */
+<span class="lineNum">      69 </span>                :            : static slaves_entry_t static_slaves[32];
+<span class="lineNum">      70 </span>                :            : static slaves_entry_t * volatile slaves = static_slaves;
+<span class="lineNum">      71 </span>                :            : static sig_atomic_t volatile slaves_count = 0;
+<span class="lineNum">      72 </span>                :            : static size_t slaves_allocated = SIZEOF (static_slaves);
+<span class="lineNum">      73 </span>                :            : 
+<span class="lineNum">      74 </span>                :            : /* The termination signal for slave subprocesses.
+<span class="lineNum">      75 </span>                :            :    2003-10-07:  Terminator becomes Governator.  */
+<span class="lineNum">      76 </span>                :            : #ifdef SIGHUP
+<span class="lineNum">      77 </span>                :            : # define TERMINATOR SIGHUP
+<span class="lineNum">      78 </span>                :            : #else
+<span class="lineNum">      79 </span>                :            : # define TERMINATOR SIGTERM
+<span class="lineNum">      80 </span>                :            : #endif
+<span class="lineNum">      81 </span>                :            : 
+<a name="82"><span class="lineNum">      82 </span>                :            : /* The cleanup action.  It gets called asynchronously.  */</a>
+<span class="lineNum">      83 </span>                :            : static void
+<span class="lineNum">      84 </span>                :<span class="lineCov">          8 : cleanup_slaves (void)</span>
+<span class="lineNum">      85 </span>                :            : {
+<span class="lineNum">      86 </span>                :            :   for (;;)
+<span class="lineNum">      87 </span>                :            :     {
+<span class="lineNum">      88 </span>                :            :       /* Get the last registered slave.  */
+<span class="lineNum">      89 </span>                :<span class="lineCov">         16 :       size_t n = slaves_count;</span>
+<span class="lineNum">      90 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">         16 :       if (n == 0)</span>
+<span class="lineNum">      91 </span>                :            :         break;
+<span class="lineNum">      92 </span>                :<span class="lineCov">          8 :       n--;</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">          8 :       slaves_count = n;</span>
+<span class="lineNum">      94 </span>                :            :       /* Skip unused entries in the slaves array.  */
+<span class="lineNum">      95 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :       if (slaves[n].used)</span>
+<span class="lineNum">      96 </span>                :            :         {
+<span class="lineNum">      97 </span>                :<span class="lineNoCov">          0 :           pid_t slave = slaves[n].child;</span>
+<span class="lineNum">      98 </span>                :            : 
+<span class="lineNum">      99 </span>                :            :           /* Kill the slave.  */
+<span class="lineNum">     100 </span>                :<span class="lineNoCov">          0 :           kill (slave, TERMINATOR);</span>
+<span class="lineNum">     101 </span>                :            :         }
+<span class="lineNum">     102 </span>                :            :     }
+<span class="lineNum">     103 </span>                :<span class="lineCov">          8 : }</span>
+<span class="lineNum">     104 </span>                :            : 
+<span class="lineNum">     105 </span>                :            : /* Register a subprocess as being a slave process.  This means that the
+<span class="lineNum">     106 </span>                :            :    subprocess will be terminated when its creator receives a catchable fatal
+<span class="lineNum">     107 </span>                :            :    signal or exits normally.  Registration ends when wait_subprocess()
+<a name="108"><span class="lineNum">     108 </span>                :            :    notices that the subprocess has exited.  */</a>
+<span class="lineNum">     109 </span>                :            : void
+<span class="lineNum">     110 </span>                :<span class="lineCov">          8 : register_slave_subprocess (pid_t child)</span>
+<span class="lineNum">     111 </span>                :            : {
+<span class="lineNum">     112 </span>                :            :   static bool cleanup_slaves_registered = false;
+<span class="lineNum">     113 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (!cleanup_slaves_registered)</span>
+<span class="lineNum">     114 </span>                :            :     {
+<span class="lineNum">     115 </span>                :<span class="lineCov">          8 :       atexit (cleanup_slaves);</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">          8 :       at_fatal_signal (cleanup_slaves);</span>
+<span class="lineNum">     117 </span>                :<span class="lineCov">          8 :       cleanup_slaves_registered = true;</span>
+<span class="lineNum">     118 </span>                :            :     }
+<span class="lineNum">     119 </span>                :            : 
+<span class="lineNum">     120 </span>                :            :   /* Try to store the new slave in an unused entry of the slaves array.  */
+<span class="lineNum">     121 </span>                :            :   {
+<span class="lineNum">     122 </span>                :<span class="lineCov">          8 :     slaves_entry_t *s = slaves;</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">          8 :     slaves_entry_t *s_end = s + slaves_count;</span>
+<span class="lineNum">     124 </span>                :            : 
+<span class="lineNum">     125 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :     for (; s &lt; s_end; s++)</span>
+<span class="lineNum">     126 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (!s-&gt;used)</span>
+<span class="lineNum">     127 </span>                :            :         {
+<span class="lineNum">     128 </span>                :            :           /* The two uses of 'volatile' in the slaves_entry_t type above
+<span class="lineNum">     129 </span>                :            :              (and ISO C 99 section 5.1.2.3.(5)) ensure that we mark the
+<span class="lineNum">     130 </span>                :            :              entry as used only after the child pid has been written to the
+<span class="lineNum">     131 </span>                :            :              memory location s-&gt;child.  */
+<span class="lineNum">     132 </span>                :<span class="lineNoCov">          0 :           s-&gt;child = child;</span>
+<span class="lineNum">     133 </span>                :<span class="lineNoCov">          0 :           s-&gt;used = 1;</span>
+<span class="lineNum">     134 </span>                :<span class="lineCov">          8 :           return;</span>
+<span class="lineNum">     135 </span>                :            :         }
+<span class="lineNum">     136 </span>                :            :   }
+<span class="lineNum">     137 </span>                :            : 
+<span class="lineNum">     138 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :   if (slaves_count == slaves_allocated)</span>
+<span class="lineNum">     139 </span>                :            :     {
+<span class="lineNum">     140 </span>                :            :       /* Extend the slaves array.  Note that we cannot use xrealloc(),
+<span class="lineNum">     141 </span>                :            :          because then the cleanup_slaves() function could access an already
+<span class="lineNum">     142 </span>                :            :          deallocated array.  */
+<span class="lineNum">     143 </span>                :<span class="lineNoCov">          0 :       slaves_entry_t *old_slaves = slaves;</span>
+<span class="lineNum">     144 </span>                :<span class="lineNoCov">          0 :       size_t new_slaves_allocated = 2 * slaves_allocated;</span>
+<span class="lineNum">     145 </span>                :<span class="lineNoCov">          0 :       slaves_entry_t *new_slaves =</span>
+<span class="lineNum">     146 </span>                :            :         (slaves_entry_t *)
+<span class="lineNum">     147 </span>                :<span class="lineNoCov">          0 :         malloc (new_slaves_allocated * sizeof (slaves_entry_t));</span>
+<span class="lineNum">     148 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (new_slaves == NULL)</span>
+<span class="lineNum">     149 </span>                :            :         {
+<span class="lineNum">     150 </span>                :            :           /* xalloc_die() will call exit() which will invoke cleanup_slaves().
+<span class="lineNum">     151 </span>                :            :              Additionally we need to kill child, because it's not yet among
+<span class="lineNum">     152 </span>                :            :              the slaves list.  */
+<span class="lineNum">     153 </span>                :<span class="lineNoCov">          0 :           kill (child, TERMINATOR);</span>
+<span class="lineNum">     154 </span>                :<span class="lineNoCov">          0 :           xalloc_die ();</span>
+<span class="lineNum">     155 </span>                :            :         }
+<span class="lineNum">     156 </span>                :<span class="lineNoCov">          0 :       memcpy (new_slaves, old_slaves,</span>
+<span class="lineNum">     157 </span>                :            :               slaves_allocated * sizeof (slaves_entry_t));
+<span class="lineNum">     158 </span>                :<span class="lineNoCov">          0 :       slaves = new_slaves;</span>
+<span class="lineNum">     159 </span>                :<span class="lineNoCov">          0 :       slaves_allocated = new_slaves_allocated;</span>
+<span class="lineNum">     160 </span>                :            :       /* Now we can free the old slaves array.  */
+<span class="lineNum">     161 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (old_slaves != static_slaves)</span>
+<span class="lineNum">     162 </span>                :<span class="lineNoCov">          0 :         free (old_slaves);</span>
+<span class="lineNum">     163 </span>                :            :     }
+<span class="lineNum">     164 </span>                :            :   /* The three uses of 'volatile' in the types above (and ISO C 99 section
+<span class="lineNum">     165 </span>                :            :      5.1.2.3.(5)) ensure that we increment the slaves_count only after the
+<span class="lineNum">     166 </span>                :            :      new slave and its 'used' bit have been written to the memory locations
+<span class="lineNum">     167 </span>                :            :      that make up slaves[slaves_count].  */
+<span class="lineNum">     168 </span>                :<span class="lineCov">          8 :   slaves[slaves_count].child = child;</span>
+<span class="lineNum">     169 </span>                :<span class="lineCov">          8 :   slaves[slaves_count].used = 1;</span>
+<span class="lineNum">     170 </span>                :<span class="lineCov">          8 :   slaves_count++;</span>
+<span class="lineNum">     171 </span>                :            : }
+<span class="lineNum">     172 </span>                :            : 
+<span class="lineNum">     173 </span>                :            : /* Unregister a child from the list of slave subprocesses.  */
+<span class="lineNum">     174 </span>                :            : static inline void
+<span class="lineNum">     175 </span>                :            : unregister_slave_subprocess (pid_t child)
+<span class="lineNum">     176 </span>                :            : {
+<span class="lineNum">     177 </span>                :            :   /* The easiest way to remove an entry from a list that can be used by
+<a name="178"><span class="lineNum">     178 </span>                :            :      an asynchronous signal handler is just to mark it as unused.  For this,</a>
+<span class="lineNum">     179 </span>                :            :      we rely on sig_atomic_t.  */
+<span class="lineNum">     180 </span>                :<span class="lineCov">          8 :   slaves_entry_t *s = slaves;</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">          8 :   slaves_entry_t *s_end = s + slaves_count;</span>
+<span class="lineNum">     182 </span>                :            : 
+<span class="lineNum">     183 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">         16 :   for (; s &lt; s_end; s++)</span>
+<span class="lineNum">     184 </span>[<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">          8 :     if (s-&gt;used &amp;&amp; s-&gt;child == child)</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">          8 :       s-&gt;used = 0;</span>
+<span class="lineNum">     186 </span>                :            : }
+<span class="lineNum">     187 </span>                :            : 
+<span class="lineNum">     188 </span>                :            : 
+<span class="lineNum">     189 </span>                :            : /* Wait for a subprocess to finish.  Return its exit code.
+<span class="lineNum">     190 </span>                :            :    If it didn't terminate correctly, exit if exit_on_error is true, otherwise
+<span class="lineNum">     191 </span>                :            :    return 127.  */
+<span class="lineNum">     192 </span>                :            : int
+<span class="lineNum">     193 </span>                :<span class="lineCov">          8 : wait_subprocess (pid_t child, const char *progname,</span>
+<span class="lineNum">     194 </span>                :            :                  bool ignore_sigpipe, bool null_stderr,
+<span class="lineNum">     195 </span>                :            :                  bool slave_process, bool exit_on_error,
+<span class="lineNum">     196 </span>                :            :                  int *termsigp)
+<span class="lineNum">     197 </span>                :            : {
+<span class="lineNum">     198 </span>                :            : #if HAVE_WAITID &amp;&amp; defined WNOWAIT &amp;&amp; 0
+<span class="lineNum">     199 </span>                :            :   /* Commented out because waitid() without WEXITED and with WNOWAIT doesn't
+<span class="lineNum">     200 </span>                :            :      work: On Solaris 7 and OSF/1 4.0, it returns -1 and sets errno = ECHILD,
+<span class="lineNum">     201 </span>                :            :      and on HP-UX 10.20 it just hangs.  */
+<span class="lineNum">     202 </span>                :            :   /* Use of waitid() with WNOWAIT avoids a race condition: If slave_process is
+<span class="lineNum">     203 </span>                :            :      true, and this process sleeps a very long time between the return from
+<span class="lineNum">     204 </span>                :            :      waitpid() and the execution of unregister_slave_subprocess(), and
+<span class="lineNum">     205 </span>                :            :      meanwhile another process acquires the same PID as child, and then - still
+<span class="lineNum">     206 </span>                :            :      before unregister_slave_subprocess() - this process gets a fatal signal,
+<span class="lineNum">     207 </span>                :            :      it would kill the other totally unrelated process.  */
+<span class="lineNum">     208 </span>                :            :   siginfo_t info;
+<span class="lineNum">     209 </span>                :            : 
+<span class="lineNum">     210 </span>                :            :   if (termsigp != NULL)
+<span class="lineNum">     211 </span>                :            :     *termsigp = 0;
+<span class="lineNum">     212 </span>                :            :   for (;;)
+<span class="lineNum">     213 </span>                :            :     {
+<span class="lineNum">     214 </span>                :            :       if (waitid (P_PID, child, &amp;info, WEXITED | (slave_process ? WNOWAIT : 0))
+<span class="lineNum">     215 </span>                :            :           &lt; 0)
+<span class="lineNum">     216 </span>                :            :         {
+<span class="lineNum">     217 </span>                :            : # ifdef EINTR
+<span class="lineNum">     218 </span>                :            :           if (errno == EINTR)
+<span class="lineNum">     219 </span>                :            :             continue;
+<span class="lineNum">     220 </span>                :            : # endif
+<span class="lineNum">     221 </span>                :            :           if (exit_on_error || !null_stderr)
+<span class="lineNum">     222 </span>                :            :             error (exit_on_error ? EXIT_FAILURE : 0, errno,
+<span class="lineNum">     223 </span>                :            :                    _(&quot;%s subprocess&quot;), progname);
+<span class="lineNum">     224 </span>                :            :           return 127;
+<span class="lineNum">     225 </span>                :            :         }
+<span class="lineNum">     226 </span>                :            : 
+<span class="lineNum">     227 </span>                :            :       /* info.si_code is set to one of CLD_EXITED, CLD_KILLED, CLD_DUMPED,
+<span class="lineNum">     228 </span>                :            :          CLD_TRAPPED, CLD_STOPPED, CLD_CONTINUED.  Loop until the program
+<span class="lineNum">     229 </span>                :            :          terminates.  */
+<span class="lineNum">     230 </span>                :            :       if (info.si_code == CLD_EXITED
+<span class="lineNum">     231 </span>                :            :           || info.si_code == CLD_KILLED || info.si_code == CLD_DUMPED)
+<span class="lineNum">     232 </span>                :            :         break;
+<span class="lineNum">     233 </span>                :            :     }
+<span class="lineNum">     234 </span>                :            : 
+<span class="lineNum">     235 </span>                :            :   /* The child process has exited or was signalled.  */
+<span class="lineNum">     236 </span>                :            : 
+<span class="lineNum">     237 </span>                :            :   if (slave_process)
+<span class="lineNum">     238 </span>                :            :     {
+<span class="lineNum">     239 </span>                :            :       /* Unregister the child from the list of slave subprocesses, so that
+<span class="lineNum">     240 </span>                :            :          later, when we exit, we don't kill a totally unrelated process which
+<span class="lineNum">     241 </span>                :            :          may have acquired the same pid.  */
+<span class="lineNum">     242 </span>                :            :       unregister_slave_subprocess (child);
+<span class="lineNum">     243 </span>                :            : 
+<span class="lineNum">     244 </span>                :            :       /* Now remove the zombie from the process list.  */
+<span class="lineNum">     245 </span>                :            :       for (;;)
+<span class="lineNum">     246 </span>                :            :         {
+<span class="lineNum">     247 </span>                :            :           if (waitid (P_PID, child, &amp;info, WEXITED) &lt; 0)
+<span class="lineNum">     248 </span>                :            :             {
+<span class="lineNum">     249 </span>                :            : # ifdef EINTR
+<span class="lineNum">     250 </span>                :            :               if (errno == EINTR)
+<span class="lineNum">     251 </span>                :            :                 continue;
+<span class="lineNum">     252 </span>                :            : # endif
+<span class="lineNum">     253 </span>                :            :               if (exit_on_error || !null_stderr)
+<span class="lineNum">     254 </span>                :            :                 error (exit_on_error ? EXIT_FAILURE : 0, errno,
+<span class="lineNum">     255 </span>                :            :                        _(&quot;%s subprocess&quot;), progname);
+<span class="lineNum">     256 </span>                :            :               return 127;
+<span class="lineNum">     257 </span>                :            :             }
+<span class="lineNum">     258 </span>                :            :           break;
+<span class="lineNum">     259 </span>                :            :         }
+<span class="lineNum">     260 </span>                :            :     }
+<span class="lineNum">     261 </span>                :            : 
+<span class="lineNum">     262 </span>                :            :   switch (info.si_code)
+<span class="lineNum">     263 </span>                :            :     {
+<span class="lineNum">     264 </span>                :            :     case CLD_KILLED:
+<span class="lineNum">     265 </span>                :            :     case CLD_DUMPED:
+<span class="lineNum">     266 </span>                :            :       if (termsigp != NULL)
+<span class="lineNum">     267 </span>                :            :         *termsigp = info.si_status; /* TODO: or info.si_signo? */
+<span class="lineNum">     268 </span>                :            : # ifdef SIGPIPE
+<span class="lineNum">     269 </span>                :            :       if (info.si_status == SIGPIPE &amp;&amp; ignore_sigpipe)
+<span class="lineNum">     270 </span>                :            :         return 0;
+<span class="lineNum">     271 </span>                :            : # endif
+<span class="lineNum">     272 </span>                :            :       if (exit_on_error || (!null_stderr &amp;&amp; termsigp == NULL))
+<span class="lineNum">     273 </span>                :            :         error (exit_on_error ? EXIT_FAILURE : 0, 0,
+<span class="lineNum">     274 </span>                :            :                _(&quot;%s subprocess got fatal signal %d&quot;),
+<span class="lineNum">     275 </span>                :            :                progname, info.si_status);
+<span class="lineNum">     276 </span>                :            :       return 127;
+<span class="lineNum">     277 </span>                :            :     case CLD_EXITED:
+<span class="lineNum">     278 </span>                :            :       if (info.si_status == 127)
+<span class="lineNum">     279 </span>                :            :         {
+<span class="lineNum">     280 </span>                :            :           if (exit_on_error || !null_stderr)
+<span class="lineNum">     281 </span>                :            :             error (exit_on_error ? EXIT_FAILURE : 0, 0,
+<span class="lineNum">     282 </span>                :            :                    _(&quot;%s subprocess failed&quot;), progname);
+<span class="lineNum">     283 </span>                :            :           return 127;
+<span class="lineNum">     284 </span>                :            :         }
+<span class="lineNum">     285 </span>                :            :       return info.si_status;
+<span class="lineNum">     286 </span>                :            :     default:
+<span class="lineNum">     287 </span>                :            :       abort ();
+<span class="lineNum">     288 </span>                :            :     }
+<span class="lineNum">     289 </span>                :            : #else
+<span class="lineNum">     290 </span>                :            :   /* waitpid() is just as portable as wait() nowadays.  */
+<span class="lineNum">     291 </span>                :            :   int status;
+<span class="lineNum">     292 </span>                :            : 
+<span class="lineNum">     293 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :   if (termsigp != NULL)</span>
+<span class="lineNum">     294 </span>                :<span class="lineNoCov">          0 :     *termsigp = 0;</span>
+<span class="lineNum">     295 </span>                :<span class="lineCov">          8 :   status = 0;</span>
+<span class="lineNum">     296 </span>                :            :   for (;;)
+<span class="lineNum">     297 </span>                :            :     {
+<span class="lineNum">     298 </span>                :<span class="lineCov">          8 :       int result = waitpid (child, &amp;status, 0);</span>
+<span class="lineNum">     299 </span>                :            : 
+<span class="lineNum">     300 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :       if (result != child)</span>
+<span class="lineNum">     301 </span>                :            :         {
+<span class="lineNum">     302 </span>                :            : # ifdef EINTR
+<span class="lineNum">     303 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (errno == EINTR)</span>
+<span class="lineNum">     304 </span>                :<span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     305 </span>                :            : # endif
+<span class="lineNum">     306 </span>                :            : # if 0 /* defined ECHILD */
+<span class="lineNum">     307 </span>                :            :           if (errno == ECHILD)
+<span class="lineNum">     308 </span>                :            :             {
+<span class="lineNum">     309 </span>                :            :               /* Child process nonexistent?! Assume it terminated
+<span class="lineNum">     310 </span>                :            :                  successfully.  */
+<span class="lineNum">     311 </span>                :            :               status = 0;
+<span class="lineNum">     312 </span>                :            :               break;
+<span class="lineNum">     313 </span>                :            :             }
+<span class="lineNum">     314 </span>                :            : # endif
+<span class="lineNum">     315 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :           if (exit_on_error || !null_stderr)</span>
+<span class="lineNum">     316 </span>                :<span class="lineNoCov">          0 :             error (exit_on_error ? EXIT_FAILURE : 0, errno,</span>
+<span class="lineNum">     317 </span>                :<span class="lineNoCov">          0 :                    _(&quot;%s subprocess&quot;), progname);</span>
+<span class="lineNum">     318 </span>                :            :           return 127;
+<span class="lineNum">     319 </span>                :            :         }
+<span class="lineNum">     320 </span>                :            : 
+<span class="lineNum">     321 </span>                :            :       /* One of WIFSIGNALED (status), WIFEXITED (status), WIFSTOPPED (status)
+<span class="lineNum">     322 </span>                :            :          must always be true, since we did not specify WCONTINUED in the
+<span class="lineNum">     323 </span>                :            :          waitpid() call.  Loop until the program terminates.  */
+<span class="lineNum">     324 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :       if (!WIFSTOPPED (status))</span>
+<span class="lineNum">     325 </span>                :            :         break;
+<span class="lineNum">     326 </span>                :            :     }
+<span class="lineNum">     327 </span>                :            : 
+<span class="lineNum">     328 </span>                :            :   /* The child process has exited or was signalled.  */
+<span class="lineNum">     329 </span>                :            : 
+<span class="lineNum">     330 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          8 :   if (slave_process)</span>
+<span class="lineNum">     331 </span>                :            :     /* Unregister the child from the list of slave subprocesses, so that
+<span class="lineNum">     332 </span>                :            :        later, when we exit, we don't kill a totally unrelated process which
+<span class="lineNum">     333 </span>                :            :        may have acquired the same pid.  */
+<span class="lineNum">     334 </span>                :            :     unregister_slave_subprocess (child);
+<span class="lineNum">     335 </span>                :            : 
+<span class="lineNum">     336 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :   if (WIFSIGNALED (status))</span>
+<span class="lineNum">     337 </span>                :            :     {
+<span class="lineNum">     338 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (termsigp != NULL)</span>
+<span class="lineNum">     339 </span>                :<span class="lineNoCov">          0 :         *termsigp = WTERMSIG (status);</span>
+<span class="lineNum">     340 </span>                :            : # ifdef SIGPIPE
+<span class="lineNum">     341 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (WTERMSIG (status) == SIGPIPE &amp;&amp; ignore_sigpipe)</span>
+<span class="lineNum">     342 </span>                :            :         return 0;
+<span class="lineNum">     343 </span>                :            : # endif
+<span class="lineNum">     344 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (exit_on_error || (!null_stderr &amp;&amp; termsigp == NULL))</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     345 </span>                :<span class="lineNoCov">          0 :         error (exit_on_error ? EXIT_FAILURE : 0, 0,</span>
+<span class="lineNum">     346 </span>                :<span class="lineNoCov">          0 :                _(&quot;%s subprocess got fatal signal %d&quot;),</span>
+<span class="lineNum">     347 </span>                :<span class="lineNoCov">          0 :                progname, (int) WTERMSIG (status));</span>
+<span class="lineNum">     348 </span>                :            :       return 127;
+<span class="lineNum">     349 </span>                :            :     }
+<span class="lineNum">     350 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :   if (!WIFEXITED (status))</span>
+<span class="lineNum">     351 </span>                :<span class="lineNoCov">          0 :     abort ();</span>
+<span class="lineNum">     352 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :   if (WEXITSTATUS (status) == 127)</span>
+<span class="lineNum">     353 </span>                :            :     {
+<span class="lineNum">     354 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (exit_on_error || !null_stderr)</span>
+<span class="lineNum">     355 </span>                :<span class="lineNoCov">          0 :         error (exit_on_error ? EXIT_FAILURE : 0, 0,</span>
+<span class="lineNum">     356 </span>                :<span class="lineNoCov">          0 :                _(&quot;%s subprocess failed&quot;), progname);</span>
+<span class="lineNum">     357 </span>                :            :       return 127;
+<span class="lineNum">     358 </span>                :            :     }
+<span class="lineNum">     359 </span>                :<span class="lineCov">          8 :   return WEXITSTATUS (status);</span>
+<span class="lineNum">     360 </span>                :            : #endif
+<span class="lineNum">     361 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

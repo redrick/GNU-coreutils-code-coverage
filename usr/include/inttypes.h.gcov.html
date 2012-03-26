@@ -1,0 +1,529 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - coreutils - /usr/include/inttypes.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">usr/include</a> - inttypes.h<span style="font-size: 80%;"> (source / <a href="inttypes.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coreutils</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-03-26</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /* Copyright (C) 1997-2001, 2004, 2007 Free Software Foundation, Inc.</a>
+<span class="lineNum">       2 </span>                :            :    This file is part of the GNU C Library.
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            :    The GNU C Library is free software; you can redistribute it and/or
+<span class="lineNum">       5 </span>                :            :    modify it under the terms of the GNU Lesser General Public
+<span class="lineNum">       6 </span>                :            :    License as published by the Free Software Foundation; either
+<span class="lineNum">       7 </span>                :            :    version 2.1 of the License, or (at your option) any later version.
+<span class="lineNum">       8 </span>                :            : 
+<span class="lineNum">       9 </span>                :            :    The GNU C Library is distributed in the hope that it will be useful,
+<span class="lineNum">      10 </span>                :            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      11 </span>                :            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<span class="lineNum">      12 </span>                :            :    Lesser General Public License for more details.
+<span class="lineNum">      13 </span>                :            : 
+<span class="lineNum">      14 </span>                :            :    You should have received a copy of the GNU Lesser General Public
+<span class="lineNum">      15 </span>                :            :    License along with the GNU C Library; if not, write to the Free
+<span class="lineNum">      16 </span>                :            :    Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+<span class="lineNum">      17 </span>                :            :    02111-1307 USA.  */
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :            : /*
+<span class="lineNum">      20 </span>                :            :  *      ISO C99: 7.8 Format conversion of integer types &lt;inttypes.h&gt;
+<span class="lineNum">      21 </span>                :            :  */
+<span class="lineNum">      22 </span>                :            : 
+<span class="lineNum">      23 </span>                :            : #ifndef _INTTYPES_H
+<span class="lineNum">      24 </span>                :            : #define _INTTYPES_H     1
+<span class="lineNum">      25 </span>                :            : 
+<span class="lineNum">      26 </span>                :            : #include &lt;features.h&gt;
+<span class="lineNum">      27 </span>                :            : /* Get the type definitions.  */
+<span class="lineNum">      28 </span>                :            : #include &lt;stdint.h&gt;
+<span class="lineNum">      29 </span>                :            : 
+<span class="lineNum">      30 </span>                :            : /* Get a definition for wchar_t.  But we must not define wchar_t itself.  */
+<span class="lineNum">      31 </span>                :            : #ifndef ____gwchar_t_defined
+<span class="lineNum">      32 </span>                :            : # ifdef __cplusplus
+<span class="lineNum">      33 </span>                :            : #  define __gwchar_t wchar_t
+<span class="lineNum">      34 </span>                :            : # elif defined __WCHAR_TYPE__
+<span class="lineNum">      35 </span>                :            : typedef __WCHAR_TYPE__ __gwchar_t;
+<span class="lineNum">      36 </span>                :            : # else
+<span class="lineNum">      37 </span>                :            : #  define __need_wchar_t
+<span class="lineNum">      38 </span>                :            : #  include &lt;stddef.h&gt;
+<span class="lineNum">      39 </span>                :            : typedef wchar_t __gwchar_t;
+<span class="lineNum">      40 </span>                :            : # endif
+<span class="lineNum">      41 </span>                :            : # define ____gwchar_t_defined   1
+<span class="lineNum">      42 </span>                :            : #endif
+<span class="lineNum">      43 </span>                :            : 
+<span class="lineNum">      44 </span>                :            : 
+<span class="lineNum">      45 </span>                :            : /* The ISO C99 standard specifies that these macros must only be
+<span class="lineNum">      46 </span>                :            :    defined if explicitly requested.  */
+<span class="lineNum">      47 </span>                :            : #if !defined __cplusplus || defined __STDC_FORMAT_MACROS
+<span class="lineNum">      48 </span>                :            : 
+<span class="lineNum">      49 </span>                :            : # if __WORDSIZE == 64
+<span class="lineNum">      50 </span>                :            : #  define __PRI64_PREFIX        &quot;l&quot;
+<span class="lineNum">      51 </span>                :            : #  define __PRIPTR_PREFIX       &quot;l&quot;
+<span class="lineNum">      52 </span>                :            : # else
+<span class="lineNum">      53 </span>                :            : #  define __PRI64_PREFIX        &quot;ll&quot;
+<span class="lineNum">      54 </span>                :            : #  define __PRIPTR_PREFIX
+<span class="lineNum">      55 </span>                :            : # endif
+<span class="lineNum">      56 </span>                :            : 
+<span class="lineNum">      57 </span>                :            : /* Macros for printing format specifiers.  */
+<span class="lineNum">      58 </span>                :            : 
+<span class="lineNum">      59 </span>                :            : /* Decimal notation.  */
+<span class="lineNum">      60 </span>                :            : # define PRId8          &quot;d&quot;
+<span class="lineNum">      61 </span>                :            : # define PRId16         &quot;d&quot;
+<span class="lineNum">      62 </span>                :            : # define PRId32         &quot;d&quot;
+<span class="lineNum">      63 </span>                :            : # define PRId64         __PRI64_PREFIX &quot;d&quot;
+<span class="lineNum">      64 </span>                :            : 
+<span class="lineNum">      65 </span>                :            : # define PRIdLEAST8     &quot;d&quot;
+<span class="lineNum">      66 </span>                :            : # define PRIdLEAST16    &quot;d&quot;
+<span class="lineNum">      67 </span>                :            : # define PRIdLEAST32    &quot;d&quot;
+<span class="lineNum">      68 </span>                :            : # define PRIdLEAST64    __PRI64_PREFIX &quot;d&quot;
+<span class="lineNum">      69 </span>                :            : 
+<span class="lineNum">      70 </span>                :            : # define PRIdFAST8      &quot;d&quot;
+<span class="lineNum">      71 </span>                :            : # define PRIdFAST16     __PRIPTR_PREFIX &quot;d&quot;
+<span class="lineNum">      72 </span>                :            : # define PRIdFAST32     __PRIPTR_PREFIX &quot;d&quot;
+<span class="lineNum">      73 </span>                :            : # define PRIdFAST64     __PRI64_PREFIX &quot;d&quot;
+<span class="lineNum">      74 </span>                :            : 
+<span class="lineNum">      75 </span>                :            : 
+<span class="lineNum">      76 </span>                :            : # define PRIi8          &quot;i&quot;
+<span class="lineNum">      77 </span>                :            : # define PRIi16         &quot;i&quot;
+<span class="lineNum">      78 </span>                :            : # define PRIi32         &quot;i&quot;
+<span class="lineNum">      79 </span>                :            : # define PRIi64         __PRI64_PREFIX &quot;i&quot;
+<span class="lineNum">      80 </span>                :            : 
+<span class="lineNum">      81 </span>                :            : # define PRIiLEAST8     &quot;i&quot;
+<span class="lineNum">      82 </span>                :            : # define PRIiLEAST16    &quot;i&quot;
+<span class="lineNum">      83 </span>                :            : # define PRIiLEAST32    &quot;i&quot;
+<span class="lineNum">      84 </span>                :            : # define PRIiLEAST64    __PRI64_PREFIX &quot;i&quot;
+<span class="lineNum">      85 </span>                :            : 
+<span class="lineNum">      86 </span>                :            : # define PRIiFAST8      &quot;i&quot;
+<span class="lineNum">      87 </span>                :            : # define PRIiFAST16     __PRIPTR_PREFIX &quot;i&quot;
+<span class="lineNum">      88 </span>                :            : # define PRIiFAST32     __PRIPTR_PREFIX &quot;i&quot;
+<span class="lineNum">      89 </span>                :            : # define PRIiFAST64     __PRI64_PREFIX &quot;i&quot;
+<span class="lineNum">      90 </span>                :            : 
+<span class="lineNum">      91 </span>                :            : /* Octal notation.  */
+<span class="lineNum">      92 </span>                :            : # define PRIo8          &quot;o&quot;
+<span class="lineNum">      93 </span>                :            : # define PRIo16         &quot;o&quot;
+<span class="lineNum">      94 </span>                :            : # define PRIo32         &quot;o&quot;
+<span class="lineNum">      95 </span>                :            : # define PRIo64         __PRI64_PREFIX &quot;o&quot;
+<span class="lineNum">      96 </span>                :            : 
+<span class="lineNum">      97 </span>                :            : # define PRIoLEAST8     &quot;o&quot;
+<span class="lineNum">      98 </span>                :            : # define PRIoLEAST16    &quot;o&quot;
+<span class="lineNum">      99 </span>                :            : # define PRIoLEAST32    &quot;o&quot;
+<span class="lineNum">     100 </span>                :            : # define PRIoLEAST64    __PRI64_PREFIX &quot;o&quot;
+<span class="lineNum">     101 </span>                :            : 
+<span class="lineNum">     102 </span>                :            : # define PRIoFAST8      &quot;o&quot;
+<span class="lineNum">     103 </span>                :            : # define PRIoFAST16     __PRIPTR_PREFIX &quot;o&quot;
+<span class="lineNum">     104 </span>                :            : # define PRIoFAST32     __PRIPTR_PREFIX &quot;o&quot;
+<span class="lineNum">     105 </span>                :            : # define PRIoFAST64     __PRI64_PREFIX &quot;o&quot;
+<span class="lineNum">     106 </span>                :            : 
+<span class="lineNum">     107 </span>                :            : /* Unsigned integers.  */
+<span class="lineNum">     108 </span>                :            : # define PRIu8          &quot;u&quot;
+<span class="lineNum">     109 </span>                :            : # define PRIu16         &quot;u&quot;
+<span class="lineNum">     110 </span>                :            : # define PRIu32         &quot;u&quot;
+<span class="lineNum">     111 </span>                :            : # define PRIu64         __PRI64_PREFIX &quot;u&quot;
+<span class="lineNum">     112 </span>                :            : 
+<span class="lineNum">     113 </span>                :            : # define PRIuLEAST8     &quot;u&quot;
+<span class="lineNum">     114 </span>                :            : # define PRIuLEAST16    &quot;u&quot;
+<span class="lineNum">     115 </span>                :            : # define PRIuLEAST32    &quot;u&quot;
+<span class="lineNum">     116 </span>                :            : # define PRIuLEAST64    __PRI64_PREFIX &quot;u&quot;
+<span class="lineNum">     117 </span>                :            : 
+<span class="lineNum">     118 </span>                :            : # define PRIuFAST8      &quot;u&quot;
+<span class="lineNum">     119 </span>                :            : # define PRIuFAST16     __PRIPTR_PREFIX &quot;u&quot;
+<span class="lineNum">     120 </span>                :            : # define PRIuFAST32     __PRIPTR_PREFIX &quot;u&quot;
+<span class="lineNum">     121 </span>                :            : # define PRIuFAST64     __PRI64_PREFIX &quot;u&quot;
+<span class="lineNum">     122 </span>                :            : 
+<span class="lineNum">     123 </span>                :            : /* lowercase hexadecimal notation.  */
+<span class="lineNum">     124 </span>                :            : # define PRIx8          &quot;x&quot;
+<span class="lineNum">     125 </span>                :            : # define PRIx16         &quot;x&quot;
+<span class="lineNum">     126 </span>                :            : # define PRIx32         &quot;x&quot;
+<span class="lineNum">     127 </span>                :            : # define PRIx64         __PRI64_PREFIX &quot;x&quot;
+<span class="lineNum">     128 </span>                :            : 
+<span class="lineNum">     129 </span>                :            : # define PRIxLEAST8     &quot;x&quot;
+<span class="lineNum">     130 </span>                :            : # define PRIxLEAST16    &quot;x&quot;
+<span class="lineNum">     131 </span>                :            : # define PRIxLEAST32    &quot;x&quot;
+<span class="lineNum">     132 </span>                :            : # define PRIxLEAST64    __PRI64_PREFIX &quot;x&quot;
+<span class="lineNum">     133 </span>                :            : 
+<span class="lineNum">     134 </span>                :            : # define PRIxFAST8      &quot;x&quot;
+<span class="lineNum">     135 </span>                :            : # define PRIxFAST16     __PRIPTR_PREFIX &quot;x&quot;
+<span class="lineNum">     136 </span>                :            : # define PRIxFAST32     __PRIPTR_PREFIX &quot;x&quot;
+<span class="lineNum">     137 </span>                :            : # define PRIxFAST64     __PRI64_PREFIX &quot;x&quot;
+<span class="lineNum">     138 </span>                :            : 
+<span class="lineNum">     139 </span>                :            : /* UPPERCASE hexadecimal notation.  */
+<span class="lineNum">     140 </span>                :            : # define PRIX8          &quot;X&quot;
+<span class="lineNum">     141 </span>                :            : # define PRIX16         &quot;X&quot;
+<span class="lineNum">     142 </span>                :            : # define PRIX32         &quot;X&quot;
+<span class="lineNum">     143 </span>                :            : # define PRIX64         __PRI64_PREFIX &quot;X&quot;
+<span class="lineNum">     144 </span>                :            : 
+<span class="lineNum">     145 </span>                :            : # define PRIXLEAST8     &quot;X&quot;
+<span class="lineNum">     146 </span>                :            : # define PRIXLEAST16    &quot;X&quot;
+<span class="lineNum">     147 </span>                :            : # define PRIXLEAST32    &quot;X&quot;
+<span class="lineNum">     148 </span>                :            : # define PRIXLEAST64    __PRI64_PREFIX &quot;X&quot;
+<span class="lineNum">     149 </span>                :            : 
+<span class="lineNum">     150 </span>                :            : # define PRIXFAST8      &quot;X&quot;
+<span class="lineNum">     151 </span>                :            : # define PRIXFAST16     __PRIPTR_PREFIX &quot;X&quot;
+<span class="lineNum">     152 </span>                :            : # define PRIXFAST32     __PRIPTR_PREFIX &quot;X&quot;
+<span class="lineNum">     153 </span>                :            : # define PRIXFAST64     __PRI64_PREFIX &quot;X&quot;
+<span class="lineNum">     154 </span>                :            : 
+<span class="lineNum">     155 </span>                :            : 
+<span class="lineNum">     156 </span>                :            : /* Macros for printing `intmax_t' and `uintmax_t'.  */
+<span class="lineNum">     157 </span>                :            : # define PRIdMAX        __PRI64_PREFIX &quot;d&quot;
+<span class="lineNum">     158 </span>                :            : # define PRIiMAX        __PRI64_PREFIX &quot;i&quot;
+<span class="lineNum">     159 </span>                :            : # define PRIoMAX        __PRI64_PREFIX &quot;o&quot;
+<span class="lineNum">     160 </span>                :            : # define PRIuMAX        __PRI64_PREFIX &quot;u&quot;
+<span class="lineNum">     161 </span>                :            : # define PRIxMAX        __PRI64_PREFIX &quot;x&quot;
+<span class="lineNum">     162 </span>                :            : # define PRIXMAX        __PRI64_PREFIX &quot;X&quot;
+<span class="lineNum">     163 </span>                :            : 
+<span class="lineNum">     164 </span>                :            : 
+<span class="lineNum">     165 </span>                :            : /* Macros for printing `intptr_t' and `uintptr_t'.  */
+<span class="lineNum">     166 </span>                :            : # define PRIdPTR        __PRIPTR_PREFIX &quot;d&quot;
+<span class="lineNum">     167 </span>                :            : # define PRIiPTR        __PRIPTR_PREFIX &quot;i&quot;
+<span class="lineNum">     168 </span>                :            : # define PRIoPTR        __PRIPTR_PREFIX &quot;o&quot;
+<span class="lineNum">     169 </span>                :            : # define PRIuPTR        __PRIPTR_PREFIX &quot;u&quot;
+<span class="lineNum">     170 </span>                :            : # define PRIxPTR        __PRIPTR_PREFIX &quot;x&quot;
+<span class="lineNum">     171 </span>                :            : # define PRIXPTR        __PRIPTR_PREFIX &quot;X&quot;
+<span class="lineNum">     172 </span>                :            : 
+<span class="lineNum">     173 </span>                :            : 
+<span class="lineNum">     174 </span>                :            : /* Macros for scanning format specifiers.  */
+<span class="lineNum">     175 </span>                :            : 
+<span class="lineNum">     176 </span>                :            : /* Signed decimal notation.  */
+<span class="lineNum">     177 </span>                :            : # define SCNd8          &quot;hhd&quot;
+<span class="lineNum">     178 </span>                :            : # define SCNd16         &quot;hd&quot;
+<span class="lineNum">     179 </span>                :            : # define SCNd32         &quot;d&quot;
+<span class="lineNum">     180 </span>                :            : # define SCNd64         __PRI64_PREFIX &quot;d&quot;
+<span class="lineNum">     181 </span>                :            : 
+<span class="lineNum">     182 </span>                :            : # define SCNdLEAST8     &quot;hhd&quot;
+<span class="lineNum">     183 </span>                :            : # define SCNdLEAST16    &quot;hd&quot;
+<span class="lineNum">     184 </span>                :            : # define SCNdLEAST32    &quot;d&quot;
+<span class="lineNum">     185 </span>                :            : # define SCNdLEAST64    __PRI64_PREFIX &quot;d&quot;
+<span class="lineNum">     186 </span>                :            : 
+<span class="lineNum">     187 </span>                :            : # define SCNdFAST8      &quot;hhd&quot;
+<span class="lineNum">     188 </span>                :            : # define SCNdFAST16     __PRIPTR_PREFIX &quot;d&quot;
+<span class="lineNum">     189 </span>                :            : # define SCNdFAST32     __PRIPTR_PREFIX &quot;d&quot;
+<span class="lineNum">     190 </span>                :            : # define SCNdFAST64     __PRI64_PREFIX &quot;d&quot;
+<span class="lineNum">     191 </span>                :            : 
+<span class="lineNum">     192 </span>                :            : /* Signed decimal notation.  */
+<span class="lineNum">     193 </span>                :            : # define SCNi8          &quot;hhi&quot;
+<span class="lineNum">     194 </span>                :            : # define SCNi16         &quot;hi&quot;
+<span class="lineNum">     195 </span>                :            : # define SCNi32         &quot;i&quot;
+<span class="lineNum">     196 </span>                :            : # define SCNi64         __PRI64_PREFIX &quot;i&quot;
+<span class="lineNum">     197 </span>                :            : 
+<span class="lineNum">     198 </span>                :            : # define SCNiLEAST8     &quot;hhi&quot;
+<span class="lineNum">     199 </span>                :            : # define SCNiLEAST16    &quot;hi&quot;
+<span class="lineNum">     200 </span>                :            : # define SCNiLEAST32    &quot;i&quot;
+<span class="lineNum">     201 </span>                :            : # define SCNiLEAST64    __PRI64_PREFIX &quot;i&quot;
+<span class="lineNum">     202 </span>                :            : 
+<span class="lineNum">     203 </span>                :            : # define SCNiFAST8      &quot;hhi&quot;
+<span class="lineNum">     204 </span>                :            : # define SCNiFAST16     __PRIPTR_PREFIX &quot;i&quot;
+<span class="lineNum">     205 </span>                :            : # define SCNiFAST32     __PRIPTR_PREFIX &quot;i&quot;
+<span class="lineNum">     206 </span>                :            : # define SCNiFAST64     __PRI64_PREFIX &quot;i&quot;
+<span class="lineNum">     207 </span>                :            : 
+<span class="lineNum">     208 </span>                :            : /* Unsigned decimal notation.  */
+<span class="lineNum">     209 </span>                :            : # define SCNu8          &quot;hhu&quot;
+<span class="lineNum">     210 </span>                :            : # define SCNu16         &quot;hu&quot;
+<span class="lineNum">     211 </span>                :            : # define SCNu32         &quot;u&quot;
+<span class="lineNum">     212 </span>                :            : # define SCNu64         __PRI64_PREFIX &quot;u&quot;
+<span class="lineNum">     213 </span>                :            : 
+<span class="lineNum">     214 </span>                :            : # define SCNuLEAST8     &quot;hhu&quot;
+<span class="lineNum">     215 </span>                :            : # define SCNuLEAST16    &quot;hu&quot;
+<span class="lineNum">     216 </span>                :            : # define SCNuLEAST32    &quot;u&quot;
+<span class="lineNum">     217 </span>                :            : # define SCNuLEAST64    __PRI64_PREFIX &quot;u&quot;
+<span class="lineNum">     218 </span>                :            : 
+<span class="lineNum">     219 </span>                :            : # define SCNuFAST8      &quot;hhu&quot;
+<span class="lineNum">     220 </span>                :            : # define SCNuFAST16     __PRIPTR_PREFIX &quot;u&quot;
+<span class="lineNum">     221 </span>                :            : # define SCNuFAST32     __PRIPTR_PREFIX &quot;u&quot;
+<span class="lineNum">     222 </span>                :            : # define SCNuFAST64     __PRI64_PREFIX &quot;u&quot;
+<span class="lineNum">     223 </span>                :            : 
+<span class="lineNum">     224 </span>                :            : /* Octal notation.  */
+<span class="lineNum">     225 </span>                :            : # define SCNo8          &quot;hho&quot;
+<span class="lineNum">     226 </span>                :            : # define SCNo16         &quot;ho&quot;
+<span class="lineNum">     227 </span>                :            : # define SCNo32         &quot;o&quot;
+<span class="lineNum">     228 </span>                :            : # define SCNo64         __PRI64_PREFIX &quot;o&quot;
+<span class="lineNum">     229 </span>                :            : 
+<span class="lineNum">     230 </span>                :            : # define SCNoLEAST8     &quot;hho&quot;
+<span class="lineNum">     231 </span>                :            : # define SCNoLEAST16    &quot;ho&quot;
+<span class="lineNum">     232 </span>                :            : # define SCNoLEAST32    &quot;o&quot;
+<span class="lineNum">     233 </span>                :            : # define SCNoLEAST64    __PRI64_PREFIX &quot;o&quot;
+<span class="lineNum">     234 </span>                :            : 
+<span class="lineNum">     235 </span>                :            : # define SCNoFAST8      &quot;hho&quot;
+<span class="lineNum">     236 </span>                :            : # define SCNoFAST16     __PRIPTR_PREFIX &quot;o&quot;
+<span class="lineNum">     237 </span>                :            : # define SCNoFAST32     __PRIPTR_PREFIX &quot;o&quot;
+<span class="lineNum">     238 </span>                :            : # define SCNoFAST64     __PRI64_PREFIX &quot;o&quot;
+<span class="lineNum">     239 </span>                :            : 
+<span class="lineNum">     240 </span>                :            : /* Hexadecimal notation.  */
+<span class="lineNum">     241 </span>                :            : # define SCNx8          &quot;hhx&quot;
+<span class="lineNum">     242 </span>                :            : # define SCNx16         &quot;hx&quot;
+<span class="lineNum">     243 </span>                :            : # define SCNx32         &quot;x&quot;
+<span class="lineNum">     244 </span>                :            : # define SCNx64         __PRI64_PREFIX &quot;x&quot;
+<span class="lineNum">     245 </span>                :            : 
+<span class="lineNum">     246 </span>                :            : # define SCNxLEAST8     &quot;hhx&quot;
+<span class="lineNum">     247 </span>                :            : # define SCNxLEAST16    &quot;hx&quot;
+<span class="lineNum">     248 </span>                :            : # define SCNxLEAST32    &quot;x&quot;
+<span class="lineNum">     249 </span>                :            : # define SCNxLEAST64    __PRI64_PREFIX &quot;x&quot;
+<span class="lineNum">     250 </span>                :            : 
+<span class="lineNum">     251 </span>                :            : # define SCNxFAST8      &quot;hhx&quot;
+<span class="lineNum">     252 </span>                :            : # define SCNxFAST16     __PRIPTR_PREFIX &quot;x&quot;
+<span class="lineNum">     253 </span>                :            : # define SCNxFAST32     __PRIPTR_PREFIX &quot;x&quot;
+<span class="lineNum">     254 </span>                :            : # define SCNxFAST64     __PRI64_PREFIX &quot;x&quot;
+<span class="lineNum">     255 </span>                :            : 
+<span class="lineNum">     256 </span>                :            : 
+<span class="lineNum">     257 </span>                :            : /* Macros for scanning `intmax_t' and `uintmax_t'.  */
+<span class="lineNum">     258 </span>                :            : # define SCNdMAX        __PRI64_PREFIX &quot;d&quot;
+<span class="lineNum">     259 </span>                :            : # define SCNiMAX        __PRI64_PREFIX &quot;i&quot;
+<span class="lineNum">     260 </span>                :            : # define SCNoMAX        __PRI64_PREFIX &quot;o&quot;
+<span class="lineNum">     261 </span>                :            : # define SCNuMAX        __PRI64_PREFIX &quot;u&quot;
+<span class="lineNum">     262 </span>                :            : # define SCNxMAX        __PRI64_PREFIX &quot;x&quot;
+<span class="lineNum">     263 </span>                :            : 
+<span class="lineNum">     264 </span>                :            : /* Macros for scaning `intptr_t' and `uintptr_t'.  */
+<span class="lineNum">     265 </span>                :            : # define SCNdPTR        __PRIPTR_PREFIX &quot;d&quot;
+<span class="lineNum">     266 </span>                :            : # define SCNiPTR        __PRIPTR_PREFIX &quot;i&quot;
+<span class="lineNum">     267 </span>                :            : # define SCNoPTR        __PRIPTR_PREFIX &quot;o&quot;
+<span class="lineNum">     268 </span>                :            : # define SCNuPTR        __PRIPTR_PREFIX &quot;u&quot;
+<span class="lineNum">     269 </span>                :            : # define SCNxPTR        __PRIPTR_PREFIX &quot;x&quot;
+<span class="lineNum">     270 </span>                :            : 
+<span class="lineNum">     271 </span>                :            : #endif  /* C++ &amp;&amp; format macros */
+<span class="lineNum">     272 </span>                :            : 
+<span class="lineNum">     273 </span>                :            : 
+<span class="lineNum">     274 </span>                :            : __BEGIN_DECLS
+<span class="lineNum">     275 </span>                :            : 
+<span class="lineNum">     276 </span>                :            : #if __WORDSIZE == 64
+<span class="lineNum">     277 </span>                :            : 
+<span class="lineNum">     278 </span>                :            : /* We have to define the `uintmax_t' type using `ldiv_t'.  */
+<span class="lineNum">     279 </span>                :            : typedef struct
+<span class="lineNum">     280 </span>                :            :   {
+<span class="lineNum">     281 </span>                :            :     long int quot;              /* Quotient.  */
+<span class="lineNum">     282 </span>                :            :     long int rem;               /* Remainder.  */
+<span class="lineNum">     283 </span>                :            :   } imaxdiv_t;
+<span class="lineNum">     284 </span>                :            : 
+<span class="lineNum">     285 </span>                :            : #else
+<span class="lineNum">     286 </span>                :            : 
+<span class="lineNum">     287 </span>                :            : /* We have to define the `uintmax_t' type using `lldiv_t'.  */
+<span class="lineNum">     288 </span>                :            : typedef struct
+<span class="lineNum">     289 </span>                :            :   {
+<span class="lineNum">     290 </span>                :            :     long long int quot;         /* Quotient.  */
+<span class="lineNum">     291 </span>                :            :     long long int rem;          /* Remainder.  */
+<span class="lineNum">     292 </span>                :            :   } imaxdiv_t;
+<span class="lineNum">     293 </span>                :            : 
+<span class="lineNum">     294 </span>                :            : #endif
+<span class="lineNum">     295 </span>                :            : 
+<span class="lineNum">     296 </span>                :            : 
+<span class="lineNum">     297 </span>                :            : /* Compute absolute value of N.  */
+<span class="lineNum">     298 </span>                :            : extern intmax_t imaxabs (intmax_t __n) __THROW __attribute__ ((__const__));
+<span class="lineNum">     299 </span>                :            : 
+<span class="lineNum">     300 </span>                :            : /* Return the `imaxdiv_t' representation of the value of NUMER over DENOM. */
+<span class="lineNum">     301 </span>                :            : extern imaxdiv_t imaxdiv (intmax_t __numer, intmax_t __denom)
+<span class="lineNum">     302 </span>                :            :       __THROW __attribute__ ((__const__));
+<span class="lineNum">     303 </span>                :            : 
+<span class="lineNum">     304 </span>                :            : /* Like `strtol' but convert to `intmax_t'.  */
+<span class="lineNum">     305 </span>                :            : extern intmax_t strtoimax (__const char *__restrict __nptr,
+<span class="lineNum">     306 </span>                :            :                            char **__restrict __endptr, int __base) __THROW;
+<span class="lineNum">     307 </span>                :            : 
+<span class="lineNum">     308 </span>                :            : /* Like `strtoul' but convert to `uintmax_t'.  */
+<span class="lineNum">     309 </span>                :            : extern uintmax_t strtoumax (__const char *__restrict __nptr,
+<span class="lineNum">     310 </span>                :            :                             char ** __restrict __endptr, int __base) __THROW;
+<span class="lineNum">     311 </span>                :            : 
+<span class="lineNum">     312 </span>                :            : /* Like `wcstol' but convert to `intmax_t'.  */
+<span class="lineNum">     313 </span>                :            : extern intmax_t wcstoimax (__const __gwchar_t *__restrict __nptr,
+<span class="lineNum">     314 </span>                :            :                            __gwchar_t **__restrict __endptr, int __base)
+<span class="lineNum">     315 </span>                :            :      __THROW;
+<span class="lineNum">     316 </span>                :            : 
+<span class="lineNum">     317 </span>                :            : /* Like `wcstoul' but convert to `uintmax_t'.  */
+<span class="lineNum">     318 </span>                :            : extern uintmax_t wcstoumax (__const __gwchar_t *__restrict __nptr,
+<span class="lineNum">     319 </span>                :            :                             __gwchar_t ** __restrict __endptr, int __base)
+<span class="lineNum">     320 </span>                :            :      __THROW;
+<span class="lineNum">     321 </span>                :            : 
+<span class="lineNum">     322 </span>                :            : #ifdef __USE_EXTERN_INLINES
+<span class="lineNum">     323 </span>                :            : 
+<span class="lineNum">     324 </span>                :            : # if __WORDSIZE == 64
+<span class="lineNum">     325 </span>                :            : 
+<span class="lineNum">     326 </span>                :            : extern long int __strtol_internal (__const char *__restrict __nptr,
+<span class="lineNum">     327 </span>                :            :                                    char **__restrict __endptr,
+<span class="lineNum">     328 </span>                :            :                                    int __base, int __group)
+<span class="lineNum">     329 </span>                :            :   __THROW __nonnull ((1)) __wur;
+<span class="lineNum">     330 </span>                :            : /* Like `strtol' but convert to `intmax_t'.  */
+<span class="lineNum">     331 </span>                :            : __extern_inline intmax_t
+<span class="lineNum">     332 </span>                :            : __NTH (strtoimax (__const char *__restrict nptr, char **__restrict endptr,
+<span class="lineNum">     333 </span>                :            :                   int base))
+<span class="lineNum">     334 </span>                :            : {
+<span class="lineNum">     335 </span>                :<span class="lineCov">         87 :   return __strtol_internal (nptr, endptr, base, 0);</span>
+<span class="lineNum">     336 </span>                :            : }
+<span class="lineNum">     337 </span>                :            : 
+<span class="lineNum">     338 </span>                :            : extern unsigned long int __strtoul_internal (__const char *
+<span class="lineNum">     339 </span>                :            :                                              __restrict __nptr,
+<span class="lineNum">     340 </span>                :            :                                              char ** __restrict __endptr,
+<span class="lineNum">     341 </span>                :            :                                              int __base, int __group)
+<span class="lineNum">     342 </span>                :            :   __THROW __nonnull ((1)) __wur;
+<span class="lineNum">     343 </span>                :            : /* Like `strtoul' but convert to `uintmax_t'.  */
+<span class="lineNum">     344 </span>                :            : __extern_inline uintmax_t
+<span class="lineNum">     345 </span>                :            : __NTH (strtoumax (__const char *__restrict nptr, char **__restrict endptr,
+<span class="lineNum">     346 </span>                :            :                   int base))
+<span class="lineNum">     347 </span>                :            : {
+<span class="lineNum">     348 </span>                :<span class="lineCov">       4145 :   return __strtoul_internal (nptr, endptr, base, 0);</span>
+<span class="lineNum">     349 </span>                :            : }
+<span class="lineNum">     350 </span>                :            : 
+<span class="lineNum">     351 </span>                :            : extern long int __wcstol_internal (__const __gwchar_t * __restrict __nptr,
+<span class="lineNum">     352 </span>                :            :                                    __gwchar_t **__restrict __endptr,
+<span class="lineNum">     353 </span>                :            :                                    int __base, int __group)
+<span class="lineNum">     354 </span>                :            :   __THROW __nonnull ((1)) __wur;
+<span class="lineNum">     355 </span>                :            : /* Like `wcstol' but convert to `intmax_t'.  */
+<span class="lineNum">     356 </span>                :            : __extern_inline intmax_t
+<span class="lineNum">     357 </span>                :            : __NTH (wcstoimax (__const __gwchar_t *__restrict nptr,
+<span class="lineNum">     358 </span>                :            :                   __gwchar_t **__restrict endptr, int base))
+<span class="lineNum">     359 </span>                :            : {
+<span class="lineNum">     360 </span>                :            :   return __wcstol_internal (nptr, endptr, base, 0);
+<span class="lineNum">     361 </span>                :            : }
+<span class="lineNum">     362 </span>                :            : 
+<span class="lineNum">     363 </span>                :            : extern unsigned long int __wcstoul_internal (__const __gwchar_t *
+<span class="lineNum">     364 </span>                :            :                                              __restrict __nptr,
+<span class="lineNum">     365 </span>                :            :                                              __gwchar_t **
+<span class="lineNum">     366 </span>                :            :                                              __restrict __endptr,
+<span class="lineNum">     367 </span>                :            :                                              int __base, int __group)
+<span class="lineNum">     368 </span>                :            :   __THROW __nonnull ((1)) __wur;
+<span class="lineNum">     369 </span>                :            : /* Like `wcstoul' but convert to `uintmax_t'.  */
+<span class="lineNum">     370 </span>                :            : __extern_inline uintmax_t
+<span class="lineNum">     371 </span>                :            : __NTH (wcstoumax (__const __gwchar_t *__restrict nptr,
+<span class="lineNum">     372 </span>                :            :                   __gwchar_t **__restrict endptr, int base))
+<span class="lineNum">     373 </span>                :            : {
+<span class="lineNum">     374 </span>                :            :   return __wcstoul_internal (nptr, endptr, base, 0);
+<span class="lineNum">     375 </span>                :            : }
+<span class="lineNum">     376 </span>                :            : 
+<span class="lineNum">     377 </span>                :            : # else /* __WORDSIZE == 32 */
+<span class="lineNum">     378 </span>                :            : 
+<span class="lineNum">     379 </span>                :            : __extension__
+<span class="lineNum">     380 </span>                :            : extern long long int __strtoll_internal (__const char *__restrict __nptr,
+<span class="lineNum">     381 </span>                :            :                                          char **__restrict __endptr,
+<span class="lineNum">     382 </span>                :            :                                          int __base, int __group)
+<span class="lineNum">     383 </span>                :            :   __THROW __nonnull ((1)) __wur;
+<span class="lineNum">     384 </span>                :            : /* Like `strtol' but convert to `intmax_t'.  */
+<span class="lineNum">     385 </span>                :            : __extern_inline intmax_t
+<span class="lineNum">     386 </span>                :            : __NTH (strtoimax (__const char *__restrict nptr, char **__restrict endptr,
+<span class="lineNum">     387 </span>                :            :                   int base))
+<span class="lineNum">     388 </span>                :            : {
+<span class="lineNum">     389 </span>                :            :   return __strtoll_internal (nptr, endptr, base, 0);
+<span class="lineNum">     390 </span>                :            : }
+<span class="lineNum">     391 </span>                :            : 
+<span class="lineNum">     392 </span>                :            : __extension__
+<span class="lineNum">     393 </span>                :            : extern unsigned long long int __strtoull_internal (__const char *
+<span class="lineNum">     394 </span>                :            :                                                    __restrict __nptr,
+<span class="lineNum">     395 </span>                :            :                                                    char **
+<span class="lineNum">     396 </span>                :            :                                                    __restrict __endptr,
+<span class="lineNum">     397 </span>                :            :                                                    int __base,
+<span class="lineNum">     398 </span>                :            :                                                    int __group)
+<span class="lineNum">     399 </span>                :            :   __THROW __nonnull ((1)) __wur;
+<span class="lineNum">     400 </span>                :            : /* Like `strtoul' but convert to `uintmax_t'.  */
+<span class="lineNum">     401 </span>                :            : __extern_inline uintmax_t
+<span class="lineNum">     402 </span>                :            : __NTH (strtoumax (__const char *__restrict nptr, char **__restrict endptr,
+<span class="lineNum">     403 </span>                :            :                   int base))
+<span class="lineNum">     404 </span>                :            : {
+<span class="lineNum">     405 </span>                :            :   return __strtoull_internal (nptr, endptr, base, 0);
+<span class="lineNum">     406 </span>                :            : }
+<span class="lineNum">     407 </span>                :            : 
+<span class="lineNum">     408 </span>                :            : __extension__
+<span class="lineNum">     409 </span>                :            : extern long long int __wcstoll_internal (__const __gwchar_t *
+<span class="lineNum">     410 </span>                :            :                                          __restrict __nptr,
+<span class="lineNum">     411 </span>                :            :                                          __gwchar_t **__restrict __endptr,
+<span class="lineNum">     412 </span>                :            :                                          int __base, int __group)
+<span class="lineNum">     413 </span>                :            :   __THROW __nonnull ((1)) __wur;
+<span class="lineNum">     414 </span>                :            : /* Like `wcstol' but convert to `intmax_t'.  */
+<span class="lineNum">     415 </span>                :            : __extern_inline intmax_t
+<span class="lineNum">     416 </span>                :            : __NTH (wcstoimax (__const __gwchar_t *__restrict nptr,
+<span class="lineNum">     417 </span>                :            :                   __gwchar_t **__restrict endptr, int base))
+<span class="lineNum">     418 </span>                :            : {
+<span class="lineNum">     419 </span>                :            :   return __wcstoll_internal (nptr, endptr, base, 0);
+<span class="lineNum">     420 </span>                :            : }
+<span class="lineNum">     421 </span>                :            : 
+<span class="lineNum">     422 </span>                :            : 
+<span class="lineNum">     423 </span>                :            : __extension__
+<span class="lineNum">     424 </span>                :            : extern unsigned long long int __wcstoull_internal (__const __gwchar_t *
+<span class="lineNum">     425 </span>                :            :                                                    __restrict __nptr,
+<span class="lineNum">     426 </span>                :            :                                                    __gwchar_t **
+<span class="lineNum">     427 </span>                :            :                                                    __restrict __endptr,
+<span class="lineNum">     428 </span>                :            :                                                    int __base,
+<span class="lineNum">     429 </span>                :            :                                                    int __group)
+<span class="lineNum">     430 </span>                :            :   __THROW __nonnull ((1)) __wur;
+<span class="lineNum">     431 </span>                :            : /* Like `wcstoul' but convert to `uintmax_t'.  */
+<span class="lineNum">     432 </span>                :            : __extern_inline uintmax_t
+<span class="lineNum">     433 </span>                :            : __NTH (wcstoumax (__const __gwchar_t *__restrict nptr,
+<span class="lineNum">     434 </span>                :            :                   __gwchar_t **__restrict endptr, int base))
+<span class="lineNum">     435 </span>                :            : {
+<span class="lineNum">     436 </span>                :            :   return __wcstoull_internal (nptr, endptr, base, 0);
+<span class="lineNum">     437 </span>                :            : }
+<span class="lineNum">     438 </span>                :            : 
+<span class="lineNum">     439 </span>                :            : # endif /* __WORDSIZE == 32     */
+<span class="lineNum">     440 </span>                :            : #endif  /* Use extern inlines.  */
+<span class="lineNum">     441 </span>                :            : 
+<span class="lineNum">     442 </span>                :            : __END_DECLS
+<span class="lineNum">     443 </span>                :            : 
+<span class="lineNum">     444 </span>                :            : #endif /* inttypes.h */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

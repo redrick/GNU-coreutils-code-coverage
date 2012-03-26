@@ -31,17 +31,17 @@
             <td class="headerValue">coreutils</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">21</td>
-            <td class="headerCovTableEntry">22</td>
-            <td class="headerCovTableEntryHi">95.5 %</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-02-28</td>
+            <td class="headerValue">2012-03-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
@@ -104,13 +104,13 @@
 <span class="lineNum">      33 </span>                :            : 
 <span class="lineNum">      34 </span>                :            : /* Return the longest suffix of F that is a relative file name.
 <span class="lineNum">      35 </span>                :            :    If it has no such suffix, return the empty string.  */
-<a name="36"><span class="lineNum">      36 </span>                :            : </a>
+<span class="lineNum">      36 </span>                :            : 
 <span class="lineNum">      37 </span>                :            : static char const * _GL_ATTRIBUTE_PURE
-<span class="lineNum">      38 </span>                :<span class="lineCov">     531899 : longest_relative_suffix (char const *f)</span>
+<a name="38"><span class="lineNum">      38 </span>                :            : longest_relative_suffix (char const *f)</a>
 <span class="lineNum">      39 </span>                :            : {
-<span class="lineNum">      40 </span>        [<span class="branchCov" title="Branch 0 was taken 56 times"> + </span><span class="branchCov" title="Branch 1 was taken 531899 times"> + </span>]:<span class="lineCov">     531955 :   for (f += FILE_SYSTEM_PREFIX_LEN (f); ISSLASH (*f); f++)</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">         56 :     continue;</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">     531899 :   return f;</span>
+<span class="lineNum">      40 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 132463 times"> + </span>]:<span class="lineCov">     132471 :   for (f += FILE_SYSTEM_PREFIX_LEN (f); ISSLASH (*f); f++)</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">          8 :     continue;</span>
+<span class="lineNum">      42 </span>                :            :   return f;
 <span class="lineNum">      43 </span>                :            : }
 <span class="lineNum">      44 </span>                :            : 
 <span class="lineNum">      45 </span>                :            : /* Concatenate two file name components, DIR and ABASE, in
@@ -127,35 +127,35 @@
 <span class="lineNum">      56 </span>                :            :    is copied into the result buffer.
 <span class="lineNum">      57 </span>                :            : 
 <span class="lineNum">      58 </span>                :            :    Return NULL if malloc fails.  */
-<a name="59"><span class="lineNum">      59 </span>                :            : </a>
+<span class="lineNum">      59 </span>                :            : 
 <span class="lineNum">      60 </span>                :            : char *
-<span class="lineNum">      61 </span>                :<span class="lineCov">     531899 : mfile_name_concat (char const *dir, char const *abase, char **base_in_result)</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">     132463 : mfile_name_concat (char const *dir, char const *abase, char **base_in_result)</span>
 <span class="lineNum">      62 </span>                :            : {
-<span class="lineNum">      63 </span>                :<span class="lineCov">     531899 :   char const *dirbase = last_component (dir);</span>
-<span class="lineNum">      64 </span>                :<span class="lineCov">     531899 :   size_t dirbaselen = base_len (dirbase);</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">     531899 :   size_t dirlen = dirbase - dir + dirbaselen;</span>
-<span class="lineNum">      66 </span>[<span class="branchCov" title="Branch 2 was taken 531871 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>][<span class="branchCov" title="Branch 0 was taken 531871 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">     531899 :   size_t needs_separator = (dirbaselen &amp;&amp; ! ISSLASH (dirbase[dirbaselen - 1]));</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">     132463 :   char const *dirbase = last_component (dir);</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">     132463 :   size_t dirbaselen = base_len (dirbase);</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">     132463 :   size_t dirlen = dirbase - dir + dirbaselen;</span>
+<span class="lineNum">      66 </span>[<span class="branchCov" title="Branch 0 was taken 132459 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 132459 times"> + </span>]:<span class="lineCov">     132463 :   size_t needs_separator = (dirbaselen &amp;&amp; ! ISSLASH (dirbase[dirbaselen - 1]));</span>
 <span class="lineNum">      67 </span>                :            : 
-<span class="lineNum">      68 </span>                :<span class="lineCov">     531899 :   char const *base = longest_relative_suffix (abase);</span>
-<span class="lineNum">      69 </span>                :<span class="lineCov">     531899 :   size_t baselen = strlen (base);</span>
+<span class="lineNum">      68 </span>                :<span class="lineCov">     132463 :   char const *base = longest_relative_suffix (abase);</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">     132463 :   size_t baselen = strlen (base);</span>
 <span class="lineNum">      70 </span>                :            : 
-<span class="lineNum">      71 </span>                :<span class="lineCov">     531899 :   char *p_concat = malloc (dirlen + needs_separator + baselen + 1);</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">     132463 :   char *p_concat = malloc (dirlen + needs_separator + baselen + 1);</span>
 <span class="lineNum">      72 </span>                :            :   char *p;
 <span class="lineNum">      73 </span>                :            : 
-<span class="lineNum">      74 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 531899 times"> + </span>]:<span class="lineCov">     531899 :   if (p_concat == NULL)</span>
-<span class="lineNum">      75 </span>                :<span class="lineNoCov">          0 :     return NULL;</span>
+<span class="lineNum">      74 </span>        [<span class="branchCov" title="Branch 0 was taken 132463 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     132463 :   if (p_concat == NULL)</span>
+<span class="lineNum">      75 </span>                :            :     return NULL;
 <span class="lineNum">      76 </span>                :            : 
-<span class="lineNum">      77 </span>                :<span class="lineCov">     531899 :   p = mempcpy (p_concat, dir, dirlen);</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">     531899 :   *p = DIRECTORY_SEPARATOR;</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">     531899 :   p += needs_separator;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">     264926 :   p = mempcpy (p_concat, dir, dirlen);</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">     132463 :   *p = DIRECTORY_SEPARATOR;</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">     132463 :   p += needs_separator;</span>
 <span class="lineNum">      80 </span>                :            : 
-<span class="lineNum">      81 </span>        [<span class="branchCov" title="Branch 0 was taken 251 times"> + </span><span class="branchCov" title="Branch 1 was taken 531648 times"> + </span>]:<span class="lineCov">     531899 :   if (base_in_result)</span>
-<span class="lineNum">      82 </span>                :<span class="lineCov">        251 :     *base_in_result = p - IS_ABSOLUTE_FILE_NAME (abase);</span>
+<span class="lineNum">      81 </span>        [<span class="branchCov" title="Branch 0 was taken 38 times"> + </span><span class="branchCov" title="Branch 1 was taken 132425 times"> + </span>]:<span class="lineCov">     132463 :   if (base_in_result)</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">         38 :     *base_in_result = p - IS_ABSOLUTE_FILE_NAME (abase);</span>
 <span class="lineNum">      83 </span>                :            : 
-<span class="lineNum">      84 </span>                :<span class="lineCov">     531899 :   p = mempcpy (p, base, baselen);</span>
-<span class="lineNum">      85 </span>                :<span class="lineCov">     531899 :   *p = '\0';</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">     264926 :   p = mempcpy (p, base, baselen);</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">     132463 :   *p = '\0';</span>
 <span class="lineNum">      86 </span>                :            : 
-<span class="lineNum">      87 </span>                :<span class="lineCov">     531899 :   return p_concat;</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">     132463 :   return p_concat;</span>
 <span class="lineNum">      88 </span>                :            : }
 </pre>
       </td>
